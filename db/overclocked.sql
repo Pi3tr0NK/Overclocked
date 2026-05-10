@@ -1,3 +1,4 @@
+DROP DATABASE if exists overclocked;
 CREATE DATABASE overclocked;
 USE overclocked;
 
@@ -5,7 +6,6 @@ CREATE TABLE indirizzo(
 	id_indirizzo int PRIMARY KEY AUTO_INCREMENT,
     via_numciv varchar(255),
     paese varchar(100),
-    num_civ int,
     citta varchar(100),
     provincia varchar(100),
 	dati_plus varchar(255),
@@ -20,6 +20,148 @@ CREATE TABLE utente(
     password varchar(255) NOT NULL,
     ruolo enum('user','admin') NOT NULL DEFAULT('user'),
     cellulare varchar(50),
+    fk_indirizzo int NOT NULL,
     
-    FOREIGN KEY(PatientId) REFERENCES Patient(id) ON UPDATE cascade ON DELETE cascade
+    FOREIGN KEY(fk_indirizzo) REFERENCES indirizzo(id_indirizzo) ON UPDATE cascade ON DELETE cascade
+);
+
+CREATE TABLE ordine(
+	id_ordine int PRIMARY KEY AUTO_INCREMENT,
+    data date NOT NULL,
+    stato enum('IN_PREPARAZIONE','SPEDITO','CONSEGNATO','RIMBORSATO') DEFAULT 'IN_PREPARAZIONE',
+    totale decimal (10,2) NOT NULL,
+    fattura_path varchar (255),
+	fk_utente int NOT NULL,
+    
+    FOREIGN KEY(fk_utente) REFERENCES utente(id_utente) ON UPDATE cascade ON DELETE cascade
+);
+
+CREATE TABLE prodotto(
+	id_prodotto int PRIMARY KEY AUTO_INCREMENT,
+	nome varchar(255),
+	modello varchar(255),
+    descrizione varchar(255),
+    marca varchar(255),
+    prezzo decimal(10,2),
+    stock int DEFAULT 0,
+    dimensioni varchar(50),		
+    peso varchar(50)
+     
+);
+
+CREATE TABLE immagini(
+	id_immagine int PRIMARY KEY AUTO_INCREMENT,
+	path varchar(255),
+    fk_prodotto int,
+    
+    FOREIGN KEY(fk_prodotto) REFERENCES prodotto(id_prodotto) ON UPDATE cascade ON DELETE cascade
+);
+
+CREATE TABLE dettagliOrdine(
+	fk_ordine int,
+   	fk_prodotto int ,
+    quantita int DEFAULT 1,
+    prezzo_unitario decimal(10,2),
+   	
+   	PRIMARY KEY(fk_ordine,fk_prodotto),
+   	
+    FOREIGN KEY(fk_ordine) REFERENCES ordine(id_ordine) ON UPDATE cascade ON DELETE cascade,
+    FOREIGN KEY(fk_prodotto) REFERENCES prodotto(id_prodotto) ON UPDATE cascade ON DELETE cascade
+);
+
+CREATE TABLE psu(
+	id_psu int AUTO_INCREMENT,
+	fk_prodotto int NOT NULL,
+	potenza int,
+	certificazione varchar(255),
+	modulare enum ('Modulare','Semi-modulare','Non modulare'),
+	formato enum ('ATX','SFX'),
+	
+	PRIMARY KEY(id_psu,fk_prodotto),
+    FOREIGN KEY(fk_prodotto) REFERENCES prodotto(id_prodotto) ON UPDATE cascade ON DELETE cascade
+);
+
+CREATE TABLE cpu(
+	id_cpu int AUTO_INCREMENT,
+	fk_prodotto int NOT NULL,
+	core int,
+	thread int,
+	frequenza varchar(20),
+	socket varchar(20),
+	tdp int,
+	
+    PRIMARY KEY(id_cpu,fk_prodotto),
+    FOREIGN KEY(fk_prodotto) REFERENCES prodotto(id_prodotto) ON UPDATE cascade ON DELETE cascade
+);
+
+CREATE TABLE ram(
+	id_ram int AUTO_INCREMENT,
+	fk_prodotto int NOT NULL,
+	capacita varchar(10),
+	frequenza varchar(20),
+	tipo varchar(10),
+	
+	PRIMARY KEY(id_ram,fk_prodotto),
+    FOREIGN KEY(fk_prodotto) REFERENCES prodotto(id_prodotto) ON UPDATE cascade ON DELETE cascade
+);
+
+CREATE TABLE chassis(
+	id_case int AUTO_INCREMENT,
+	fk_prodotto int NOT NULL,
+	formato varchar(20),		
+    colore varchar(20),
+    materiale varchar(255),
+	
+    PRIMARY KEY(id_case,fk_prodotto),
+    FOREIGN KEY(fk_prodotto) REFERENCES prodotto(id_prodotto) ON UPDATE cascade ON DELETE cascade
+);
+
+CREATE TABLE gpu(
+	id_gpu int AUTO_INCREMENT,
+	fk_prodotto int NOT NULL,
+	frequenza varchar(20),
+	vram varchar(10),
+	video varchar(50),
+	tipovram varchar(20),
+	pcie varchar(10),
+	maxres varchar(20),
+	tdp int,
+
+    PRIMARY KEY(id_gpu,fk_prodotto),
+    FOREIGN KEY(fk_prodotto) REFERENCES prodotto(id_prodotto) ON UPDATE cascade ON DELETE cascade
+);
+
+CREATE TABLE mobo(
+	id_mobo int AUTO_INCREMENT,
+	fk_prodotto int NOT NULL,
+	
+	chipset varchar(20),
+	socket varchar(20),
+	tiporam varchar(10),
+	maxfreq varchar(20),
+	formato varchar(20),	
+	pcie varchar(10),
+	slotram int,
+	nvme boolean,
+	portesata int,
+	porteusb int,
+	
+	
+    PRIMARY KEY(id_mobo,fk_prodotto),
+    FOREIGN KEY(fk_prodotto) REFERENCES prodotto(id_prodotto) ON UPDATE cascade ON DELETE cascade
+);
+
+CREATE TABLE memoria(
+	id_memoria int AUTO_INCREMENT,
+	fk_prodotto int NOT NULL,
+	
+	capacita varchar(10),
+	vel_scrittura int,
+	vel_lettura int,
+	tipo enum ('SSD','HDD'),
+	tecnologia enum ('SATA','NVMe'),
+	formato enum ('3.5"','2.5"','M.2'),
+	
+	PRIMARY KEY(id_memoria,fk_prodotto),
+    FOREIGN KEY(fk_prodotto) REFERENCES prodotto(id_prodotto) ON UPDATE cascade ON DELETE cascade
 );
