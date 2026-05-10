@@ -32,8 +32,10 @@ CREATE TABLE ordine(
     totale decimal (10,2) NOT NULL,
     fattura_path varchar (255),
 	fk_utente int NOT NULL,
+	fk_indirizzo int NOT NULL,
     
-    FOREIGN KEY(fk_utente) REFERENCES utente(id_utente) ON UPDATE cascade ON DELETE cascade
+    FOREIGN KEY(fk_utente) REFERENCES utente(id_utente) ON UPDATE cascade ON DELETE cascade,
+    FOREIGN KEY(fk_indirizzo) REFERENCES indirizzo(id_indirizzo) ON UPDATE cascade ON DELETE cascade
 );
 
 CREATE TABLE prodotto(
@@ -46,7 +48,6 @@ CREATE TABLE prodotto(
     stock int DEFAULT 0,
     dimensioni varchar(50),		
     peso varchar(50)
-     
 );
 
 CREATE TABLE immagini(
