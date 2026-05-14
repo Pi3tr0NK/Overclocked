@@ -47,7 +47,8 @@ CREATE TABLE prodotto(
     prezzo decimal(10,2),
     stock int DEFAULT 0,
     dimensioni varchar(50),		
-    peso varchar(50)
+    peso varchar(50),
+    attivo boolean
 );
 
 CREATE TABLE immagini(
@@ -67,12 +68,12 @@ CREATE TABLE dettagliOrdine(
    	PRIMARY KEY(fk_ordine,fk_prodotto),
    	
     FOREIGN KEY(fk_ordine) REFERENCES ordine(id_ordine) ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY(fk_prodotto) REFERENCES prodotto(id_prodotto) ON UPDATE cascade ON DELETE cascade
+    FOREIGN KEY(fk_prodotto) REFERENCES prodotto(id_prodotto) ON UPDATE cascade ON DELETE restrict
 );
 
 CREATE TABLE psu(
 	id_psu int AUTO_INCREMENT,
-	fk_prodotto int NOT NULL,
+	fk_prodotto int,
 	potenza int,
 	certificazione varchar(255),
 	modulare enum ('Modulare','Semi-modulare','Non modulare'),
@@ -84,7 +85,7 @@ CREATE TABLE psu(
 
 CREATE TABLE cpu(
 	id_cpu int AUTO_INCREMENT,
-	fk_prodotto int NOT NULL,
+	fk_prodotto int,
 	core int,
 	thread int,
 	frequenza varchar(20),
@@ -97,7 +98,7 @@ CREATE TABLE cpu(
 
 CREATE TABLE ram(
 	id_ram int AUTO_INCREMENT,
-	fk_prodotto int NOT NULL,
+	fk_prodotto int,
 	capacita varchar(10),
 	frequenza varchar(20),
 	tipo varchar(10),
@@ -108,7 +109,7 @@ CREATE TABLE ram(
 
 CREATE TABLE chassis(
 	id_case int AUTO_INCREMENT,
-	fk_prodotto int NOT NULL,
+	fk_prodotto int,
 	formato varchar(20),		
     colore varchar(20),
     materiale varchar(255),
@@ -119,7 +120,7 @@ CREATE TABLE chassis(
 
 CREATE TABLE gpu(
 	id_gpu int AUTO_INCREMENT,
-	fk_prodotto int NOT NULL,
+	fk_prodotto int,
 	frequenza varchar(20),
 	vram varchar(10),
 	video varchar(50),
@@ -134,7 +135,7 @@ CREATE TABLE gpu(
 
 CREATE TABLE mobo(
 	id_mobo int AUTO_INCREMENT,
-	fk_prodotto int NOT NULL,
+	fk_prodotto int,
 	
 	chipset varchar(20),
 	socket varchar(20),
@@ -147,14 +148,13 @@ CREATE TABLE mobo(
 	portesata int,
 	porteusb int,
 	
-	
     PRIMARY KEY(id_mobo,fk_prodotto),
     FOREIGN KEY(fk_prodotto) REFERENCES prodotto(id_prodotto) ON UPDATE cascade ON DELETE cascade
 );
 
 CREATE TABLE memoria(
 	id_memoria int AUTO_INCREMENT,
-	fk_prodotto int NOT NULL,
+	fk_prodotto int,
 	
 	capacita varchar(10),
 	vel_scrittura int,
