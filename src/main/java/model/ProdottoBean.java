@@ -6,7 +6,7 @@ public class ProdottoBean implements Serializable {
 
 		private static final long serialVersionUID = 1L;
 
-		private int codice;
+		private int idProdotto;
 	    private String nome;
 	    private String modello;
 	    private String descrizione;
@@ -19,12 +19,12 @@ public class ProdottoBean implements Serializable {
 
 	    public ProdottoBean() {}
 
-		public int getCodice() {
-			return codice;
+		public int getIdProdotto() {
+			return idProdotto;
 		}
 
-		public void setCodice(int codice) {
-			this.codice = codice;
+		public void setIdProdotto(int idProdotto) {
+			this.idProdotto = idProdotto;
 		}
 
 		public String getNome() {
