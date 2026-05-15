@@ -16,7 +16,7 @@ public class ProdottoDAOImpl {
     }
 	
     public void doSave(ProdottoBean p) throws SQLException {
-        String sql = "INSERT INTO prodotto (nome, modello, descrizione, marca, prezzo, stock, attivo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO "+TABLE_NAME+" (nome, modello, descrizione, marca, prezzo, stock, attivo) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -34,7 +34,7 @@ public class ProdottoDAOImpl {
     }
 
     public ProdottoBean doRetrieveByKey(int id) throws SQLException {
-        String sql = "SELECT * FROM prodotto WHERE id_prodotto = ?";
+        String sql = "SELECT * FROM "+TABLE_NAME+" WHERE id_prodotto = ?";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -55,7 +55,7 @@ public class ProdottoDAOImpl {
 
     public List<ProdottoBean> doRetrieveAll() throws SQLException {
         List<ProdottoBean> lista = new ArrayList<>();
-        String sql = "SELECT * FROM prodotto";
+        String sql = "SELECT * FROM "+TABLE_NAME;
 
         try (Connection con = ds.getConnection();
              Statement st = con.createStatement()) {
@@ -74,7 +74,7 @@ public class ProdottoDAOImpl {
     }
 
     public boolean doDelete(int id) throws SQLException {
-        String sql = "DELETE FROM prodotto WHERE id_prodotto = ?";
+        String sql = "DELETE FROM "+TABLE_NAME+ " WHERE id_prodotto = ?";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
