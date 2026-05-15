@@ -72,15 +72,4 @@ public class ProdottoDAOImpl {
         }
         return lista;
     }
-
-    public boolean doDelete(int id) throws SQLException {
-        String sql = "DELETE FROM "+TABLE_NAME+ " WHERE id_prodotto = ?";
-
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setInt(1, id);
-            return ps.executeUpdate() > 0;
-        }
-    }
 }
