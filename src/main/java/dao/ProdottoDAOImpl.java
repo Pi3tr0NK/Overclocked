@@ -54,7 +54,7 @@ public class ProdottoDAOImpl {
     }
 
     public List<ProdottoBean> doRetrieveAll() throws SQLException {
-        List<ProdottoBean> lista = new ArrayList<>();
+        List<ProdottoBean> lista = new LinkedList<>();
         String sql = "SELECT * FROM "+TABLE_NAME;
 
         try (Connection con = ds.getConnection();
@@ -71,5 +71,29 @@ public class ProdottoDAOImpl {
             }
         }
         return lista;
+    }
+    
+    public boolean doUpdate(ProdottoBean p) throws SQLException {
+
+        String sql =
+            "UPDATE " + TABLE_NAME +
+            " SET nome=?, modello=?, descrizione=?, " +
+            "marca=?, prezzo=?, stock=?, attivo=? " +
+            "WHERE id_prodotto=?";
+
+        try(Connection con = ds.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, p.getNome());
+            ps.setString(2, p.getModello());
+            ps.setString(3, p.getDescrizione());
+            ps.setString(4, p.getMarca());
+            ps.setDouble(5, p.getPrezzo());
+            ps.setInt(6, p.getStock());
+            ps.setBoolean(7, p.isAttivo());
+            ps.setInt(8, p.getIdProdotto());
+
+            return ps.executeUpdate() > 0;
+        }
     }
 }
