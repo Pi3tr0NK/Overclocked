@@ -14,4 +14,6 @@ public interface ProdottoDAO {
 	public Collection<ProdottoBean> doRetrieveAll(String order) throws SQLException;
 	
 	public boolean doUpdate(ProdottoBean p) throws SQLException;
+	
+	public boolean setProductStatus(int idProdotto, boolean attivo) throws SQLException;
 }

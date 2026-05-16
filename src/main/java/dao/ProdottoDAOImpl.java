@@ -75,11 +75,7 @@ public class ProdottoDAOImpl {
     
     public boolean doUpdate(ProdottoBean p) throws SQLException {
 
-        String sql =
-            "UPDATE " + TABLE_NAME +
-            " SET nome=?, modello=?, descrizione=?, " +
-            "marca=?, prezzo=?, stock=?, attivo=? " +
-            "WHERE id_prodotto=?";
+        String sql = "UPDATE " + TABLE_NAME + " SET nome=?, modello=?, descrizione=?, marca=?, prezzo=?, stock=?, attivo=? WHERE id_prodotto=?";
 
         try(Connection con = ds.getConnection();
             PreparedStatement ps = con.prepareStatement(sql)) {
@@ -92,6 +88,19 @@ public class ProdottoDAOImpl {
             ps.setInt(6, p.getStock());
             ps.setBoolean(7, p.isAttivo());
             ps.setInt(8, p.getIdProdotto());
+
+            return ps.executeUpdate() > 0;
+        }
+    }
+    
+    public boolean setProductStatus(int idProdotto, boolean attivo) throws SQLException {
+        String sql = "UPDATE " + TABLE_NAME + " SET attivo = ? WHERE id_prodotto = ?";
+
+        try(Connection con = ds.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setBoolean(1, attivo);
+            ps.setInt(2, idProdotto);
 
             return ps.executeUpdate() > 0;
         }
