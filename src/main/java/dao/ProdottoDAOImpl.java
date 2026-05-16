@@ -15,11 +15,11 @@ public class ProdottoDAOImpl implements ProdottoDAO{
         this.ds = ds;
     }
 	
-    public synchronized void doSave(ProdottoBean p) throws SQLException {
-        String sql = "INSERT INTO "+TABLE_NAME+" (nome, modello, descrizione, marca, prezzo, stock, attivo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public synchronized int doSave(ProdottoBean p) throws SQLException {
+        String sql = "INSERT INTO " + TABLE_NAME + " (nome, modello, descrizione, marca, prezzo, stock, attivo) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, p.getNome());
             ps.setString(2, p.getModello());
@@ -30,7 +30,17 @@ public class ProdottoDAOImpl implements ProdottoDAO{
             ps.setBoolean(7, p.isAttivo());
 
             ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    int idGenerato = rs.getInt(1);
+                    p.setIdProdotto(idGenerato);
+                    return idGenerato;
+                }
+            }
         }
+        
+        return -1;
     }
 
     public synchronized ProdottoBean doRetrieveByKey(int id) throws SQLException {
