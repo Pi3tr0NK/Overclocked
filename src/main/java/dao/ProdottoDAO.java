@@ -3,7 +3,6 @@ package dao;
 import java.sql.SQLException;
 import java.util.Collection;
 
-import model.OrdineBean.Stato;
 import model.ProdottoBean;
 
 

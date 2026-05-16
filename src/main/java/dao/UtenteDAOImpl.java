@@ -6,11 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Collection;
 
 import javax.sql.DataSource;
 
-import model.IndirizzoBean;
 import model.UtenteBean;
 import model.UtenteBean.Ruolo;
 
