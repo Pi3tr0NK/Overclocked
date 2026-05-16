@@ -18,7 +18,7 @@ CREATE TABLE utente(
     nome varchar(20) NOT NULL,
     cognome varchar(20) NOT NULL,
     password varchar(255) NOT NULL,
-    ruolo enum('user','admin') NOT NULL DEFAULT('user'),
+    ruolo enum('USER','ADMIN') NOT NULL DEFAULT('USER'),
     cellulare varchar(50),
     fk_indirizzo int NOT NULL,
     
@@ -76,7 +76,7 @@ CREATE TABLE psu(
 	fk_prodotto int,
 	potenza int,
 	certificazione varchar(255),
-	modulare enum ('Modulare','Semi-modulare','Non modulare'),
+	modulare enum ('MODULARE','SEMIMODULARE','NON_MODULARE'),
 	formato enum ('ATX','SFX'),
 	
 	PRIMARY KEY(id_psu,fk_prodotto),
@@ -161,7 +161,7 @@ CREATE TABLE memoria(
 	vel_lettura int,
 	tipo enum ('SSD','HDD'),
 	tecnologia enum ('SATA','NVMe'),
-	formato enum ('3.5"','2.5"','M.2'),
+	formato varchar(20),
 	
 	PRIMARY KEY(id_memoria,fk_prodotto),
     FOREIGN KEY(fk_prodotto) REFERENCES prodotto(id_prodotto) ON UPDATE cascade ON DELETE cascade
