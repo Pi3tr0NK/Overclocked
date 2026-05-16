@@ -60,7 +60,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
                 p.setDescrizione(rs.getString("descrizione"));
                 p.setMarca(rs.getString("marca"));
                 p.setStock(rs.getInt("stock"));
-                p.setAttivo(rs.getBoolean("stock"));
+                p.setAttivo(rs.getBoolean("attivo"));
                 
                 
                 return p;
@@ -86,7 +86,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
                 p.setDescrizione(rs.getString("descrizione"));
                 p.setMarca(rs.getString("marca"));
                 p.setStock(rs.getInt("stock"));
-                p.setAttivo(rs.getBoolean("stock"));
+                p.setAttivo(rs.getBoolean("attivo"));
             }
         }
         return lista;

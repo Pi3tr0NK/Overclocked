@@ -20,7 +20,7 @@ public class DettaglioOrdineDAOImpl implements DettaglioOrdineDAO {
     }
     
 	@Override
-	public void doSave(DettaglioOrdineBean d) throws SQLException {
+	public synchronized void doSave(DettaglioOrdineBean d) throws SQLException {
 	
         String sql = "INSERT INTO "+TABLE_NAME+" (fk_ordine, fk_prodotto, quantita, prezzo_unitario) VALUES (?, ?, ?, ?)";
 
@@ -37,7 +37,7 @@ public class DettaglioOrdineDAOImpl implements DettaglioOrdineDAO {
 	}
 
 	@Override
-	public List<ProdottoBean> doRetrieveByOrdine(int idOrdine) throws SQLException {
+	public synchronized List<ProdottoBean> doRetrieveByOrdine(int idOrdine) throws SQLException {
 
 	    List<ProdottoBean> lista = new LinkedList<>();
 
@@ -61,7 +61,7 @@ public class DettaglioOrdineDAOImpl implements DettaglioOrdineDAO {
 	                p.setDescrizione(rs.getString("descrizione"));
 	                p.setMarca(rs.getString("marca"));
 	                p.setStock(rs.getInt("stock"));
-	                p.setAttivo(rs.getBoolean("stock"));
+	                p.setAttivo(rs.getBoolean("attivo"));
 
 	                lista.add(p);
 	            }
