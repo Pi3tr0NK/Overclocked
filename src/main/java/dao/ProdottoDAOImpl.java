@@ -46,7 +46,13 @@ public class ProdottoDAOImpl implements ProdottoDAO{
                 ProdottoBean p = new ProdottoBean();
                 p.setIdProdotto(rs.getInt("id_prodotto"));
                 p.setNome(rs.getString("nome"));
-                p.setPrezzo(rs.getDouble("prezzo"));
+                p.setModello(rs.getString("modello"));
+                p.setDescrizione(rs.getString("descrizione"));
+                p.setMarca(rs.getString("marca"));
+                p.setStock(rs.getInt("stock"));
+                p.setAttivo(rs.getBoolean("stock"));
+                
+                
                 return p;
             }
         }
@@ -66,8 +72,11 @@ public class ProdottoDAOImpl implements ProdottoDAO{
                 ProdottoBean p = new ProdottoBean();
                 p.setIdProdotto(rs.getInt("id_prodotto"));
                 p.setNome(rs.getString("nome"));
-                p.setPrezzo(rs.getDouble("prezzo"));
-                lista.add(p);
+                p.setModello(rs.getString("modello"));
+                p.setDescrizione(rs.getString("descrizione"));
+                p.setMarca(rs.getString("marca"));
+                p.setStock(rs.getInt("stock"));
+                p.setAttivo(rs.getBoolean("stock"));
             }
         }
         return lista;

@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -66,7 +66,7 @@ public class IndirizzoDAOImpl implements IndirizzoDAO {
     @Override
     public synchronized List<IndirizzoBean> doRetrieveAll() throws SQLException {
         String sql = "SELECT * FROM "+TABLE_NAME ;
-        List<IndirizzoBean> lista = new ArrayList<>();
+        List<IndirizzoBean> lista = new LinkedList<>();
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql);
