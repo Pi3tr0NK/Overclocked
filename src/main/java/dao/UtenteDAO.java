@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.Collection;
 
 import model.UtenteBean;
+import model.UtenteBean.Ruolo;
 
 public interface UtenteDAO 
 {
@@ -20,4 +21,6 @@ public interface UtenteDAO
 	public Collection<UtenteBean> doRetrieveAll() throws SQLException;
 	
 	public boolean updatePassword(int idUtente, String newPassword) throws SQLException;
+	
+	public boolean updateRuolo(int idUtente, Ruolo ruolo) throws SQLException;
 }
