@@ -21,7 +21,7 @@ public class ImmaginiDAOImpl {
         this.ds = ds;
     }
 	
-    public void doSave(ImmagineBean i) throws SQLException {
+    public synchronized void doSave(ImmagineBean i) throws SQLException {
         String sql = "INSERT INTO "+TABLE_NAME+" (path, fk_prodotto) VALUES (?, ?)";
 
         try (Connection con = ds.getConnection();
@@ -33,7 +33,7 @@ public class ImmaginiDAOImpl {
         }
     }
     
-    public boolean doDelete(int code) throws SQLException
+    public synchronized boolean doDelete(int code) throws SQLException
     {
 	    	String sql = "DELETE FROM "+TABLE_NAME+ " WHERE id_immagine = ?";
 	
@@ -45,7 +45,7 @@ public class ImmaginiDAOImpl {
 	        }
     }
 
-	public List<ImmagineBean> doRetrieveByProdotto(int idProdotto) throws SQLException
+	public synchronized List<ImmagineBean> doRetrieveByProdotto(int idProdotto) throws SQLException
 	{
 	    List<ImmagineBean> lista = new LinkedList<>();
         String sql = "SELECT * FROM "+TABLE_NAME+ " WHERE fk_prodotto=?";
@@ -71,7 +71,7 @@ public class ImmaginiDAOImpl {
         return lista;
 	}
 	
-	public void updateImage(int idImmagine, String path) throws SQLException
+	public synchronized void updateImage(int idImmagine, String path) throws SQLException
 	{
 		String sql = "UPDATE "+TABLE_NAME+" SET path= ? WHERE id_immagine= ?";
 		

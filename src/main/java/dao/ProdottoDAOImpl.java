@@ -15,7 +15,7 @@ public class ProdottoDAOImpl {
         this.ds = ds;
     }
 	
-    public void doSave(ProdottoBean p) throws SQLException {
+    public synchronized void doSave(ProdottoBean p) throws SQLException {
         String sql = "INSERT INTO "+TABLE_NAME+" (nome, modello, descrizione, marca, prezzo, stock, attivo) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ds.getConnection();
@@ -33,7 +33,7 @@ public class ProdottoDAOImpl {
         }
     }
 
-    public ProdottoBean doRetrieveByKey(int id) throws SQLException {
+    public synchronized ProdottoBean doRetrieveByKey(int id) throws SQLException {
         String sql = "SELECT * FROM "+TABLE_NAME+" WHERE id_prodotto = ?";
 
         try (Connection con = ds.getConnection();
@@ -53,7 +53,7 @@ public class ProdottoDAOImpl {
         return null;
     }
 
-    public List<ProdottoBean> doRetrieveAll() throws SQLException {
+    public synchronized List<ProdottoBean> doRetrieveAll() throws SQLException {
         List<ProdottoBean> lista = new LinkedList<>();
         String sql = "SELECT * FROM "+TABLE_NAME;
 
@@ -73,7 +73,7 @@ public class ProdottoDAOImpl {
         return lista;
     }
     
-    public boolean doUpdate(ProdottoBean p) throws SQLException {
+    public synchronized boolean doUpdate(ProdottoBean p) throws SQLException {
 
         String sql = "UPDATE " + TABLE_NAME + " SET nome=?, modello=?, descrizione=?, marca=?, prezzo=?, stock=?, attivo=? WHERE id_prodotto=?";
 
@@ -93,7 +93,7 @@ public class ProdottoDAOImpl {
         }
     }
     
-    public boolean setProductStatus(int idProdotto, boolean attivo) throws SQLException {
+    public synchronized boolean setProductStatus(int idProdotto, boolean attivo) throws SQLException {
         String sql = "UPDATE " + TABLE_NAME + " SET attivo = ? WHERE id_prodotto = ?";
 
         try(Connection con = ds.getConnection();
