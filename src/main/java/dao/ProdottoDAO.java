@@ -3,6 +3,7 @@ package dao;
 import java.sql.SQLException;
 import java.util.Collection;
 
+import model.OrdineBean.Stato;
 import model.ProdottoBean;
 
 
@@ -11,7 +12,7 @@ public interface ProdottoDAO {
 
 	public ProdottoBean doRetrieveByKey(int code) throws SQLException;
 	
-	public Collection<ProdottoBean> doRetrieveAll(String order) throws SQLException;
+	public Collection<ProdottoBean> doRetrieveAll() throws SQLException;
 	
 	public boolean doUpdate(ProdottoBean p) throws SQLException;
 	

@@ -13,7 +13,7 @@ import model.ImmagineBean;
 import model.ProdottoBean;
 
 
-public class ImmaginiDAOImpl {
+public class ImmaginiDAOImpl implements ImmaginiDAO {
 	private static final String TABLE_NAME = "immagini";
     private DataSource ds = null;
     

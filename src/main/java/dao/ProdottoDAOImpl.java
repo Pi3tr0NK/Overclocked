@@ -7,7 +7,7 @@ import javax.sql.DataSource;
 
 import model.ProdottoBean;
 
-public class ProdottoDAOImpl {
+public class ProdottoDAOImpl implements ProdottoDAO{
 	private static final String TABLE_NAME = "prodotto";
     private DataSource ds = null;
     
