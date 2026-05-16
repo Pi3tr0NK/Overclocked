@@ -35,7 +35,7 @@ CREATE TABLE ordine(
 	fk_indirizzo int NOT NULL,
     
     FOREIGN KEY(fk_utente) REFERENCES utente(id_utente) ON UPDATE cascade ON DELETE cascade,
-    FOREIGN KEY(fk_indirizzo) REFERENCES indirizzo(id_indirizzo) ON UPDATE cascade ON DELETE cascade
+    FOREIGN KEY(fk_indirizzo) REFERENCES indirizzo(id_indirizzo) ON UPDATE cascade ON DELETE restrict
 );
 
 CREATE TABLE prodotto(
