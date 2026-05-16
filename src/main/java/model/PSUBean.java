@@ -4,7 +4,7 @@ public class PSUBean extends ProdottoBean {
 	
 	private static final long serialVersionUID = 1L;
 	
-    public enum Modulare { Modulare, Semi_modulare, Non_modulare }
+    public enum Modulare {MODULARE, SEMIMODULARE, NON_MODULARE }
     public enum Formato { ATX, SFX }
 
     private int idPsu;

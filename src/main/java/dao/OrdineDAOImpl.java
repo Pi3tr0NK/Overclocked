@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import model.OrdineBean;
-import model.ProdottoBean;
 import model.OrdineBean.Stato;
 
 public class OrdineDAOImpl implements OrdineDAO{
@@ -34,8 +33,6 @@ public class OrdineDAOImpl implements OrdineDAO{
             ps.setInt(6, ordine.getIndirizzo().getIdIndirizzo());
 
             ps.executeUpdate();
-
-
         }
     }
     
@@ -67,7 +64,7 @@ public class OrdineDAOImpl implements OrdineDAO{
     }
     
 
-	public Collection<OrdineBean> doRetrieveAllByUser(int idUser) throws SQLException {
+	public synchronized Collection<OrdineBean> doRetrieveAllByUser(int idUser) throws SQLException {
 		
 	       List<OrdineBean> lista = new LinkedList<>();
 	        String sql = "SELECT * FROM "+ TABLE_NAME + " WHERE fk_utente=?";
@@ -116,9 +113,7 @@ public class OrdineDAOImpl implements OrdineDAO{
             ps.setInt(7, o.getIdOrdine());
 
             return ps.executeUpdate() > 0;
-        }
-    	
-    	
+        }    	
     }
     
 
