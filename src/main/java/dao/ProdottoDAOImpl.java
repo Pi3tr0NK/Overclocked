@@ -71,7 +71,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
         String sql = "SELECT * FROM "+TABLE_NAME;
 
         try (Connection con = ds.getConnection();
-             Statement st = con.createStatement()) {
+        		Statement st = con.createStatement()) {
 
             ResultSet rs = st.executeQuery(sql);
 
