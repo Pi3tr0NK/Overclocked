@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 
 import model.ChassisBean;
 
-public class ChassisDAOImpl {
+public class ChassisDAOImpl implements ChassisDAO{
 	private static final String TABLE_NAME = "chassis";
 
 	private DataSource ds;
