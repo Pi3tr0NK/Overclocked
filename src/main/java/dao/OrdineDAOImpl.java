@@ -12,7 +12,7 @@ import model.OrdineBean.Stato;
 public class OrdineDAOImpl implements OrdineDAO{
 	
 	
-	private static final String TABLE_NAME = "immagini";
+	private static final String TABLE_NAME = "ordine";
     private DataSource ds = null;
     
     public OrdineDAOImpl(DataSource ds) {

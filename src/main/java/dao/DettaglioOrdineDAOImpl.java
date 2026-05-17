@@ -12,7 +12,7 @@ import model.ProdottoBean;
 
 public class DettaglioOrdineDAOImpl implements DettaglioOrdineDAO {
 	
-	private static final String TABLE_NAME = "immagini";
+	private static final String TABLE_NAME = "dettagliOrdine";
     private DataSource ds = null;
     
     public DettaglioOrdineDAOImpl(DataSource ds) {

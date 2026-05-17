@@ -13,7 +13,7 @@ import model.IndirizzoBean;
 
 public class IndirizzoDAOImpl implements IndirizzoDAO {
 	
-	private static final String TABLE_NAME = "immagini";
+	private static final String TABLE_NAME = "indirizzo";
     private DataSource ds = null;
 
     public IndirizzoDAOImpl(DataSource ds) {
