@@ -15,7 +15,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
         this.ds = ds;
     }
 	
-    public synchronized int doSave(ProdottoBean p) throws SQLException {
+    public synchronized void doSave(ProdottoBean p) throws SQLException {
         String sql = "INSERT INTO " + TABLE_NAME + " (nome, modello, descrizione, marca, prezzo, stock, attivo) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ds.getConnection();
@@ -35,12 +35,9 @@ public class ProdottoDAOImpl implements ProdottoDAO{
                 if (rs.next()) {
                     int idGenerato = rs.getInt(1);
                     p.setIdProdotto(idGenerato);
-                    return idGenerato;
                 }
             }
         }
-        
-        return -1;
     }
 
     public synchronized ProdottoBean doRetrieveByKey(int id) throws SQLException {
