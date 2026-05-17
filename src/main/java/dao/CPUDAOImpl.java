@@ -117,11 +117,11 @@ public class CPUDAOImpl implements CPUDAO{
     
     public boolean doUpdate(CPUBean cpu) throws SQLException
     {
-    		// aggiorna dati prodotto
+  
         ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
         prodottoDAO.doUpdate(cpu);
 
-        // aggiorna dati cpu
+   
         String sql = "UPDATE cpu SET core = ?, thread = ?, frequenza = ?, socket = ?, tdp = ? WHERE id_cpu = ?";
 
         try (Connection con = ds.getConnection();
