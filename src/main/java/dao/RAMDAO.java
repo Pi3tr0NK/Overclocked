@@ -1,0 +1,18 @@
+package dao;
+
+import java.sql.SQLException;
+import java.util.Collection;
+
+import model.RAMBean;
+
+public interface RAMDAO {
+public void doSave(RAMBean ram) throws SQLException;
+	
+	public RAMBean doRetrieveByKey(int idRAM) throws SQLException;
+	
+	public Collection<RAMBean> doRetrieveAll() throws SQLException;
+	
+	public boolean doUpdate(RAMBean p) throws SQLException;
+	
+	public boolean setProductStatus(RAMBean ram, boolean attivo) throws SQLException;
+}

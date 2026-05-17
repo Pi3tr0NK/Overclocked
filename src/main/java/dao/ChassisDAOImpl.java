@@ -80,7 +80,7 @@ public class ChassisDAOImpl implements ChassisDAO{
 
 	    List<ChassisBean> lista = new LinkedList<>();
 
-	    String sql = "SELECT * FROM chassis c JOIN prodotto p ON c.fk_prodotto = p.id_prodotto";
+	    String sql = "SELECT * FROM "+TABLE_NAME+" c JOIN prodotto p ON c.fk_prodotto = p.id_prodotto";
 
 	    try (Connection con = ds.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql);
@@ -116,7 +116,7 @@ public class ChassisDAOImpl implements ChassisDAO{
 	    ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
 	    prodottoDAO.doUpdate(chassis);
 
-	    String sql = "UPDATE chassis SET formato = ?, colore = ?, materiale = ? WHERE id_case = ?";
+	    String sql = "UPDATE "+TABLE_NAME+" SET formato = ?, colore = ?, materiale = ? WHERE id_case = ?";
 
 	    try (Connection con = ds.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql)) {
