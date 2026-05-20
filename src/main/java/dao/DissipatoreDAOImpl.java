@@ -1,0 +1,157 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import model.DissipatoreBean;
+
+public class DissipatoreDAOImpl implements DissipatoreDAO {
+	
+	private static final String TABLE_NAME = "dissipatore";
+    private DataSource ds = null;
+
+    public DissipatoreDAOImpl(DataSource ds) {
+        this.ds = ds;
+    }
+
+    public synchronized void doSave(DissipatoreBean dissipatore) throws SQLException {
+
+        ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
+        prodottoDAO.doSave(dissipatore);
+
+        String sql = "INSERT INTO " + TABLE_NAME + 
+                     " (tipo, socket_supportati, dimensioni_ventola, rpm_max, rumore, tdp_supportato, fk_prodotto) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, dissipatore.getTipo().name());
+            ps.setString(2, dissipatore.getSocketSupportati());
+            ps.setString(3, dissipatore.getDimensioniVentola());
+            ps.setInt(4, dissipatore.getRpmMax());
+            ps.setInt(5, dissipatore.getRumore());
+            ps.setInt(6, dissipatore.getTdpSupportato());
+            ps.setInt(7, dissipatore.getIdProdotto());
+
+            ps.executeUpdate();
+        }
+    }
+
+    public synchronized DissipatoreBean doRetrieveByKey(int idDissipatore) throws SQLException {
+
+        String sql = "SELECT * FROM " + TABLE_NAME + 
+                     " d JOIN prodotto p ON d.fk_prodotto = p.id_prodotto WHERE d.id_dissipatore = ?";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idDissipatore);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+
+                DissipatoreBean d = new DissipatoreBean();
+
+                d.setIdProdotto(rs.getInt("id_prodotto"));
+                d.setNome(rs.getString("nome"));
+                d.setModello(rs.getString("modello"));
+                d.setDescrizione(rs.getString("descrizione"));
+                d.setMarca(rs.getString("marca"));
+                d.setPrezzo(rs.getDouble("prezzo"));
+                d.setStock(rs.getInt("stock"));
+                d.setAttivo(rs.getBoolean("attivo"));
+
+                d.setIdDissipatore(rs.getInt("id_dissipatore"));
+                d.setTipo(DissipatoreBean.Tipo.valueOf(rs.getString("tipo").toUpperCase()));
+                d.setSocketSupportati(rs.getString("socket_supportati"));
+                d.setDimensioniVentola(rs.getString("dimensioni_ventola"));
+                d.setRpmMax(rs.getInt("rpm_max"));
+                d.setRumore(rs.getInt("rumore"));
+                d.setTdpSupportato(rs.getInt("tdp_supportato"));
+
+                return d;
+            }
+        }
+
+        return null;
+    }
+
+    public synchronized Collection<DissipatoreBean> doRetrieveAll() throws SQLException {
+
+        List<DissipatoreBean> lista = new LinkedList<>();
+
+        String sql = "SELECT * FROM " + TABLE_NAME + 
+                     " d JOIN prodotto p ON d.fk_prodotto = p.id_prodotto";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+
+                DissipatoreBean d = new DissipatoreBean();
+
+                d.setIdProdotto(rs.getInt("id_prodotto"));
+                d.setNome(rs.getString("nome"));
+                d.setModello(rs.getString("modello"));
+                d.setDescrizione(rs.getString("descrizione"));
+                d.setMarca(rs.getString("marca"));
+                d.setPrezzo(rs.getDouble("prezzo"));
+                d.setStock(rs.getInt("stock"));
+                d.setAttivo(rs.getBoolean("attivo"));
+
+                d.setIdDissipatore(rs.getInt("id_dissipatore"));
+                d.setTipo(DissipatoreBean.Tipo.valueOf(rs.getString("tipo").toUpperCase()));
+                d.setSocketSupportati(rs.getString("socket_supportati"));
+                d.setDimensioniVentola(rs.getString("dimensioni_ventola"));
+                d.setRpmMax(rs.getInt("rpm_max"));
+                d.setRumore(rs.getInt("rumore"));
+                d.setTdpSupportato(rs.getInt("tdp_supportato"));
+
+                lista.add(d);
+            }
+        }
+
+        return lista;
+    }
+
+    public synchronized boolean doUpdate(DissipatoreBean dissipatore) throws SQLException {
+
+        ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
+        prodottoDAO.doUpdate(dissipatore);
+
+        String sql = "UPDATE " + TABLE_NAME + 
+                     " SET tipo = ?, socket_supportati = ?, dimensioni_ventola = ?, rpm_max = ?, rumore = ?, tdp_supportato = ? " +
+                     "WHERE id_dissipatore = ?";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, dissipatore.getTipo().name());
+            ps.setString(2, dissipatore.getSocketSupportati());
+            ps.setString(3, dissipatore.getDimensioniVentola());
+            ps.setInt(4, dissipatore.getRpmMax());
+            ps.setInt(5, dissipatore.getRumore());
+            ps.setInt(6, dissipatore.getTdpSupportato());
+            ps.setInt(7, dissipatore.getIdDissipatore());
+
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    public synchronized boolean setProductStatus(DissipatoreBean dissipatore, boolean attivo) throws SQLException {
+
+        ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
+
+        return prodottoDAO.setProductStatus(dissipatore.getIdProdotto(), attivo);
+    }
+}

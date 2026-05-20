@@ -87,7 +87,7 @@ CREATE TABLE psu(
 CREATE TABLE dissipatore(
 	id_dissipatore int AUTO_INCREMENT,
     fk_prodotto int,
-	tipo enum('aria', 'liquido'),
+	tipo enum('ARIA', 'LIQUIDO'),
 	socket_supportati varchar(255),
 	dimensioni_ventola varchar(20),
 	rpm_max int,
