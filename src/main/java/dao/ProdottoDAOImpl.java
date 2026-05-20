@@ -16,7 +16,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
     }
 	
     public synchronized void doSave(ProdottoBean p) throws SQLException {
-        String sql = "INSERT INTO " + TABLE_NAME + " (nome, modello, descrizione, marca, prezzo, stock, attivo) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO " + TABLE_NAME + " (nome, modello, descrizione, marca, prezzo, stock, attivo, sconto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -28,7 +28,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
             ps.setDouble(5, p.getPrezzo());
             ps.setInt(6, p.getStock());
             ps.setBoolean(7, p.isAttivo());
-
+            ps.setInt(8, p.getSconto());
             ps.executeUpdate();
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -58,6 +58,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
                 p.setMarca(rs.getString("marca"));
                 p.setStock(rs.getInt("stock"));
                 p.setAttivo(rs.getBoolean("attivo"));
+                p.setSconto(rs.getInt("sconto"));
                 
                 
                 return p;
@@ -84,6 +85,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
                 p.setMarca(rs.getString("marca"));
                 p.setStock(rs.getInt("stock"));
                 p.setAttivo(rs.getBoolean("attivo"));
+                p.setSconto(rs.getInt("sconto"));
             }
         }
         return lista;
@@ -91,7 +93,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
     
     public synchronized boolean doUpdate(ProdottoBean p) throws SQLException {
 
-        String sql = "UPDATE " + TABLE_NAME + " SET nome=?, modello=?, descrizione=?, marca=?, prezzo=?, stock=?, attivo=? WHERE id_prodotto=?";
+        String sql = "UPDATE " + TABLE_NAME + " SET nome=?, modello=?, descrizione=?, marca=?, prezzo=?, stock=?, attivo=?, sconto=? WHERE id_prodotto=?";
 
         try(Connection con = ds.getConnection();
             PreparedStatement ps = con.prepareStatement(sql)) {
@@ -103,8 +105,8 @@ public class ProdottoDAOImpl implements ProdottoDAO{
             ps.setDouble(5, p.getPrezzo());
             ps.setInt(6, p.getStock());
             ps.setBoolean(7, p.isAttivo());
-            ps.setInt(8, p.getIdProdotto());
-
+            ps.setInt(8, p.getSconto());
+            ps.setInt(9, p.getIdProdotto());
             return ps.executeUpdate() > 0;
         }
     }

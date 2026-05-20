@@ -16,6 +16,7 @@ public class ProdottoBean implements Serializable {
 	    private String dimensioni;
 	    private String peso;
 	    private boolean attivo;
+	    private int sconto;
 
 	    public ProdottoBean() {}
 
@@ -98,6 +99,16 @@ public class ProdottoBean implements Serializable {
 		public void setAttivo(boolean attivo) {
 			this.attivo = attivo;
 		}
+
+		public int getSconto() {
+			return sconto;
+		}
+
+		public void setSconto(int sconto) {
+			this.sconto = sconto;
+		}
+		
+		
 		
 	    
 		
