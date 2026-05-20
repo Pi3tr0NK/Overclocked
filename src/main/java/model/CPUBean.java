@@ -61,7 +61,4 @@ public class CPUBean extends ProdottoBean{
 	public void setTdp(int tdp) {
 		this.tdp = tdp;
 	}
-    
-    
-    
 }
