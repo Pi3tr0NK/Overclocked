@@ -48,7 +48,8 @@ CREATE TABLE prodotto(
     stock int DEFAULT 0,
     dimensioni varchar(50),		
     peso varchar(50),
-    attivo boolean
+    attivo boolean,
+    sconto int CHECK (sconto >= 0 AND sconto <= 100)
 );
 
 CREATE TABLE immagini(
@@ -83,12 +84,28 @@ CREATE TABLE psu(
     FOREIGN KEY(fk_prodotto) REFERENCES prodotto(id_prodotto) ON UPDATE cascade ON DELETE cascade
 );
 
+CREATE TABLE dissipatore(
+	id_dissipatore int AUTO_INCREMENT,
+    fk_prodotto int,
+	tipo enum('aria', 'liquido'),
+	socket_supportati varchar(255),
+	dimensioni_ventola varchar(20),
+	rpm_max int,
+	rumore int,
+	tdp_supportato int,
+	
+	PRIMARY KEY(id_dissipatore,fk_prodotto),
+    FOREIGN KEY(fk_prodotto) REFERENCES prodotto(id_prodotto) ON UPDATE cascade ON DELETE cascade
+);
+
 CREATE TABLE cpu(
 	id_cpu int AUTO_INCREMENT,
 	fk_prodotto int,
 	core int,
 	thread int,
 	frequenza varchar(20),
+    frequenza_ram varchar(20),
+    tiporam varchar(10),
 	socket varchar(20),
 	tdp int,
 	
