@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.sql.DataSource;
 
 import model.DissipatoreBean;
@@ -151,7 +150,6 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
     public synchronized boolean setProductStatus(DissipatoreBean dissipatore, boolean attivo) throws SQLException {
 
         ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
-
         return prodottoDAO.setProductStatus(dissipatore.getIdProdotto(), attivo);
     }
 }

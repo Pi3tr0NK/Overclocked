@@ -23,7 +23,7 @@ public class CPUDAOImpl implements CPUDAO{
     	ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
         prodottoDAO.doSave(cpu);
     	
-    	String sql = "INSERT INTO "+ TABLE_NAME +" (core, thread, frequenza, socket, tdp, fk_prodotto) VALUES (?, ?, ?, ?, ?, ?)";
+    	String sql = "INSERT INTO "+ TABLE_NAME +" (core, thread, frequenza, frequenza_ram, tiporam, socket, tdp, fk_prodotto) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -31,9 +31,11 @@ public class CPUDAOImpl implements CPUDAO{
             ps.setInt(1, cpu.getCore());
             ps.setInt(2, cpu.getThread());
             ps.setString(3, cpu.getFrequenza());
-            ps.setString(4, cpu.getSocket());
-            ps.setInt(5, cpu.getTdp());
-            ps.setInt(6, cpu.getIdProdotto());
+            ps.setString(4,cpu.getFrequenza_ram());
+            ps.setString(5, cpu.getTiporam());
+            ps.setString(6, cpu.getSocket());
+            ps.setInt(7, cpu.getTdp());
+            ps.setInt(8, cpu.getIdProdotto());
             
             ps.executeUpdate();
         }
@@ -67,6 +69,8 @@ public class CPUDAOImpl implements CPUDAO{
                 cpu.setCore(rs.getInt("core"));
                 cpu.setThread(rs.getInt("thread"));
                 cpu.setFrequenza(rs.getString("frequenza"));
+                cpu.setFrequenza_ram(rs.getString("frequenza_ram"));
+                cpu.setTiporam(rs.getString("tiporam"));
                 cpu.setSocket(rs.getString("socket"));
                 cpu.setTdp(rs.getInt("tdp"));
 
@@ -101,12 +105,14 @@ public class CPUDAOImpl implements CPUDAO{
     	            cpu.setStock(rs.getInt("stock"));
     	            cpu.setAttivo(rs.getBoolean("attivo"));
 
-    	            cpu.setIdCpu(rs.getInt("id_cpu"));
-    	            cpu.setCore(rs.getInt("core"));
-    	            cpu.setThread(rs.getInt("thread"));
-    	            cpu.setFrequenza(rs.getString("frequenza"));
-    	            cpu.setSocket(rs.getString("socket"));
-    	            cpu.setTdp(rs.getInt("tdp"));
+                    cpu.setIdCpu(rs.getInt("id_cpu"));
+                    cpu.setCore(rs.getInt("core"));
+                    cpu.setThread(rs.getInt("thread"));
+                    cpu.setFrequenza(rs.getString("frequenza"));
+                    cpu.setFrequenza_ram(rs.getString("frequenza_ram"));
+                    cpu.setTiporam(rs.getString("tiporam"));
+                    cpu.setSocket(rs.getString("socket"));
+                    cpu.setTdp(rs.getInt("tdp"));
 
     	            lista.add(cpu);
     	        }
@@ -130,9 +136,11 @@ public class CPUDAOImpl implements CPUDAO{
             ps.setInt(1, cpu.getCore());
             ps.setInt(2, cpu.getThread());
             ps.setString(3, cpu.getFrequenza());
-            ps.setString(4, cpu.getSocket());
-            ps.setInt(5, cpu.getTdp());
-            ps.setInt(6, cpu.getIdCpu());
+            ps.setString(4,cpu.getFrequenza_ram());
+            ps.setString(5, cpu.getTiporam());
+            ps.setString(6, cpu.getSocket());
+            ps.setInt(7, cpu.getTdp());
+            ps.setInt(8, cpu.getIdCpu());
 
             return ps.executeUpdate() > 0;
         }

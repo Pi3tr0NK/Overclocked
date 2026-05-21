@@ -7,6 +7,8 @@ public class CPUBean extends ProdottoBean{
     private int core;
     private int thread;
     private String frequenza;
+    private String frequenza_ram;
+	private String tiporam;
     private String socket;
     private int tdp;
     
@@ -60,5 +62,21 @@ public class CPUBean extends ProdottoBean{
 
 	public void setTdp(int tdp) {
 		this.tdp = tdp;
+	}
+    
+    public String getFrequenza_ram() {
+		return frequenza_ram;
+	}
+
+	public void setFrequenza_ram(String frequenza_ram) {
+		this.frequenza_ram = frequenza_ram;
+	}
+
+	public String getTiporam() {
+		return tiporam;
+	}
+
+	public void setTiporam(String tiporam) {
+		this.tiporam = tiporam;
 	}
 }
