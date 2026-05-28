@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import model.UtenteBean;
 
 @WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+public class LoginControl extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
@@ -51,7 +51,7 @@ public class LoginServlet extends HttpServlet {
                     "Email o password errati"
                 );
 
-                request.getRequestDispatcher("/WEB-INF/views/common/login.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/views/common/LoginView.jsp").forward(request, response);
             }
 
         } catch(SQLException e) {
