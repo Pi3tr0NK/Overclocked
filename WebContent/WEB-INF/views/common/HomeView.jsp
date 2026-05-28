@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!DOCTYPE html>
 <html>
@@ -180,27 +181,14 @@ h1 {
     <h2>Novità</h2>
 
 	<div class="grid">
-	
-	<%
-	    java.util.Collection<model.ProdottoBean> novita =
-	        (java.util.Collection<model.ProdottoBean>) request.getAttribute("novita");
-	
-	    if (novita != null) {
-	        for (model.ProdottoBean p : novita) {
-	%>
-	
-	    <div class="card">
-	        <h3><%= p.getNome() %></h3>
-	        <p><%= p.getMarca() %></p>
-	        <p><%= p.getModello() %></p>
-	        <b><%= p.getPrezzo() %> €</b>
-	    </div>
-	
-	<%
-	        }
-	    }
-	%>
-
+	    <c:forEach var="p" items="${novita}">
+	        <div class="card">
+	            <h3>${p.nome}</h3>
+	            <p>${p.marca}</p>
+	            <p>${p.modello}</p>
+	            <p><b>${p.prezzo} €</b></p>
+	        </div>
+	    </c:forEach>
 	</div>
 	
 </div>
