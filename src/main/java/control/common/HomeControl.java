@@ -2,7 +2,6 @@ package control.common;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -39,22 +38,45 @@ public class HomeControl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        try {
-
-            //conteggio dei prodotti per categoria
-            Map<String, Integer> countByCategory =
-                    productDao.doCountProductsByCategory();
-
-            //creazione dell'attributo countByCategory
-            request.setAttribute("countByCategory", countByCategory);
-
-
-            request.getRequestDispatcher("/WEB-INF/views/common/HomeView.jsp")
-                   .forward(request, response);
-
-        } catch (SQLException e) {
-        		System.err.println("Error:" + e.getMessage());
-        }
+    		
+    		countByCategory(request);
+        novita(request);
+        
+        request.getRequestDispatcher("/WEB-INF/views/common/HomeView.jsp").forward(request, response);
     }
+    
+    private void countByCategory(HttpServletRequest request)
+    {
+    		try {
+    			 request.setAttribute("countByCategory", productDao.doCountProductsByCategory());
+    		} catch(SQLException e){
+    			System.err.println("Error:" + e.getMessage());
+    		}
+    }
+    
+    private void novita(HttpServletRequest request)
+    {
+    		try {
+			 request.setAttribute("novita", productDao.doRetrieveNovita(10));
+		} catch(SQLException e){
+			System.err.println("Error:" + e.getMessage());
+		}
+    }
+    
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
 }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

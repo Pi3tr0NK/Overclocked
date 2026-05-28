@@ -147,4 +147,41 @@ public class ProdottoDAOImpl implements ProdottoDAO{
 
         return result;
     }
+    
+    public synchronized List<ProdottoBean> doRetrieveNovita(int limit) throws SQLException
+    {
+    		List<ProdottoBean> novita = new ArrayList<>();
+
+        String sql = "SELECT * FROM prodotto WHERE attivo = true ORDER BY id_prodotto DESC LIMIT ?";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, limit);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+
+                    ProdottoBean p = new ProdottoBean();
+
+                    p.setIdProdotto(rs.getInt("id_prodotto"));
+                    p.setNome(rs.getString("nome"));
+                    p.setModello(rs.getString("modello"));
+                    p.setDescrizione(rs.getString("descrizione"));
+                    p.setMarca(rs.getString("marca"));
+                    p.setPrezzo(rs.getDouble("prezzo"));
+                    p.setStock(rs.getInt("stock"));
+                    p.setAttivo(rs.getBoolean("attivo"));
+                    p.setSconto(rs.getInt("sconto"));
+                    p.setCategoria(rs.getString("categoria"));
+
+                    novita.add(p);
+                }
+            }
+        }
+
+        return novita;
+    }
+    
 }

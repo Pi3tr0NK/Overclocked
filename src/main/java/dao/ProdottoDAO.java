@@ -19,4 +19,6 @@ public interface ProdottoDAO {
 	public boolean setProductStatus(int idProdotto, boolean attivo) throws SQLException;
 	
 	public Map<String, Integer> doCountProductsByCategory() throws SQLException;
+	
+	public Collection<ProdottoBean> doRetrieveNovita(int limit) throws SQLException;
 }

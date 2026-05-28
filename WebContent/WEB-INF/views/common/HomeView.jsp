@@ -176,6 +176,32 @@ h1 {
         </div>
 
     </div>
+    
+    <h2>Novità</h2>
+
+	<div class="grid">
+	
+	<%
+	    java.util.Collection<model.ProdottoBean> novita =
+	        (java.util.Collection<model.ProdottoBean>) request.getAttribute("novita");
+	
+	    if (novita != null) {
+	        for (model.ProdottoBean p : novita) {
+	%>
+	
+	    <div class="card">
+	        <h3><%= p.getNome() %></h3>
+	        <p><%= p.getMarca() %></p>
+	        <p><%= p.getModello() %></p>
+	        <b><%= p.getPrezzo() %> €</b>
+	    </div>
+	
+	<%
+	        }
+	    }
+	%>
+
+	</div>
 
 </div>
 
