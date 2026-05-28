@@ -59,7 +59,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
                 p.setStock(rs.getInt("stock"));
                 p.setAttivo(rs.getBoolean("attivo"));
                 p.setSconto(rs.getInt("sconto"));
-                
+                p.setCategoria(rs.getString("categoria"));
                 
                 return p;
             }
@@ -86,6 +86,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
                 p.setStock(rs.getInt("stock"));
                 p.setAttivo(rs.getBoolean("attivo"));
                 p.setSconto(rs.getInt("sconto"));
+                p.setCategoria(rs.getString("categoria"));
             }
         }
         return lista;
@@ -93,7 +94,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
     
     public synchronized boolean doUpdate(ProdottoBean p) throws SQLException {
 
-        String sql = "UPDATE " + TABLE_NAME + " SET nome=?, modello=?, descrizione=?, marca=?, prezzo=?, stock=?, attivo=?, sconto=? WHERE id_prodotto=?";
+        String sql = "UPDATE " + TABLE_NAME + " SET nome=?, modello=?, descrizione=?, marca=?, prezzo=?, stock=?, attivo=?, sconto=?, categoria=? WHERE id_prodotto=?";
 
         try(Connection con = ds.getConnection();
             PreparedStatement ps = con.prepareStatement(sql)) {
@@ -106,7 +107,8 @@ public class ProdottoDAOImpl implements ProdottoDAO{
             ps.setInt(6, p.getStock());
             ps.setBoolean(7, p.isAttivo());
             ps.setInt(8, p.getSconto());
-            ps.setInt(9, p.getIdProdotto());
+            ps.setString(9, p.getCategoria());
+            ps.setInt(10, p.getIdProdotto());
             return ps.executeUpdate() > 0;
         }
     }

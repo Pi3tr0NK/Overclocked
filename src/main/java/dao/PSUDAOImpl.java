@@ -68,6 +68,8 @@ public class PSUDAOImpl implements PSUDAO {
                 psu.setPrezzo(rs.getDouble("prezzo"));
                 psu.setStock(rs.getInt("stock"));
                 psu.setAttivo(rs.getBoolean("attivo"));
+                psu.setSconto(rs.getInt("sconto"));
+		        psu.setCategoria(rs.getString("categoria"));
 
                 psu.setIdPsu(rs.getInt("id_psu"));
                 psu.setPotenza(rs.getInt("potenza"));
@@ -105,6 +107,8 @@ public class PSUDAOImpl implements PSUDAO {
                     psu.setPrezzo(rs.getDouble("prezzo"));
                     psu.setStock(rs.getInt("stock"));
                     psu.setAttivo(rs.getBoolean("attivo"));
+                    psu.setSconto(rs.getInt("sconto"));
+    		        	    psu.setCategoria(rs.getString("categoria"));
 
                     psu.setIdPsu(rs.getInt("id_psu"));
                     psu.setPotenza(rs.getInt("potenza"));

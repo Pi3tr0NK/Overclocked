@@ -69,6 +69,8 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 	        	mem.setPrezzo(rs.getDouble("prezzo"));
 	        	mem.setStock(rs.getInt("stock"));
 	        	mem.setAttivo(rs.getBoolean("attivo"));
+	        	mem.setSconto(rs.getInt("sconto"));
+	        mem.setCategoria(rs.getString("categoria"));
 
 	        	mem.setIdMemoria(rs.getInt("id_memoria"));
 	        	mem.setCapacita(rs.getString("capacita"));
@@ -106,6 +108,8 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 	        	mem.setPrezzo(rs.getDouble("prezzo"));
 	        	mem.setStock(rs.getInt("stock"));
 	        	mem.setAttivo(rs.getBoolean("attivo"));
+	        	mem.setSconto(rs.getInt("sconto"));
+		    mem.setCategoria(rs.getString("categoria"));
 
 	        	mem.setIdMemoria(rs.getInt("id_memoria"));
 	        	mem.setCapacita(rs.getString("capacita"));

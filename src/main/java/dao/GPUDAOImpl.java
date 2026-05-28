@@ -62,6 +62,8 @@ public class GPUDAOImpl implements GPUDAO {
                 gpu.setMarca(rs.getString("marca"));
                 gpu.setStock(rs.getInt("stock"));
                 gpu.setAttivo(rs.getBoolean("attivo"));
+                gpu.setSconto(rs.getInt("sconto"));
+	            gpu.setCategoria(rs.getString("categoria"));
                 
                 gpu.setFrequenza(rs.getString("frequenza"));
                 gpu.setVram(rs.getString("vram"));
@@ -97,6 +99,8 @@ public class GPUDAOImpl implements GPUDAO {
                     gpu.setMarca(rs.getString("marca"));
                     gpu.setStock(rs.getInt("stock"));
                     gpu.setAttivo(rs.getBoolean("attivo"));
+                    gpu.setSconto(rs.getInt("sconto"));
+    	            	    gpu.setCategoria(rs.getString("categoria"));
                     
                     gpu.setFrequenza(rs.getString("frequenza"));
                     gpu.setVram(rs.getString("vram"));

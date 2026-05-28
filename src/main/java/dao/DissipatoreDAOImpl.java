@@ -68,6 +68,8 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
                 d.setPrezzo(rs.getDouble("prezzo"));
                 d.setStock(rs.getInt("stock"));
                 d.setAttivo(rs.getBoolean("attivo"));
+                d.setSconto(rs.getInt("sconto"));
+	            d.setCategoria(rs.getString("categoria"));
 
                 d.setIdDissipatore(rs.getInt("id_dissipatore"));
                 d.setTipo(DissipatoreBean.Tipo.valueOf(rs.getString("tipo").toUpperCase()));
@@ -107,6 +109,8 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
                 d.setPrezzo(rs.getDouble("prezzo"));
                 d.setStock(rs.getInt("stock"));
                 d.setAttivo(rs.getBoolean("attivo"));
+                d.setSconto(rs.getInt("sconto"));
+	            d.setCategoria(rs.getString("categoria"));
 
                 d.setIdDissipatore(rs.getInt("id_dissipatore"));
                 d.setTipo(DissipatoreBean.Tipo.valueOf(rs.getString("tipo").toUpperCase()));

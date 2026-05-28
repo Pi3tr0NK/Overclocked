@@ -70,6 +70,8 @@ public class MoboDAOImpl implements MoboDAO{
 	            mobo.setPrezzo(rs.getDouble("prezzo"));
 	            mobo.setStock(rs.getInt("stock"));
 	            mobo.setAttivo(rs.getBoolean("attivo"));
+	            mobo.setSconto(rs.getInt("sconto"));
+		        mobo.setCategoria(rs.getString("categoria"));
 
 	            mobo.setIdMobo(rs.getInt("id_mobo"));
 	            mobo.setChipset(rs.getString("chipset"));
@@ -112,6 +114,8 @@ public class MoboDAOImpl implements MoboDAO{
 	            mobo.setPrezzo(rs.getDouble("prezzo"));
 	            mobo.setStock(rs.getInt("stock"));
 	            mobo.setAttivo(rs.getBoolean("attivo"));
+	            mobo.setSconto(rs.getInt("sconto"));
+		        mobo.setCategoria(rs.getString("categoria"));
 
 	            mobo.setIdMobo(rs.getInt("id_mobo"));
 	            mobo.setChipset(rs.getString("chipset"));

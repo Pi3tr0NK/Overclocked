@@ -63,6 +63,8 @@ public class ChassisDAOImpl implements ChassisDAO{
 	            chassis.setPrezzo(rs.getDouble("prezzo"));
 	            chassis.setStock(rs.getInt("stock"));
 	            chassis.setAttivo(rs.getBoolean("attivo"));
+	            chassis.setSconto(rs.getInt("sconto"));
+	            chassis.setCategoria(rs.getString("categoria"));
 
 	            chassis.setIdCase(rs.getInt("id_case"));
 	            chassis.setFormato(rs.getString("formato"));
@@ -98,6 +100,8 @@ public class ChassisDAOImpl implements ChassisDAO{
 	            chassis.setPrezzo(rs.getDouble("prezzo"));
 	            chassis.setStock(rs.getInt("stock"));
 	            chassis.setAttivo(rs.getBoolean("attivo"));
+	            chassis.setSconto(rs.getInt("sconto"));
+	            chassis.setCategoria(rs.getString("categoria"));
 
 	            chassis.setIdCase(rs.getInt("id_case"));
 	            chassis.setFormato(rs.getString("formato"));

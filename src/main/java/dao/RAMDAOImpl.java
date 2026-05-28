@@ -60,6 +60,8 @@ public class RAMDAOImpl implements RAMDAO{
 	            ram.setPrezzo(rs.getDouble("prezzo"));
 	            ram.setStock(rs.getInt("stock"));
 	            ram.setAttivo(rs.getBoolean("attivo"));
+	            ram.setSconto(rs.getInt("sconto"));
+		        ram.setCategoria(rs.getString("categoria"));
 
 	            ram.setIdRam(rs.getInt("id_ram"));
 	            ram.setCapacita(rs.getString("capacita"));
@@ -95,6 +97,8 @@ public class RAMDAOImpl implements RAMDAO{
 	            ram.setPrezzo(rs.getDouble("prezzo"));
 	            ram.setStock(rs.getInt("stock"));
 	            ram.setAttivo(rs.getBoolean("attivo"));
+	            ram.setSconto(rs.getInt("sconto"));
+		        ram.setCategoria(rs.getString("categoria"));
 
 	            ram.setIdRam(rs.getInt("id_ram"));
 	            ram.setCapacita(rs.getString("capacita"));

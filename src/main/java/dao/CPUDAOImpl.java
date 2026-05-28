@@ -64,6 +64,8 @@ public class CPUDAOImpl implements CPUDAO{
                 cpu.setPrezzo(rs.getDouble("prezzo"));
                 cpu.setStock(rs.getInt("stock"));
                 cpu.setAttivo(rs.getBoolean("attivo"));
+                cpu.setSconto(rs.getInt("sconto"));
+	            cpu.setCategoria(rs.getString("categoria"));
 
                 cpu.setIdCpu(rs.getInt("id_cpu"));
                 cpu.setCore(rs.getInt("core"));
@@ -104,6 +106,8 @@ public class CPUDAOImpl implements CPUDAO{
     	            cpu.setPrezzo(rs.getDouble("prezzo"));
     	            cpu.setStock(rs.getInt("stock"));
     	            cpu.setAttivo(rs.getBoolean("attivo"));
+    	            cpu.setSconto(rs.getInt("sconto"));
+    	            cpu.setCategoria(rs.getString("categoria"));
 
                     cpu.setIdCpu(rs.getInt("id_cpu"));
                     cpu.setCore(rs.getInt("core"));

@@ -17,8 +17,17 @@ public class ProdottoBean implements Serializable {
 	    private String peso;
 	    private boolean attivo;
 	    private int sconto;
+	    private String categoria;
 
-	    public ProdottoBean() {}
+	    public String getCategoria() {
+			return categoria;
+		}
+
+		public void setCategoria(String categoria) {
+			this.categoria = categoria;
+		}
+
+		public ProdottoBean() {}
 
 		public int getIdProdotto() {
 			return idProdotto;
