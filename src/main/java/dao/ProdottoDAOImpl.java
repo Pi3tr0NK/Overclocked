@@ -87,6 +87,8 @@ public class ProdottoDAOImpl implements ProdottoDAO{
                 p.setAttivo(rs.getBoolean("attivo"));
                 p.setSconto(rs.getInt("sconto"));
                 p.setCategoria(rs.getString("categoria"));
+                
+                lista.add(p);
             }
         }
         return lista;
@@ -124,5 +126,25 @@ public class ProdottoDAOImpl implements ProdottoDAO{
 
             return ps.executeUpdate() > 0;
         }
+    }
+    
+    @Override
+    public synchronized Map<String, Integer> doCountProductsByCategory() throws SQLException {
+
+        Map<String, Integer> result = new HashMap<>();
+
+        String sql = "SELECT categoria, COUNT(*) AS totale FROM prodotto GROUP BY categoria";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                result.put(rs.getString("categoria"), rs.getInt("totale"));
+            }
+        }
+
+        return result;
     }
 }

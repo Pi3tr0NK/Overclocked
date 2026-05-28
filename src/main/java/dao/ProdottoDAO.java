@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Map;
 
 import model.ProdottoBean;
 
@@ -16,4 +17,6 @@ public interface ProdottoDAO {
 	public boolean doUpdate(ProdottoBean p) throws SQLException;
 	
 	public boolean setProductStatus(int idProdotto, boolean attivo) throws SQLException;
+	
+	public Map<String, Integer> doCountProductsByCategory() throws SQLException;
 }
