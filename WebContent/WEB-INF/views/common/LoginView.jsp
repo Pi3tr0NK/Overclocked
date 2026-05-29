@@ -185,15 +185,11 @@ input:focus{
 	        <%
 	        for(String e : errors){
 	        %>
-	
 	            <p><%= e %></p>
-	
 	        <%
 	        }
 	        %>
-	
 	    </div>
-	
 	<%
 	}
 	%>
