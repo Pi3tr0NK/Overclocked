@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class ImmagineBean implements Serializable {
 
@@ -8,10 +9,8 @@ public class ImmagineBean implements Serializable {
 	
     private int idImmagine;
     private String path;
-    private ProdottoBean prodotto;
 
     public ImmagineBean() {
-    	prodotto = new ProdottoBean();
     }
 
 	public int getIdImmagine() {
@@ -30,13 +29,15 @@ public class ImmagineBean implements Serializable {
 		this.path = path;
 	}
 
-	public ProdottoBean getProdotto() {
-		return prodotto;
-	}
-
-	public void setProdotto(ProdottoBean prodotto) {
-		this.prodotto = prodotto;
-	}
-    
-    
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ImmagineBean other = (ImmagineBean) obj;
+		return idImmagine == other.idImmagine && Objects.equals(path, other.path);
+	}   
 }

@@ -21,14 +21,14 @@ public class ImmaginiDAOImpl implements ImmaginiDAO {
         this.ds = ds;
     }
 	
-    public synchronized void doSave(ImmagineBean i) throws SQLException {
+    public synchronized void doSave(ImmagineBean i, int idProdotto) throws SQLException {
         String sql = "INSERT INTO "+TABLE_NAME+" (path, fk_prodotto) VALUES (?, ?)";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, i.getPath());
-            ps.setInt(2, i.getProdotto().getIdProdotto());
+            ps.setInt(2, idProdotto);
             ps.executeUpdate();
         }
     }
@@ -64,7 +64,6 @@ public class ImmaginiDAOImpl implements ImmaginiDAO {
 	            ImmagineBean i = new ImmagineBean();
 	            i.setIdImmagine(rs.getInt("id_immagine"));
 	            i.setPath(rs.getString("path"));
-	            i.setProdotto(prodotto);
 	            lista.add(i);
             }
         }
