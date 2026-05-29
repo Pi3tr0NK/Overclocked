@@ -41,6 +41,7 @@ public class HomeControl extends HttpServlet {
     		
     		countByCategory(request);
         novita(request);
+        bestseller(request);
         
         request.getRequestDispatcher("/WEB-INF/views/common/HomeView.jsp").forward(request, response);
     }
@@ -58,6 +59,15 @@ public class HomeControl extends HttpServlet {
     {
     		try {
 			 request.setAttribute("novita", productDao.doRetrieveNovita(10));
+		} catch(SQLException e){
+			System.err.println("Error:" + e.getMessage());
+		}
+    }
+    
+    private void bestseller(HttpServletRequest request)
+    {
+    		try {
+			 request.setAttribute("bestseller", productDao.doRetrieveBestseller(10));
 		} catch(SQLException e){
 			System.err.println("Error:" + e.getMessage());
 		}

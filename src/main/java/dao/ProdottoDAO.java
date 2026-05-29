@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import model.ProdottoBean;
@@ -21,4 +22,6 @@ public interface ProdottoDAO {
 	public Map<String, Integer> doCountProductsByCategory() throws SQLException;
 	
 	public Collection<ProdottoBean> doRetrieveNovita(int limit) throws SQLException;
+	
+	public Collection<ProdottoBean> doRetrieveBestseller(int n) throws SQLException;
 }

@@ -184,4 +184,51 @@ public class ProdottoDAOImpl implements ProdottoDAO{
         return novita;
     }
     
+    public synchronized List<ProdottoBean> doRetrieveBestseller(int n) throws SQLException {
+
+        List<ProdottoBean> prodotti = new ArrayList<>();
+
+        String sql =
+            "SELECT p.*, SUM(d.quantita) AS totale_venduto " +
+            "FROM prodotto p " +
+            "JOIN dettagliOrdine d ON p.id_prodotto = d.fk_prodotto " +
+            "JOIN ordine o ON d.fk_ordine = o.id_ordine " +
+            "WHERE o.data >= CURDATE() - INTERVAL 365 DAY " +
+            "AND p.attivo = true " +
+            "GROUP BY p.id_prodotto " +
+            "ORDER BY totale_venduto DESC " +
+            "LIMIT ?";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, n);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+
+                    ProdottoBean p = new ProdottoBean();
+
+                    p.setIdProdotto(rs.getInt("id_prodotto"));
+                    p.setNome(rs.getString("nome"));
+                    p.setModello(rs.getString("modello"));
+                    p.setDescrizione(rs.getString("descrizione"));
+                    p.setMarca(rs.getString("marca"));
+                    p.setPrezzo(rs.getDouble("prezzo"));
+                    p.setStock(rs.getInt("stock"));
+                    p.setDimensioni(rs.getString("dimensioni"));
+                    p.setPeso(rs.getString("peso"));
+                    p.setAttivo(rs.getBoolean("attivo"));
+                    p.setSconto(rs.getInt("sconto"));
+                    p.setCategoria(rs.getString("categoria"));
+
+                    prodotti.add(p);
+                }
+            }
+        }
+
+        return prodotti;
+    }
+    
 }
