@@ -109,3 +109,18 @@ VALUES
 (@first_id,     '1TB',   5000, 7000, 'SSD', 'NVMe', 'M.2'),
 (@first_id + 1, '2TB',   6600, 7300, 'SSD', 'NVMe', 'M.2'),
 (@first_id + 2, '500GB',  530,  560, 'SSD', 'SATA', '2.5"');
+
+INSERT INTO indirizzo
+(via_numciv, paese, citta, provincia, dati_plus, codice_postale)
+VALUES
+('Via Roma 15', 'Italia', 'Napoli', 'NA', 'Scala B', '80100'),
+('Corso Italia 220', 'Italia', 'Milano', 'MI', 'Interno 4', '20100'),
+('Via Dante 8', 'Italia', 'Torino', 'TO', 'Piano 2', '10100');
+
+
+INSERT INTO utente
+(email, nome, cognome, password, ruolo, cellulare, fk_indirizzo)
+VALUES
+('admin@overclocked.it','Mario','Rossi','admin123','ADMIN','3331112222',1),
+('luca@gmail.com','Luca','Bianchi','1234','USER','3334445555',2),
+('anna@gmail.com','Anna','Verdi','password','USER','3337778888', 3);
