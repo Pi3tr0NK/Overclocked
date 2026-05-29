@@ -6,7 +6,7 @@ import java.util.Collection;
 import model.ImmagineBean;
 
 public interface ImmaginiDAO {
-	public void doSave(ImmagineBean immagine) throws SQLException;
+	public void doSave(ImmagineBean immagine, int idProdotto) throws SQLException;
 
 	public boolean doDelete(int code) throws SQLException;
 
