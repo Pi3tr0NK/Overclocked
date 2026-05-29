@@ -119,6 +119,14 @@ h1 {
 
     <!-- GRID CATEGORIE -->
     <div class="category-grid">
+	
+	<div style="text-align:right; margin-bottom:20px;">
+
+<a href="${pageContext.request.contextPath}/login">
+    Login
+</a>
+
+</div>
 
         <!-- CPU -->
         <div class="category-card">
