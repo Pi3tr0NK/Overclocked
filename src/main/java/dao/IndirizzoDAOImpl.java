@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class IndirizzoDAOImpl implements IndirizzoDAO {
         String sql = "INSERT INTO "+TABLE_NAME+" (via_numciv, paese, citta, provincia, dati_plus, codice_postale) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             ps.setString(1, indirizzo.getViaNumciv());
             ps.setString(2, indirizzo.getPaese());
@@ -35,6 +36,17 @@ public class IndirizzoDAOImpl implements IndirizzoDAO {
             ps.setString(6, indirizzo.getCodicePostale());
 
             ps.executeUpdate();
+            
+            try(ResultSet rs =
+                    ps.getGeneratedKeys()) {
+
+                    if(rs.next()) {
+
+                        indirizzo.setIdIndirizzo(
+                            rs.getInt(1)
+                        );
+                    }
+                }
         }
     }
 

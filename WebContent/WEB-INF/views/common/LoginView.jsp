@@ -231,7 +231,7 @@ input:focus{
 
     <div class="register">
         Non hai un account?
-        <a class="link" href="register.jsp">Registrati</a>
+        <a class="link" href="register">Registrati</a>
     </div>
 
 </div>
