@@ -1,111 +1,108 @@
-package controller;
+package control.common;
 
-import dao.UtenteDAO;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.sql.DataSource;
+
 import dao.UtenteDAOImpl;
-import model.UtenteBean;
-
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
-import java.io.IOException;
-import java.io.PrintWriter;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import model.UtenteBean;
 
 @WebServlet("/login")
-public class LoginServlet extends HttpServlet {
+public class LoginControl extends HttpServlet {
 
-    // GET → mostra la pagina di login
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+	private static final long serialVersionUID = 1L;
 
-        // Se l'utente è già loggato, rimanda alla home
-        HttpSession session = request.getSession(false);
-        if (session != null && session.getAttribute("utente") != null) {
-            response.sendRedirect(request.getContextPath() + "/index.jsp");
-            return;
-        }
+	protected void doPost(HttpServletRequest request,
+						  HttpServletResponse response)
+			throws ServletException, IOException {
 
-        request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
-    }
+		List<String> errors = new ArrayList<>();
 
-    // POST → elabora il login (chiamato sia dal form normale che dall'AJAX)
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+		String email = request.getParameter("email");
+		String password = request.getParameter("password");
+		email = validateField(email, "email", errors);
+		password = validateField(password, "password", errors);
 
-        String email    = request.getParameter("email");
-        String password = request.getParameter("password");
-        String ajax     = request.getHeader("X-Requested-With"); // identifica chiamata AJAX
+		RequestDispatcher dispatcher =request.getRequestDispatcher("/WEB-INF/views/common/LoginView.jsp");
 
-        // --- Validazione base lato server ---
-        if (email == null || email.trim().isEmpty() ||
-            password == null || password.trim().isEmpty()) {
+		if(!errors.isEmpty()) {
 
-            rispondi(request, response, ajax, "Compila tutti i campi.", false);
-            return;
-        }
+			request.setAttribute("errors", errors);
 
-        if (!email.matches("^[\\w._%+\\-]+@[\\w.\\-]+\\.[a-zA-Z]{2,}$")) {
-            rispondi(request, response, ajax, "Formato email non valido.", false);
-            return;
-        }
+			dispatcher.forward(request, response);
 
-        // --- Autenticazione tramite DAO ---
-        try {
-            UtenteDAO utenteDAO = new UtenteDAOImpl();
-            UtenteBean utente   = utenteDAO.login(email.trim(), password);
+			return;
+		}
 
-            if (utente == null) {
-                rispondi(request, response, ajax, "Credenziali errate. Riprova.", false);
-                return;
-            }
+		try {
 
-            // Login riuscito → salva utente in sessione
-            HttpSession session = request.getSession(true);
-            session.setAttribute("utente", utente);
-            session.setMaxInactiveInterval(60 * 60); // sessione valida 1 ora
+			DataSource ds =(DataSource) getServletContext().getAttribute("DataSource");
 
-            rispondi(request, response, ajax, "ok", true);
+			UtenteDAOImpl dao =new UtenteDAOImpl(ds);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            rispondi(request, response, ajax, "Errore interno del server. Riprova più tardi.", false);
-        }
-    }
+			UtenteBean utente =dao.checkLogin(email,password);
 
-    /**
-     * Risponde in JSON se la chiamata è AJAX,
-     * altrimenti fa forward/redirect classico.
-     */
-    private void rispondi(HttpServletRequest request, HttpServletResponse response,
-                          String ajax, String messaggio, boolean successo)
-            throws ServletException, IOException {
+			if(utente != null) {
 
-        if ("XMLHttpRequest".equals(ajax)) {
-            // Risposta JSON per AJAX
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            PrintWriter out = response.getWriter();
+				request.getSession().setAttribute("utente", utente);
+				request.getSession().setAttribute("role",utente.getRuolo().name());
 
-            if (successo) {
-                out.print("{\"successo\": true, \"redirect\": \""
-                        + request.getContextPath() + "/index.jsp\"}");
-            } else {
-                // Escape del messaggio per sicurezza
-                String msg = messaggio.replace("\"", "\\\"");
-                out.print("{\"successo\": false, \"errore\": \"" + msg + "\"}");
-            }
-            out.flush();
+				/*
+				 * ADMIN
+				 */
+				if(utente.getRuolo()== UtenteBean.Ruolo.ADMIN) {
+					
+				response.sendRedirect(request.getContextPath()+ "/admin/home");
 
-        } else {
-            // Risposta classica (form tradizionale senza JS)
-            if (successo) {
-                response.sendRedirect(request.getContextPath() + "/index.jsp");
-            } else {
-                request.setAttribute("errore", messaggio);
-                request.getRequestDispatcher("/WEB-INF/views/login.jsp")
-                       .forward(request, response);
-            }
-        }
-    }
+				/*
+				 * UTENTE NORMALE
+				 */
+				} else {
+					
+				response.sendRedirect(request.getContextPath()+ "/common/home");
+				}
+
+			} else {
+
+				errors.add("Email o password non validi");
+
+				request.setAttribute("errors",errors);
+
+				dispatcher.forward(request,response);
+			}
+
+		} catch(SQLException e) {
+
+			throw new ServletException(e);
+		}
+	}
+
+	private String validateField(
+			String value,
+			String fieldName,
+			List<String> errors) {
+
+		if(value == null ||
+		   value.trim().isEmpty()) {
+
+			errors.add(
+				"Il campo "
+				+ fieldName
+				+ " non può essere vuoto"
+			);
+
+			return "";
+		}
+
+		return value.trim();
+	}
 }

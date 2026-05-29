@@ -172,19 +172,31 @@ input:focus{
         Accedi al tuo account Overclocked
     </p>
 
-    <%
-    String errore = (String) request.getAttribute("errore");
+ <%@ page import="java.util.List" %>
 
-    if(errore != null){
-    %>
-
-        <div class="error">
-            <%= errore %>
-        </div>
-
-    <%
-    }
-    %>
+	<%
+	List<String> errors =(List<String>) request.getAttribute("errors");
+	
+	if(errors != null){
+	%>
+	
+	    <div class="error">
+	
+	        <%
+	        for(String e : errors){
+	        %>
+	
+	            <p><%= e %></p>
+	
+	        <%
+	        }
+	        %>
+	
+	    </div>
+	
+	<%
+	}
+	%>
 
     <form action="login" method="post">
 
