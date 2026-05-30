@@ -170,6 +170,7 @@ h1, h2 {
 
 <jsp:include page="/WEB-INF/views/components/navbar.jsp" />
 
+
 <div class="container">
 
 <h1>Overclocked Shop</h1>
@@ -331,6 +332,8 @@ h1, h2 {
 </div>
 
 </div>
+
+<jsp:include page="/WEB-INF/views/components/footer.jsp" />
 
 </body>
 </html>
