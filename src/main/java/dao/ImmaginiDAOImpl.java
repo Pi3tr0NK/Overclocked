@@ -10,7 +10,6 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import model.ImmagineBean;
-import model.ProdottoBean;
 
 
 public class ImmaginiDAOImpl implements ImmaginiDAO {
@@ -55,9 +54,6 @@ public class ImmaginiDAOImpl implements ImmaginiDAO {
 
                ps.setInt(1, idProdotto);
                ResultSet rs = ps.executeQuery();
-               
-               ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
-               ProdottoBean prodotto = prodottoDAO.doRetrieveByKey(idProdotto);
 
             while (rs.next()) {
             		
