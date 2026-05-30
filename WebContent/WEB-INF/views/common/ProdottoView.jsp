@@ -82,9 +82,19 @@ body{
     margin-bottom:10px;
 }
 
-.stock{
+.stock-available{
     color:#28d14a;
-    margin-bottom:20px;
+    font-weight:bold;
+}
+
+.stock-low{
+    color:orange;
+    font-weight:bold;
+}
+
+.stock-unavailable{
+    color:red;
+    font-weight:bold;
 }
 
 .price{
@@ -186,6 +196,13 @@ body{
     margin-top:10px;
 }
 
+.cart-btn:disabled{
+    background:#555;
+    color:#999;
+    cursor:not-allowed;
+    opacity:0.7;
+}
+
 
 /* =========================
    GRID
@@ -267,16 +284,17 @@ body{
     font-weight: bold;
 }
 
-.product-price {
-    color: #ff7a00;
-    font-size: 26px;
-    font-weight: bold;
+.old-price{
+    font-size:24px;
+    color:#888;
+    text-decoration:line-through;
+    margin-bottom:5px;
 }
 
-.old-price {
-    color: #777;
-    text-decoration: line-through;
-    font-size: 15px;
+.price{
+    font-size:48px;
+    color:#ff7300;
+    font-weight:bold;
 }
 
 /* =========================
@@ -299,6 +317,8 @@ body{
 
 </head>
 <body>
+
+<jsp:include page="/WEB-INF/views/components/navbar.jsp" />
 
 <div class="container">
 
@@ -337,17 +357,56 @@ body{
 
         </div>
 
-        <div class="stock">
+		<div class="stock">
+		
+		    <c:choose>
+		
+		        <c:when test="${prodotto.stock == 0}">
+		            <span class="stock-unavailable">
+		                Non disponibile
+		            </span>
+		        </c:when>
+		
+		        <c:when test="${prodotto.stock <= 10}">
+		            <span class="stock-low">
+		                Solo ${prodotto.stock} pezzi rimasti
+		            </span>
+		        </c:when>
+		
+		        <c:otherwise>
+		            <span class="stock-available">
+		                Disponibile
+		            </span>
+		        </c:otherwise>
+		
+		    </c:choose>
+		
+		</div>
 
-            Disponibile
-
-        </div>
-
-        <div class="price">
-
-            € <%= String.format("%.2f", p.getPrezzo()) %>
-
-        </div>
+		<c:choose>
+		
+		    <c:when test="${prodotto.sconto > 0}">
+		
+		        <div class="old-price">
+		            € <%= String.format("%.2f", p.getPrezzo()) %>
+		        </div>
+		
+		        <div class="price">
+		            € <%= String.format("%.2f",
+		                    p.getPrezzo() - (p.getSconto() * p.getPrezzo() / 100.0)) %>
+		        </div>
+		
+		    </c:when>
+		
+		    <c:otherwise>
+		
+		        <div class="price">
+		            € <%= String.format("%.2f", p.getPrezzo()) %>
+		        </div>
+		
+		    </c:otherwise>
+		
+		</c:choose>
 
         <form action="cart" method="post">
 
@@ -367,13 +426,14 @@ body{
 
             </div>
 
-            <button
-                type="submit"
-                class="cart-btn">
-
-                Aggiungi al carrello
-
-            </button>
+			<button
+			    type="submit"
+			    class="cart-btn"
+			    <c:if test="${prodotto.stock == 0}">disabled</c:if>>
+			
+			    Aggiungi al carrello
+			
+			</button>
 
         </form>
 
@@ -419,11 +479,6 @@ body{
                 <tr>
                     <td>Modello</td>
                     <td><%= p.getModello() %></td>
-                </tr>
-
-                <tr>
-                    <td>Disponibilità</td>
-                    <td><%= p.getStock() %></td>
                 </tr>
                 
                 <tr>
