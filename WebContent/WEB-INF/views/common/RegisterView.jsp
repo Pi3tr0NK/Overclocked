@@ -420,7 +420,7 @@ input:focus{
 
         Hai già un account?
 
-        <a href="${pageContext.request.contextPath}/views/common/LoginView.jsp">
+        <a href="indexlogin">
             Accedi
         </a>
 

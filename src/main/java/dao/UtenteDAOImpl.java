@@ -44,8 +44,7 @@ public class UtenteDAOImpl implements UtenteDAO{
     
     public synchronized UtenteBean doRetrieveByKey(int id) throws SQLException {
 
-        String sql =
-            "SELECT * FROM " + TABLE_NAME + " WHERE id_utente = ?";
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id_utente = ?";
 
         UtenteBean u = null;
 

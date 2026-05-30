@@ -1,14 +1,19 @@
 package control.common;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
 
+import dao.UtenteDAO;
 import dao.UtenteDAOImpl;
 import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -20,6 +25,20 @@ import model.UtenteBean;
 public class LoginControl extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	
+	private UtenteDAO utenteDao;
+	
+	public void init(ServletConfig servletConfig) throws ServletException {
+        super.init(servletConfig);
+
+        DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+
+        if (ds == null) {
+            throw new ServletException("DataSource non disponibile nel contesto");
+        }
+
+        utenteDao =new UtenteDAOImpl(ds);
+    }
 
 	protected void doPost(HttpServletRequest request,
 						  HttpServletResponse response)
@@ -44,12 +63,9 @@ public class LoginControl extends HttpServlet {
 		}
 
 		try {
-
-			DataSource ds =(DataSource) getServletContext().getAttribute("DataSource");
-
-			UtenteDAOImpl dao =new UtenteDAOImpl(ds);
-
-			UtenteBean utente =dao.checkLogin(email,password);
+			
+			String digest = toDigest(password);
+			UtenteBean utente = utenteDao.checkLogin(email,digest);
 
 			if(utente != null) {
 
@@ -68,7 +84,7 @@ public class LoginControl extends HttpServlet {
 				 */
 				} else {
 					
-				response.sendRedirect(request.getContextPath()+ "/common/home");
+				response.sendRedirect(request.getContextPath()+ "/home");
 				}
 
 			} else {
@@ -95,9 +111,7 @@ public class LoginControl extends HttpServlet {
 		   value.trim().isEmpty()) {
 
 			errors.add(
-				"Il campo "
-				+ fieldName
-				+ " non può essere vuoto"
+				"Il campo " + fieldName + " non può essere vuoto"
 			);
 
 			return "";
@@ -105,4 +119,21 @@ public class LoginControl extends HttpServlet {
 
 		return value.trim();
 	}
+	
+	public static String toDigest(String password) {
+        try {
+        		// Definisco la funzione di hash SHA-512
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            // Calcolo il digest della password
+            byte[] digestBytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+            // Converto il digest in stringa esadecimale
+            StringBuilder sb = new StringBuilder();
+            for (byte b : digestBytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Algoritmo SHA-512 non disponibile", e);
+        }
+    }
 }
