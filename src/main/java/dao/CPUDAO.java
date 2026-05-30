@@ -10,7 +10,7 @@ public interface CPUDAO {
 	
 	public CPUBean doRetrieveByKey(int idCPU) throws SQLException;
 	
-	public Collection<CPUBean> doRetrieveAll() throws SQLException;
+	public Collection<CPUBean> doRetrieveAll(String categoria, String prezzo, String marca, String core, String frequenza) throws SQLException;
 	
 	public boolean doUpdate(CPUBean p) throws SQLException;
 	
