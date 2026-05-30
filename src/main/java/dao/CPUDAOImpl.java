@@ -43,7 +43,7 @@ public class CPUDAOImpl implements CPUDAO{
     
     public synchronized CPUBean doRetrieveByKey(int idCPU) throws SQLException {
 
-        String sql = "SELECT * FROM "+ TABLE_NAME +" c JOIN prodotto p ON c.fk_prodotto = p.id_prodotto WHERE c.id_cpu = ?";
+        String sql = "SELECT * FROM "+ TABLE_NAME +" c JOIN prodotto p ON c.fk_prodotto = p.id_prodotto WHERE p.id_prodotto = ?";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {

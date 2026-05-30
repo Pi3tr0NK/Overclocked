@@ -47,7 +47,7 @@ public class PSUDAOImpl implements PSUDAO {
     
     public synchronized PSUBean doRetrieveByKey(int idPSU) throws SQLException {
 
-        String sql = "SELECT * FROM "+ TABLE_NAME +" ps JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto WHERE ps.id_psu = ?";
+        String sql = "SELECT * FROM "+ TABLE_NAME +" ps JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto WHERE p.id_prodotto  = ?";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {

@@ -44,8 +44,8 @@ public class GPUDAOImpl implements GPUDAO {
 	public GPUBean doRetrieveByKey (int idGPU) throws SQLException {
 		
         String sql = "SELECT * FROM "+TABLE_NAME+" g "
-        		+ "JOIN prodotto p ON g.fk_prodotto = p.id_prodotto"
-        		+ "WHERE id_gpu = ?";
+        		+ "JOIN prodotto p ON g.fk_prodotto = p.id_prodotto "
+        		+ "WHERE p.id_prodotto = ?";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -60,10 +60,13 @@ public class GPUDAOImpl implements GPUDAO {
                 gpu.setModello(rs.getString("modello"));
                 gpu.setDescrizione(rs.getString("descrizione"));
                 gpu.setMarca(rs.getString("marca"));
+                gpu.setPrezzo(rs.getDouble("prezzo"));
                 gpu.setStock(rs.getInt("stock"));
+                gpu.setDimensioni(rs.getString("dimensioni"));
+                gpu.setPeso(rs.getString("peso"));
                 gpu.setAttivo(rs.getBoolean("attivo"));
                 gpu.setSconto(rs.getInt("sconto"));
-	            gpu.setCategoria(rs.getString("categoria"));
+                gpu.setCategoria(rs.getString("categoria"));
                 
                 gpu.setFrequenza(rs.getString("frequenza"));
                 gpu.setVram(rs.getString("vram"));
@@ -97,10 +100,13 @@ public class GPUDAOImpl implements GPUDAO {
                     gpu.setModello(rs.getString("modello"));
                     gpu.setDescrizione(rs.getString("descrizione"));
                     gpu.setMarca(rs.getString("marca"));
+                    gpu.setPrezzo(rs.getDouble("prezzo"));
                     gpu.setStock(rs.getInt("stock"));
+                    gpu.setDimensioni(rs.getString("dimensioni"));
+                    gpu.setPeso(rs.getString("peso"));
                     gpu.setAttivo(rs.getBoolean("attivo"));
                     gpu.setSconto(rs.getInt("sconto"));
-    	            	    gpu.setCategoria(rs.getString("categoria"));
+                    gpu.setCategoria(rs.getString("categoria"));
                     
                     gpu.setFrequenza(rs.getString("frequenza"));
                     gpu.setVram(rs.getString("vram"));

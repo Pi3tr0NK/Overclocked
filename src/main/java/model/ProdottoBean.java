@@ -2,7 +2,9 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ProdottoBean implements Serializable {
 
@@ -131,5 +133,9 @@ public class ProdottoBean implements Serializable {
 		public void addImmagine(ImmagineBean imm)
 		{
 			this.immagini.add(imm);
+		}
+		
+		public Map<String, String> getSpecifiche() {
+		    return new LinkedHashMap<>();
 		}
 }

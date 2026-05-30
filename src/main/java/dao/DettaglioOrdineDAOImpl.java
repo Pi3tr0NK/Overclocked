@@ -43,7 +43,7 @@ public class DettaglioOrdineDAOImpl implements DettaglioOrdineDAO {
 
 	    String sql = "SELECT p.* FROM "+TABLE_NAME+" d " +
 	                 "JOIN prodotto p ON d.fk_prodotto = p.id_prodotto " +
-	                 "WHERE d.fk_ordine = ?";
+	                 "WHERE p.id_prodotto = ?";
 
 	    try (Connection con = ds.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql)) {

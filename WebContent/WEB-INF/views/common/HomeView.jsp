@@ -325,38 +325,45 @@ h1, h2 {
 
 <c:forEach var="p" items="${novita}">
 
-    <div class="card">
+    <a class="product-link" href="${pageContext.request.contextPath}/prodotto?id=${p.idProdotto}">
 
-        <c:if test="${p.sconto > 0}">
-            <div class="discount-badge">-${p.sconto}%</div>
-        </c:if>
+        <div class="card">
 
-        <img src="${pageContext.request.contextPath}/${p.immagini[0].path}">
+            <c:if test="${p.sconto > 0}">
+                <div class="discount-badge">-${p.sconto}%</div>
+            </c:if>
 
-        <div class="card-content">
+            <img src="${pageContext.request.contextPath}/${p.immagini[0].path}">
 
-            <div class="product-brand">${p.marca}</div>
-            <div class="product-name">${p.nome} ${p.modello}</div>
+            <div class="card-content">
 
-            <c:set var="scontato"
-                   value="${p.prezzo - (p.prezzo * p.sconto / 100)}" />
+                <div class="product-brand">${p.marca}</div>
 
-            <c:choose>
+                <div class="product-name">
+                    ${p.nome} ${p.modello}
+                </div>
 
-                <c:when test="${p.sconto > 0}">
-                    <div class="old-price">${p.prezzo} €</div>
-                    <div class="product-price">${scontato} €</div>
-                </c:when>
+                <c:set var="scontato"
+                       value="${p.prezzo - (p.prezzo * p.sconto / 100)}" />
 
-                <c:otherwise>
-                    <div class="product-price">${p.prezzo} €</div>
-                </c:otherwise>
+                <c:choose>
 
-            </c:choose>
+                    <c:when test="${p.sconto > 0}">
+                        <div class="old-price">${p.prezzo} €</div>
+                        <div class="product-price">${scontato} €</div>
+                    </c:when>
+
+                    <c:otherwise>
+                        <div class="product-price">${p.prezzo} €</div>
+                    </c:otherwise>
+
+                </c:choose>
+
+            </div>
 
         </div>
 
-    </div>
+    </a>
 
 </c:forEach>
 

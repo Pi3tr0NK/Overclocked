@@ -16,7 +16,7 @@ import model.MemoriaBean.Tipo;
 
 public class MemoriaDAOImpl implements MemoriaDAO {
 
-	private static final String TABLE_NAME = "chassis";
+	private static final String TABLE_NAME = "memoria";
 
 	private DataSource ds;
 
@@ -48,13 +48,14 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 
 	public synchronized MemoriaBean doRetrieveByKey(int idMemoria) throws SQLException {
 
-	    String sql = "SELECT * FROM " + TABLE_NAME + " m JOIN prodotto p ON m.fk_prodotto = p.id_prodotto WHERE m.id_memoria = ?";
+	    String sql = "SELECT * FROM " + TABLE_NAME + " m JOIN prodotto p ON m.fk_prodotto = p.id_prodotto WHERE p.id_prodotto = ?";
 
 	    try (Connection con = ds.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql)) {
 
 	        ps.setInt(1, idMemoria);
-
+	        
+	        
 	        ResultSet rs = ps.executeQuery();
 
 	        if (rs.next()) {

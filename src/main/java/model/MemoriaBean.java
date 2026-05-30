@@ -1,5 +1,8 @@
 package model;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class MemoriaBean extends ProdottoBean{
 	private static final long serialVersionUID = 1L;
 	
@@ -73,6 +76,22 @@ public class MemoriaBean extends ProdottoBean{
 	public void setFormato(String formato) {
 		this.formato = formato;
 	}
+	
+	@Override
+	public Map<String, String> getSpecifiche() {
+
+	    Map<String, String> specs = new LinkedHashMap<>();
+
+	    specs.put("Capacita", capacita);
+	    specs.put("Velocità scrittura", String.valueOf(velScrittura));
+	    specs.put("Velocità lettura", String.valueOf(velLettura));
+	    specs.put("Tipo", tipo.name());
+	    specs.put("Tecnologia Ram", tecnologia.name());
+	    specs.put("Formato Ram", formato);
+	    return specs;
+	}
+	
+	
     
     
 }

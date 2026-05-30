@@ -49,7 +49,7 @@ public class MoboDAOImpl implements MoboDAO{
 
 	public synchronized MoboBean doRetrieveByKey(int idMobo) throws SQLException {
 
-	    String sql = "SELECT * FROM " + TABLE_NAME + " m JOIN prodotto p ON m.fk_prodotto = p.id_prodotto WHERE m.id_mobo = ?";
+	    String sql = "SELECT * FROM " + TABLE_NAME + " m JOIN prodotto p ON m.fk_prodotto = p.id_prodotto WHERE p.id_prodotto = ?";
 
 	    try (Connection con = ds.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql)) {

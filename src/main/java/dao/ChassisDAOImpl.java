@@ -42,7 +42,7 @@ public class ChassisDAOImpl implements ChassisDAO{
 
 	public synchronized ChassisBean doRetrieveByKey(int idChassis) throws SQLException {
 
-	    String sql = "SELECT * FROM " + TABLE_NAME + " c JOIN prodotto p ON c.fk_prodotto = p.id_prodotto WHERE c.id_case = ?";
+	    String sql = "SELECT * FROM " + TABLE_NAME + " c JOIN prodotto p ON c.fk_prodotto = p.id_prodotto WHERE p.id_prodotto = ?";
 
 	    try (Connection con = ds.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql)) {
