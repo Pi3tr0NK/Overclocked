@@ -74,8 +74,8 @@ public class PSUDAOImpl implements PSUDAO {
                 psu.setIdPsu(rs.getInt("id_psu"));
                 psu.setPotenza(rs.getInt("potenza"));
                 psu.setCertificazione(rs.getString("certificazione"));
-                psu.setModulare(Modulare.valueOf(rs.getString("certificazione")));
-                psu.setFormato(Formato.valueOf(rs.getString("modulare")));
+                psu.setModulare(Modulare.valueOf(rs.getString("modulare")));
+                psu.setFormato(Formato.valueOf(rs.getString("formato")));
 
                 return psu;
             }
@@ -113,8 +113,8 @@ public class PSUDAOImpl implements PSUDAO {
                     psu.setIdPsu(rs.getInt("id_psu"));
                     psu.setPotenza(rs.getInt("potenza"));
                     psu.setCertificazione(rs.getString("certificazione"));
-                    psu.setModulare(Modulare.valueOf(rs.getString("certificazione")));
-                    psu.setFormato(Formato.valueOf(rs.getString("modulare")));
+                    psu.setModulare(Modulare.valueOf(rs.getString("modulare")));
+                    psu.setFormato(Formato.valueOf(rs.getString("formato")));
 
     	            lista.add(psu);
     	        }

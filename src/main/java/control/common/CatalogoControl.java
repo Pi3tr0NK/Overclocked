@@ -99,11 +99,11 @@ public class CatalogoControl extends HttpServlet {
 		}
 		else if(cat.equals("CPU"))
 		{
-			int core = Integer.parseInt(request.getParameter("core"));
+			String core = request.getParameter("core");
 			String frequenza= request.getParameter("frequenza");
 			try 
 			{
-				request.setAttribute("products", cpuDAO.doRetrieveAll(cat, prezzo, marca, core, frequenza));
+				request.setAttribute("products", cpuDAO.doRetrieveAll(cat, prezzo, marca, core, frequenza));  
 			} catch (SQLException e) {
 				System.err.println("Error:" + e.getMessage());
 			}
