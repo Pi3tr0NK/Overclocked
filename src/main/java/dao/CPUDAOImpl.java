@@ -83,31 +83,65 @@ public class CPUDAOImpl implements CPUDAO{
         return null;
     }
     
-    public synchronized Collection<CPUBean> doRetrieveAll() throws SQLException
-    {
-    	 List<CPUBean> lista = new LinkedList<>();
+    @Override
+    public synchronized Collection<CPUBean> doRetrieveAll(String categoria, String prezzo, String marca, String core, String frequenza) 
+    		throws SQLException {
 
-    	    String sql = "SELECT * FROM cpu c JOIN prodotto p ON c.fk_prodotto = p.id_prodotto";
+        List<CPUBean> lista = new LinkedList<>();
 
-    	    try (Connection con = ds.getConnection();
-    	    		Statement st = con.createStatement()) {
+        String sql =
+            "SELECT * " +
+            "FROM cpu c " +
+            "JOIN prodotto p ON c.fk_prodotto = p.id_prodotto " +
+            "WHERE (? IS NULL OR p.categoria = ?) " +
+            "AND (? IS NULL OR p.marca = ?) " +
+            "AND (? IS NULL OR p.prezzo <= ?) " +
+            "AND (? IS NULL OR c.core = ?) " +
+            "AND (? IS NULL OR c.frequenza = ?)";
 
-            ResultSet rs = st.executeQuery(sql);
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-    	        while (rs.next()) {
+            // categoria
+            ps.setString(1, categoria);
+            ps.setString(2, categoria);
 
-    	            CPUBean cpu = new CPUBean();
+            // marca
+            ps.setString(3, marca);
+            ps.setString(4, marca);
 
-    	            cpu.setIdProdotto(rs.getInt("id_prodotto"));
-    	            cpu.setNome(rs.getString("nome"));
-    	            cpu.setModello(rs.getString("modello"));
-    	            cpu.setDescrizione(rs.getString("descrizione"));
-    	            cpu.setMarca(rs.getString("marca"));
-    	            cpu.setPrezzo(rs.getDouble("prezzo"));
-    	            cpu.setStock(rs.getInt("stock"));
-    	            cpu.setAttivo(rs.getBoolean("attivo"));
-    	            cpu.setSconto(rs.getInt("sconto"));
-    	            cpu.setCategoria(rs.getString("categoria"));
+            // prezzo
+            Double prezzoVal = (prezzo == null || prezzo.isBlank()) ? null : Double.parseDouble(prezzo);
+            ps.setObject(5, prezzoVal);
+            ps.setObject(6, prezzoVal);
+
+            // core
+            Integer coreVal = (core == null || core.isBlank()) ? null : Integer.parseInt(core);
+            ps.setObject(7, coreVal);
+            ps.setObject(8, coreVal);
+
+            // frequenza
+            ps.setString(9, frequenza);
+            ps.setString(10, frequenza);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+
+                    CPUBean cpu = new CPUBean();
+
+                    cpu.setIdProdotto(rs.getInt("id_prodotto"));
+                    cpu.setNome(rs.getString("nome"));
+                    cpu.setModello(rs.getString("modello"));
+                    cpu.setDescrizione(rs.getString("descrizione"));
+                    cpu.setMarca(rs.getString("marca"));
+                    cpu.setPrezzo(rs.getDouble("prezzo"));
+                    cpu.setStock(rs.getInt("stock"));
+                    cpu.setDimensioni(rs.getString("dimensioni"));
+                    cpu.setPeso(rs.getString("peso"));
+                    cpu.setAttivo(rs.getBoolean("attivo"));
+                    cpu.setSconto(rs.getInt("sconto"));
+                    cpu.setCategoria(rs.getString("categoria"));
 
                     cpu.setIdCpu(rs.getInt("id_cpu"));
                     cpu.setCore(rs.getInt("core"));
@@ -118,11 +152,12 @@ public class CPUDAOImpl implements CPUDAO{
                     cpu.setSocket(rs.getString("socket"));
                     cpu.setTdp(rs.getInt("tdp"));
 
-    	            lista.add(cpu);
-    	        }
-    	    }
+                    lista.add(cpu);
+                }
+            }
+        }
 
-    	    return lista;
+        return lista;
     }
     
     public boolean doUpdate(CPUBean cpu) throws SQLException
