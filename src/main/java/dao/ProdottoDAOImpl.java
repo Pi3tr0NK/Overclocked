@@ -231,4 +231,50 @@ public class ProdottoDAOImpl implements ProdottoDAO{
         return prodotti;
     }
     
+    public synchronized List<ProdottoBean> doRetrieveCorrelati(int limit ,int idProdotto,String categoria,double prezzo) throws SQLException {
+
+        List<ProdottoBean> correlati = new ArrayList<>();
+
+        String sql =
+            "SELECT * FROM prodotto " +
+            "WHERE attivo = true " +
+            "AND categoria = ? " +
+            "AND prezzo BETWEEN ? AND ? " +
+            "AND id_prodotto <> ? " +
+            "LIMIT ?";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, categoria);
+            ps.setDouble(2, prezzo - 200);
+            ps.setDouble(3, prezzo + 200);
+            ps.setInt(4, idProdotto);
+            ps.setInt(5, limit);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+
+                    ProdottoBean p = new ProdottoBean();
+
+                    p.setIdProdotto(rs.getInt("id_prodotto"));
+                    p.setNome(rs.getString("nome"));
+                    p.setModello(rs.getString("modello"));
+                    p.setDescrizione(rs.getString("descrizione"));
+                    p.setMarca(rs.getString("marca"));
+                    p.setPrezzo(rs.getDouble("prezzo"));
+                    p.setStock(rs.getInt("stock"));
+                    p.setAttivo(rs.getBoolean("attivo"));
+                    p.setSconto(rs.getInt("sconto"));
+                    p.setCategoria(rs.getString("categoria"));
+
+                    correlati.add(p);
+                }
+            }
+        }
+
+        return correlati;
+    }
+    
 }
