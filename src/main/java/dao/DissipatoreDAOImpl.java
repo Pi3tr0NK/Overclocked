@@ -67,6 +67,8 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
                 d.setMarca(rs.getString("marca"));
                 d.setPrezzo(rs.getDouble("prezzo"));
                 d.setStock(rs.getInt("stock"));
+                d.setDimensioni(rs.getString("dimensioni"));
+                d.setPeso(rs.getString("peso"));
                 d.setAttivo(rs.getBoolean("attivo"));
                 d.setSconto(rs.getInt("sconto"));
 	            d.setCategoria(rs.getString("categoria"));

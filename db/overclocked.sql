@@ -178,7 +178,7 @@ CREATE TABLE memoria(
 	vel_scrittura int,
 	vel_lettura int,
 	tipo enum ('SSD','HDD'),
-	tecnologia enum ('SATA','NVMe'),
+	tecnologia enum ('SATA','NVME'),
 	formato varchar(20),
 	
 	PRIMARY KEY(id_memoria,fk_prodotto),

@@ -59,6 +59,8 @@ public class RAMDAOImpl implements RAMDAO{
 	            ram.setMarca(rs.getString("marca"));
 	            ram.setPrezzo(rs.getDouble("prezzo"));
 	            ram.setStock(rs.getInt("stock"));
+	            ram.setDimensioni(rs.getString("dimensioni"));
+                ram.setPeso(rs.getString("peso"));
 	            ram.setAttivo(rs.getBoolean("attivo"));
 	            ram.setSconto(rs.getInt("sconto"));
 		        ram.setCategoria(rs.getString("categoria"));

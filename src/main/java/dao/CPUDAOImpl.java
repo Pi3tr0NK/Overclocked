@@ -63,9 +63,11 @@ public class CPUDAOImpl implements CPUDAO{
                 cpu.setMarca(rs.getString("marca"));
                 cpu.setPrezzo(rs.getDouble("prezzo"));
                 cpu.setStock(rs.getInt("stock"));
+                cpu.setDimensioni(rs.getString("dimensioni"));
+                cpu.setPeso(rs.getString("peso"));
                 cpu.setAttivo(rs.getBoolean("attivo"));
                 cpu.setSconto(rs.getInt("sconto"));
-	            cpu.setCategoria(rs.getString("categoria"));
+                cpu.setCategoria(rs.getString("categoria"));
 
                 cpu.setIdCpu(rs.getInt("id_cpu"));
                 cpu.setCore(rs.getInt("core"));

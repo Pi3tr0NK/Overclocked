@@ -62,6 +62,8 @@ public class ChassisDAOImpl implements ChassisDAO{
 	            chassis.setMarca(rs.getString("marca"));
 	            chassis.setPrezzo(rs.getDouble("prezzo"));
 	            chassis.setStock(rs.getInt("stock"));
+	            chassis.setDimensioni(rs.getString("dimensioni"));
+	            chassis.setPeso(rs.getString("peso"));
 	            chassis.setAttivo(rs.getBoolean("attivo"));
 	            chassis.setSconto(rs.getInt("sconto"));
 	            chassis.setCategoria(rs.getString("categoria"));

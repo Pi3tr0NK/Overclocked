@@ -63,28 +63,103 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 	        	MemoriaBean mem = new MemoriaBean();
 
 	        	mem.setIdProdotto(rs.getInt("id_prodotto"));
-	        	mem.setNome(rs.getString("nome"));
-	        	mem.setModello(rs.getString("modello"));
-	        	mem.setDescrizione(rs.getString("descrizione"));
-	        	mem.setMarca(rs.getString("marca"));
-	        	mem.setPrezzo(rs.getDouble("prezzo"));
-	        	mem.setStock(rs.getInt("stock"));
-	        	mem.setAttivo(rs.getBoolean("attivo"));
-	        	mem.setSconto(rs.getInt("sconto"));
-	        mem.setCategoria(rs.getString("categoria"));
+        		mem.setNome(rs.getString("nome"));
+        		mem.setModello(rs.getString("modello"));
+        		mem.setDescrizione(rs.getString("descrizione"));
+        		mem.setMarca(rs.getString("marca"));
+        		mem.setPrezzo(rs.getDouble("prezzo"));
+        		mem.setStock(rs.getInt("stock"));
+        		mem.setDimensioni(rs.getString("dimensioni"));
+            mem.setPeso(rs.getString("peso"));
+        		mem.setAttivo(rs.getBoolean("attivo"));
+        		mem.setSconto(rs.getInt("sconto"));
+        		mem.setCategoria(rs.getString("categoria"));
 
-	        	mem.setIdMemoria(rs.getInt("id_memoria"));
-	        	mem.setCapacita(rs.getString("capacita"));
-	        	mem.setVelLettura(rs.getInt("vel_lettura"));
-	        	mem.setVelScrittura(rs.getInt("vel_scrittura"));
-	        	mem.setTipo(Tipo.valueOf(rs.getString("tipo")));
-	        	mem.setTecnologia(Tecnologia.valueOf(rs.getString("tecnologia")));
-	        	mem.setFormato(rs.getString("formato"));
+        		mem.setIdMemoria(rs.getInt("id_memoria"));
+        		mem.setCapacita(rs.getString("capacita"));
+        		mem.setVelLettura(rs.getInt("vel_lettura"));
+        		mem.setVelScrittura(rs.getInt("vel_scrittura"));
+        		mem.setTipo(Tipo.valueOf(rs.getString("tipo")));
+        		mem.setTecnologia(Tecnologia.valueOf(rs.getString("tecnologia")));
+        		mem.setFormato(rs.getString("formato"));
 	            return mem;
 	        }
 	    }
 
 	    return null;
+	}
+	
+	@Override
+	public synchronized Collection<MemoriaBean> doRetrieveAll(String categoria, double prezzo, String marca, String capacita, String tipo, String tecnologia) 
+			throws SQLException {
+
+	    List<MemoriaBean> lista = new LinkedList<>();
+
+	    String sql =
+	        "SELECT * " +
+	        "FROM memoria m " +
+	        "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto " +
+	        "WHERE (? IS NULL OR p.categoria = ?) " +
+	        "AND (? IS NULL OR p.marca = ?) " +
+	        "AND (? IS NULL OR p.prezzo <= ?) " +
+	        "AND (? IS NULL OR m.capacita = ?) " +
+	        "AND (? IS NULL OR m.tipo = ?) " +
+	        "AND (? IS NULL OR m.tecnologia = ?)";
+
+	    try (Connection con = ds.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setString(1, categoria);
+	        ps.setString(2, categoria);
+
+	        ps.setString(3, marca);
+	        ps.setString(4, marca);
+
+	        ps.setDouble(5, prezzo);
+	        ps.setDouble(6, prezzo);
+
+	        ps.setString(7, capacita);
+	        ps.setString(8, capacita);
+
+	        ps.setString(9, tipo);
+	        ps.setString(10, tipo);
+
+	        ps.setString(11, tecnologia);
+	        ps.setString(12, tecnologia);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+
+	            while (rs.next()) {
+
+	                MemoriaBean mem = new MemoriaBean();
+
+	                mem.setIdProdotto(rs.getInt("id_prodotto"));
+		        		mem.setNome(rs.getString("nome"));
+		        		mem.setModello(rs.getString("modello"));
+		        		mem.setDescrizione(rs.getString("descrizione"));
+		        		mem.setMarca(rs.getString("marca"));
+		        		mem.setPrezzo(rs.getDouble("prezzo"));
+		        		mem.setStock(rs.getInt("stock"));
+		        		mem.setDimensioni(rs.getString("dimensioni"));
+	                mem.setPeso(rs.getString("peso"));
+		        		mem.setAttivo(rs.getBoolean("attivo"));
+		        		mem.setSconto(rs.getInt("sconto"));
+		        		mem.setCategoria(rs.getString("categoria"));
+
+		        		mem.setIdMemoria(rs.getInt("id_memoria"));
+		        		mem.setCapacita(rs.getString("capacita"));
+		        		mem.setVelLettura(rs.getInt("vel_lettura"));
+		        		mem.setVelScrittura(rs.getInt("vel_scrittura"));
+		        		mem.setTipo(Tipo.valueOf(rs.getString("tipo")));
+		        		mem.setTecnologia(Tecnologia.valueOf(rs.getString("tecnologia")));
+		        		mem.setFormato(rs.getString("formato"));
+
+	                lista.add(mem);
+	            }
+	        }
+	    }
+
+	    return lista;
 	}
 
 	public synchronized Collection<MemoriaBean> doRetrieveAll() throws SQLException {

@@ -106,8 +106,8 @@ VALUES
 SET @first_id = LAST_INSERT_ID();
 INSERT INTO memoria(fk_prodotto, capacita, vel_scrittura, vel_lettura, tipo, tecnologia, formato)
 VALUES
-(@first_id,     '1TB',   5000, 7000, 'SSD', 'NVMe', 'M.2'),
-(@first_id + 1, '2TB',   6600, 7300, 'SSD', 'NVMe', 'M.2'),
+(@first_id,     '1TB',   5000, 7000, 'SSD', 'NVME', 'M.2'),
+(@first_id + 1, '2TB',   6600, 7300, 'SSD', 'NVME', 'M.2'),
 (@first_id + 2, '500GB',  530,  560, 'SSD', 'SATA', '2.5"');
 
 INSERT INTO indirizzo

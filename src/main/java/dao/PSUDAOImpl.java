@@ -66,6 +66,8 @@ public class PSUDAOImpl implements PSUDAO {
                 psu.setMarca(rs.getString("marca"));
                 psu.setPrezzo(rs.getDouble("prezzo"));
                 psu.setStock(rs.getInt("stock"));
+                psu.setDimensioni(rs.getString("dimensioni"));
+                psu.setPeso(rs.getString("peso"));
                 psu.setAttivo(rs.getBoolean("attivo"));
                 psu.setSconto(rs.getInt("sconto"));
 		        psu.setCategoria(rs.getString("categoria"));

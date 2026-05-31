@@ -91,34 +91,52 @@ public class ProdottoDAOImpl implements ProdottoDAO{
 
         return null;
     }
+    
+    @Override
+    public synchronized Collection<ProdottoBean> doRetrieveAll(double prezzo, String marca) 
+    		throws SQLException {
 
-    public synchronized List<ProdottoBean> doRetrieveAll() throws SQLException {
         List<ProdottoBean> lista = new LinkedList<>();
-        String sql = "SELECT * FROM "+TABLE_NAME;
+
+        String sql =
+            "SELECT * " +
+            "FROM prodotto p " +
+            "WHERE (? IS NULL OR p.marca = ?) " +
+            "AND (? IS NULL OR p.prezzo <= ?)";
 
         try (Connection con = ds.getConnection();
-        		Statement st = con.createStatement()) {
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ResultSet rs = st.executeQuery(sql);
+            ps.setString(1, marca);
+            ps.setString(2, marca);
 
-            while (rs.next()) {
-                ProdottoBean p = new ProdottoBean();
-                p.setIdProdotto(rs.getInt("id_prodotto"));
-                p.setNome(rs.getString("nome"));
-                p.setModello(rs.getString("modello"));
-                p.setDescrizione(rs.getString("descrizione"));
-                p.setMarca(rs.getString("marca"));
-                p.setPrezzo(rs.getDouble("prezzo"));
-                p.setStock(rs.getInt("stock"));
-                p.setDimensioni(rs.getString("dimensioni"));
-                p.setPeso(rs.getString("peso"));
-                p.setAttivo(rs.getBoolean("attivo"));
-                p.setSconto(rs.getInt("sconto"));
-                p.setCategoria(rs.getString("categoria"));
-                
-                lista.add(p);
+            ps.setDouble(3, prezzo);
+            ps.setDouble(4, prezzo);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+
+                    ProdottoBean p = new ProdottoBean();
+
+                    p.setIdProdotto(rs.getInt("id_prodotto"));
+                    p.setNome(rs.getString("nome"));
+                    p.setModello(rs.getString("modello"));
+                    p.setDescrizione(rs.getString("descrizione"));
+                    p.setMarca(rs.getString("marca"));
+                    p.setPrezzo(rs.getDouble("prezzo"));
+                    p.setStock(rs.getInt("stock"));
+                    p.setDimensioni(rs.getString("dimensioni"));
+                    p.setPeso(rs.getString("peso"));
+                    p.setAttivo(rs.getBoolean("attivo"));
+                    p.setSconto(rs.getInt("sconto"));
+                    p.setCategoria(rs.getString("categoria"));
+
+                    lista.add(p);
+                }
             }
         }
+
         return lista;
     }
     

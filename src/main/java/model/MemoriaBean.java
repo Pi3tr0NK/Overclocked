@@ -7,7 +7,7 @@ public class MemoriaBean extends ProdottoBean{
 	private static final long serialVersionUID = 1L;
 	
     public enum Tipo { SSD, HDD }
-    public enum Tecnologia { SATA, NVMe }
+    public enum Tecnologia { SATA, NVME }
     
     private int idMemoria;
     private String capacita;
