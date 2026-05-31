@@ -85,42 +85,66 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
 
         return null;
     }
-
-    public synchronized Collection<DissipatoreBean> doRetrieveAll() throws SQLException {
+    
+    @Override
+    public synchronized Collection<DissipatoreBean> doRetrieveAll(String categoria,double prezzo,String marca,String tipo) 
+    		throws SQLException {
 
         List<DissipatoreBean> lista = new LinkedList<>();
 
-        String sql = "SELECT * FROM " + TABLE_NAME + 
-                     " d JOIN prodotto p ON d.fk_prodotto = p.id_prodotto";
+        String sql =
+            "SELECT * " +
+            "FROM dissipatore d " +
+            "JOIN prodotto p ON d.fk_prodotto = p.id_prodotto " +
+            "WHERE (? IS NULL OR p.categoria = ?) " +
+            "AND (? IS NULL OR p.marca = ?) " +
+            "AND (? IS NULL OR p.prezzo <= ?) " +
+            "AND (? IS NULL OR d.tipo = ?)";
 
         try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-            while (rs.next()) {
+            ps.setString(1, categoria);
+            ps.setString(2, categoria);
 
-                DissipatoreBean d = new DissipatoreBean();
+            ps.setString(3, marca);
+            ps.setString(4, marca);
 
-                d.setIdProdotto(rs.getInt("id_prodotto"));
-                d.setNome(rs.getString("nome"));
-                d.setModello(rs.getString("modello"));
-                d.setDescrizione(rs.getString("descrizione"));
-                d.setMarca(rs.getString("marca"));
-                d.setPrezzo(rs.getDouble("prezzo"));
-                d.setStock(rs.getInt("stock"));
-                d.setAttivo(rs.getBoolean("attivo"));
-                d.setSconto(rs.getInt("sconto"));
-	            d.setCategoria(rs.getString("categoria"));
+            ps.setDouble(5, prezzo);
+            ps.setDouble(6, prezzo);
 
-                d.setIdDissipatore(rs.getInt("id_dissipatore"));
-                d.setTipo(DissipatoreBean.Tipo.valueOf(rs.getString("tipo").toUpperCase()));
-                d.setSocketSupportati(rs.getString("socket_supportati"));
-                d.setDimensioniVentola(rs.getString("dimensioni_ventola"));
-                d.setRpmMax(rs.getInt("rpm_max"));
-                d.setRumore(rs.getInt("rumore"));
-                d.setTdpSupportato(rs.getInt("tdp_supportato"));
+            ps.setString(7, tipo);
+            ps.setString(8, tipo);
 
-                lista.add(d);
+            try (ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+
+                    DissipatoreBean d = new DissipatoreBean();
+
+                    d.setIdProdotto(rs.getInt("id_prodotto"));
+                    d.setNome(rs.getString("nome"));
+                    d.setModello(rs.getString("modello"));
+                    d.setDescrizione(rs.getString("descrizione"));
+                    d.setMarca(rs.getString("marca"));
+                    d.setPrezzo(rs.getDouble("prezzo"));
+                    d.setStock(rs.getInt("stock"));
+                    d.setDimensioni(rs.getString("dimensioni"));
+                    d.setPeso(rs.getString("peso"));
+                    d.setAttivo(rs.getBoolean("attivo"));
+                    d.setSconto(rs.getInt("sconto"));
+    	            	    d.setCategoria(rs.getString("categoria"));
+
+                    d.setIdDissipatore(rs.getInt("id_dissipatore"));
+                    d.setTipo(DissipatoreBean.Tipo.valueOf(rs.getString("tipo").toUpperCase()));
+                    d.setSocketSupportati(rs.getString("socket_supportati"));
+                    d.setDimensioniVentola(rs.getString("dimensioni_ventola"));
+                    d.setRpmMax(rs.getInt("rpm_max"));
+                    d.setRumore(rs.getInt("rumore"));
+                    d.setTdpSupportato(rs.getInt("tdp_supportato"));
+
+                    lista.add(d);
+                }
             }
         }
 

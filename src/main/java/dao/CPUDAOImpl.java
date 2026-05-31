@@ -102,23 +102,18 @@ public class CPUDAOImpl implements CPUDAO{
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            // categoria
             ps.setString(1, categoria);
             ps.setString(2, categoria);
 
-            // marca
             ps.setString(3, marca);
             ps.setString(4, marca);
 
-            // prezzo
             ps.setDouble(5, prezzo);
             ps.setDouble(6, prezzo);
 
-            // core
             ps.setInt(7, core);
             ps.setInt(8, core);
 
-            // frequenza
             ps.setString(9, frequenza);
             ps.setString(10, frequenza);
 

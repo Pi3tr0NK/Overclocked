@@ -77,38 +77,67 @@ public class ChassisDAOImpl implements ChassisDAO{
 
 	    return null;
 	}
-
-	public synchronized Collection<ChassisBean> doRetrieveAll() throws SQLException {
+	
+	@Override
+	public synchronized Collection<ChassisBean> doRetrieveAll(String categoria, double prezzo, String marca, String formato, String colore) 
+			throws SQLException {
 
 	    List<ChassisBean> lista = new LinkedList<>();
 
-	    String sql = "SELECT * FROM "+TABLE_NAME+" c JOIN prodotto p ON c.fk_prodotto = p.id_prodotto";
+	    String sql =
+	        "SELECT * " +
+	        "FROM chassis ch " +
+	        "JOIN prodotto p ON ch.fk_prodotto = p.id_prodotto " +
+	        "WHERE (? IS NULL OR p.categoria = ?) " +
+	        "AND (? IS NULL OR p.marca = ?) " +
+	        "AND (? IS NULL OR p.prezzo <= ?) " +
+	        "AND (? IS NULL OR ch.formato = ?) " +
+	        "AND (? IS NULL OR ch.colore = ?)";
 
 	    try (Connection con = ds.getConnection();
-	         PreparedStatement ps = con.prepareStatement(sql);
-	         ResultSet rs = ps.executeQuery()) {
+	         PreparedStatement ps = con.prepareStatement(sql)) {
 
-	        while (rs.next()) {
+	        ps.setString(1, categoria);
+	        ps.setString(2, categoria);
 
-	            ChassisBean chassis = new ChassisBean();
+	        ps.setString(3, marca);
+	        ps.setString(4, marca);
 
-	            chassis.setIdProdotto(rs.getInt("id_prodotto"));
-	            chassis.setNome(rs.getString("nome"));
-	            chassis.setModello(rs.getString("modello"));
-	            chassis.setDescrizione(rs.getString("descrizione"));
-	            chassis.setMarca(rs.getString("marca"));
-	            chassis.setPrezzo(rs.getDouble("prezzo"));
-	            chassis.setStock(rs.getInt("stock"));
-	            chassis.setAttivo(rs.getBoolean("attivo"));
-	            chassis.setSconto(rs.getInt("sconto"));
-	            chassis.setCategoria(rs.getString("categoria"));
+	        ps.setDouble(5, prezzo);
+	        ps.setDouble(6, prezzo);
 
-	            chassis.setIdCase(rs.getInt("id_case"));
-	            chassis.setFormato(rs.getString("formato"));
-	            chassis.setColore(rs.getString("colore"));
-	            chassis.setMateriale(rs.getString("materiale"));
+	        ps.setString(7, formato);
+	        ps.setString(8, formato);
 
-	            lista.add(chassis);
+	        ps.setString(9, colore);
+	        ps.setString(10, colore);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+
+	            while (rs.next()) {
+
+	                ChassisBean chassis = new ChassisBean();
+
+	                chassis.setIdProdotto(rs.getInt("id_prodotto"));
+		            chassis.setNome(rs.getString("nome"));
+		            chassis.setModello(rs.getString("modello"));
+		            chassis.setDescrizione(rs.getString("descrizione"));
+		            chassis.setMarca(rs.getString("marca"));
+		            chassis.setPrezzo(rs.getDouble("prezzo"));
+		            chassis.setStock(rs.getInt("stock"));
+		            chassis.setDimensioni(rs.getString("dimensioni"));
+		            chassis.setPeso(rs.getString("peso"));
+		            chassis.setAttivo(rs.getBoolean("attivo"));
+		            chassis.setSconto(rs.getInt("sconto"));
+		            chassis.setCategoria(rs.getString("categoria"));
+
+		            chassis.setIdCase(rs.getInt("id_case"));
+		            chassis.setFormato(rs.getString("formato"));
+		            chassis.setColore(rs.getString("colore"));
+		            chassis.setMateriale(rs.getString("materiale"));
+
+	                lista.add(chassis);
+	            }
 	        }
 	    }
 

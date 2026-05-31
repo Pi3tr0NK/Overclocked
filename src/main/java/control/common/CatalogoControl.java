@@ -73,7 +73,7 @@ public class CatalogoControl extends HttpServlet {
 
 	private void loadProducList(HttpServletRequest request) {
 		String cat = request.getParameter("categoria");
-		Double prezzo = Double.valueOf(request.getParameter("prezzo"));
+		Double prezzo = Double.parseDouble(request.getParameter("prezzo"));
 		String marca = request.getParameter("marca");
 		if(cat.equals("PSU"))
 		{
@@ -99,7 +99,7 @@ public class CatalogoControl extends HttpServlet {
 		}
 		else if(cat.equals("CPU"))
 		{
-			String core = request.getParameter("core");
+			int core = Integer.parseInt(request.getParameter("core"));
 			String frequenza= request.getParameter("frequenza");
 			try 
 			{

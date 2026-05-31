@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -84,18 +83,44 @@ public class PSUDAOImpl implements PSUDAO {
         return null;
     }
     
-    public synchronized Collection<PSUBean> doRetrieveAll() throws SQLException
+    @Override
+    public synchronized Collection<PSUBean> doRetrieveAll(String categoria, double prezzo, String marca, int potenza, String certificazione, String modulare) throws SQLException
     {
     	 List<PSUBean> lista = new LinkedList<>();
 
-    	    String sql = "SELECT * FROM "+ TABLE_NAME +" c JOIN prodotto p ON c.fk_prodotto = p.id_prodotto";
+         String sql =
+             "SELECT * " +
+             "FROM psu ps " +
+             "JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto " +
+             "WHERE (? IS NULL OR p.categoria = ?) " +
+             "AND (? IS NULL OR p.marca = ?) " +
+             "AND (? IS NULL OR p.prezzo <= ?) " +
+             "AND (? = 0 OR ps.potenza = ?) " +
+             "AND (? IS NULL OR ps.certificazione = ?) " +
+             "AND (? IS NULL OR ps.modulare = ?)";
 
-    	    try (Connection con = ds.getConnection();
-    	    		Statement st = con.createStatement()) {
+         try (Connection con = ds.getConnection();
+              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ResultSet rs = st.executeQuery(sql);
+             ps.setString(1, categoria);
+             ps.setString(2, categoria);
 
-    	        while (rs.next()) {
+             ps.setString(3, marca);
+             ps.setString(4, marca);
+
+             ps.setDouble(5, prezzo);
+             ps.setDouble(6, prezzo);
+
+             ps.setInt(7, potenza);
+             ps.setInt(8, potenza);
+
+             ps.setString(9, certificazione);
+             ps.setString(10, certificazione);
+
+             ps.setString(11, modulare);
+             ps.setString(12, modulare);
+             try (ResultSet rs = ps.executeQuery()){
+    	        		while (rs.next()) {
 
                     PSUBean psu = new PSUBean();
 
@@ -106,6 +131,8 @@ public class PSUDAOImpl implements PSUDAO {
                     psu.setMarca(rs.getString("marca"));
                     psu.setPrezzo(rs.getDouble("prezzo"));
                     psu.setStock(rs.getInt("stock"));
+                    psu.setDimensioni(rs.getString("dimensioni"));
+                    psu.setPeso(rs.getString("peso"));
                     psu.setAttivo(rs.getBoolean("attivo"));
                     psu.setSconto(rs.getInt("sconto"));
     		        	    psu.setCategoria(rs.getString("categoria"));
@@ -116,8 +143,9 @@ public class PSUDAOImpl implements PSUDAO {
                     psu.setModulare(Modulare.valueOf(rs.getString("modulare")));
                     psu.setFormato(Formato.valueOf(rs.getString("formato")));
 
-    	            lista.add(psu);
-    	        }
+    	            		lista.add(psu);
+    	        		}
+             }
     	    }
 
     	    return lista;
