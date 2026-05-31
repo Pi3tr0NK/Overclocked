@@ -1,5 +1,8 @@
 package model;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class CPUBean extends ProdottoBean{
 	private static final long serialVersionUID = 1L;
 	
@@ -79,4 +82,20 @@ public class CPUBean extends ProdottoBean{
 	public void setTiporam(String tiporam) {
 		this.tiporam = tiporam;
 	}
+	
+	@Override
+	public Map<String, String> getSpecifiche() {
+
+	    Map<String, String> specs = new LinkedHashMap<>();
+
+	    specs.put("Socket", socket);
+	    specs.put("Core", String.valueOf(core));
+	    specs.put("Thread", String.valueOf(thread));
+	    specs.put("Frequenza", frequenza);
+	    specs.put("Frequenza Ram", frequenza_ram);
+	    specs.put("Tipo Ram", tiporam);
+	    specs.put("Tdp", String.valueOf(tdp));
+	    return specs;
+	}
+	
 }

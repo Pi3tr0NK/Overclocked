@@ -47,7 +47,7 @@ public class PSUDAOImpl implements PSUDAO {
     
     public synchronized PSUBean doRetrieveByKey(int idPSU) throws SQLException {
 
-        String sql = "SELECT * FROM "+ TABLE_NAME +" ps JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto WHERE ps.id_psu = ?";
+        String sql = "SELECT * FROM "+ TABLE_NAME +" ps JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto WHERE p.id_prodotto  = ?";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -74,8 +74,8 @@ public class PSUDAOImpl implements PSUDAO {
                 psu.setIdPsu(rs.getInt("id_psu"));
                 psu.setPotenza(rs.getInt("potenza"));
                 psu.setCertificazione(rs.getString("certificazione"));
-                psu.setModulare(Modulare.valueOf(rs.getString("certificazione")));
-                psu.setFormato(Formato.valueOf(rs.getString("modulare")));
+                psu.setModulare(Modulare.valueOf(rs.getString("modulare")));
+                psu.setFormato(Formato.valueOf(rs.getString("formato")));
 
                 return psu;
             }
@@ -113,8 +113,8 @@ public class PSUDAOImpl implements PSUDAO {
                     psu.setIdPsu(rs.getInt("id_psu"));
                     psu.setPotenza(rs.getInt("potenza"));
                     psu.setCertificazione(rs.getString("certificazione"));
-                    psu.setModulare(Modulare.valueOf(rs.getString("certificazione")));
-                    psu.setFormato(Formato.valueOf(rs.getString("modulare")));
+                    psu.setModulare(Modulare.valueOf(rs.getString("modulare")));
+                    psu.setFormato(Formato.valueOf(rs.getString("formato")));
 
     	            lista.add(psu);
     	        }

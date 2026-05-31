@@ -41,29 +41,54 @@ public class ProdottoDAOImpl implements ProdottoDAO{
     }
 
     public synchronized ProdottoBean doRetrieveByKey(int id) throws SQLException {
-        String sql = "SELECT * FROM "+TABLE_NAME+" WHERE id_prodotto = ?";
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        String sql =
+            "SELECT categoria FROM prodotto WHERE id_prodotto = ?";
+
+        try(Connection con = ds.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, id);
+            
             ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
-                ProdottoBean p = new ProdottoBean();
-                p.setIdProdotto(rs.getInt("id_prodotto"));
-                p.setNome(rs.getString("nome"));
-                p.setModello(rs.getString("modello"));
-                p.setDescrizione(rs.getString("descrizione"));
-                p.setMarca(rs.getString("marca"));
-                p.setStock(rs.getInt("stock"));
-                p.setAttivo(rs.getBoolean("attivo"));
-                p.setSconto(rs.getInt("sconto"));
-                p.setCategoria(rs.getString("categoria"));
-                
-                return p;
+            if(!rs.next())
+                return null;
+            
+            
+            String categoria = rs.getString("categoria");
+
+            switch(categoria) {
+
+                case "STORAGE":
+                    return new MemoriaDAOImpl(ds).doRetrieveByKey(id);
+
+                case "CPU":
+                    return new CPUDAOImpl(ds).doRetrieveByKey(id);
+
+                case "GPU":
+                    return new GPUDAOImpl(ds).doRetrieveByKey(id);
+
+                case "MOBO":
+                    return new MoboDAOImpl(ds).doRetrieveByKey(id);
+
+                case "RAM":
+                    return new RAMDAOImpl(ds).doRetrieveByKey(id);
+
+                case "PSU":
+                    return new PSUDAOImpl(ds).doRetrieveByKey(id);
+
+                case "CASE":
+                    return new ChassisDAOImpl(ds).doRetrieveByKey(id);
+
+                case "DISSIPATORE":
+                    return new DissipatoreDAOImpl(ds).doRetrieveByKey(id);
+
+                default:
+                    break;
             }
         }
+
         return null;
     }
 
@@ -83,7 +108,10 @@ public class ProdottoDAOImpl implements ProdottoDAO{
                 p.setModello(rs.getString("modello"));
                 p.setDescrizione(rs.getString("descrizione"));
                 p.setMarca(rs.getString("marca"));
+                p.setPrezzo(rs.getDouble("prezzo"));
                 p.setStock(rs.getInt("stock"));
+                p.setDimensioni(rs.getString("dimensioni"));
+                p.setPeso(rs.getString("peso"));
                 p.setAttivo(rs.getBoolean("attivo"));
                 p.setSconto(rs.getInt("sconto"));
                 p.setCategoria(rs.getString("categoria"));
@@ -175,7 +203,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
                     p.setAttivo(rs.getBoolean("attivo"));
                     p.setSconto(rs.getInt("sconto"));
                     p.setCategoria(rs.getString("categoria"));
-
+                    
                     novita.add(p);
                 }
             }
@@ -222,13 +250,61 @@ public class ProdottoDAOImpl implements ProdottoDAO{
                     p.setAttivo(rs.getBoolean("attivo"));
                     p.setSconto(rs.getInt("sconto"));
                     p.setCategoria(rs.getString("categoria"));
-
+                    
                     prodotti.add(p);
                 }
             }
         }
 
         return prodotti;
+    }
+    
+    public synchronized List<ProdottoBean> doRetrieveCorrelati(int limit ,int idProdotto,String categoria,double prezzo) throws SQLException {
+
+        List<ProdottoBean> correlati = new ArrayList<>();
+
+        String sql =
+            "SELECT * FROM prodotto " +
+            "WHERE attivo = true " +
+            "AND categoria = ? " +
+            "AND prezzo BETWEEN ? AND ? " +
+            "AND id_prodotto <> ? " +
+            "LIMIT ?";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, categoria);
+            ps.setDouble(2, prezzo - 200);
+            ps.setDouble(3, prezzo + 200);
+            ps.setInt(4, idProdotto);
+            ps.setInt(5, limit);
+            
+ 
+            
+            try (ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+
+                    ProdottoBean p = new ProdottoBean();
+
+                    p.setIdProdotto(rs.getInt("id_prodotto"));
+                    p.setNome(rs.getString("nome"));
+                    p.setModello(rs.getString("modello"));
+                    p.setDescrizione(rs.getString("descrizione"));
+                    p.setMarca(rs.getString("marca"));
+                    p.setPrezzo(rs.getDouble("prezzo"));
+                    p.setStock(rs.getInt("stock"));
+                    p.setAttivo(rs.getBoolean("attivo"));
+                    p.setSconto(rs.getInt("sconto"));
+                    p.setCategoria(rs.getString("categoria"));
+
+                    correlati.add(p);
+                }
+            }
+        }
+        
+        return correlati;
     }
     
 }

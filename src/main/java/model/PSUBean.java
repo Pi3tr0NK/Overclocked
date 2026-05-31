@@ -1,5 +1,8 @@
 package model;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class PSUBean extends ProdottoBean {
 	
 	private static final long serialVersionUID = 1L;
@@ -56,6 +59,18 @@ public class PSUBean extends ProdottoBean {
 	public void setFormato(Formato formato) {
 		this.formato = formato;
 	}
+	
+	@Override
+	public Map<String, String> getSpecifiche() {
+
+	    Map<String, String> specs = new LinkedHashMap<>();
+
+	    specs.put("Potenza", String.valueOf(potenza));
+	    specs.put("Certificazione", certificazione);
+	    specs.put("Tipo", modulare.name());
+	    specs.put("Formato", formato.name());
+	    return specs;
+	}    
     
     
 }

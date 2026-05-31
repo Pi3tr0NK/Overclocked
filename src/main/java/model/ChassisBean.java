@@ -1,5 +1,8 @@
 package model;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class ChassisBean extends ProdottoBean{
 	private static final long serialVersionUID = 1L;
 	
@@ -43,6 +46,15 @@ public class ChassisBean extends ProdottoBean{
 	public void setMateriale(String materiale) {
 		this.materiale = materiale;
 	}
-    
-    
+	
+	@Override
+	public Map<String, String> getSpecifiche() {
+
+	    Map<String, String> specs = new LinkedHashMap<>();
+
+	    specs.put("Formato", formato);
+	    specs.put("Colore", colore);
+	    specs.put("Materiale", materiale);
+	    return specs;
+	}         
 }

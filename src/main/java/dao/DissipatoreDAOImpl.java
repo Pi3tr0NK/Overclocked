@@ -47,7 +47,7 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
     public synchronized DissipatoreBean doRetrieveByKey(int idDissipatore) throws SQLException {
 
         String sql = "SELECT * FROM " + TABLE_NAME + 
-                     " d JOIN prodotto p ON d.fk_prodotto = p.id_prodotto WHERE d.id_dissipatore = ?";
+                     " d JOIN prodotto p ON d.fk_prodotto = p.id_prodotto WHERE p.id_prodotto = ?";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {

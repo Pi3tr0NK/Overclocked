@@ -1,5 +1,8 @@
 package model;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class GPUBean extends ProdottoBean {
 	private static final long serialVersionUID = 1L;
 	
@@ -79,6 +82,18 @@ public class GPUBean extends ProdottoBean {
 		this.tdp = tdp;
 	}
     
-    
-    
+	@Override
+	public Map<String, String> getSpecifiche() {
+
+	    Map<String, String> specs = new LinkedHashMap<>();
+
+	    specs.put("Frequenza", frequenza);
+	    specs.put("VRAM", vram);
+	    specs.put("Uscite video", video);
+	    specs.put("Tipo Vram", tipoVram);
+	    specs.put("PCIe", pcie);
+	    specs.put("Risoluzione massima", maxRes);
+	    specs.put("Consumo", String.valueOf(tdp));
+	    return specs;
+	}   
 }

@@ -1,5 +1,8 @@
 package model;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class MoboBean extends ProdottoBean{
 	private static final long serialVersionUID = 1L;
 	
@@ -107,6 +110,22 @@ public class MoboBean extends ProdottoBean{
 		this.porteUsb = porteUsb;
 	}
     
-    
+	@Override
+	public Map<String, String> getSpecifiche() {
+
+	    Map<String, String> specs = new LinkedHashMap<>();
+
+	    specs.put("Chipset", chipset);
+	    specs.put("Socket", socket);
+	    specs.put("Tipo Ram", tipoRam);
+	    specs.put("Frequenza Massima", maxFreq);
+	    specs.put("Formato", formato);
+	    specs.put("PCIe", pcie);
+	    specs.put("Numero di slot RAM", String.valueOf(slotRam));
+	    specs.put("NVMe", isNvme() ? "Sì" : "No");
+	    specs.put("Numero di porte SATA", String.valueOf(porteSata));
+	    specs.put("Numero di porte USB", String.valueOf(porteUsb));
+	    return specs;
+	}   
 
 }

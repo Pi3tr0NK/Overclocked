@@ -1,5 +1,8 @@
 package model;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class DissipatoreBean extends ProdottoBean{
 	
 	private static final long serialVersionUID = 1L;
@@ -90,6 +93,17 @@ public class DissipatoreBean extends ProdottoBean{
 		this.tdpSupportato = tdpSupportato;
 	}
     
-    
-    
+	@Override
+	public Map<String, String> getSpecifiche() {
+
+	    Map<String, String> specs = new LinkedHashMap<>();
+
+	    specs.put("Tipo", String.valueOf(tipo));
+	    specs.put("Socket supportati", socketSupportati);
+	    specs.put("Dimensioni ventola", dimensioniVentola);
+	    specs.put("RPM massimi", String.valueOf(rpmMax));
+	    specs.put("Rumore", String.valueOf(rumore));
+	    specs.put("Calore dissipato", String.valueOf(tdpSupportato));
+	    return specs;
+	}       
 }
