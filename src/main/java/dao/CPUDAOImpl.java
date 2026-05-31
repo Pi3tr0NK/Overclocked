@@ -84,7 +84,7 @@ public class CPUDAOImpl implements CPUDAO{
     }
     
     @Override
-    public synchronized Collection<CPUBean> doRetrieveAll(String categoria, String prezzo, String marca, String core, String frequenza) 
+    public synchronized Collection<CPUBean> doRetrieveAll(String categoria, double prezzo, String marca, int core, String frequenza) 
     		throws SQLException {
 
         List<CPUBean> lista = new LinkedList<>();
@@ -111,14 +111,12 @@ public class CPUDAOImpl implements CPUDAO{
             ps.setString(4, marca);
 
             // prezzo
-            Double prezzoVal = (prezzo == null || prezzo.isBlank()) ? null : Double.parseDouble(prezzo);
-            ps.setObject(5, prezzoVal);
-            ps.setObject(6, prezzoVal);
+            ps.setDouble(5, prezzo);
+            ps.setDouble(6, prezzo);
 
             // core
-            Integer coreVal = (core == null || core.isBlank()) ? null : Integer.parseInt(core);
-            ps.setObject(7, coreVal);
-            ps.setObject(8, coreVal);
+            ps.setInt(7, core);
+            ps.setInt(8, core);
 
             // frequenza
             ps.setString(9, frequenza);
