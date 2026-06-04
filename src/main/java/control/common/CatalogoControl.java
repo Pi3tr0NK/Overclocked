@@ -33,7 +33,7 @@ import dao.RAMDAOImpl;
 /**
  * Servlet implementation class CatalogoControl
  */
-@WebServlet("/CatalogoControl")
+@WebServlet("/Catalogo")
 public class CatalogoControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -69,11 +69,12 @@ public class CatalogoControl extends HttpServlet {
  
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		loadProducList(request);
+		request.getRequestDispatcher("/WEB-INF/views/common/CatalogoView.jsp").forward(request, response);
 	}
-
+	
 	private void loadProducList(HttpServletRequest request) {
 		String cat = request.getParameter("categoria");
-		Double prezzo = Double.parseDouble(request.getParameter("prezzo"));
+		Double prezzo = Double.valueOf(request.getParameter("prezzo"));
 		String marca = request.getParameter("marca");
 		if(cat.equals("PSU"))
 		{
@@ -181,5 +182,4 @@ public class CatalogoControl extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-
 }
