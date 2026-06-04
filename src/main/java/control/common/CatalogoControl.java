@@ -74,97 +74,104 @@ public class CatalogoControl extends HttpServlet {
 	
 	private void loadProducList(HttpServletRequest request) {
 		String cat = request.getParameter("categoria");
-		Double prezzo = Double.valueOf(request.getParameter("prezzo"));
+		Double prezzo;
+		if(request.getParameter("prezzo")!=null)
+			prezzo = Double.valueOf(request.getParameter("prezzo"));
+		else
+			prezzo = Double.valueOf(1000000000);
 		String marca = request.getParameter("marca");
-		if(cat.equals("PSU"))
+		if(cat!=null)
 		{
-			int potenza = Integer.parseInt(request.getParameter("potenza"));
-			String certificazione= request.getParameter("certificazione");
-			String modulare= request.getParameter("modulare");
-			try 
+			if(cat.equals("PSU"))
 			{
-				request.setAttribute("products", psuDAO.doRetrieveAll(cat, prezzo, marca, potenza, certificazione, modulare));
-			} catch (SQLException e) {
-				System.err.println("Error:" + e.getMessage());
+				Integer potenza = Integer.valueOf(request.getParameter("potenza"));
+				String certificazione= request.getParameter("certificazione");
+				String modulare= request.getParameter("modulare");
+				try
+				{
+					request.setAttribute("products", psuDAO.doRetrieveAll(cat, prezzo, marca, potenza, certificazione, modulare));
+				} catch (SQLException e) {
+					System.err.println("Error:" + e.getMessage());
+				}
 			}
-		}
-		else if(cat.equals("DISSIPATORE"))
-		{
-			String tipo= request.getParameter("tipo");
-			try 
+			else if(cat.equals("DISSIPATORE"))
 			{
-				request.setAttribute("products", dissipatoreDAO.doRetrieveAll(cat, prezzo, marca, tipo));
-			} catch (SQLException e) {
-				System.err.println("Error:" + e.getMessage());
+				String tipo= request.getParameter("tipo");
+				try 
+				{
+					request.setAttribute("products", dissipatoreDAO.doRetrieveAll(cat, prezzo, marca, tipo));
+				} catch (SQLException e) {
+					System.err.println("Error:" + e.getMessage());
+				}
 			}
-		}
-		else if(cat.equals("CPU"))
-		{
-			int core = Integer.parseInt(request.getParameter("core"));
-			String frequenza= request.getParameter("frequenza");
-			try 
+			else if(cat.equals("CPU"))
 			{
-				request.setAttribute("products", cpuDAO.doRetrieveAll(cat, prezzo, marca, core, frequenza));  
-			} catch (SQLException e) {
-				System.err.println("Error:" + e.getMessage());
+				Integer core = Integer.valueOf(request.getParameter("core"));
+				String frequenza= request.getParameter("frequenza");
+				try 
+				{
+					request.setAttribute("products", cpuDAO.doRetrieveAll(cat, prezzo, marca, core, frequenza));  
+				} catch (SQLException e) {
+					System.err.println("Error:" + e.getMessage());
+				}
 			}
-		}
-		else if(cat.equals("RAM"))
-		{
-			String capacita = request.getParameter("capacita");
-			String frequenza= request.getParameter("frequenza");
-			String tipo= request.getParameter("tipo");
-			try 
+			else if(cat.equals("RAM"))
 			{
-				request.setAttribute("products", ramDAO.doRetrieveAll(cat, prezzo, marca, capacita, frequenza, tipo));
-			} catch (SQLException e) {
-				System.err.println("Error:" + e.getMessage());
+				String capacita = request.getParameter("capacita");
+				String frequenza= request.getParameter("frequenza");
+				String tipo= request.getParameter("tipo");
+				try 
+				{
+					request.setAttribute("products", ramDAO.doRetrieveAll(cat, prezzo, marca, capacita, frequenza, tipo));
+				} catch (SQLException e) {
+					System.err.println("Error:" + e.getMessage());
+				}
 			}
-		}
-		else if(cat.equals("CASE"))
-		{
-			String formato = request.getParameter("formato");
-			String colore = request.getParameter("colore");
-			try 
+			else if(cat.equals("CASE"))
 			{
-				request.setAttribute("products", chassisDAO.doRetrieveAll(cat, prezzo, marca, formato, colore));
-			} catch (SQLException e) {
-				System.err.println("Error:" + e.getMessage());
+				String formato = request.getParameter("formato");
+				String colore = request.getParameter("colore");
+				try 
+				{
+					request.setAttribute("products", chassisDAO.doRetrieveAll(cat, prezzo, marca, formato, colore));
+				} catch (SQLException e) {
+					System.err.println("Error:" + e.getMessage());
+				}
 			}
-		}
-		else if(cat.equals("GPU"))
-		{
-			String vram = request.getParameter("vram");
-			String pcie = request.getParameter("pcie");
-			try 
+			else if(cat.equals("GPU"))
 			{
-				request.setAttribute("products", gpuDAO.doRetrieveAll(cat, prezzo, marca, vram, pcie));
-			} catch (SQLException e) {
-				System.err.println("Error:" + e.getMessage());
+				String vram = request.getParameter("vram");
+				String pcie = request.getParameter("pcie");
+				try 
+				{
+					request.setAttribute("products", gpuDAO.doRetrieveAll(cat, prezzo, marca, vram, pcie));
+				} catch (SQLException e) {
+					System.err.println("Error:" + e.getMessage());
+				}
 			}
-		}
-		else if(cat.equals("MOBO"))
-		{
-			String formato = request.getParameter("formato");
-			String nvme = request.getParameter("nvme"); //forse qua bisogna passare un booleano
-			int slotram = Integer.parseInt(request.getParameter("slotram"));
-			try 
+			else if(cat.equals("MOBO"))
 			{
-				request.setAttribute("products", moboDAO.doRetrieveAll(cat, prezzo, marca, formato, nvme, slotram));
-			} catch (SQLException e) {
-				System.err.println("Error:" + e.getMessage());
+				String formato = request.getParameter("formato");
+				String nvme = request.getParameter("nvme"); //forse qua bisogna passare un booleano
+				int slotram = Integer.parseInt(request.getParameter("slotram"));
+				try 
+				{
+					request.setAttribute("products", moboDAO.doRetrieveAll(cat, prezzo, marca, formato, nvme, slotram));
+				} catch (SQLException e) {
+					System.err.println("Error:" + e.getMessage());
+				}
 			}
-		}
-		else if(cat.equals("STORAGE"))
-		{
-			String capacita = request.getParameter("capacita");
-			String tipo = request.getParameter("tipo");
-			String tecnologia = request.getParameter("tecnologia");
-			try 
+			else if(cat.equals("STORAGE"))
 			{
-				request.setAttribute("products", memoriaDAO.doRetrieveAll(cat, prezzo, marca, capacita, tipo, tecnologia));
-			} catch (SQLException e) {
-				System.err.println("Error:" + e.getMessage());
+				String capacita = request.getParameter("capacita");
+				String tipo = request.getParameter("tipo");
+				String tecnologia = request.getParameter("tecnologia");
+				try 
+				{
+					request.setAttribute("products", memoriaDAO.doRetrieveAll(cat, prezzo, marca, capacita, tipo, tecnologia));
+				} catch (SQLException e) {
+					System.err.println("Error:" + e.getMessage());
+				}
 			}
 		}
 		else

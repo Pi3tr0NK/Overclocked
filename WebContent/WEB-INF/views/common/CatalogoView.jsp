@@ -10,69 +10,34 @@
 <style>
 body {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Arial;
     display: flex;
-    background: #0f0f0f;
+    background: #111;
     color: white;
 }
 
-/* SIDEBAR */
 .sidebar {
-    width: 300px;
+    width: 280px;
     padding: 20px;
-    background: #1b1b1b;
-    height: 100vh;
-    box-sizing: border-box;
+    background: #1a1a1a;
 }
 
-.sidebar h2 {
-    margin-top: 0;
-    color: #ff8c00;
-}
-
-label {
-    font-size: 14px;
-    display: block;
-    margin-top: 10px;
-    margin-bottom: 5px;
-}
-
-input, select {
-    width: 100%;
-    padding: 8px;
-    border: none;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    background: #2a2a2a;
-    color: white;
-}
-
-button {
-    width: 100%;
-    padding: 10px;
-    background: #ff8c00;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-button:hover {
-    background: #ffa733;
-}
-
-/* CONTENT */
 .content {
     flex: 1;
     padding: 20px;
 }
 
-.product {
-    background: #1e1e1e;
-    padding: 15px;
+input, select {
+    width: 100%;
     margin-bottom: 10px;
-    border-radius: 10px;
-    border-left: 4px solid #ff8c00;
+    padding: 8px;
+}
+
+.product {
+    background: #222;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
 }
 </style>
 
@@ -80,78 +45,75 @@ button:hover {
 
 <body>
 
-<!-- ===================== -->
-<!-- SIDEBAR -->
-<!-- ===================== -->
+<!-- SIDEBAR FILTRI -->
 <div class="sidebar">
 
-<h2>Catalogo PC</h2>
-
-<form action="Catalogo" method="get">
+<form action="CatalogoControl" method="get">
 
     <label>Categoria</label>
     <select name="categoria" onchange="this.form.submit()">
-        <option value="">Tutte</option>
-        <option value="CPU">CPU</option>
-        <option value="GPU">GPU</option>
-        <option value="RAM">RAM</option>
-        <option value="MOBO">MOBO</option>
-        <option value="PSU">PSU</option>
-        <option value="CASE">CASE</option>
-        <option value="DISSIPATORE">Dissipatore</option>
-        <option value="STORAGE">Storage</option>
+        <option value="tutte">Tutte</option>
+        <option value="CPU" ${param.categoria == 'CPU' ? 'selected' : ''}>CPU</option>
+        <option value="GPU" ${param.categoria == 'GPU' ? 'selected' : ''}>GPU</option>
+        <option value="RAM" ${param.categoria == 'RAM' ? 'selected' : ''}>RAM</option>
+        <option value="MOBO" ${param.categoria == 'MOBO' ? 'selected' : ''}>MOBO</option>
+        <option value="PSU" ${param.categoria == 'PSU' ? 'selected' : ''}>PSU</option>
+        <option value="CASE" ${param.categoria == 'CASE' ? 'selected' : ''}>CASE</option>
+        <option value="DISSIPATORE" ${param.categoria == 'DISSIPATORE' ? 'selected' : ''}>Dissipatore</option>
+        <option value="STORAGE" ${param.categoria == 'STORAGE' ? 'selected' : ''}>Storage</option>
     </select>
 
-    <!-- FILTRI BASE (SEMPRE PRESENTI) -->
     <label>Prezzo max</label>
-    <input type="number" name="prezzo" value="1500">
+    <input type="number" name="prezzo" step="0.01">
 
     <label>Marca</label>
-    <input type="text" name="marca" value="">
+    <input type="text" name="marca">
+
 
     <!-- ===================== -->
-    <!-- CPU -->
+    <!-- FILTRI DINAMICI CPU -->
     <!-- ===================== -->
     <c:if test="${param.categoria == 'CPU'}">
         <label>Core</label>
-        <input type="number" name="core" value="8">
+        <input type="number" name="core">
 
         <label>Frequenza</label>
-        <input type="text" name="frequenza" value="3.6">
+        <input type="text" name="frequenza">
     </c:if>
 
     <!-- GPU -->
     <c:if test="${param.categoria == 'GPU'}">
         <label>VRAM</label>
-        <input type="text" name="vram" value="8GB">
+        <input type="text" name="vram">
 
         <label>PCIe</label>
-        <input type="text" name="pcie" value="4.0">
+        <input type="text" name="pcie">
     </c:if>
 
     <!-- RAM -->
     <c:if test="${param.categoria == 'RAM'}">
         <label>Capacità</label>
-        <input type="text" name="capacita" value="16GB">
+        <input type="text" name="capacita">
 
         <label>Frequenza</label>
-        <input type="text" name="frequenza" value="3200">
+        <input type="text" name="frequenza">
 
         <label>Tipo</label>
-        <input type="text" name="tipo" value="DDR4">
+        <input type="text" name="tipo">
     </c:if>
 
     <!-- PSU -->
     <c:if test="${param.categoria == 'PSU'}">
         <label>Potenza</label>
-        <input type="number" name="potenza" value="750">
+        <input type="number" name="potenza">
 
         <label>Certificazione</label>
-        <input type="text" name="certificazione" value="Gold">
+        <input type="text" name="certificazione">
 
         <label>Modulare</label>
         <select name="modulare">
-            <option value="si" selected>Si</option>
+            <option value="">--</option>
+            <option value="si">Si</option>
             <option value="no">No</option>
         </select>
     </c:if>
@@ -159,37 +121,38 @@ button:hover {
     <!-- CASE -->
     <c:if test="${param.categoria == 'CASE'}">
         <label>Formato</label>
-        <input type="text" name="formato" value="ATX">
+        <input type="text" name="formato">
 
         <label>Colore</label>
-        <input type="text" name="colore" value="nero">
+        <input type="text" name="colore">
     </c:if>
 
     <!-- MOBO -->
     <c:if test="${param.categoria == 'MOBO'}">
         <label>Formato</label>
-        <input type="text" name="formato" value="ATX">
+        <input type="text" name="formato">
 
         <label>NVMe</label>
         <select name="nvme">
-            <option value="si" selected>Si</option>
+            <option value="">--</option>
+            <option value="si">Si</option>
             <option value="no">No</option>
         </select>
 
         <label>Slot RAM</label>
-        <input type="number" name="slotram" value="4">
+        <input type="number" name="slotram">
     </c:if>
 
     <!-- STORAGE -->
     <c:if test="${param.categoria == 'STORAGE'}">
         <label>Capacità</label>
-        <input type="text" name="capacita" value="1TB">
+        <input type="text" name="capacita">
 
         <label>Tipo</label>
-        <input type="text" name="tipo" value="SSD">
+        <input type="text" name="tipo">
 
         <label>Tecnologia</label>
-        <input type="text" name="tecnologia" value="NVMe">
+        <input type="text" name="tecnologia">
     </c:if>
 
     <button type="submit">Filtra</button>
@@ -198,8 +161,9 @@ button:hover {
 
 </div>
 
+
 <!-- ===================== -->
-<!-- CONTENT -->
+<!-- RISULTATI -->
 <!-- ===================== -->
 <div class="content">
 
