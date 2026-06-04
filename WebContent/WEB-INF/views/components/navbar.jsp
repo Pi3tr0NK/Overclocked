@@ -92,7 +92,7 @@
                 </a>
             </c:when>
             <c:otherwise>
-                <a class="nav-btn" href="${pageContext.request.contextPath}/login">
+                <a class="nav-btn" href="${pageContext.request.contextPath}/indexlogin">
                     ACCEDI
                 </a>
             </c:otherwise>

@@ -70,7 +70,7 @@ public class MemoriaDAOImpl implements MemoriaDAO {
         		mem.setPrezzo(rs.getDouble("prezzo"));
         		mem.setStock(rs.getInt("stock"));
         		mem.setDimensioni(rs.getString("dimensioni"));
-            mem.setPeso(rs.getString("peso"));
+        		mem.setPeso(rs.getString("peso"));
         		mem.setAttivo(rs.getBoolean("attivo"));
         		mem.setSconto(rs.getInt("sconto"));
         		mem.setCategoria(rs.getString("categoria"));

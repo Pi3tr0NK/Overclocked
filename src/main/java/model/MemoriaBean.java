@@ -87,7 +87,7 @@ public class MemoriaBean extends ProdottoBean{
 	    specs.put("Velocità lettura", String.valueOf(velLettura));
 	    specs.put("Tipo", tipo.name());
 	    specs.put("Tecnologia Ram", tecnologia.name());
-	    specs.put("Formato Ram", formato);
+	    specs.put("Formato", formato);
 	    return specs;
 	}
 	
