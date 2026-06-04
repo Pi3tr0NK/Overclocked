@@ -74,6 +74,7 @@ public class CatalogoControl extends HttpServlet {
 	
 	private void loadProducList(HttpServletRequest request) {
 		String cat = request.getParameter("categoria");
+		cat = (cat == null || cat.trim().isEmpty()) ? null : cat;
 		String prezzo= request.getParameter("prezzo"); //double
 		String marca = request.getParameter("marca");
 		if(cat!=null)
@@ -149,7 +150,7 @@ public class CatalogoControl extends HttpServlet {
 			{
 				String formato = request.getParameter("formato");
 				String nvme = request.getParameter("nvme"); //forse qua bisogna passare un booleano
-				int slotram = Integer.parseInt(request.getParameter("slotram"));
+				String slotram = request.getParameter("slotram"); //integer
 				try 
 				{
 					request.setAttribute("products", moboDAO.doRetrieveAll(cat, prezzo, marca, formato, nvme, slotram));

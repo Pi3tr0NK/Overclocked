@@ -68,10 +68,11 @@
 
 </style>
 <nav class="navbar">
-
+	
     <div class="nav-left">
-        <img src="${pageContext.request.contextPath}/img/logo.png" alt="Overclocked Logo">
-    </div>
+	        <a href=${pageContext.request.contextPath}/home><img src="${pageContext.request.contextPath}/img/logo.png" alt="Overclocked Logo"></a>
+	</div>
+	
 
     <div class="nav-center">
         <form action="${pageContext.request.contextPath}/Catalogo" method="get">

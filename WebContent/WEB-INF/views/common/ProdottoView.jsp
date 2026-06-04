@@ -12,7 +12,8 @@ ProdottoBean p =
 <head>
 <meta charset="UTF-8">
 <title><%= p.getNome() %></title>
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
+ 
 <style>
 
 body{
@@ -312,6 +313,11 @@ body{
     font-weight: bold;
     font-size: 14px;
 }
+
+</style>
+
+
+<style type="text/css">
 
 </style>
 
