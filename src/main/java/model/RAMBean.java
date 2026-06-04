@@ -1,5 +1,8 @@
 package model;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 public class RAMBean extends ProdottoBean {
 
 	private static final long serialVersionUID = 1L;
@@ -45,6 +48,16 @@ public class RAMBean extends ProdottoBean {
 		this.tipo = tipo;
 	}
     
-    
+	@Override
+	public Map<String, String> getSpecifiche() {
+
+	    Map<String, String> specs = new LinkedHashMap<>();
+
+	    specs.put("Capacita", capacita);
+	    specs.put("Frequenza", frequenza);
+	    specs.put("Tipo", tipo);
+	    return specs;
+	    
+	} 
 
 }

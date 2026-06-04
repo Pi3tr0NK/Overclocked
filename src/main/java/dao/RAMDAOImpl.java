@@ -39,7 +39,7 @@ public class RAMDAOImpl implements RAMDAO{
 
 	public synchronized RAMBean doRetrieveByKey(int idRAM) throws SQLException {
 
-	    String sql = "SELECT * FROM " + TABLE_NAME + " r JOIN prodotto p ON r.fk_prodotto = p.id_prodotto WHERE r.id_ram = ?";
+	    String sql = "SELECT * FROM " + TABLE_NAME + " r JOIN prodotto p ON r.fk_prodotto = p.id_prodotto WHERE p.id_prodotto = ?";
 
 	    try (Connection con = ds.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql)) {
