@@ -86,10 +86,24 @@ public class CPUDAOImpl implements CPUDAO{
     }
     
     @Override
-    public synchronized Collection<CPUBean> doRetrieveAll(String categoria, double prezzo, String marca, int core, String frequenza) 
+    public synchronized Collection<CPUBean> doRetrieveAll(String categoria, String prezzo, String marca, String core, String frequenza) 
     		throws SQLException {
 
         List<CPUBean> lista = new LinkedList<>();
+        
+        categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
+        marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
+        frequenza = (frequenza == null || frequenza.trim().isEmpty()) ? null : frequenza;
+
+        Double prezzoMax = null;
+        if (prezzo != null && !prezzo.trim().isEmpty()) {
+            prezzoMax = Double.parseDouble(prezzo);
+        }
+
+        Integer coreInt = null;
+        if (core != null && !core.trim().isEmpty()) {
+            coreInt = Integer.parseInt(core);
+        }
 
         String sql =
             "SELECT * " +
@@ -110,11 +124,21 @@ public class CPUDAOImpl implements CPUDAO{
             ps.setString(3, marca);
             ps.setString(4, marca);
 
-            ps.setDouble(5, prezzo);
-            ps.setDouble(6, prezzo);
+            if (prezzoMax == null) {
+                ps.setNull(5, java.sql.Types.DOUBLE);
+                ps.setNull(6, java.sql.Types.DOUBLE);
+            } else {
+                ps.setDouble(5, prezzoMax);
+                ps.setDouble(6, prezzoMax);
+            }
 
-            ps.setInt(7, core);
-            ps.setInt(8, core);
+            if (coreInt == null) {
+                ps.setNull(7, java.sql.Types.INTEGER);
+                ps.setNull(8, java.sql.Types.INTEGER);
+            } else {
+                ps.setInt(7, coreInt);
+                ps.setInt(8, coreInt);
+            }
 
             ps.setString(9, frequenza);
             ps.setString(10, frequenza);

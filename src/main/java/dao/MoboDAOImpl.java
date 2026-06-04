@@ -95,10 +95,26 @@ public class MoboDAOImpl implements MoboDAO{
 	}
 	
 	@Override
-	public synchronized Collection<MoboBean> doRetrieveAll(String categoria, double prezzo, String marca, String formato, String nvme, int slotram) 
+	public synchronized Collection<MoboBean> doRetrieveAll(String categoria, String prezzo, String marca, String formato, String nvme, String slotram) 
 			throws SQLException {
 
 	    List<MoboBean> lista = new LinkedList<>();
+	    
+	    categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
+	    marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
+	    formato = (formato == null || formato.trim().isEmpty()) ? null : formato;
+	    nvme = (nvme == null || nvme.trim().isEmpty()) ? null : nvme;
+	    slotram = (slotram == null || slotram.trim().isEmpty()) ? null : slotram;
+
+	    Double prezzoMax = null;
+	    if (prezzo != null && !prezzo.trim().isEmpty()) {
+	        prezzoMax = Double.parseDouble(prezzo);
+	    }
+
+	    Integer slotRamInt = null;
+	    if (slotram != null) {
+	        slotRamInt = Integer.parseInt(slotram);
+	    }
 
 	    String sql =
 	        "SELECT * " +
@@ -120,8 +136,13 @@ public class MoboDAOImpl implements MoboDAO{
 	        ps.setString(3, marca);
 	        ps.setString(4, marca);
 
-	        ps.setDouble(5, prezzo);
-	        ps.setDouble(6, prezzo);
+	        if (prezzoMax == null) {
+	            ps.setNull(5, java.sql.Types.DOUBLE);
+	            ps.setNull(6, java.sql.Types.DOUBLE);
+	        } else {
+	            ps.setDouble(5, prezzoMax);
+	            ps.setDouble(6, prezzoMax);
+	        }
 
 	        ps.setString(7, formato);
 	        ps.setString(8, formato);
@@ -129,8 +150,14 @@ public class MoboDAOImpl implements MoboDAO{
 	        ps.setString(9, nvme);
 	        ps.setString(10, nvme);
 
-	        ps.setInt(11, slotram);
-	        ps.setInt(12, slotram);
+	        if (slotRamInt == null) {
+	            ps.setNull(11, java.sql.Types.INTEGER);
+	            ps.setNull(12, java.sql.Types.INTEGER);
+	        } else {
+	            ps.setInt(11, slotRamInt);
+	            ps.setInt(12, slotRamInt);
+	        }
+
 
 	        try (ResultSet rs = ps.executeQuery()) {
 

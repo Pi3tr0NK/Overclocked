@@ -89,10 +89,19 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
     }
     
     @Override
-    public synchronized Collection<DissipatoreBean> doRetrieveAll(String categoria,double prezzo,String marca,String tipo) 
+    public synchronized Collection<DissipatoreBean> doRetrieveAll(String categoria,String prezzo,String marca,String tipo) 
     		throws SQLException {
 
         List<DissipatoreBean> lista = new LinkedList<>();
+        
+        categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
+        marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
+        tipo = (tipo == null || tipo.trim().isEmpty()) ? null : tipo;
+
+        Double prezzoMax = null;
+        if (prezzo != null && !prezzo.trim().isEmpty()) {
+            prezzoMax = Double.parseDouble(prezzo);
+        }
 
         String sql =
             "SELECT * " +
@@ -112,8 +121,13 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
             ps.setString(3, marca);
             ps.setString(4, marca);
 
-            ps.setDouble(5, prezzo);
-            ps.setDouble(6, prezzo);
+            if (prezzoMax == null) {
+                ps.setNull(5, java.sql.Types.DOUBLE);
+                ps.setNull(6, java.sql.Types.DOUBLE);
+            } else {
+                ps.setDouble(5, prezzoMax);
+                ps.setDouble(6, prezzoMax);
+            }
 
             ps.setString(7, tipo);
             ps.setString(8, tipo);

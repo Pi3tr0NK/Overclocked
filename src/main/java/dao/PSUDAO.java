@@ -11,7 +11,7 @@ public interface PSUDAO {
 	
 	public PSUBean doRetrieveByKey(int idPSU) throws SQLException;
 	
-	public Collection<PSUBean> doRetrieveAll(String categoria, double prezzo,String marca, int potenza, String certificazione, String modulare) throws SQLException;
+	public Collection<PSUBean> doRetrieveAll(String categoria, String prezzo,String marca, String potenza, String certificazione, String modulare) throws SQLException;
 	
 	public boolean doUpdate(PSUBean p) throws SQLException;
 	

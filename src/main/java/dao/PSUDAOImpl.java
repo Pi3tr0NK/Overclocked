@@ -86,9 +86,24 @@ public class PSUDAOImpl implements PSUDAO {
     }
     
     @Override
-    public synchronized Collection<PSUBean> doRetrieveAll(String categoria, double prezzo, String marca, int potenza, String certificazione, String modulare) throws SQLException
+    public synchronized Collection<PSUBean> doRetrieveAll(String categoria, String prezzo, String marca, String potenza, String certificazione, String modulare) throws SQLException
     {
-    	 List<PSUBean> lista = new LinkedList<>();
+	    	 List<PSUBean> lista = new LinkedList<>();
+	    	 
+	    	 categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
+	    	 marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
+	    	 certificazione = (certificazione == null || certificazione.trim().isEmpty()) ? null : certificazione;
+	    	 modulare = (modulare == null || modulare.trim().isEmpty()) ? null : modulare;
+	
+	    	 Double prezzoMax = null;
+	    	 if (prezzo != null && !prezzo.trim().isEmpty()) {
+	    	     prezzoMax = Double.parseDouble(prezzo);
+	    	 }
+	
+	    	 Integer potenzaInt = null;
+	    	 if (potenza != null && !potenza.trim().isEmpty()) {
+	    	     potenzaInt = Integer.parseInt(potenza);
+	    	 }
 
          String sql =
              "SELECT * " +
@@ -110,11 +125,21 @@ public class PSUDAOImpl implements PSUDAO {
              ps.setString(3, marca);
              ps.setString(4, marca);
 
-             ps.setDouble(5, prezzo);
-             ps.setDouble(6, prezzo);
+             if (prezzoMax == null) {
+                 ps.setNull(5, java.sql.Types.DOUBLE);
+                 ps.setNull(6, java.sql.Types.DOUBLE);
+             } else {
+                 ps.setDouble(5, prezzoMax);
+                 ps.setDouble(6, prezzoMax);
+             }
 
-             ps.setInt(7, potenza);
-             ps.setInt(8, potenza);
+             if (potenzaInt == null) {
+                 ps.setNull(7, java.sql.Types.INTEGER);
+                 ps.setNull(8, java.sql.Types.INTEGER);
+             } else {
+                 ps.setInt(7, potenzaInt);
+                 ps.setInt(8, potenzaInt);
+             }
 
              ps.setString(9, certificazione);
              ps.setString(10, certificazione);

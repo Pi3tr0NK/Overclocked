@@ -93,10 +93,17 @@ public class ProdottoDAOImpl implements ProdottoDAO{
     }
     
     @Override
-    public synchronized Collection<ProdottoBean> doRetrieveAll(double prezzo, String marca) 
+    public synchronized Collection<ProdottoBean> doRetrieveAll(String prezzo, String marca) 
     		throws SQLException {
 
         List<ProdottoBean> lista = new LinkedList<>();
+        
+        marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
+
+        Double prezzoMax = null;
+        if (prezzo != null && !prezzo.trim().isEmpty()) {
+            prezzoMax = Double.parseDouble(prezzo);
+        }
 
         String sql =
             "SELECT * " +
@@ -110,8 +117,14 @@ public class ProdottoDAOImpl implements ProdottoDAO{
             ps.setString(1, marca);
             ps.setString(2, marca);
 
-            ps.setDouble(3, prezzo);
-            ps.setDouble(4, prezzo);
+            if (prezzoMax == null) {
+                ps.setNull(3, java.sql.Types.DOUBLE);
+                ps.setNull(4, java.sql.Types.DOUBLE);
+            } else {
+                ps.setDouble(3, prezzoMax);
+                ps.setDouble(4, prezzoMax);
+            }
+
 
             try (ResultSet rs = ps.executeQuery()) {
 

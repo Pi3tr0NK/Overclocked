@@ -74,17 +74,13 @@ public class CatalogoControl extends HttpServlet {
 	
 	private void loadProducList(HttpServletRequest request) {
 		String cat = request.getParameter("categoria");
-		Double prezzo;
-		if(request.getParameter("prezzo")!=null)
-			prezzo = Double.valueOf(request.getParameter("prezzo"));
-		else
-			prezzo = Double.valueOf(1000000000);
+		String prezzo= request.getParameter("prezzo"); //double
 		String marca = request.getParameter("marca");
 		if(cat!=null)
 		{
 			if(cat.equals("PSU"))
 			{
-				Integer potenza = Integer.valueOf(request.getParameter("potenza"));
+				String potenza = request.getParameter("potenza"); //integer
 				String certificazione= request.getParameter("certificazione");
 				String modulare= request.getParameter("modulare");
 				try
@@ -106,7 +102,7 @@ public class CatalogoControl extends HttpServlet {
 			}
 			else if(cat.equals("CPU"))
 			{
-				Integer core = Integer.valueOf(request.getParameter("core"));
+				String core = request.getParameter("core"); //integer
 				String frequenza= request.getParameter("frequenza");
 				try 
 				{

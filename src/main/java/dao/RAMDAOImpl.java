@@ -78,10 +78,21 @@ public class RAMDAOImpl implements RAMDAO{
 	}
 	
 	@Override
-	public synchronized Collection<RAMBean> doRetrieveAll(String categoria, double prezzo, String marca, String capacita, String frequenza, String tipo) 
+	public synchronized Collection<RAMBean> doRetrieveAll(String categoria, String prezzo, String marca, String capacita, String frequenza, String tipo) 
 			throws SQLException {
 
 	    List<RAMBean> lista = new LinkedList<>();
+	    
+	    categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
+	    marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
+	    capacita = (capacita == null || capacita.trim().isEmpty()) ? null : capacita;
+	    frequenza = (frequenza == null || frequenza.trim().isEmpty()) ? null : frequenza;
+	    tipo = (tipo == null || tipo.trim().isEmpty()) ? null : tipo;
+	    
+	    Double prezzoMax = null;
+	    if (prezzo != null && !prezzo.trim().isEmpty()) {
+	        prezzoMax = Double.parseDouble(prezzo);
+	    }
 
 	    String sql =
 	        "SELECT * " +
@@ -103,8 +114,13 @@ public class RAMDAOImpl implements RAMDAO{
 	        ps.setString(3, marca);
 	        ps.setString(4, marca);
 
-	        ps.setDouble(5, prezzo);
-	        ps.setDouble(6, prezzo);
+	        if (prezzoMax == null) {
+	            ps.setNull(5, java.sql.Types.DOUBLE);
+	            ps.setNull(6, java.sql.Types.DOUBLE);
+	        } else {
+	            ps.setDouble(5, prezzoMax);
+	            ps.setDouble(6, prezzoMax);
+	        }
 
 	        ps.setString(7, capacita);
 	        ps.setString(8, capacita);

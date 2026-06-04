@@ -81,11 +81,21 @@ public class ChassisDAOImpl implements ChassisDAO{
 	}
 	
 	@Override
-	public synchronized Collection<ChassisBean> doRetrieveAll(String categoria, double prezzo, String marca, String formato, String colore) 
+	public synchronized Collection<ChassisBean> doRetrieveAll(String categoria, String prezzo, String marca, String formato, String colore) 
 			throws SQLException {
 
 	    List<ChassisBean> lista = new LinkedList<>();
+	    
+	    categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
+	    marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
+	    formato = (formato == null || formato.trim().isEmpty()) ? null : formato;
+	    colore = (colore == null || colore.trim().isEmpty()) ? null : colore;
 
+	    Double prezzoMax = null;
+	    if (prezzo != null && !prezzo.trim().isEmpty()) {
+	        prezzoMax = Double.parseDouble(prezzo);
+	    }
+	    
 	    String sql =
 	        "SELECT * " +
 	        "FROM chassis ch " +
@@ -104,9 +114,14 @@ public class ChassisDAOImpl implements ChassisDAO{
 
 	        ps.setString(3, marca);
 	        ps.setString(4, marca);
-
-	        ps.setDouble(5, prezzo);
-	        ps.setDouble(6, prezzo);
+	        
+	        if (prezzoMax == null) {
+	            ps.setNull(5, java.sql.Types.DOUBLE);
+	            ps.setNull(6, java.sql.Types.DOUBLE);
+	        } else {
+	            ps.setDouble(5, prezzoMax);
+	            ps.setDouble(6, prezzoMax);
+	        }
 
 	        ps.setString(7, formato);
 	        ps.setString(8, formato);

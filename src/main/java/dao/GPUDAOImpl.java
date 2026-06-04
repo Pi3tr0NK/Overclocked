@@ -83,10 +83,20 @@ public class GPUDAOImpl implements GPUDAO {
 	}
 	
 	@Override
-	public synchronized List<GPUBean> doRetrieveAll(String categoria, double prezzo, String marca, String vram, String pcie) 
+	public synchronized List<GPUBean> doRetrieveAll(String categoria, String prezzo, String marca, String vram, String pcie) 
 			throws SQLException {
 
 	    List<GPUBean> lista = new LinkedList<>();
+	    
+	    categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
+	    marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
+	    vram = (vram == null || vram.trim().isEmpty()) ? null : vram;
+	    pcie = (pcie == null || pcie.trim().isEmpty()) ? null : pcie;
+
+	    Double prezzoMax = null;
+	    if (prezzo != null && !prezzo.trim().isEmpty()) {
+	        prezzoMax = Double.parseDouble(prezzo);
+	    }
 
 	    String sql =
 	        "SELECT * " +
@@ -107,8 +117,13 @@ public class GPUDAOImpl implements GPUDAO {
 	        ps.setString(3, marca);
 	        ps.setString(4, marca);
 
-	        ps.setDouble(5, prezzo);
-	        ps.setDouble(6, prezzo);
+	        if (prezzoMax == null) {
+	            ps.setNull(5, java.sql.Types.DOUBLE);
+	            ps.setNull(6, java.sql.Types.DOUBLE);
+	        } else {
+	            ps.setDouble(5, prezzoMax);
+	            ps.setDouble(6, prezzoMax);
+	        }
 
 	        ps.setString(7, vram);
 	        ps.setString(8, vram);
