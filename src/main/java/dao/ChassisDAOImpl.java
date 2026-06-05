@@ -102,7 +102,7 @@ public class ChassisDAOImpl implements ChassisDAO{
 	        "JOIN prodotto p ON ch.fk_prodotto = p.id_prodotto " +
 	        "WHERE (? IS NULL OR p.categoria = ?) " +
 	        "AND (? IS NULL OR p.marca = ?) " +
-	        "AND (? IS NULL OR p.prezzo <= ?) " +
+	        "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
 	        "AND (? IS NULL OR ch.formato = ?) " +
 	        "AND (? IS NULL OR ch.colore = ?)";
 

@@ -122,10 +122,10 @@ public class MoboDAOImpl implements MoboDAO{
 	        "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto " +
 	        "WHERE (? IS NULL OR p.categoria = ?) " +
 	        "AND (? IS NULL OR p.marca = ?) " +
-	        "AND (? IS NULL OR p.prezzo <= ?) " +
+	        "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
 	        "AND (? IS NULL OR m.formato = ?) " +
 	        "AND (? IS NULL OR m.nvme = ?) " +
-	        "AND (? = 0 OR m.slotram = ?)";
+	        "AND (? IS NULL OR m.slotram = ?)";
 
 	    try (Connection con = ds.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql)) {

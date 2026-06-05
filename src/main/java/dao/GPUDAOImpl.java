@@ -104,7 +104,7 @@ public class GPUDAOImpl implements GPUDAO {
 	        "JOIN prodotto p ON g.fk_prodotto = p.id_prodotto " +
 	        "WHERE (? IS NULL OR p.categoria = ?) " +
 	        "AND (? IS NULL OR p.marca = ?) " +
-	        "AND (? IS NULL OR p.prezzo <= ?) " +
+	        "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
 	        "AND (? IS NULL OR g.vram = ?) " +
 	        "AND (? IS NULL OR g.pcie = ?)";
 

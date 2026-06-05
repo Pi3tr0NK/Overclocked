@@ -111,7 +111,7 @@ public class CPUDAOImpl implements CPUDAO{
             "JOIN prodotto p ON c.fk_prodotto = p.id_prodotto " +
             "WHERE (? IS NULL OR p.categoria = ?) " +
             "AND (? IS NULL OR p.marca = ?) " +
-            "AND (? IS NULL OR p.prezzo <= ?) " +
+            "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
             "AND (? IS NULL OR c.core = ?) " +
             "AND (? IS NULL OR c.frequenza = ?)";
 

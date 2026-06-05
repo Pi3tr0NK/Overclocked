@@ -113,7 +113,7 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 	        "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto " +
 	        "WHERE (? IS NULL OR p.categoria = ?) " +
 	        "AND (? IS NULL OR p.marca = ?) " +
-	        "AND (? IS NULL OR p.prezzo <= ?) " +
+	        "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
 	        "AND (? IS NULL OR m.capacita = ?) " +
 	        "AND (? IS NULL OR m.tipo = ?) " +
 	        "AND (? IS NULL OR m.tecnologia = ?)";

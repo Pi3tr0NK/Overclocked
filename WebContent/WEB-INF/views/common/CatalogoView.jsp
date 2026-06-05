@@ -139,11 +139,10 @@
 
                     <label>NVMe supportato</label>
                     <select name="nvme" onchange="this.form.submit()">
-                        <option value=""     ${empty param.nvme          ? 'selected' : ''}>Tutti</option>
+                        <option value=""     ${empty param.nvme          ? 'selected' : ''}>Si/No</option>
                         <option value="true" ${param.nvme == 'true'      ? 'selected' : ''}>Sì</option>
                         <option value="false"${param.nvme == 'false'     ? 'selected' : ''}>No</option>
                     </select>
-
                 </c:when>
 
                 <%-- PSU: potenza (int), certificazione (varchar), modulare (enum) --%>

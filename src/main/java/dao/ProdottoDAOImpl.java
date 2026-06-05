@@ -109,7 +109,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
             "SELECT * " +
             "FROM prodotto p " +
             "WHERE (? IS NULL OR p.marca = ?) " +
-            "AND (? IS NULL OR p.prezzo <= ?)";
+            "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?)";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {

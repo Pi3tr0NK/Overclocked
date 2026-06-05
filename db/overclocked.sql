@@ -49,7 +49,7 @@ CREATE TABLE prodotto(
     dimensioni varchar(50),		
     peso varchar(50),
     attivo boolean,
-    sconto int CHECK (sconto >= 0 AND sconto <= 100),
+    sconto INT NOT NULL DEFAULT 0 CHECK (sconto >= 0 AND sconto <= 100),
     categoria varchar(50) NOT NULL
 );
 

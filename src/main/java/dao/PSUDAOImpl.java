@@ -111,8 +111,8 @@ public class PSUDAOImpl implements PSUDAO {
              "JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto " +
              "WHERE (? IS NULL OR p.categoria = ?) " +
              "AND (? IS NULL OR p.marca = ?) " +
-             "AND (? IS NULL OR p.prezzo <= ?) " +
-             "AND (? = 0 OR ps.potenza = ?) " +
+             "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
+             "AND (? IS NULL OR ps.potenza = ?) " +
              "AND (? IS NULL OR ps.certificazione = ?) " +
              "AND (? IS NULL OR ps.modulare = ?)";
 
