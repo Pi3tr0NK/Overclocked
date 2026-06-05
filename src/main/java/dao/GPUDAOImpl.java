@@ -83,7 +83,7 @@ public class GPUDAOImpl implements GPUDAO {
 	}
 	
 	@Override
-	public synchronized List<GPUBean> doRetrieveAll(String categoria, String prezzo, String marca, String vram, String pcie) 
+	public synchronized List<GPUBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String vram, String pcie) 
 			throws SQLException {
 
 	    List<GPUBean> lista = new LinkedList<>();
@@ -106,7 +106,8 @@ public class GPUDAOImpl implements GPUDAO {
 	        "AND (? IS NULL OR p.marca = ?) " +
 	        "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
 	        "AND (? IS NULL OR g.vram = ?) " +
-	        "AND (? IS NULL OR g.pcie = ?)";
+	        "AND (? IS NULL OR g.pcie = ?) "+
+	        "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
 	    try (Connection con = ds.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql)) {
@@ -130,6 +131,11 @@ public class GPUDAOImpl implements GPUDAO {
 
 	        ps.setString(9, pcie);
 	        ps.setString(10, pcie);
+	        
+	        ps.setString(11, cerca);
+	        ps.setString(12, cerca);
+	        ps.setString(13, cerca);
+	        ps.setString(14, cerca);
 
 	        try (ResultSet rs = ps.executeQuery()) {
 

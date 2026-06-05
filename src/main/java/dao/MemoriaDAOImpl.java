@@ -90,7 +90,7 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 	}
 	
 	@Override
-	public synchronized Collection<MemoriaBean> doRetrieveAll(String categoria, String prezzo, String marca, String capacita, String tipo, String tecnologia) 
+	public synchronized Collection<MemoriaBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String capacita, String tipo, String tecnologia) 
 			throws SQLException {
 
 	    List<MemoriaBean> lista = new LinkedList<>();
@@ -116,7 +116,8 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 	        "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
 	        "AND (? IS NULL OR m.capacita = ?) " +
 	        "AND (? IS NULL OR m.tipo = ?) " +
-	        "AND (? IS NULL OR m.tecnologia = ?)";
+	        "AND (? IS NULL OR m.tecnologia = ?) "+
+	        "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
 	    try (Connection con = ds.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql)) {
@@ -143,6 +144,11 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 
 	        ps.setString(11, tecnologia);
 	        ps.setString(12, tecnologia);
+	        
+	        ps.setString(13, cerca);
+	        ps.setString(14, cerca);
+	        ps.setString(15, cerca);
+	        ps.setString(16, cerca);
 
 	        try (ResultSet rs = ps.executeQuery()) {
 

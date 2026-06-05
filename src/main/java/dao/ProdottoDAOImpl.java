@@ -93,7 +93,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
     }
     
     @Override
-    public synchronized Collection<ProdottoBean> doRetrieveAll(String prezzo, String marca) 
+    public synchronized Collection<ProdottoBean> doRetrieveAll(String cerca, String prezzo, String marca) 
     		throws SQLException {
 
         List<ProdottoBean> lista = new LinkedList<>();
@@ -109,7 +109,8 @@ public class ProdottoDAOImpl implements ProdottoDAO{
             "SELECT * " +
             "FROM prodotto p " +
             "WHERE (? IS NULL OR p.marca = ?) " +
-            "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?)";
+            "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "+
+            "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -124,6 +125,11 @@ public class ProdottoDAOImpl implements ProdottoDAO{
                 ps.setDouble(3, prezzoMax);
                 ps.setDouble(4, prezzoMax);
             }
+            
+            ps.setString(5, cerca);
+            ps.setString(6, cerca);
+            ps.setString(7, cerca);
+            ps.setString(8, cerca);
 
 
             try (ResultSet rs = ps.executeQuery()) {

@@ -86,7 +86,7 @@ public class CPUDAOImpl implements CPUDAO{
     }
     
     @Override
-    public synchronized Collection<CPUBean> doRetrieveAll(String categoria, String prezzo, String marca, String core, String frequenza) 
+    public synchronized Collection<CPUBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String core, String frequenza) 
     		throws SQLException {
 
         List<CPUBean> lista = new LinkedList<>();
@@ -113,7 +113,8 @@ public class CPUDAOImpl implements CPUDAO{
             "AND (? IS NULL OR p.marca = ?) " +
             "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
             "AND (? IS NULL OR c.core = ?) " +
-            "AND (? IS NULL OR c.frequenza = ?)";
+            "AND (? IS NULL OR c.frequenza = ?) "+
+            "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -142,6 +143,11 @@ public class CPUDAOImpl implements CPUDAO{
 
             ps.setString(9, frequenza);
             ps.setString(10, frequenza);
+            
+            ps.setString(11, cerca);
+            ps.setString(12, cerca);
+            ps.setString(13, cerca);
+            ps.setString(14, cerca);
 
             try (ResultSet rs = ps.executeQuery()) {
 

@@ -8,7 +8,7 @@ import model.MoboBean;
 public interface MoboDAO {
 public MoboBean doRetrieveByKey(int idMobo) throws SQLException;
 	
-	public Collection<MoboBean> doRetrieveAll(String categoria, String prezzo, String marca, String formato, String nvme, String slotram) throws SQLException;
+	public Collection<MoboBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String formato, String nvme, String slotram) throws SQLException;
 	
 	public boolean doUpdate(MoboBean p) throws SQLException;
 	

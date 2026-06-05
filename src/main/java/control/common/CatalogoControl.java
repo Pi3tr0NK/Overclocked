@@ -77,6 +77,12 @@ public class CatalogoControl extends HttpServlet {
 		cat = (cat == null || cat.trim().isEmpty()) ? null : cat;
 		String prezzo= request.getParameter("prezzo"); //double
 		String marca = request.getParameter("marca");
+		String cerca = request.getParameter("cerca");
+
+		cerca = (cerca == null || cerca.trim().isEmpty())
+		        ? null
+		        : "%" + cerca.trim() + "%";
+		
 		if(cat!=null)
 		{
 			if(cat.equals("PSU"))
@@ -86,7 +92,7 @@ public class CatalogoControl extends HttpServlet {
 				String modulare= request.getParameter("modulare");
 				try
 				{
-					request.setAttribute("products", psuDAO.doRetrieveAll(cat, prezzo, marca, potenza, certificazione, modulare));
+					request.setAttribute("products", psuDAO.doRetrieveAll(cerca, cat, prezzo, marca, potenza, certificazione, modulare));
 				} catch (SQLException e) {
 					System.err.println("Error:" + e.getMessage());
 				}
@@ -96,7 +102,7 @@ public class CatalogoControl extends HttpServlet {
 				String tipo= request.getParameter("tipo");
 				try 
 				{
-					request.setAttribute("products", dissipatoreDAO.doRetrieveAll(cat, prezzo, marca, tipo));
+					request.setAttribute("products", dissipatoreDAO.doRetrieveAll(cerca, cat, prezzo, marca, tipo));
 				} catch (SQLException e) {
 					System.err.println("Error:" + e.getMessage());
 				}
@@ -107,7 +113,7 @@ public class CatalogoControl extends HttpServlet {
 				String frequenza= request.getParameter("frequenza");
 				try 
 				{
-					request.setAttribute("products", cpuDAO.doRetrieveAll(cat, prezzo, marca, core, frequenza));  
+					request.setAttribute("products", cpuDAO.doRetrieveAll(cerca, cat, prezzo, marca, core, frequenza));  
 				} catch (SQLException e) {
 					System.err.println("Error:" + e.getMessage());
 				}
@@ -119,7 +125,7 @@ public class CatalogoControl extends HttpServlet {
 				String tipo= request.getParameter("tipo");
 				try 
 				{
-					request.setAttribute("products", ramDAO.doRetrieveAll(cat, prezzo, marca, capacita, frequenza, tipo));
+					request.setAttribute("products", ramDAO.doRetrieveAll(cerca, cat, prezzo, marca, capacita, frequenza, tipo));
 				} catch (SQLException e) {
 					System.err.println("Error:" + e.getMessage());
 				}
@@ -130,7 +136,7 @@ public class CatalogoControl extends HttpServlet {
 				String colore = request.getParameter("colore");
 				try 
 				{
-					request.setAttribute("products", chassisDAO.doRetrieveAll(cat, prezzo, marca, formato, colore));
+					request.setAttribute("products", chassisDAO.doRetrieveAll(cerca, cat, prezzo, marca, formato, colore));
 				} catch (SQLException e) {
 					System.err.println("Error:" + e.getMessage());
 				}
@@ -141,7 +147,7 @@ public class CatalogoControl extends HttpServlet {
 				String pcie = request.getParameter("pcie");
 				try 
 				{
-					request.setAttribute("products", gpuDAO.doRetrieveAll(cat, prezzo, marca, vram, pcie));
+					request.setAttribute("products", gpuDAO.doRetrieveAll(cerca, cat, prezzo, marca, vram, pcie));
 				} catch (SQLException e) {
 					System.err.println("Error:" + e.getMessage());
 				}
@@ -153,7 +159,7 @@ public class CatalogoControl extends HttpServlet {
 				String slotram = request.getParameter("slotram"); //integer
 				try 
 				{
-					request.setAttribute("products", moboDAO.doRetrieveAll(cat, prezzo, marca, formato, nvme, slotram));
+					request.setAttribute("products", moboDAO.doRetrieveAll(cerca, cat, prezzo, marca, formato, nvme, slotram));
 				} catch (SQLException e) {
 					System.err.println("Error:" + e.getMessage());
 				}
@@ -165,7 +171,7 @@ public class CatalogoControl extends HttpServlet {
 				String tecnologia = request.getParameter("tecnologia");
 				try 
 				{
-					request.setAttribute("products", memoriaDAO.doRetrieveAll(cat, prezzo, marca, capacita, tipo, tecnologia));
+					request.setAttribute("products", memoriaDAO.doRetrieveAll(cerca, cat, prezzo, marca, capacita, tipo, tecnologia));
 				} catch (SQLException e) {
 					System.err.println("Error:" + e.getMessage());
 				}
@@ -175,7 +181,7 @@ public class CatalogoControl extends HttpServlet {
 		{
 			try 
 			{
-				request.setAttribute("products", prodottoDAO.doRetrieveAll(prezzo, marca));
+				request.setAttribute("products", prodottoDAO.doRetrieveAll(cerca, prezzo, marca));
 			} catch (SQLException e) {
 				System.err.println("Error:" + e.getMessage());
 			}

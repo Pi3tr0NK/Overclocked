@@ -95,7 +95,7 @@ public class MoboDAOImpl implements MoboDAO{
 	}
 	
 	@Override
-	public synchronized Collection<MoboBean> doRetrieveAll(String categoria, String prezzo, String marca, String formato, String nvme, String slotram) 
+	public synchronized Collection<MoboBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String formato, String nvme, String slotram) 
 			throws SQLException {
 
 	    List<MoboBean> lista = new LinkedList<>();
@@ -125,7 +125,8 @@ public class MoboDAOImpl implements MoboDAO{
 	        "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
 	        "AND (? IS NULL OR m.formato = ?) " +
 	        "AND (? IS NULL OR m.nvme = ?) " +
-	        "AND (? IS NULL OR m.slotram = ?)";
+	        "AND (? IS NULL OR m.slotram = ?) "+
+	        "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
 	    try (Connection con = ds.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql)) {
@@ -157,6 +158,11 @@ public class MoboDAOImpl implements MoboDAO{
 	            ps.setInt(11, slotRamInt);
 	            ps.setInt(12, slotRamInt);
 	        }
+	        
+	        ps.setString(13, cerca);
+	        ps.setString(14, cerca);
+	        ps.setString(15, cerca);
+	        ps.setString(16, cerca);
 
 
 	        try (ResultSet rs = ps.executeQuery()) {

@@ -78,7 +78,7 @@ public class RAMDAOImpl implements RAMDAO{
 	}
 	
 	@Override
-	public synchronized Collection<RAMBean> doRetrieveAll(String categoria, String prezzo, String marca, String capacita, String frequenza, String tipo) 
+	public synchronized Collection<RAMBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String capacita, String frequenza, String tipo) 
 			throws SQLException {
 
 	    List<RAMBean> lista = new LinkedList<>();
@@ -103,7 +103,8 @@ public class RAMDAOImpl implements RAMDAO{
 	        "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
 	        "AND (? IS NULL OR r.capacita = ?) " +
 	        "AND (? IS NULL OR r.frequenza = ?) " +
-	        "AND (? IS NULL OR r.tipo = ?)";
+	        "AND (? IS NULL OR r.tipo = ?) "+
+	        "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
 	    try (Connection con = ds.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql)) {
@@ -130,6 +131,11 @@ public class RAMDAOImpl implements RAMDAO{
 
 	        ps.setString(11, tipo);
 	        ps.setString(12, tipo);
+	        
+	        ps.setString(13, cerca);
+	        ps.setString(14, cerca);
+	        ps.setString(15, cerca);
+	        ps.setString(16, cerca);
 
 	        try (ResultSet rs = ps.executeQuery()) {
 	            while (rs.next()) {

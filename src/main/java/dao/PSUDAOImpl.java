@@ -86,7 +86,7 @@ public class PSUDAOImpl implements PSUDAO {
     }
     
     @Override
-    public synchronized Collection<PSUBean> doRetrieveAll(String categoria, String prezzo, String marca, String potenza, String certificazione, String modulare) throws SQLException
+    public synchronized Collection<PSUBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String potenza, String certificazione, String modulare) throws SQLException
     {
 	    	 List<PSUBean> lista = new LinkedList<>();
 	    	 
@@ -114,7 +114,8 @@ public class PSUDAOImpl implements PSUDAO {
              "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
              "AND (? IS NULL OR ps.potenza = ?) " +
              "AND (? IS NULL OR ps.certificazione = ?) " +
-             "AND (? IS NULL OR ps.modulare = ?)";
+             "AND (? IS NULL OR ps.modulare = ?) "+
+             "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
          try (Connection con = ds.getConnection();
               PreparedStatement ps = con.prepareStatement(sql)) {
@@ -146,6 +147,12 @@ public class PSUDAOImpl implements PSUDAO {
 
              ps.setString(11, modulare);
              ps.setString(12, modulare);
+             
+             ps.setString(13, cerca);
+             ps.setString(14, cerca);
+             ps.setString(15, cerca);
+             ps.setString(16, cerca);
+             
              try (ResultSet rs = ps.executeQuery()){
     	        		while (rs.next()) {
 

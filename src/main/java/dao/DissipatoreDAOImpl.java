@@ -89,7 +89,7 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
     }
     
     @Override
-    public synchronized Collection<DissipatoreBean> doRetrieveAll(String categoria,String prezzo,String marca,String tipo) 
+    public synchronized Collection<DissipatoreBean> doRetrieveAll(String cerca, String categoria,String prezzo,String marca,String tipo) 
     		throws SQLException {
 
         List<DissipatoreBean> lista = new LinkedList<>();
@@ -110,7 +110,8 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
             "WHERE (? IS NULL OR p.categoria = ?) " +
             "AND (? IS NULL OR p.marca = ?) " +
             "AND (? IS NULL OR p.prezzo <= ?) " +
-            "AND (? IS NULL OR d.tipo = ?)";
+            "AND (? IS NULL OR d.tipo = ?) " +
+            "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -131,6 +132,11 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
 
             ps.setString(7, tipo);
             ps.setString(8, tipo);
+            
+            ps.setString(9, cerca);
+            ps.setString(10, cerca);
+            ps.setString(11, cerca);
+            ps.setString(12, cerca);
 
             try (ResultSet rs = ps.executeQuery()) {
 
