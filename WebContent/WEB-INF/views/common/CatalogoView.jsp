@@ -21,7 +21,8 @@
     <div class="sidebar">
 
         <form id="filterForm" action="Catalogo" method="get">
-
+			<input type="hidden" name="cerca" value="${param.cerca}">
+			
             <!-- ===== CATEGORIA ===== -->
             <label>Categoria</label>
             <select name="categoria" onchange="this.form.submit()">

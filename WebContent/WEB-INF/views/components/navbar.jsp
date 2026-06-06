@@ -76,7 +76,7 @@
 
     <div class="nav-center">
         <form action="${pageContext.request.contextPath}/Catalogo" method="get">
-            <input type="text" name="cerca" placeholder="Cerca componenti...">
+            <input type="text" name="cerca" placeholder="Cerca componenti..." value="${param.cerca}">
             <button>Cerca</button>
         </form>
     </div>

@@ -52,7 +52,6 @@ public class ProdottoControl extends HttpServlet {
                 return;
             }
             
-            
             correlati(request,prodotto);
             request.setAttribute("prodotto",prodotto);
             RequestDispatcher dispatcher =request.getRequestDispatcher("/WEB-INF/views/common/ProdottoView.jsp");

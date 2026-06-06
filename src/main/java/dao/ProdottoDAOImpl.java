@@ -310,13 +310,12 @@ public class ProdottoDAOImpl implements ProdottoDAO{
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
-
+        		
             ps.setString(1, categoria);
             ps.setDouble(2, prezzo - 200);
             ps.setDouble(3, prezzo + 200);
             ps.setInt(4, idProdotto);
             ps.setInt(5, limit);
-            
  
             
             try (ResultSet rs = ps.executeQuery()) {
