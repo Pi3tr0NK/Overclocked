@@ -21,9 +21,9 @@ public class CPUDAOImpl implements CPUDAO{
     public synchronized void doSave(CPUBean cpu) throws SQLException {
         
     	ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
-        prodottoDAO.doSave(cpu);
+        int id = prodottoDAO.doSave(cpu);
     	
-    	String sql = "INSERT INTO "+ TABLE_NAME +" (core, thread, frequenza, frequenza_ram, tiporam, socket, tdp, fk_prodotto) VALUES (?, ?, ?, ?, ?, ?)";
+    	String sql = "INSERT INTO "+ TABLE_NAME +" (core, thread, frequenza, frequenza_ram, tiporam, socket, tdp, fk_prodotto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -35,7 +35,7 @@ public class CPUDAOImpl implements CPUDAO{
             ps.setString(5, cpu.getTiporam());
             ps.setString(6, cpu.getSocket());
             ps.setInt(7, cpu.getTdp());
-            ps.setInt(8, cpu.getIdProdotto());
+            ps.setInt(8, id);
             
             ps.executeUpdate();
         }

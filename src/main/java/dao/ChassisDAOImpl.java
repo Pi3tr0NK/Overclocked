@@ -24,7 +24,7 @@ public class ChassisDAOImpl implements ChassisDAO{
 	public synchronized void doSave(ChassisBean chassis) throws SQLException {
 
 	    ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
-	    prodottoDAO.doSave(chassis);
+	    int id = prodottoDAO.doSave(chassis);
 
 	    String sql = "INSERT INTO " + TABLE_NAME + " (formato, colore, materiale, fk_prodotto) VALUES (?, ?, ?, ?)";
 
@@ -34,7 +34,7 @@ public class ChassisDAOImpl implements ChassisDAO{
 	        ps.setString(1, chassis.getFormato());
 	        ps.setString(2, chassis.getColore());
 	        ps.setString(3, chassis.getMateriale());
-	        ps.setInt(4, chassis.getIdProdotto());
+	        ps.setInt(4, id);
 
 	        ps.executeUpdate();
 	    }

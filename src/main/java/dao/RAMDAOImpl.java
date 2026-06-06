@@ -21,7 +21,7 @@ public class RAMDAOImpl implements RAMDAO{
 	public synchronized void doSave(RAMBean ram) throws SQLException {
 
 	    ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
-	    prodottoDAO.doSave(ram);
+	    int id = prodottoDAO.doSave(ram);
 
 	    String sql = "INSERT INTO " + TABLE_NAME + " (capacita, frequenza, tipo, fk_prodotto) VALUES (?, ?, ?, ?)";
 
@@ -31,7 +31,7 @@ public class RAMDAOImpl implements RAMDAO{
 	        ps.setString(1, ram.getCapacita());
 	        ps.setString(2, ram.getFrequenza());
 	        ps.setString(3, ram.getTipo());
-	        ps.setInt(4, ram.getIdProdotto());
+	        ps.setInt(4, id);
 
 	        ps.executeUpdate();
 	    }

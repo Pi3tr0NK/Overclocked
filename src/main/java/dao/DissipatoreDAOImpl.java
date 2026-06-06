@@ -23,7 +23,7 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
     public synchronized void doSave(DissipatoreBean dissipatore) throws SQLException {
 
         ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
-        prodottoDAO.doSave(dissipatore);
+        int id = prodottoDAO.doSave(dissipatore);
 
         String sql = "INSERT INTO " + TABLE_NAME + 
                      " (tipo, socket_supportati, dimensioni_ventola, rpm_max, rumore, tdp_supportato, fk_prodotto) " +
@@ -38,7 +38,7 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
             ps.setInt(4, dissipatore.getRpmMax());
             ps.setInt(5, dissipatore.getRumore());
             ps.setInt(6, dissipatore.getTdpSupportato());
-            ps.setInt(7, dissipatore.getIdProdotto());
+            ps.setInt(7, id);
 
             ps.executeUpdate();
         }

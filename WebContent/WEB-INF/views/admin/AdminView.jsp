@@ -104,8 +104,7 @@ button:hover{
 <% } %>
 
 <form action="${pageContext.request.contextPath}/admin/aggiungiProdotto"
-      method="post"
-      enctype="multipart/form-data">
+      method="post">
 
     <!-- DATI COMUNI -->
 
@@ -242,13 +241,13 @@ button:hover{
         <input type="number" name="scrittura" placeholder="Velocità Scrittura">
 
         <select name="tecnologia">
-            <option value="SSD">SSD</option>
-            <option value="HDD">HDD</option>
+            <option value="SATA">SATA</option>
+            <option value="NVME">NVME</option>
         </select>
 
         <select name="tipo">
-            <option value="INTERNO">INTERNO</option>
-            <option value="ESTERNO">ESTERNO</option>
+            <option value="SSD">SSD</option>
+            <option value="HDD">HDD</option>
         </select>
 
         <input type="text" name="formato" placeholder="Formato">
@@ -268,9 +267,9 @@ button:hover{
                placeholder="80+ Gold">
 
         <select name="modulare">
-            <option value="FULL">FULL</option>
-            <option value="SEMI">SEMI</option>
-            <option value="NO">NO</option>
+            <option value="MODULARE">MODULARE</option>
+            <option value="SEMIMODULARE">SEMIMODULARE</option>
+            <option value="NON_MODULARE">NON_MODULARE</option>
         </select>
 
         <select name="formato">

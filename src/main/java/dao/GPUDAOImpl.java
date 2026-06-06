@@ -21,7 +21,7 @@ public class GPUDAOImpl implements GPUDAO {
 	public synchronized void doSave(GPUBean gpu) throws SQLException {
         
 		ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
-        prodottoDAO.doSave(gpu);
+        int id = prodottoDAO.doSave(gpu);
          
         String sql = "INSERT INTO "+ TABLE_NAME +" (frequenza, vram, video, tipovram, pcie, maxres, tdp, fk_prodotto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -35,7 +35,7 @@ public class GPUDAOImpl implements GPUDAO {
             ps.setString(5, gpu.getPcie());
             ps.setString(6, gpu.getMaxRes());
             ps.setInt(6, gpu.getTdp());
-            ps.setInt(7, gpu.getIdProdotto());
+            ps.setInt(7, id);
             ps.executeUpdate();
         }
     }
