@@ -13,7 +13,8 @@ ProdottoBean p = (ProdottoBean) request.getAttribute("prodotto");
 <title><%= p.getNome() %></title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/prodotto.css">
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css">
 
 <style type="text/css">
 
@@ -196,10 +197,10 @@ ProdottoBean p = (ProdottoBean) request.getAttribute("prodotto");
                 </tr>
                 <c:forEach var="spec" items="${prodotto.specifiche}">
 
-   				<tr>
-        			<td>${spec.key}</td>
-        			<td>${spec.value}</td>
-    			</tr>
+	   				<tr>
+	        			<td>${spec.key}</td>
+	        			<td>${spec.value}</td>
+	    				</tr>
 
 				</c:forEach>     
 				

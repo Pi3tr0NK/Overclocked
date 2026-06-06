@@ -1,0 +1,181 @@
+.footer {
+    background: #0f0f0f;
+    border-top: 2px solid #ff7300;
+    padding: 50px 60px 0;
+}
+
+/* ── Top: 3 colonne ── */
+
+.footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 40px;
+}
+
+.footer-desc {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.8;
+}
+
+/* ── Titoli colonne ── */
+
+.footer-col-title {
+    font-size: 12px;
+    color: #ff7300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 16px;
+}
+
+/* ── Link ── */
+
+.footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer-link {
+    font-size: 13px;
+    color: #555;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.footer-link:hover { color: #e0e0e0; }
+
+.footer-link-arrow {
+    font-size: 12px;
+    color: #ff7300;
+}
+
+/* ── Newsletter ── */
+
+.newsletter-desc {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.newsletter-row { display: flex; }
+
+.newsletter-input {
+    flex: 1;
+    height: 38px;
+    padding: 0 12px;
+    background: #080808;
+    border: 1px solid #1f1f1f;
+    border-radius: 8px 0 0 8px;
+    color: #e0e0e0;
+    font-size: 12px;
+    outline: none;
+}
+
+.newsletter-input:focus    { border-color: #ff7300; }
+.newsletter-input::placeholder { color: #2a2a2a; }
+
+.newsletter-btn {
+    height: 38px;
+    padding: 0 16px;
+    background: #ff7300;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    color: #080808;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.newsletter-btn:hover { opacity: 0.9; }
+
+/* ── Mid: garanzie ── */
+
+.footer-mid {
+    border-top: 1px solid #1a1a1a;
+    padding: 20px 0;
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.footer-mid-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-mid-icon { font-size: 18px; }
+
+.footer-mid-text strong {
+    display: block;
+    font-size: 13px;
+    color: #e0e0e0;
+    margin-bottom: 1px;
+}
+
+.footer-mid-text span {
+    font-size: 11px;
+    color: #444;
+}
+
+/* ── Bottom: copyright, legale, pagamenti ── */
+
+.footer-bottom {
+    border-top: 1px solid #1a1a1a;
+    padding: 18px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.footer-copy {
+    font-size: 12px;
+    color: #333;
+}
+
+.footer-copy span { color: #ff7300; }
+
+.footer-legal {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-legal a {
+    font-size: 12px;
+    color: #333;
+    text-decoration: none;
+}
+
+.footer-legal a:hover { color: #888; }
+
+/* ── Pagamenti ── */
+
+.footer-payments {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-payments-label {
+    font-size: 11px;
+    color: #333;
+    margin-right: 4px;
+}
+
+.payment-badge {
+    background: #111;
+    border: 1px solid #1f1f1f;
+    border-radius: 5px;
+    padding: 4px 8px;
+    font-size: 11px;
+    color: #555;
+    font-weight: bold;
+}

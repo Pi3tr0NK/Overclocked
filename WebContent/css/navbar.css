@@ -1,0 +1,64 @@
+/* ── Navbar ── */
+
+.navbar {
+    width: 100%;
+    background: #111;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    border-bottom: 2px solid #ff7a00;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-left img { height: 55px; }
+
+/* ── Barra ricerca ── */
+
+.nav-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-center form {
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+}
+
+.nav-center input {
+    flex: 1;
+    padding: 12px;
+    background: #222;
+    border: none;
+    border-radius: 8px 0 0 8px;
+    color: white;
+}
+
+.nav-center button {
+    padding: 12px 18px;
+    background: #ff7a00;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* ── Bottoni destra ── */
+
+.nav-right {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-btn {
+    color: white;
+    background: #ff7a00;
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+}
