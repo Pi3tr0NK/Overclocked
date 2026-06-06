@@ -2,32 +2,66 @@ package model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class CarrelloBean implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private List<ProdottoBean> prodotti;
+    private List<CarrelloItemBean> items;
 
-	public CarrelloBean() {
-		prodotti = new ArrayList<ProdottoBean>();
-	}
+    public CarrelloBean() {
+        items = new ArrayList<>();
+    }
 
-	public void addProduct(ProdottoBean product) {
-		prodotti.add(product);
-	}
+    public List<CarrelloItemBean> getItems() {
+        return items;
+    }
 
-	public void deleteProduct(ProdottoBean product) {
-		for (ProdottoBean prod : prodotti) {
-			if (prod.getIdProdotto() == product.getIdProdotto()) {
-				prodotti.remove(prod);
-				break;
-			}
-		}
-	}
+    // AGGIUNGI PRODOTTO
+    public void addProduct(ProdottoBean prodotto, int quantita) {
 
-	public List<ProdottoBean> getProducts() {
-		return prodotti;
-	}
+        for (CarrelloItemBean item : items) {
+            if (item.getProdotto().getIdProdotto() == prodotto.getIdProdotto()) {
+                item.aumentaQuantita(quantita);
+                return;
+            }
+        }
+
+        items.add(new CarrelloItemBean(prodotto, quantita));
+    }
+
+    // RIMUOVI PRODOTTO COMPLETAMENTE
+    public void removeProduct(int idProdotto) {
+
+        Iterator<CarrelloItemBean> it = items.iterator();
+
+        while (it.hasNext()) {
+            CarrelloItemBean item = it.next();
+
+            if (item.getProdotto().getIdProdotto() == idProdotto) 
+            {
+                it.remove();
+                return;
+            }
+        }
+    }
+
+    // QUANTITÀ TOTALE (utile per badge carrello)
+    public int getTotalQuantity() {
+
+        int total = 0;
+
+        for (CarrelloItemBean item : items) {
+            total += item.getQuantita();
+        }
+
+        return total;
+    }
+
+    // SVUOTA CARRELLO
+    public void clear() {
+        items.clear();
+    }
 }
