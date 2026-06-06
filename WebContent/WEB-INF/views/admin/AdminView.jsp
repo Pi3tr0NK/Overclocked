@@ -88,6 +88,51 @@ button:hover{
     margin-bottom:20px;
 }
 
+.image-container{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-top:10px;
+}
+
+.image-slot{
+    width:150px;
+    height:150px;
+
+    border:2px dashed #666;
+    border-radius:10px;
+
+    background:#1a1a1a;
+
+    cursor:pointer;
+    overflow:hidden;
+    position:relative;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.image-slot:hover{
+    border-color:#ff7300;
+}
+
+.image-slot span{
+    font-size:50px;
+    color:#999;
+    user-select:none;
+}
+
+.image-slot img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:none;
+    position:absolute;
+    top:0;
+    left:0;
+}
+
 </style>
 </head>
 
@@ -104,7 +149,7 @@ button:hover{
 <% } %>
 
 <form action="${pageContext.request.contextPath}/admin/aggiungiProdotto"
-      method="post">
+      method="post" enctype="multipart/form-data">
 
     <!-- DATI COMUNI -->
 
@@ -177,13 +222,44 @@ button:hover{
             <input type="checkbox" name="attivo" value="true">
         </div>
 
-        <div class="form-group">
-            <label>Immagini (max 5)</label>
-            <input type="file"
-                   name="immagini"
-                   multiple
-                   accept="image/*">
+		<div class="form-group">
+    <label>Immagini (max 5)</label>
+
+    <div class="image-container">
+
+        <div class="image-slot">
+            <input type="file" name="immagine1" accept="image/*" hidden>
+            <span>+</span>
+            <img alt="">
         </div>
+
+        <div class="image-slot">
+            <input type="file" name="immagine2" accept="image/*" hidden>
+            <span>+</span>
+            <img alt="">
+        </div>
+
+        <div class="image-slot">
+            <input type="file" name="immagine3" accept="image/*" hidden>
+            <span>+</span>
+            <img alt="">
+        </div>
+
+        <div class="image-slot">
+            <input type="file" name="immagine4" accept="image/*" hidden>
+            <span>+</span>
+            <img alt="">
+        </div>
+
+        <div class="image-slot">
+            <input type="file" name="immagine5" accept="image/*" hidden>
+            <span>+</span>
+            <img alt="">
+        </div>
+
+    </div>
+</div>
+	
 
     </div>
 
@@ -339,27 +415,49 @@ button:hover{
 
 </form>
 
+
+
 </div>
 
 <script>
 
 const categoria = document.getElementById("categoria");
 
+/* all'avvio disabilita tutte le sezioni specifiche */
+document.querySelectorAll(".section").forEach(div => {
+
+    if(div.id){
+
+        div.classList.add("hidden");
+
+        div.querySelectorAll("input, select, textarea")
+           .forEach(el => el.disabled = true);
+    }
+
+});
+
 categoria.addEventListener("change", function(){
 
     document.querySelectorAll(".section").forEach(div => {
 
         if(div.id){
+
             div.classList.add("hidden");
+
+            div.querySelectorAll("input, select, textarea")
+               .forEach(el => el.disabled = true);
         }
 
     });
 
-    const sezione =
-        document.getElementById(this.value);
+    const sezione = document.getElementById(this.value);
 
     if(sezione){
+
         sezione.classList.remove("hidden");
+
+        sezione.querySelectorAll("input, select, textarea")
+               .forEach(el => el.disabled = false);
     }
 });
 

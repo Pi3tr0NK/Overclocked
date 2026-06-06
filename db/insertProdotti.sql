@@ -125,7 +125,7 @@ VALUES
 ('luca@gmail.com','Luca','Bianchi','1234','USER','3334445555',2),
 ('anna@gmail.com','Anna','Verdi','password','USER','3337778888', 3);
 
---UTENTE
+-- UTENTE
 INSERT INTO indirizzo (via_numciv, paese, citta, provincia, dati_plus, codice_postale)
 VALUES ('Via Roma 10', 'Italia', 'Pescara', 'PE', NULL, '65100');
 
