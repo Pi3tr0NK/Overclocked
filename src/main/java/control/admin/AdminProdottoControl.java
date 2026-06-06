@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -18,7 +17,6 @@ import dao.ImmaginiDAOImpl;
 import dao.MemoriaDAOImpl;
 import dao.MoboDAOImpl;
 import dao.PSUDAOImpl;
-import dao.ProdottoDAOImpl;
 import dao.RAMDAOImpl;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -95,67 +93,79 @@ public class AdminProdottoControl extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
-
+    	
         request.setCharacterEncoding("UTF-8");
 
         try {
-
+        	
             String categoria = request.getParameter("categoria");
-
-            if(categoria == null || categoria.isBlank()) {
-                throw new ServletException("Categoria non specificata");
-            }
-
-            ProdottoBean prodotto = creaProdotto(categoria, request);
             
-            salvaProdotto(prodotto);
+            CreateAndSave(categoria, request);
             
-            salvaImmagini(request, prodotto.getIdProdotto());
-
-           
+            // salvaImmagini(request, prodotto.getIdProdotto());
             
             response.sendRedirect( request.getContextPath() + "/admin/aggiungiProdotto?success=1");
-
+            
         }
         catch(Exception e) {
-
+        	
+        	System.out.println("arrivo nel catch");
             e.printStackTrace();
 
+            
             request.setAttribute("errore", e.getMessage());
             
             System.out.println(e.getMessage());
+            
+            response.sendRedirect( request.getContextPath() + "/home");
         }
+
     }
 
 
-    private ProdottoBean creaProdotto(String categoria, HttpServletRequest request) throws Exception {
+    private void CreateAndSave(String categoria, HttpServletRequest request) throws Exception {
 
         switch(categoria.toUpperCase()) {
 
             case "CPU":
-                return creaCPU(request);
-
+                CPUBean cpu = creaCPU(request);
+                cpuDAO.doSave(cpu);
+                break;
+                
             case "GPU":
-                return creaGPU(request);
-
+                GPUBean gpu = creaGPU(request);
+                gpuDAO.doSave(gpu);
+                break;
+                
             case "RAM":
-                return creaRAM(request);
- 
+                RAMBean ram = creaRAM(request);
+                ramDAO.doSave(ram);
+                break;
+                	
             case "DISSIPATORE":
-                return creaDissipatore(request);
-
+                DissipatoreBean dissipatore = creaDissipatore(request);
+                dissipatoreDAO.doSave(dissipatore);
+                break;
+                
             case "CASE":
-                return creaCase(request);
-
+                ChassisBean chassis = creaCase(request);
+                chassisDAO.doSave(chassis);
+                break;
+                
             case "PSU":
-                return creaPSU(request);
+                PSUBean psu = creaPSU(request);
+                psuDAO.doSave(psu);
+                break;
                 
             case "MOBO":
-                return creaMOBO(request);
-                
+                MoboBean mobo = creaMOBO(request);
+                moboDAO.doSave(mobo);
+                break;
             case "STORAGE":
-                return creaStorage(request);
-
+                MemoriaBean mem = creaStorage(request);
+                memDAO.doSave(mem);
+                break;
+                
             default:
                 throw new Exception(
                         "Categoria non supportata: "
@@ -165,49 +175,22 @@ public class AdminProdottoControl extends HttpServlet {
 
     }
 
-    private void salvaProdotto(ProdottoBean prodotto)
-            throws SQLException {
+  
+    private void creaProdotto(ProdottoBean p,HttpServletRequest request) {
 
-        switch(prodotto.getCategoria().toUpperCase()) {
-
-            case "CPU":
-                cpuDAO.doSave((CPUBean) prodotto);
-                break;
-
-            case "GPU":
-                gpuDAO.doSave((GPUBean) prodotto);
-                break;
-                
-            case "RAM":
-            	ramDAO.doSave((RAMBean) prodotto);
-                break;
- 
-            case "DISSIPATORE":
-            	dissipatoreDAO.doSave((DissipatoreBean) prodotto);
-                break;
-
-            case "CASE":
-            	chassisDAO.doSave((ChassisBean) prodotto);
-                break;
-
-            case "PSU":
-            	psuDAO.doSave((PSUBean) prodotto);
-                break;
-                
-            case "MOBO":
-            	moboDAO.doSave((MoboBean) prodotto);
-                break;
-                
-            case "STORAGE":
-            	memDAO.doSave((MemoriaBean) prodotto);
-                break;
-
-            default:
-                throw new SQLException("Categoria non supportata");
-        }
+        p.setNome(request.getParameter("nome"));
+        p.setModello(request.getParameter("modello"));
+        p.setDescrizione(request.getParameter("descrizione"));
+        p.setMarca(request.getParameter("marca"));
+        p.setPrezzo(Double.parseDouble(request.getParameter("prezzo")));
+        p.setStock(Integer.parseInt(request.getParameter("stock")));
+        p.setDimensioni(request.getParameter("dimensioni"));
+        p.setPeso(request.getParameter("peso"));
+        p.setAttivo(request.getParameter("attivo") != null);
+        p.setSconto(Integer.parseInt(request.getParameter("sconto")));
+        p.setCategoria(request.getParameter("categoria"));
     }
-
-
+    
 
     private CPUBean creaCPU(HttpServletRequest request) {
     	
@@ -286,7 +269,7 @@ public class AdminProdottoControl extends HttpServlet {
     	mem.setCapacita(request.getParameter("capacita"));
     	mem.setVelScrittura(Integer.parseInt(request.getParameter("scrittura")));
     	mem.setVelLettura(Integer.parseInt(request.getParameter("lettura")));
-    	mem.setTipo(Tipo.valueOf(request.getParameter("tipo")));
+    	mem.setTipo(model.MemoriaBean.Tipo.valueOf(request.getParameter("tipo")));
     	mem.setTecnologia(Tecnologia.valueOf(request.getParameter("tecnologia")));
     	mem.setFormato(request.getParameter("formato"));
     	
@@ -331,22 +314,7 @@ public class AdminProdottoControl extends HttpServlet {
     	ram.setFrequenza(request.getParameter("frequenza"));
     	ram.setTipo(request.getParameter("tipo"));
         return ram;
-    }
-    
-    private void creaProdotto(ProdottoBean p,HttpServletRequest request) {
-
-        p.setNome(request.getParameter("nome"));
-        p.setModello(request.getParameter("modello"));
-        p.setDescrizione(request.getParameter("descrizione"));
-        p.setMarca(request.getParameter("marca"));
-        p.setPrezzo(Double.parseDouble(request.getParameter("prezzo")));
-        p.setStock(Integer.parseInt(request.getParameter("stock")));
-        p.setDimensioni(request.getParameter("dimensioni"));
-        p.setPeso(request.getParameter("peso"));
-        p.setAttivo(request.getParameter("attivo") != null);
-        p.setSconto(Integer.parseInt(request.getParameter("sconto")));
-        p.setCategoria(request.getParameter("categoria"));
-    }
+    }  
     
     private List<ImmagineBean> salvaImmagini(HttpServletRequest request, int idProdotto) throws Exception {
 

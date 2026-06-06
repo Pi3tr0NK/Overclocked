@@ -27,7 +27,7 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 	public synchronized void doSave(MemoriaBean mem) throws SQLException {
 
 	    ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
-	    prodottoDAO.doSave(mem);
+	    int id = prodottoDAO.doSave(mem);
 
 	    String sql = "INSERT INTO " + TABLE_NAME + " (capacita, vel_scrittura, vel_lettura, tipo, tecnologia, formato, fk_prodotto) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
@@ -40,7 +40,7 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 	        ps.setString(4, mem.getTipo().name());
 	        ps.setString(5, mem.getTecnologia().name());
 	        ps.setString(6, mem.getFormato());
-	        ps.setInt(7, mem.getIdProdotto());
+	        ps.setInt(7, id);
 	        
 	        ps.executeUpdate();
 	    }

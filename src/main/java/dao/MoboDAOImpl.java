@@ -24,7 +24,7 @@ public class MoboDAOImpl implements MoboDAO{
 	public synchronized void doSave(MoboBean mobo) throws SQLException {
 
 	    ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
-	    prodottoDAO.doSave(mobo);
+	    int id = prodottoDAO.doSave(mobo);
 
 	    String sql = "INSERT INTO " + TABLE_NAME + " (chipset, socket, tiporam, maxfreq, formato, pcie, slotram, nvme, portesata, porteusb, fk_prodotto) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -41,7 +41,7 @@ public class MoboDAOImpl implements MoboDAO{
 	        ps.setBoolean(8, mobo.isNvme());
 	        ps.setInt(9, mobo.getPorteSata());
 	        ps.setInt(10, mobo.getPorteUsb());
-	        ps.setInt(11, mobo.getIdProdotto());
+	        ps.setInt(11, id);
 
 	        ps.executeUpdate();
 	    }

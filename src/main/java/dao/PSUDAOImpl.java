@@ -27,7 +27,7 @@ public class PSUDAOImpl implements PSUDAO {
         
     	
     	ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
-        prodottoDAO.doSave(psu);
+        int id = prodottoDAO.doSave(psu);
         
         
     	String sql = "INSERT INTO "+ TABLE_NAME +" (potenza, certificazione, modulare, formato, fk_prodotto) VALUES (?, ?, ?, ?, ?)";
@@ -39,7 +39,7 @@ public class PSUDAOImpl implements PSUDAO {
             ps.setString(2, psu.getCertificazione());
             ps.setString(3, psu.getModulare().name());
             ps.setString(4, psu.getFormato().name());
-            ps.setInt(4, psu.getIdProdotto());
+            ps.setInt(4, id);
             ps.executeUpdate();
         }
     }
