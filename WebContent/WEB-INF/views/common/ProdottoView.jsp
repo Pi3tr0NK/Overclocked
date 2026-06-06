@@ -2,9 +2,7 @@
 <%@ page import="model.ProdottoBean" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
-<%
-ProdottoBean p = (ProdottoBean) request.getAttribute("prodotto");
-%>
+<%ProdottoBean p = (ProdottoBean) request.getAttribute("prodotto");%>
 
 <!DOCTYPE html>
 <html>
@@ -113,7 +111,7 @@ ProdottoBean p = (ProdottoBean) request.getAttribute("prodotto");
 		
 		</c:choose>
 
-        <form action="cart" method="post">
+        <form action="${pageContext.request.contextPath}/carrello/add?aggiungi=<%=p.getIdProdotto()%>" method="post">
 
             <input type="hidden"
                    name="idProdotto"
@@ -123,11 +121,7 @@ ProdottoBean p = (ProdottoBean) request.getAttribute("prodotto");
 
                 Quantità
 
-                <input
-                    type="number"
-                    name="quantita"
-                    value="1"
-                    min="1">
+                <input type="number" name="quantita" value="1" min="1">
 
             </div>
 

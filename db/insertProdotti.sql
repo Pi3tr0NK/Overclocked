@@ -124,3 +124,37 @@ VALUES
 ('admin@overclocked.it','Mario','Rossi','admin123','ADMIN','3331112222',1),
 ('luca@gmail.com','Luca','Bianchi','1234','USER','3334445555',2),
 ('anna@gmail.com','Anna','Verdi','password','USER','3337778888', 3);
+
+--UTENTE
+INSERT INTO indirizzo (via_numciv, paese, citta, provincia, dati_plus, codice_postale)
+VALUES ('Via Roma 10', 'Italia', 'Pescara', 'PE', NULL, '65100');
+
+INSERT INTO utente (email, nome, cognome, password, ruolo, cellulare, fk_indirizzo)
+VALUES ('user@a.b',
+    'Mario',
+    'Rossi',
+    'b14361404c078ffd549c03db443c3fede2f3e534d73f78f77301ed97d4a436a9fd9db05ee8b325c0ad36438b43fec8510c204fc1c1edb21d0941c00e9e2c1ce2',
+    'USER',
+    '3331234567',
+    LAST_INSERT_ID()
+);
+
+INSERT INTO indirizzo (via_numciv, paese, citta, provincia, dati_plus, codice_postale)
+VALUES ('Via Milano 25', 'Italia', 'Milano', 'MI', NULL, '20100');
+
+INSERT INTO utente (email, nome, cognome, password, ruolo, cellulare, fk_indirizzo)
+VALUES (
+    'admin@a.b',
+    'Luca',
+    'Bianchi',
+    'c7ad44cbad762a5da0a452f9e854fdc1e0e7a52a38015f23f3eab1d80b931dd472634dfac71cd34ebc35d16ab7fb8a90c81f975113d6c7538dc69dd8de9077ec',
+    'ADMIN',
+    '3399876543',
+    LAST_INSERT_ID()
+);
+
+
+
+
+
+

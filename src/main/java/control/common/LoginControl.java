@@ -78,7 +78,7 @@ public class LoginControl extends HttpServlet {
 				if(utente.getRuolo()== UtenteBean.Ruolo.ADMIN) {
 					
 				request.getSession().setAttribute("user", utente); 
-				response.sendRedirect(request.getContextPath()+ "/admin/home");
+				response.sendRedirect(request.getContextPath()+ "/home");
 
 				/*
 				 * UTENTE NORMALE
