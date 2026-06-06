@@ -92,7 +92,7 @@
     </div>
 
 <!-- NOVITA -->
-<h2>Novità</h2>
+<h2> <a href="${pageContext.request.contextPath}/admin/aggiungiProdotto"> Novità </a></h2>
 
 <div class="grid">
 

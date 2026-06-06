@@ -22,7 +22,7 @@ public class GPUDAOImpl implements GPUDAO {
         
 		ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
         prodottoDAO.doSave(gpu);
-
+         
         String sql = "INSERT INTO "+ TABLE_NAME +" (frequenza, vram, video, tipovram, pcie, maxres, tdp, fk_prodotto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = ds.getConnection();
