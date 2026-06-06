@@ -421,6 +421,38 @@ button:hover{
 
 <script>
 
+
+document.querySelectorAll(".image-slot").forEach(slot => {
+
+    const input = slot.querySelector("input");
+    const img = slot.querySelector("img");
+    const plus = slot.querySelector("span");
+
+    slot.addEventListener("click", () => {
+        input.click();
+    });
+
+    input.addEventListener("change", () => {
+
+        const file = input.files[0];
+
+        if(file) {
+
+            const reader = new FileReader();
+
+            reader.onload = e => {
+                img.src = e.target.result;
+                img.style.display = "block";
+                plus.style.display = "none";
+            };
+
+            reader.readAsDataURL(file);
+        }
+    });
+
+});
+
+
 const categoria = document.getElementById("categoria");
 
 /* all'avvio disabilita tutte le sezioni specifiche */

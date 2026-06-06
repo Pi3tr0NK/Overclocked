@@ -4,7 +4,6 @@ import java.sql.*;
 import java.util.*;
 
 import javax.sql.DataSource;
-
 import model.ProdottoBean;
 
 public class ProdottoDAOImpl implements ProdottoDAO{
@@ -221,7 +220,9 @@ public class ProdottoDAOImpl implements ProdottoDAO{
     
     public synchronized List<ProdottoBean> doRetrieveNovita(int limit) throws SQLException
     {
-    		List<ProdottoBean> novita = new ArrayList<>();
+    	ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+    	
+    	List<ProdottoBean> novita = new ArrayList<>();
 
         String sql = "SELECT * FROM prodotto WHERE attivo = true ORDER BY id_prodotto DESC LIMIT ?";
 
@@ -246,6 +247,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
                     p.setAttivo(rs.getBoolean("attivo"));
                     p.setSconto(rs.getInt("sconto"));
                     p.setCategoria(rs.getString("categoria"));
+                    p.setImmagini(immaginiDAO.doRetrieveByProdotto(p.getIdProdotto()));
                     
                     novita.add(p);
                 }

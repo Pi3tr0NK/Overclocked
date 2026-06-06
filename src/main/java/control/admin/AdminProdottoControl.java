@@ -100,9 +100,9 @@ public class AdminProdottoControl extends HttpServlet {
         	
             String categoria = request.getParameter("categoria");
             
-            CreateAndSave(categoria, request);
+            int idProdotto = CreateAndSave(categoria, request);
             
-            // salvaImmagini(request, prodotto.getIdProdotto());
+            salvaImmagini(request, idProdotto);
             
             response.sendRedirect( request.getContextPath() + "/admin/aggiungiProdotto?success=1");
             
@@ -123,54 +123,55 @@ public class AdminProdottoControl extends HttpServlet {
     }
 
 
-    private void CreateAndSave(String categoria, HttpServletRequest request) throws Exception {
+    private int CreateAndSave(String categoria, HttpServletRequest request) throws Exception {
 
         switch(categoria.toUpperCase()) {
 
             case "CPU":
                 CPUBean cpu = creaCPU(request);
                 cpuDAO.doSave(cpu);
-                break;
+                return cpu.getIdProdotto();
                 
             case "GPU":
                 GPUBean gpu = creaGPU(request);
                 gpuDAO.doSave(gpu);
-                break;
+                return gpu.getIdProdotto();
                 
             case "RAM":
                 RAMBean ram = creaRAM(request);
                 ramDAO.doSave(ram);
-                break;
+                return ram.getIdProdotto();
                 	
             case "DISSIPATORE":
                 DissipatoreBean dissipatore = creaDissipatore(request);
                 dissipatoreDAO.doSave(dissipatore);
-                break;
+                return dissipatore.getIdProdotto();
                 
             case "CASE":
                 ChassisBean chassis = creaCase(request);
                 chassisDAO.doSave(chassis);
-                break;
+                return chassis.getIdProdotto();
                 
             case "PSU":
                 PSUBean psu = creaPSU(request);
                 psuDAO.doSave(psu);
-                break;
+                return psu.getIdProdotto();
                 
             case "MOBO":
                 MoboBean mobo = creaMOBO(request);
                 moboDAO.doSave(mobo);
-                break;
+                return mobo.getIdProdotto();
+                
             case "STORAGE":
                 MemoriaBean mem = creaStorage(request);
                 memDAO.doSave(mem);
-                break;
+                return mem.getIdProdotto();
                 
             default:
-                throw new Exception(
-                        "Categoria non supportata: "
-                        + categoria);
-        }
+                throw new Exception( "Categoria non supportata: "+ categoria);
+        	}
+        
+        
         
 
     }

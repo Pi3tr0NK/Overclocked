@@ -106,7 +106,7 @@
                 <div class="discount-badge">-${p.sconto}%</div>
             </c:if>
 
-            <img src="${pageContext.request.contextPath}/${p.immagini[0].path}">
+           	<img src="${pageContext.request.contextPath}/${p.immagini[0].path}">
 
             <div class="card-content">
 

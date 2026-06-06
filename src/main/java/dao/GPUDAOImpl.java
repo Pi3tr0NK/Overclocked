@@ -34,8 +34,8 @@ public class GPUDAOImpl implements GPUDAO {
             ps.setString(4, gpu.getTipoVram());
             ps.setString(5, gpu.getPcie());
             ps.setString(6, gpu.getMaxRes());
-            ps.setInt(6, gpu.getTdp());
-            ps.setInt(7, id);
+            ps.setInt(7, gpu.getTdp());
+            ps.setInt(8, id);
             ps.executeUpdate();
         }
     }
