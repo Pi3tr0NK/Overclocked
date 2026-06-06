@@ -18,7 +18,7 @@ import dao.ProdottoDAOImpl;
  * Servlet implementation class CarrelloAdd
  */
 @WebServlet("/carrello/add")
-public class CarrelloAdd extends HttpServlet {
+public class CarrelloAddControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	private ProdottoDAOImpl productDao;
@@ -39,25 +39,41 @@ public class CarrelloAdd extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int idProdotto = Integer.parseInt(request.getParameter("aggiungi"));
+		 	int idProdotto = Integer.parseInt(request.getParameter("aggiungi"));
+		    int quantita = Integer.parseInt(request.getParameter("quantita"));
 
-        CarrelloBean cart = (CarrelloBean) request.getSession().getAttribute("cart");
+		    CarrelloBean cart = (CarrelloBean) request.getSession().getAttribute("cart");
 
-        if (cart == null) {
-            cart = new CarrelloBean();
-            request.getSession().setAttribute("cart", cart);
-        }
+		    if (cart == null) {
+		        cart = new CarrelloBean();
+		        request.getSession().setAttribute("cart", cart);
+		    }
 
-        try {
-            cart.addProduct(productDao.doRetrieveByKey(idProdotto));
-        } catch(Exception e) {
+		    try {
+		        cart.addProduct(productDao.doRetrieveByKey(idProdotto),quantita);
+		    } catch (Exception e) {
+		        throw new ServletException(e);
+		    }
+		    
+		 // 🔥 DEBUG CARRELLO
+		    System.out.println("===== CARRELLO =====");
 
-            throw new ServletException(e);
-        }
-        
-        System.out.println(cart.getProducts());
+		    cart.getItems().forEach(item -> {
+		        System.out.println(
+		            "ID: " + item.getProdotto().getIdProdotto() +
+		            " | Nome: " + item.getProdotto().getNome() +
+		            " | Quantità: " + item.getQuantita()
+		        );
+		    });
 
-        response.sendRedirect(request.getContextPath() + "/prodotto?id=" + idProdotto);
+		    System.out.println("====================");
+		    
+
+		    // RISPOSTA AJAX (JSON)
+		    response.setContentType("application/json");
+		    response.setCharacterEncoding("UTF-8");
+
+		    response.getWriter().write("{\"success\":true, \"id\":" + idProdotto + "}");
 	}
 
 	/**

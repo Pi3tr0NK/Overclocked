@@ -32,7 +32,7 @@
             </c:otherwise>
         </c:choose>
 
-        <a class="nav-btn" href="${pageContext.request.contextPath}/carrello">
+        <a class="nav-btn" href="${pageContext.request.contextPath}/Carrello">
             CARRELLO
         </a>
 
