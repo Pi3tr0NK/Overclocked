@@ -91,7 +91,7 @@
             </div>
 
             <a class="new-product-btn"
-               href="${pageContext.request.contextPath}/admin/aggiungiProdotto">
+               href="${pageContext.request.contextPath}/admin/aggiungiProdotto?action=insert">
 
                 + Nuovo prodotto
 
@@ -217,10 +217,23 @@
                             <button>
                                 Modifica
                             </button>
+                        <c:choose>       
+                        	<c:when test="${p.attivo}">
 
-                            <button>
-                                Elimina
-                            </button>
+                			<form action="${pageContext.request.contextPath}/admin/aggiungiProdotto?action=disattiva&id=${p.idProdotto}" method="post" style="display:inline;">
+    							<button type="submit">Disattiva</button>
+							</form>
+							
+            				</c:when>
+            				<c:otherwise>
+            				
+            					<form action="${pageContext.request.contextPath}/admin/aggiungiProdotto?action=attiva&id=${p.idProdotto}" method="post" style="display:inline;">
+            					<button>Attiva</button>
+            					</form>
+            					
+            				</c:otherwise>
+            			</c:choose>
+
 
                         </td>
 

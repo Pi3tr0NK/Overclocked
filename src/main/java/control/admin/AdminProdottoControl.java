@@ -17,6 +17,8 @@ import dao.ImmaginiDAOImpl;
 import dao.MemoriaDAOImpl;
 import dao.MoboDAOImpl;
 import dao.PSUDAOImpl;
+import dao.ProdottoDAO;
+import dao.ProdottoDAOImpl;
 import dao.RAMDAOImpl;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
@@ -62,6 +64,7 @@ public class AdminProdottoControl extends HttpServlet {
     private ChassisDAOImpl chassisDAO;
     private DissipatoreDAOImpl dissipatoreDAO;
     private MoboDAOImpl moboDAO;
+    private ProdottoDAOImpl productDAO;
     
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -83,6 +86,7 @@ public class AdminProdottoControl extends HttpServlet {
 		memDAO =new MemoriaDAOImpl(ds);
 		moboDAO =new MoboDAOImpl(ds);
 		ramDAO =new RAMDAOImpl(ds);
+		productDAO = new ProdottoDAOImpl(ds);
     }
 
     
@@ -96,7 +100,42 @@ public class AdminProdottoControl extends HttpServlet {
     protected void doPost(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
     	
         request.setCharacterEncoding("UTF-8");
+        
+        
+        
+        try {
+			processAction(request,response);
+		} catch (IOException | SQLException e) {
+			e.printStackTrace();
+		}
+        
 
+    	response.sendRedirect(request.getContextPath() + "/admin/dashboard");
+        
+
+
+    }
+
+    
+    private void processAction(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException
+    {
+    	String action = request.getParameter("action");
+    	
+    	System.out.print("action = " + action);
+    	
+    	
+    	if(action.equals("attiva"))
+    		attivaProdotto(request);
+    	else if(action.equals("disattiva"))
+    		disattivaProdotto(request);
+    	else if(action.equals("aggiungi"))
+    		aggiungiProdotto(request,response);
+    	
+    }
+    
+    
+    private void aggiungiProdotto(HttpServletRequest request,HttpServletResponse response) throws IOException
+    {
         try {
         	
             String categoria = request.getParameter("categoria");
@@ -118,12 +157,11 @@ public class AdminProdottoControl extends HttpServlet {
             
             System.out.println(e.getMessage());
             
-            response.sendRedirect( request.getContextPath() + "/home");
+            response.sendRedirect(request.getContextPath() + "/home");
         }
-
+    	
+    	
     }
-
-
     private int CreateAndSave(String categoria, HttpServletRequest request) throws Exception {
 
         switch(categoria.toUpperCase()) {
@@ -359,6 +397,24 @@ public class AdminProdottoControl extends HttpServlet {
 
         return listaImmagini;
     }
+    
+    
+    
+    
+    // DISABILITA PRODOTTO
+    
+    private void disattivaProdotto (HttpServletRequest request) throws SQLException {
+    	
+    	int id = Integer.valueOf(request.getParameter("id"));
+    	productDAO.setProductStatus(id, false);
+    }  
+    
+    private void attivaProdotto (HttpServletRequest request) throws SQLException {
+    	
+    	int id = Integer.valueOf(request.getParameter("id"));
+    	productDAO.setProductStatus(id, true);
+    	
+    }  
     
     	
     

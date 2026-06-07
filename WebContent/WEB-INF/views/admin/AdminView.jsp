@@ -306,7 +306,7 @@ textarea { resize: vertical; min-height: 80px; }
     </c:if>
 
     <form
-        action="${pageContext.request.contextPath}/admin/aggiungiProdotto"
+        action="${pageContext.request.contextPath}/admin/aggiungiProdotto?action=insert"
         method="post"
         enctype="multipart/form-data"
         id="formProdotto">
