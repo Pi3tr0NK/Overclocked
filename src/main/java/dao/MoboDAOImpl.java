@@ -151,10 +151,15 @@ public class MoboDAOImpl implements MoboDAO{
 
 	        ps.setString(7, formato);
 	        ps.setString(8, formato);
-
-	        ps.setString(9, nvme);
-	        ps.setString(10, nvme);
-
+	        
+	        if (nvme == null) {
+	            ps.setNull(9, java.sql.Types.BOOLEAN);
+	            ps.setNull(10, java.sql.Types.BOOLEAN);
+	        } else {
+	            ps.setBoolean(9, Boolean.valueOf(nvme));
+	            ps.setBoolean(10, Boolean.valueOf(nvme));
+	        }
+	        
 	        if (slotRamInt == null) {
 	            ps.setNull(11, java.sql.Types.INTEGER);
 	            ps.setNull(12, java.sql.Types.INTEGER);

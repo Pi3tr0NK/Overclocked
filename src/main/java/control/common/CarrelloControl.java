@@ -48,7 +48,7 @@ public class CarrelloControl extends HttpServlet {
 		
 		for(CarrelloItemBean i : items)
 		{
-			totale+= i.getProdotto().getPrezzo() - (i.getProdotto().getPrezzo()*i.getProdotto().getSconto()/100);
+			totale+= (i.getProdotto().getPrezzo() - (i.getProdotto().getPrezzo()*i.getProdotto().getSconto()/100))*i.getQuantita();
 		}
 		
 		request.setAttribute("totale", totale);
