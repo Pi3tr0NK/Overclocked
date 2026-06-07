@@ -25,4 +25,8 @@ public interface ProdottoDAO {
 	public Collection<ProdottoBean> doRetrieveBestseller(int n) throws SQLException;
 	
 	public Collection<ProdottoBean> doRetrieveCorrelati(int n, int idProdotto, String categoria, double prezzo) throws SQLException;
+	
+	public int doCountProducts() throws SQLException;
+	
+	public int doCountExpiredProducts() throws SQLException;
 }

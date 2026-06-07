@@ -352,4 +352,37 @@ public class ProdottoDAOImpl implements ProdottoDAO{
         return correlati;
     }
     
+    public synchronized int doCountProducts() throws SQLException {
+
+        String sql = "SELECT COUNT(*) FROM " + TABLE_NAME;
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+
+        return 0;
+    }
+    
+    public synchronized int doCountExpiredProducts() throws SQLException {
+
+        String sql = "SELECT COUNT(*) FROM " + TABLE_NAME +" "
+        		+ "WHERE stock<=0";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+
+        return 0;
+    }
+    
 }

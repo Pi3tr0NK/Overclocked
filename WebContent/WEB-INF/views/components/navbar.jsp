@@ -31,7 +31,11 @@
                 </a>
             </c:otherwise>
         </c:choose>
-
+		
+		<a class="nav-btn" href="${pageContext.request.contextPath}/admin/dashboard">
+            ADMIN
+        </a>
+        
         <a class="nav-btn" href="${pageContext.request.contextPath}/Carrello">
             CARRELLO
         </a>

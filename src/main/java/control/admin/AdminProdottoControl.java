@@ -62,6 +62,7 @@ public class AdminProdottoControl extends HttpServlet {
     private ChassisDAOImpl chassisDAO;
     private DissipatoreDAOImpl dissipatoreDAO;
     private MoboDAOImpl moboDAO;
+    
     @Override
     public void init(ServletConfig config) throws ServletException {
 

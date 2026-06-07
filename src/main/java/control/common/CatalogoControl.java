@@ -56,7 +56,7 @@ public class CatalogoControl extends HttpServlet {
             throw new ServletException("DataSource non disponibile nel contesto");
         }
 
-        prodottoDAO =new ProdottoDAOImpl(ds);
+        	prodottoDAO =new ProdottoDAOImpl(ds);
     		psuDAO =new PSUDAOImpl(ds);
     		chassisDAO =new ChassisDAOImpl(ds);
     		cpuDAO =new CPUDAOImpl(ds);

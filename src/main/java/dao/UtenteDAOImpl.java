@@ -225,4 +225,20 @@ public class UtenteDAOImpl implements UtenteDAO{
         }
     }
     
+    public synchronized int doCountUtenti() throws SQLException {
+
+        String sql = "SELECT COUNT(*) FROM " + TABLE_NAME;
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        }
+
+        return 0;
+    }
+    
 }

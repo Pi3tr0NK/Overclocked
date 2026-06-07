@@ -1,496 +1,831 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Aggiungi Prodotto</title>
+<title>Aggiungi Prodotto - Overclocked Admin</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
 
 <style>
 
-body{
-    background:#0b0b0b;
-    color:white;
-    font-family:Arial;
-    margin:0;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background: #080808;
+    color: white;
+    font-family: Arial, sans-serif;
 }
 
-.container{
-    width:1000px;
-    margin:auto;
-    padding:30px;
+.container {
+    width: 800px;
+    margin: auto;
+    padding: 30px 0 60px;
 }
 
-h1{
-    color:#ff7300;
+.page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
 }
 
-.form-group{
-    margin-bottom:15px;
+.page-header h1 { font-size: 20px; color: #ff7300; margin-bottom: 4px; }
+.page-header p  { font-size: 13px; color: #444; }
+
+.btn-back {
+    font-size: 12px;
+    color: #666;
+    text-decoration: none;
+    border: 1px solid #1f1f1f;
+    border-radius: 7px;
+    padding: 7px 14px;
+    white-space: nowrap;
+}
+.btn-back:hover { border-color: #333; color: #e0e0e0; }
+
+/* alert */
+.alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin-bottom: 18px;
+}
+.alert-error   { background: #1a0808; border: 1px solid #5a1a1a; color: #f44336; }
+.alert-success { background: #0a1a0a; border: 1px solid #1a5a1a; color: #4caf50; }
+
+/* card */
+.card {
+    background: #0f0f0f;
+    border: 1px solid #1a1a1a;
+    border-radius: 11px;
+    padding: 20px;
+    margin-bottom: 16px;
 }
 
-label{
-    display:block;
-    margin-bottom:5px;
+.card-title {
+    font-size: 10px;
+    color: #ff7300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #1a1a1a;
 }
 
-input,
-textarea,
-select{
-    width:100%;
-    padding:10px;
-    border:none;
-    border-radius:6px;
-    box-sizing:border-box;
+/* campi */
+.field { margin-bottom: 14px; }
+.field:last-child { margin-bottom: 0; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.grid2 .field { margin-bottom: 0; }
+.grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+.grid3 .field { margin-bottom: 0; }
+
+label {
+    display: block;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 6px;
+}
+.req { color: #ff7300; margin-left: 2px; }
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    background: #080808;
+    border: 1px solid #1f1f1f;
+    border-radius: 7px;
+    padding: 9px 11px;
+    font-size: 13px;
+    color: #e0e0e0;
+    outline: none;
+    font-family: Arial, sans-serif;
+}
+input:focus, select:focus, textarea:focus { border-color: #ff7300; }
+input::placeholder, textarea::placeholder { color: #2a2a2a; }
+select { appearance: none; cursor: pointer; color: #888; }
+select option { background: #0f0f0f; color: #e0e0e0; }
+textarea { resize: vertical; min-height: 80px; }
+
+/* tab categoria */
+.cat-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+.cat-tab {
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 5px;
+    border: 1px solid #1f1f1f;
+    color: #555;
+    cursor: pointer;
+    background: #080808;
+    transition: all .15s;
+}
+.cat-tab:hover { border-color: #333; color: #aaa; }
+.cat-tab.active { background: #110a00; border-color: #ff7300; color: #ff7300; }
+
+/* sezioni categoria */
+.cat-section { display: none; }
+.cat-section.visible { display: block; }
+
+/* slot immagini */
+.img-slots {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
-textarea{
-    min-height:120px;
+.img-slot {
+    aspect-ratio: 1;
+    background: #080808;
+    border: 1px dashed #1f1f1f;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .15s, background .15s;
+}
+.img-slot:hover { border-color: #ff7300; background: #110a00; }
+.img-slot .plus { font-size: 20px; color: #2a2a2a; }
+
+.img-slot .preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 8px;
 }
 
-.section{
-    background:#111;
-    padding:20px;
-    border-radius:10px;
-    margin-top:20px;
+.img-slot .slot-num {
+    position: absolute;
+    bottom: 4px;
+    left: 6px;
+    font-size: 9px;
+    color: #ff7300;
+    font-weight: bold;
 }
 
-button{
-    background:#ff7300;
-    color:black;
-    border:none;
-    padding:12px 25px;
-    font-weight:bold;
-    border-radius:8px;
-    cursor:pointer;
-    margin-top:20px;
+.img-slot .rm-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 16px;
+    height: 16px;
+    background: rgba(0,0,0,0.85);
+    border: none;
+    border-radius: 50%;
+    color: #f44336;
+    font-size: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
 }
 
-button:hover{
-    opacity:.9;
+.img-slot.filled { border-style: solid; border-color: #1f1f1f; }
+
+.image-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
-.hidden{
-    display:none;
+.image-slot {
+    aspect-ratio: 1;
+    background: #080808;
+    border: 1px dashed #1f1f1f;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: border-color .15s, background .15s;
+}
+.image-slot:hover { border-color: #ff7300; background: #110a00; }
+
+.image-slot span {
+    font-size: 22px;
+    color: #2a2a2a;
+    pointer-events: none;
 }
 
-.error{
-    background:#c62828;
-    padding:15px;
-    border-radius:8px;
-    margin-bottom:20px;
+.image-slot img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    display: none;
 }
 
-.success{
-    background:#2e7d32;
-    padding:15px;
-    border-radius:8px;
-    margin-bottom:20px;
+.image-slot.filled { border-style: solid; border-color: #1f1f1f; cursor: default; }
+
+.image-slot .rm-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 18px;
+    height: 18px;
+    background: rgba(0,0,0,0.85);
+    border: none;
+    border-radius: 50%;
+    color: #f44336;
+    font-size: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
 }
 
-.image-container{
-    display:flex;
-    gap:15px;
-    flex-wrap:wrap;
-    margin-top:10px;
+.upload-hint { font-size: 11px; color: #333; text-align: right; }
+
+/* bottoni */
+.btn-submit {
+    width: 100%;
+    height: 44px;
+    background: #ff7300;
+    color: #000;
+    border: none;
+    border-radius: 9px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 10px;
 }
+.btn-submit:hover { opacity: .9; }
 
-.image-slot{
-    width:150px;
-    height:150px;
-
-    border:2px dashed #666;
-    border-radius:10px;
-
-    background:#1a1a1a;
-
-    cursor:pointer;
-    overflow:hidden;
-    position:relative;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
+.btn-cancel {
+    display: block;
+    text-align: center;
+    width: 100%;
+    height: 38px;
+    line-height: 38px;
+    background: transparent;
+    color: #555;
+    border: 1px solid #1f1f1f;
+    border-radius: 9px;
+    font-size: 13px;
+    text-decoration: none;
 }
+.btn-cancel:hover { border-color: #333; color: #888; }
 
-.image-slot:hover{
-    border-color:#ff7300;
-}
-
-.image-slot span{
-    font-size:50px;
-    color:#999;
-    user-select:none;
-}
-
-.image-slot img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:none;
-    position:absolute;
-    top:0;
-    left:0;
-}
+.hint { font-size: 11px; color: #333; margin-bottom: 14px; }
 
 </style>
 </head>
-
 <body>
+
+<jsp:include page="/WEB-INF/views/components/navbar.jsp" />
 
 <div class="container">
 
-<h1>Aggiungi Prodotto</h1>
+    <div class="page-header">
+        <div>
+            <h1>Aggiungi Prodotto</h1>
+            <p>Seleziona la categoria e compila i campi</p>
+        </div>
+        <a class="btn-back" href="${pageContext.request.contextPath}/admin/dashboard">&#8592; Torna al pannello</a>
+    </div>
 
-<% if(request.getAttribute("errore") != null){ %>
-<div class="error">
-    <%= request.getAttribute("errore") %>
+    <c:if test="${not empty errore}">
+        <div class="alert alert-error">${errore}</div>
+    </c:if>
+    <c:if test="${not empty param.success}">
+        <div class="alert alert-success">Prodotto aggiunto con successo!</div>
+    </c:if>
+
+    <form
+        action="${pageContext.request.contextPath}/admin/aggiungiProdotto"
+        method="post"
+        enctype="multipart/form-data"
+        id="formProdotto">
+
+        <%-- CATEGORIA --%>
+        <div class="card">
+            <div class="card-title">Categoria</div>
+            <div class="cat-tabs">
+                <div class="cat-tab" data-cat="CPU"         onclick="selezionaCategoria('CPU')">CPU</div>
+                <div class="cat-tab" data-cat="GPU"         onclick="selezionaCategoria('GPU')">GPU</div>
+                <div class="cat-tab" data-cat="RAM"         onclick="selezionaCategoria('RAM')">RAM</div>
+                <div class="cat-tab" data-cat="STORAGE"     onclick="selezionaCategoria('STORAGE')">Storage</div>
+                <div class="cat-tab" data-cat="MOBO"        onclick="selezionaCategoria('MOBO')">Scheda madre</div>
+                <div class="cat-tab" data-cat="PSU"         onclick="selezionaCategoria('PSU')">Alimentatore</div>
+                <div class="cat-tab" data-cat="CASE"        onclick="selezionaCategoria('CASE')">Case</div>
+                <div class="cat-tab" data-cat="DISSIPATORE" onclick="selezionaCategoria('DISSIPATORE')">Dissipatore</div>
+            </div>
+            <input type="hidden" name="categoria" id="inputCategoria" value=""/>
+        </div>
+
+        <%-- INFORMAZIONI GENERALI --%>
+        <div class="card">
+            <div class="card-title">Informazioni generali</div>
+
+            <div class="grid2">
+                <div class="field">
+                    <label>Nome <span class="req">*</span></label>
+                    <input type="text" name="nome" placeholder="es. Core i9-14900K" required/>
+                </div>
+                <div class="field">
+                    <label>Modello <span class="req">*</span></label>
+                    <input type="text" name="modello" placeholder="es. i9-14900K" required/>
+                </div>
+            </div>
+
+            <div class="grid2">
+                <div class="field">
+                    <label>Marca <span class="req">*</span></label>
+                    <input type="text" name="marca" placeholder="es. Intel" required/>
+                </div>
+                <div class="field">
+                    <label>Attivo</label>
+                    <select name="attivo">
+                        <option value="true">S&igrave;</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Descrizione</label>
+                <textarea name="descrizione" placeholder="Descrizione del prodotto..."></textarea>
+            </div>
+        </div>
+
+        <%-- PREZZO E DISPONIBILITA --%>
+        <div class="card">
+            <div class="card-title">Prezzo e disponibilit&agrave;</div>
+
+            <div class="grid3">
+                <div class="field">
+                    <label>Prezzo (&euro;) <span class="req">*</span></label>
+                    <input type="number" name="prezzo" step="0.01" min="0" placeholder="es. 599.99" required/>
+                </div>
+                <div class="field">
+                    <label>Sconto (%)</label>
+                    <input type="number" name="sconto" min="0" max="100" value="0"/>
+                </div>
+                <div class="field">
+                    <label>Stock <span class="req">*</span></label>
+                    <input type="number" name="stock" min="0" placeholder="es. 20" required/>
+                </div>
+            </div>
+
+            <div class="grid2">
+                <div class="field">
+                    <label>Peso</label>
+                    <input type="text" name="peso" placeholder="es. 1.4 kg"/>
+                </div>
+                <div class="field">
+                    <label>Dimensioni</label>
+                    <input type="text" name="dimensioni" placeholder="es. 357x149x70 mm"/>
+                </div>
+            </div>
+        </div>
+
+        <%-- ===== CPU ===== --%>
+        <div class="card cat-section" id="section-CPU">
+            <div class="card-title">Specifiche CPU</div>
+            <div class="grid3">
+                <div class="field">
+                    <label>Core <span class="req">*</span></label>
+                    <input type="number" name="core" min="1" placeholder="es. 24"/>
+                </div>
+                <div class="field">
+                    <label>Thread <span class="req">*</span></label>
+                    <input type="number" name="thread" min="1" placeholder="es. 32"/>
+                </div>
+                <div class="field">
+                    <label>TDP (W)</label>
+                    <input type="number" name="tdp" min="0" placeholder="es. 125"/>
+                </div>
+            </div>
+            <div class="grid3">
+                <div class="field">
+                    <label>Socket</label>
+                    <input type="text" name="socket" placeholder="es. LGA1700"/>
+                </div>
+                <div class="field">
+                    <label>Tipo RAM supportata</label>
+                    <input type="text" name="tiporam" placeholder="es. DDR5"/>
+                </div>
+                <div class="field">
+                    <label>Frequenza</label>
+                    <input type="text" name="frequenza" placeholder="es. 3.2 GHz"/>
+                </div>
+            </div>
+            <div class="field">
+                <label>Frequenza RAM supportata</label>
+                <input type="text" name="frequenzaram" placeholder="es. 5600 MHz"/>
+            </div>
+        </div>
+
+        <%-- ===== GPU ===== --%>
+        <div class="card cat-section" id="section-GPU">
+            <div class="card-title">Specifiche GPU</div>
+            <div class="grid3">
+                <div class="field">
+                    <label>VRAM</label>
+                    <input type="text" name="vram" placeholder="es. 24 GB"/>
+                </div>
+                <div class="field">
+                    <label>Tipo VRAM</label>
+                    <input type="text" name="tipovram" placeholder="es. GDDR6X"/>
+                </div>
+                <div class="field">
+                    <label>TDP (W)</label>
+                    <input type="number" name="tdp" min="0" placeholder="es. 600"/>
+                </div>
+            </div>
+            <div class="grid3">
+                <div class="field">
+                    <label>Frequenza boost</label>
+                    <input type="text" name="frequenza" placeholder="es. 2640 MHz"/>
+                </div>
+                <div class="field">
+                    <label>PCIe</label>
+                    <input type="text" name="pcie" placeholder="es. PCIe 4.0 x16"/>
+                </div>
+                <div class="field">
+                    <label>Uscite video</label>
+                    <input type="text" name="video" placeholder="es. 3x DP, 1x HDMI"/>
+                </div>
+            </div>
+            <div class="field">
+                <label>Risoluzione massima</label>
+                <input type="text" name="maxres" placeholder="es. 7680x4320"/>
+            </div>
+        </div>
+
+        <%-- ===== RAM ===== --%>
+        <div class="card cat-section" id="section-RAM">
+            <div class="card-title">Specifiche RAM</div>
+            <div class="grid3">
+                <div class="field">
+                    <label>Capacit&agrave;</label>
+                    <input type="text" name="capacita" placeholder="es. 32 GB"/>
+                </div>
+                <div class="field">
+                    <label>Frequenza</label>
+                    <input type="text" name="frequenza" placeholder="es. 6000 MHz"/>
+                </div>
+                <div class="field">
+                    <label>Tipo</label>
+                    <input type="text" name="tipo" placeholder="es. DDR5"/>
+                </div>
+            </div>
+        </div>
+
+        <%-- ===== STORAGE ===== --%>
+        <div class="card cat-section" id="section-STORAGE">
+            <div class="card-title">Specifiche Storage</div>
+            <div class="grid3">
+                <div class="field">
+                    <label>Capacit&agrave;</label>
+                    <input type="text" name="capacita" placeholder="es. 2 TB"/>
+                </div>
+                <div class="field">
+                    <label>Formato</label>
+                    <input type="text" name="formato" placeholder="es. M.2 2280"/>
+                </div>
+                <div class="field">
+                    <label>Tipo</label>
+                    <select name="tipo">
+                        <option value="SSD">SSD</option>
+                        <option value="HDD">HDD</option>
+                    </select>
+                </div>
+            </div>
+            <div class="grid3">
+                <div class="field">
+                    <label>Vel. lettura (MB/s)</label>
+                    <input type="number" name="lettura" min="0" placeholder="es. 7400"/>
+                </div>
+                <div class="field">
+                    <label>Vel. scrittura (MB/s)</label>
+                    <input type="number" name="scrittura" min="0" placeholder="es. 6900"/>
+                </div>
+                <div class="field">
+                    <label>Tecnologia</label>
+                    <select name="tecnologia">
+                        <option value="NVME">NVMe</option>
+                        <option value="SATA">SATA</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <%-- ===== MOBO ===== --%>
+        <div class="card cat-section" id="section-MOBO">
+            <div class="card-title">Specifiche Scheda Madre</div>
+            <div class="grid3">
+                <div class="field">
+                    <label>Chipset</label>
+                    <input type="text" name="chipset" placeholder="es. Z790"/>
+                </div>
+                <div class="field">
+                    <label>Socket</label>
+                    <input type="text" name="socket" placeholder="es. LGA1700"/>
+                </div>
+                <div class="field">
+                    <label>Formato</label>
+                    <input type="text" name="formato" placeholder="es. ATX"/>
+                </div>
+            </div>
+            <div class="grid3">
+                <div class="field">
+                    <label>Tipo RAM</label>
+                    <input type="text" name="tipoRam" placeholder="es. DDR5"/>
+                </div>
+                <div class="field">
+                    <label>Freq. max RAM</label>
+                    <input type="text" name="maxFreq" placeholder="es. 7200 MHz"/>
+                </div>
+                <div class="field">
+                    <label>PCIe</label>
+                    <input type="text" name="pcie" placeholder="es. PCIe 5.0"/>
+                </div>
+            </div>
+            <div class="grid3">
+                <div class="field">
+                    <label>Slot RAM</label>
+                    <input type="number" name="slotRam" min="1" placeholder="es. 4"/>
+                </div>
+                <div class="field">
+                    <label>Porte SATA</label>
+                    <input type="number" name="porteSata" min="0" placeholder="es. 6"/>
+                </div>
+                <div class="field">
+                    <label>Porte USB</label>
+                    <input type="number" name="porteUsb" min="0" placeholder="es. 10"/>
+                </div>
+            </div>
+            <div class="field">
+                <label>NVMe</label>
+                <select name="nvme">
+                    <option value="true">S&igrave;</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+        </div>
+
+        <%-- ===== PSU ===== --%>
+        <div class="card cat-section" id="section-PSU">
+            <div class="card-title">Specifiche Alimentatore</div>
+            <div class="grid2">
+                <div class="field">
+                    <label>Potenza (W)</label>
+                    <input type="number" name="potenza" min="0" placeholder="es. 1000"/>
+                </div>
+                <div class="field">
+                    <label>Certificazione</label>
+                    <input type="text" name="certificazione" placeholder="es. 80+ Gold"/>
+                </div>
+            </div>
+            <div class="grid2">
+                <div class="field">
+                    <label>Modulare</label>
+                    <select name="modulare">
+                        <option value="PIENO">Pieno</option>
+                        <option value="SEMI">Semi-modulare</option>
+                        <option value="NESSUNO">Non modulare</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>Formato</label>
+                    <select name="formato">
+                        <option value="ATX">ATX</option>
+                        <option value="SFX">SFX</option>
+                        <option value="TFX">TFX</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <%-- ===== CASE ===== --%>
+        <div class="card cat-section" id="section-CASE">
+            <div class="card-title">Specifiche Case</div>
+            <div class="grid3">
+                <div class="field">
+                    <label>Formato</label>
+                    <input type="text" name="formato" placeholder="es. Full Tower"/>
+                </div>
+                <div class="field">
+                    <label>Colore</label>
+                    <input type="text" name="colore" placeholder="es. Nero"/>
+                </div>
+                <div class="field">
+                    <label>Materiale</label>
+                    <input type="text" name="materiale" placeholder="es. Acciaio + Vetro"/>
+                </div>
+            </div>
+        </div>
+
+        <%-- ===== DISSIPATORE ===== --%>
+        <div class="card cat-section" id="section-DISSIPATORE">
+            <div class="card-title">Specifiche Dissipatore</div>
+            <div class="grid3">
+                <div class="field">
+                    <label>Tipo</label>
+                    <select name="tipo">
+                        <option value="ARIA">Aria</option>
+                        <option value="LIQUIDO">Liquido</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label>TDP supportato (W)</label>
+                    <input type="number" name="tdp" min="0" placeholder="es. 250"/>
+                </div>
+                <div class="field">
+                    <label>Socket supportati</label>
+                    <input type="text" name="socket" placeholder="es. LGA1700, AM5"/>
+                </div>
+            </div>
+            <div class="grid2">
+                <div class="field">
+                    <label>RPM max</label>
+                    <input type="number" name="rpm" min="0" placeholder="es. 1500"/>
+                </div>
+                <div class="field">
+                    <label>Rumore (dBA)</label>
+                    <input type="number" name="rumore" min="0" placeholder="es. 25"/>
+                </div>
+            </div>
+        </div>
+
+        <%-- IMMAGINI --%>
+        <div class="card">
+            <div class="card-title">
+                Immagini
+                <span style="font-size:10px;color:#444;text-transform:none;letter-spacing:0;font-weight:normal">
+                    (max 5 &mdash; JPG / PNG / WEBP)
+                </span>
+            </div>
+
+            <div class="image-container" id="imgSlots">
+                <div class="image-slot" onclick="apriSlot(this)">
+                    <input type="file" name="immagine1" accept="image/*" hidden onchange="gestisciSlot(this)"/>
+                    <span>&#43;</span>
+                    <img alt=""/>
+                </div>
+                <div class="image-slot" onclick="apriSlot(this)">
+                    <input type="file" name="immagine2" accept="image/*" hidden onchange="gestisciSlot(this)"/>
+                    <span>&#43;</span>
+                    <img alt=""/>
+                </div>
+                <div class="image-slot" onclick="apriSlot(this)">
+                    <input type="file" name="immagine3" accept="image/*" hidden onchange="gestisciSlot(this)"/>
+                    <span>&#43;</span>
+                    <img alt=""/>
+                </div>
+                <div class="image-slot" onclick="apriSlot(this)">
+                    <input type="file" name="immagine4" accept="image/*" hidden onchange="gestisciSlot(this)"/>
+                    <span>&#43;</span>
+                    <img alt=""/>
+                </div>
+                <div class="image-slot" onclick="apriSlot(this)">
+                    <input type="file" name="immagine5" accept="image/*" hidden onchange="gestisciSlot(this)"/>
+                    <span>&#43;</span>
+                    <img alt=""/>
+                </div>
+            </div>
+
+            <div class="upload-hint" id="uploadHint">0 / 5 immagini selezionate</div>
+        </div>
+
+        <%-- SALVA --%>
+        <div class="card">
+            <div class="card-title">Salva</div>
+            <p class="hint">
+                I campi con <span class="req">*</span> sono obbligatori.
+                La sezione specifiche cambia in base alla categoria selezionata.
+            </p>
+            <button type="submit" class="btn-submit">Salva prodotto</button>
+            <button type="reset" class="btn-submit">Annulla</button>
+        </div>
+
+    </form>
 </div>
-<% } %>
 
-<form action="${pageContext.request.contextPath}/admin/aggiungiProdotto"
-      method="post" enctype="multipart/form-data">
-
-    <!-- DATI COMUNI -->
-
-    <div class="section">
-
-        <h2>Dati Generali</h2>
-
-        <div class="form-group">
-            <label>Categoria</label>
-            <select name="categoria" id="categoria">
-                <option value="">Seleziona</option>
-                <option value="CPU">CPU</option>
-                <option value="GPU">GPU</option>
-                <option value="RAM">RAM</option>
-                <option value="STORAGE">Storage</option>
-                <option value="PSU">PSU</option>
-                <option value="CASE">Case</option>
-                <option value="MOBO">Scheda Madre</option>
-                <option value="DISSIPATORE">Dissipatore</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Nome</label>
-            <input type="text" name="nome">
-        </div>
-
-        <div class="form-group">
-            <label>Marca</label>
-            <input type="text" name="marca">
-        </div>
-
-        <div class="form-group">
-            <label>Modello</label>
-            <input type="text" name="modello">
-        </div>
-
-        <div class="form-group">
-            <label>Descrizione</label>
-            <textarea name="descrizione"></textarea>
-        </div>
-
-        <div class="form-group">
-            <label>Prezzo</label>
-            <input type="number" step="0.01" name="prezzo">
-        </div>
-
-        <div class="form-group">
-            <label>Stock</label>
-            <input type="number" name="stock">
-        </div>
-
-        <div class="form-group">
-            <label>Sconto (%)</label>
-            <input type="number" name="sconto" value="0">
-        </div>
-
-        <div class="form-group">
-            <label>Dimensioni</label>
-            <input type="text" name="dimensioni">
-        </div>
-
-        <div class="form-group">
-            <label>Peso</label>
-            <input type="text" name="peso">
-        </div>
-
-        <div class="form-group">
-            <label>Attivo</label>
-            <input type="checkbox" name="attivo" value="true">
-        </div>
-
-		<div class="form-group">
-    <label>Immagini (max 5)</label>
-
-    <div class="image-container">
-
-        <div class="image-slot">
-            <input type="file" name="immagine1" accept="image/*" hidden>
-            <span>+</span>
-            <img alt="">
-        </div>
-
-        <div class="image-slot">
-            <input type="file" name="immagine2" accept="image/*" hidden>
-            <span>+</span>
-            <img alt="">
-        </div>
-
-        <div class="image-slot">
-            <input type="file" name="immagine3" accept="image/*" hidden>
-            <span>+</span>
-            <img alt="">
-        </div>
-
-        <div class="image-slot">
-            <input type="file" name="immagine4" accept="image/*" hidden>
-            <span>+</span>
-            <img alt="">
-        </div>
-
-        <div class="image-slot">
-            <input type="file" name="immagine5" accept="image/*" hidden>
-            <span>+</span>
-            <img alt="">
-        </div>
-
-    </div>
-</div>
-	
-
-    </div>
-
-    <!-- CPU -->
-
-    <div id="CPU" class="section hidden">
-
-        <h2>Specifiche CPU</h2>
-
-        <input type="number" name="core" placeholder="Core">
-        <input type="number" name="thread" placeholder="Thread">
-        <input type="text" name="frequenza" placeholder="Frequenza">
-        <input type="text" name="frequenzaram" placeholder="Frequenza RAM">
-        <input type="text" name="tiporam" placeholder="Tipo RAM">
-        <input type="text" name="socket" placeholder="Socket">
-        <input type="number" name="tdp" placeholder="TDP">
-
-    </div>
-
-    <!-- GPU -->
-
-    <div id="GPU" class="section hidden">
-
-        <h2>Specifiche GPU</h2>
-
-        <input type="text" name="vram" placeholder="VRAM">
-        <input type="text" name="tipoVram" placeholder="Tipo VRAM">
-        <input type="text" name="frequenza" placeholder="Frequenza">
-        <input type="text" name="pcie" placeholder="PCI-E">
-        <input type="text" name="video" placeholder="Uscite Video">
-        <input type="number" name="tdp" placeholder="TDP">
-
-    </div>
-
-    <!-- RAM -->
-
-    <div id="RAM" class="section hidden">
-
-        <h2>Specifiche RAM</h2>
-
-        <input type="text" name="capacita" placeholder="Capacità">
-        <input type="text" name="frequenza" placeholder="Frequenza">
-        <input type="text" name="tipo" placeholder="Tipo">
-
-    </div>
-
-    <!-- STORAGE -->
-
-    <div id="STORAGE" class="section hidden">
-
-        <h2>Specifiche Storage</h2>
-
-        <input type="text" name="capacita" placeholder="Capacità">
-        <input type="number" name="lettura" placeholder="Velocità Lettura">
-        <input type="number" name="scrittura" placeholder="Velocità Scrittura">
-
-        <select name="tecnologia">
-            <option value="SATA">SATA</option>
-            <option value="NVME">NVME</option>
-        </select>
-
-        <select name="tipo">
-            <option value="SSD">SSD</option>
-            <option value="HDD">HDD</option>
-        </select>
-
-        <input type="text" name="formato" placeholder="Formato">
-
-    </div>
-
-    <!-- PSU -->
-
-    <div id="PSU" class="section hidden">
-
-        <h2>Specifiche PSU</h2>
-
-        <input type="number" name="potenza" placeholder="Potenza">
-
-        <input type="text"
-               name="certificazione"
-               placeholder="80+ Gold">
-
-        <select name="modulare">
-            <option value="MODULARE">MODULARE</option>
-            <option value="SEMIMODULARE">SEMIMODULARE</option>
-            <option value="NON_MODULARE">NON_MODULARE</option>
-        </select>
-
-        <select name="formato">
-            <option value="ATX">ATX</option>
-            <option value="SFX">SFX</option>
-        </select>
-
-    </div>
-
-    <!-- CASE -->
-
-    <div id="CASE" class="section hidden">
-
-        <h2>Specifiche Case</h2>
-
-        <input type="text" name="formato" placeholder="Formato">
-        <input type="text" name="colore" placeholder="Colore">
-        <input type="text" name="materiale" placeholder="Materiale">
-
-    </div>
-
-    <!-- MOBO -->
-
-    <div id="MOBO" class="section hidden">
-
-        <h2>Specifiche Scheda Madre</h2>
-
-        <input type="text" name="chipset" placeholder="Chipset">
-        <input type="text" name="socket" placeholder="Socket">
-        <input type="text" name="tipoRam" placeholder="Tipo RAM">
-        <input type="text" name="maxFreq" placeholder="Max Frequenza">
-        <input type="text" name="formato" placeholder="Formato">
-        <input type="text" name="pcie" placeholder="PCI-E">
-
-        <input type="number" name="slotRam" placeholder="Slot RAM">
-        <input type="number" name="porteSata" placeholder="Porte SATA">
-        <input type="number" name="porteUsb" placeholder="Porte USB">
-
-        <label>
-            NVMe
-            <input type="checkbox" name="nvme" value="true">
-        </label>
-
-    </div>
-
-    <!-- DISSIPATORE -->
-
-    <div id="DISSIPATORE" class="section hidden">
-
-        <h2>Specifiche Dissipatore</h2>
-
-        <select name="tipo">
-            <option value="ARIA">ARIA</option>
-            <option value="LIQUIDO">LIQUIDO</option>
-        </select>
-
-        <input type="text" name="socket" placeholder="Socket Supportati">
-        <input type="number" name="rpm" placeholder="RPM Max">
-        <input type="number" name="rumore" placeholder="Rumore">
-        <input type="number" name="tdp" placeholder="TDP Supportato">
-
-    </div>
-
-    <button type="submit">
-        Salva prodotto
-    </button>
-
-</form>
-
-
-
-</div>
 
 <script>
 
+// ── INIZIALIZZAZIONE ─────────────────────────────────────────────────
 
-document.querySelectorAll(".image-slot").forEach(slot => {
+window.addEventListener('DOMContentLoaded', function() {
+    selezionaCategoria('CPU');
+});
 
-    const input = slot.querySelector("input");
-    const img = slot.querySelector("img");
-    const plus = slot.querySelector("span");
+// ── CATEGORIA ────────────────────────────────────────────────────────
 
-    slot.addEventListener("click", () => {
-        input.click();
+function selezionaCategoria(cat) {
+    document.querySelectorAll('.cat-tab').forEach(function(t) {
+        t.classList.toggle('active', t.dataset.cat === cat);
     });
+    document.querySelectorAll('.cat-section').forEach(function(s) {
+        s.classList.remove('visible');
+    });
+    var sezione = document.getElementById('section-' + cat);
+    if (sezione) sezione.classList.add('visible');
+    document.getElementById('inputCategoria').value = cat;
+}
 
-    input.addEventListener("change", () => {
+// ── IMMAGINI ─────────────────────────────────────────────────────────
 
-        const file = input.files[0];
+function apriSlot(slot) {
+    // se lo slot è già pieno non riaprire il picker
+    if (slot.classList.contains('filled')) return;
+    slot.querySelector('input[type="file"]').click();
+}
 
-        if(file) {
+function gestisciSlot(input) {
+    if (!input.files || input.files.length === 0) return;
 
-            const reader = new FileReader();
+    var file = input.files[0];
+    var slot = input.closest('.image-slot');
+    var img  = slot.querySelector('img');
+    var span = slot.querySelector('span');
 
-            reader.onload = e => {
-                img.src = e.target.result;
-                img.style.display = "block";
-                plus.style.display = "none";
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        img.src = e.target.result;
+        img.style.display = 'block';
+        span.style.display = 'none';
+        slot.classList.add('filled');
+
+        // bottone rimuovi (evita duplicati)
+        if (!slot.querySelector('.rm-btn')) {
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'rm-btn';
+            btn.innerHTML = '&#x2715;';
+            btn.onclick = function(e) {
+                e.stopPropagation();
+                svuotaSlot(slot);
             };
-
-            reader.readAsDataURL(file);
-        }
-    });
-
-});
-
-
-const categoria = document.getElementById("categoria");
-
-/* all'avvio disabilita tutte le sezioni specifiche */
-document.querySelectorAll(".section").forEach(div => {
-
-    if(div.id){
-
-        div.classList.add("hidden");
-
-        div.querySelectorAll("input, select, textarea")
-           .forEach(el => el.disabled = true);
-    }
-
-});
-
-categoria.addEventListener("change", function(){
-
-    document.querySelectorAll(".section").forEach(div => {
-
-        if(div.id){
-
-            div.classList.add("hidden");
-
-            div.querySelectorAll("input, select, textarea")
-               .forEach(el => el.disabled = true);
+            slot.appendChild(btn);
         }
 
+        aggiornaHint();
+    };
+    reader.readAsDataURL(file);
+}
+
+function svuotaSlot(slot) {
+    var input = slot.querySelector('input[type="file"]');
+    var img   = slot.querySelector('img');
+    var span  = slot.querySelector('span');
+    var btn   = slot.querySelector('.rm-btn');
+
+    // reset input file
+    input.value = '';
+
+    img.src = '';
+    img.style.display = 'none';
+    span.style.display = 'block';
+    slot.classList.remove('filled');
+
+    if (btn) btn.remove();
+
+    aggiornaHint();
+}
+
+function aggiornaHint() {
+    var pieni = document.querySelectorAll('.image-slot.filled').length;
+    document.getElementById('uploadHint').textContent =
+        pieni + ' / 5 immagini selezionate';
+}
+
+// ── DISABILITA CAMPI CATEGORIE NON ATTIVE ────────────────────────────
+
+function disabilitaSezionInattive() {
+    document.querySelectorAll('.cat-section').forEach(function(sezione) {
+        var attiva = sezione.classList.contains('visible');
+        sezione.querySelectorAll('input, select, textarea').forEach(function(campo) {
+            campo.disabled = !attiva;
+        });
     });
+}
 
-    const sezione = document.getElementById(this.value);
+// ── VALIDAZIONE SUBMIT ───────────────────────────────────────────────
 
-    if(sezione){
-
-        sezione.classList.remove("hidden");
-
-        sezione.querySelectorAll("input, select, textarea")
-               .forEach(el => el.disabled = false);
+document.getElementById('formProdotto').addEventListener('submit', function(e) {
+    if (!document.getElementById('inputCategoria').value) {
+        e.preventDefault();
+        alert('Seleziona una categoria prima di salvare.');
+        return;
     }
+    disabilitaSezionInattive();
 });
 
 </script>

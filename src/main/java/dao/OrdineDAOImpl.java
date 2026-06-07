@@ -130,5 +130,22 @@ public class OrdineDAOImpl implements OrdineDAO{
             return ps.executeUpdate() >0;
         }    	
     }
+    
+    public synchronized int doCountByLastMonth() throws SQLException {
+    	
+        String sql = "SELECT * FROM "+ TABLE_NAME +" "
+        		+ "WHERE data >= DATE_SUB(NOW(), INTERVAL 1 MONTH)";
 
+        try (Connection con = ds.getConnection();
+        		PreparedStatement ps = con.prepareStatement(sql);
+        		
+             	ResultSet rs = ps.executeQuery()) {
+             	if (rs.next()) {
+             		return rs.getInt(1);
+             	}
+       }
+
+       return 0;
+      
+    }    	
 }
