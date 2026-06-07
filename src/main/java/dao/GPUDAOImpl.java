@@ -42,6 +42,8 @@ public class GPUDAOImpl implements GPUDAO {
 	
 	public GPUBean doRetrieveByKey (int idGPU) throws SQLException {
 		
+		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+		
         String sql = "SELECT * FROM "+TABLE_NAME+" g "
         		+ "JOIN prodotto p ON g.fk_prodotto = p.id_prodotto "
         		+ "WHERE p.id_prodotto = ?";
@@ -66,6 +68,7 @@ public class GPUDAOImpl implements GPUDAO {
                 gpu.setAttivo(rs.getBoolean("attivo"));
                 gpu.setSconto(rs.getInt("sconto"));
                 gpu.setCategoria(rs.getString("categoria"));
+                gpu.setImmagini(immaginiDAO.doRetrieveByProdotto(gpu.getIdProdotto()));
                 
                 gpu.setIdGpu(rs.getInt("id_gpu"));
                 gpu.setFrequenza(rs.getString("frequenza"));
@@ -87,6 +90,7 @@ public class GPUDAOImpl implements GPUDAO {
 			throws SQLException {
 
 	    List<GPUBean> lista = new LinkedList<>();
+	    ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
 	    
 	    categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
 	    marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
@@ -155,6 +159,7 @@ public class GPUDAOImpl implements GPUDAO {
 	                gpu.setAttivo(rs.getBoolean("attivo"));
 	                gpu.setSconto(rs.getInt("sconto"));
 	                gpu.setCategoria(rs.getString("categoria"));
+	                gpu.setImmagini(immaginiDAO.doRetrieveByProdotto(gpu.getIdProdotto()));
 	                
 	                gpu.setIdGpu(rs.getInt("id_gpu"));
 	                gpu.setFrequenza(rs.getString("frequenza"));

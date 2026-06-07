@@ -4,9 +4,7 @@ import java.sql.*;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.sql.DataSource;
-
 import model.RAMBean;
 
 public class RAMDAOImpl implements RAMDAO{
@@ -38,7 +36,9 @@ public class RAMDAOImpl implements RAMDAO{
 	}
 
 	public synchronized RAMBean doRetrieveByKey(int idRAM) throws SQLException {
-
+		
+		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+		
 	    String sql = "SELECT * FROM " + TABLE_NAME + " r JOIN prodotto p ON r.fk_prodotto = p.id_prodotto WHERE p.id_prodotto = ?";
 
 	    try (Connection con = ds.getConnection();
@@ -64,6 +64,7 @@ public class RAMDAOImpl implements RAMDAO{
 	            ram.setAttivo(rs.getBoolean("attivo"));
 	            ram.setSconto(rs.getInt("sconto"));
 		        ram.setCategoria(rs.getString("categoria"));
+		        ram.setImmagini(immaginiDAO.doRetrieveByProdotto(ram.getIdProdotto()));
 
 	            ram.setIdRam(rs.getInt("id_ram"));
 	            ram.setCapacita(rs.getString("capacita"));
@@ -93,6 +94,10 @@ public class RAMDAOImpl implements RAMDAO{
 	    if (prezzo != null && !prezzo.trim().isEmpty()) {
 	        prezzoMax = Double.parseDouble(prezzo);
 	    }
+	    
+
+    	ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+
 
 	    String sql =
 	        "SELECT * " +
@@ -154,12 +159,13 @@ public class RAMDAOImpl implements RAMDAO{
 		            ram.setAttivo(rs.getBoolean("attivo"));
 		            ram.setSconto(rs.getInt("sconto"));
 			        ram.setCategoria(rs.getString("categoria"));
+			        ram.setImmagini(immaginiDAO.doRetrieveByProdotto(ram.getIdProdotto()));
 
 		            ram.setIdRam(rs.getInt("id_ram"));
 		            ram.setCapacita(rs.getString("capacita"));
 		            ram.setFrequenza(rs.getString("frequenza"));
 		            ram.setTipo(rs.getString("tipo"));
-
+		            
 	                lista.add(ram);
 	            }
 	        }

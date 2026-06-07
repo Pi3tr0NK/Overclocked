@@ -44,7 +44,8 @@ public class CPUDAOImpl implements CPUDAO{
     public synchronized CPUBean doRetrieveByKey(int idCPU) throws SQLException {
 
         String sql = "SELECT * FROM "+ TABLE_NAME +" c JOIN prodotto p ON c.fk_prodotto = p.id_prodotto WHERE p.id_prodotto = ?";
-
+        ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+        
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -68,7 +69,8 @@ public class CPUDAOImpl implements CPUDAO{
                 cpu.setAttivo(rs.getBoolean("attivo"));
                 cpu.setSconto(rs.getInt("sconto"));
                 cpu.setCategoria(rs.getString("categoria"));
-
+                cpu.setImmagini(immaginiDAO.doRetrieveByProdotto(cpu.getIdProdotto()));
+                
                 cpu.setIdCpu(rs.getInt("id_cpu"));
                 cpu.setCore(rs.getInt("core"));
                 cpu.setThread(rs.getInt("thread"));
@@ -90,6 +92,7 @@ public class CPUDAOImpl implements CPUDAO{
     		throws SQLException {
 
         List<CPUBean> lista = new LinkedList<>();
+        ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
         
         categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
         marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
@@ -167,7 +170,8 @@ public class CPUDAOImpl implements CPUDAO{
                     cpu.setAttivo(rs.getBoolean("attivo"));
                     cpu.setSconto(rs.getInt("sconto"));
                     cpu.setCategoria(rs.getString("categoria"));
-
+                    cpu.setImmagini(immaginiDAO.doRetrieveByProdotto(cpu.getIdProdotto()));
+                    
                     cpu.setIdCpu(rs.getInt("id_cpu"));
                     cpu.setCore(rs.getInt("core"));
                     cpu.setThread(rs.getInt("thread"));

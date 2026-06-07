@@ -43,7 +43,8 @@ public class ChassisDAOImpl implements ChassisDAO{
 	public synchronized ChassisBean doRetrieveByKey(int idChassis) throws SQLException {
 
 	    String sql = "SELECT * FROM " + TABLE_NAME + " c JOIN prodotto p ON c.fk_prodotto = p.id_prodotto WHERE p.id_prodotto = ?";
-
+	    ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+	    
 	    try (Connection con = ds.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -67,7 +68,8 @@ public class ChassisDAOImpl implements ChassisDAO{
 	            chassis.setAttivo(rs.getBoolean("attivo"));
 	            chassis.setSconto(rs.getInt("sconto"));
 	            chassis.setCategoria(rs.getString("categoria"));
-
+	            chassis.setImmagini(immaginiDAO.doRetrieveByProdotto(chassis.getIdProdotto()));
+	            
 	            chassis.setIdCase(rs.getInt("id_case"));
 	            chassis.setFormato(rs.getString("formato"));
 	            chassis.setColore(rs.getString("colore"));
@@ -85,6 +87,7 @@ public class ChassisDAOImpl implements ChassisDAO{
 			throws SQLException {
 
 	    List<ChassisBean> lista = new LinkedList<>();
+	    ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
 	    
 	    categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
 	    marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
@@ -153,7 +156,8 @@ public class ChassisDAOImpl implements ChassisDAO{
 		            chassis.setAttivo(rs.getBoolean("attivo"));
 		            chassis.setSconto(rs.getInt("sconto"));
 		            chassis.setCategoria(rs.getString("categoria"));
-
+		            chassis.setImmagini(immaginiDAO.doRetrieveByProdotto(chassis.getIdProdotto()));
+		            
 		            chassis.setIdCase(rs.getInt("id_case"));
 		            chassis.setFormato(rs.getString("formato"));
 		            chassis.setColore(rs.getString("colore"));

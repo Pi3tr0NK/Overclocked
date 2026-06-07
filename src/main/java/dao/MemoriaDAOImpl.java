@@ -49,7 +49,8 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 	public synchronized MemoriaBean doRetrieveByKey(int idMemoria) throws SQLException {
 
 	    String sql = "SELECT * FROM " + TABLE_NAME + " m JOIN prodotto p ON m.fk_prodotto = p.id_prodotto WHERE p.id_prodotto = ?";
-
+	    ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+	    
 	    try (Connection con = ds.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -74,7 +75,8 @@ public class MemoriaDAOImpl implements MemoriaDAO {
         		mem.setAttivo(rs.getBoolean("attivo"));
         		mem.setSconto(rs.getInt("sconto"));
         		mem.setCategoria(rs.getString("categoria"));
-
+        		mem.setImmagini(immaginiDAO.doRetrieveByProdotto(mem.getIdProdotto()));
+        		
         		mem.setIdMemoria(rs.getInt("id_memoria"));
         		mem.setCapacita(rs.getString("capacita"));
         		mem.setVelLettura(rs.getInt("vel_lettura"));
@@ -94,6 +96,7 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 			throws SQLException {
 
 	    List<MemoriaBean> lista = new LinkedList<>();
+	    ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
 	    
 	    categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
 	    marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
@@ -156,7 +159,7 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 
 	                MemoriaBean mem = new MemoriaBean();
 
-	                mem.setIdProdotto(rs.getInt("id_prodotto"));
+	                	mem.setIdProdotto(rs.getInt("id_prodotto"));
 		        		mem.setNome(rs.getString("nome"));
 		        		mem.setModello(rs.getString("modello"));
 		        		mem.setDescrizione(rs.getString("descrizione"));
@@ -164,11 +167,12 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 		        		mem.setPrezzo(rs.getDouble("prezzo"));
 		        		mem.setStock(rs.getInt("stock"));
 		        		mem.setDimensioni(rs.getString("dimensioni"));
-	                mem.setPeso(rs.getString("peso"));
+		        		mem.setPeso(rs.getString("peso"));
 		        		mem.setAttivo(rs.getBoolean("attivo"));
 		        		mem.setSconto(rs.getInt("sconto"));
 		        		mem.setCategoria(rs.getString("categoria"));
-
+		        		mem.setImmagini(immaginiDAO.doRetrieveByProdotto(mem.getIdProdotto()));
+		        		
 		        		mem.setIdMemoria(rs.getInt("id_memoria"));
 		        		mem.setCapacita(rs.getString("capacita"));
 		        		mem.setVelLettura(rs.getInt("vel_lettura"));

@@ -45,7 +45,9 @@ public class PSUDAOImpl implements PSUDAO {
     }
     
     public synchronized PSUBean doRetrieveByKey(int idPSU) throws SQLException {
-
+    	
+    	ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+    	
         String sql = "SELECT * FROM "+ TABLE_NAME +" ps JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto WHERE p.id_prodotto  = ?";
 
         try (Connection con = ds.getConnection();
@@ -71,6 +73,7 @@ public class PSUDAOImpl implements PSUDAO {
                 psu.setAttivo(rs.getBoolean("attivo"));
                 psu.setSconto(rs.getInt("sconto"));
 		        psu.setCategoria(rs.getString("categoria"));
+		        psu.setImmagini(immaginiDAO.doRetrieveByProdotto(psu.getIdProdotto()));
 
                 psu.setIdPsu(rs.getInt("id_psu"));
                 psu.setPotenza(rs.getInt("potenza"));
@@ -88,7 +91,9 @@ public class PSUDAOImpl implements PSUDAO {
     @Override
     public synchronized Collection<PSUBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String potenza, String certificazione, String modulare) throws SQLException
     {
+    		
 	    	 List<PSUBean> lista = new LinkedList<>();
+	    	 ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
 	    	 
 	    	 categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
 	    	 marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
@@ -169,7 +174,8 @@ public class PSUDAOImpl implements PSUDAO {
                     psu.setPeso(rs.getString("peso"));
                     psu.setAttivo(rs.getBoolean("attivo"));
                     psu.setSconto(rs.getInt("sconto"));
-    		        	    psu.setCategoria(rs.getString("categoria"));
+    		        psu.setCategoria(rs.getString("categoria"));
+    		        psu.setImmagini(immaginiDAO.doRetrieveByProdotto(psu.getIdProdotto()));
 
                     psu.setIdPsu(rs.getInt("id_psu"));
                     psu.setPotenza(rs.getInt("potenza"));

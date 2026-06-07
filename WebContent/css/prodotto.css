@@ -38,6 +38,20 @@
     background: #111;
     border: 1px solid #333;
     border-radius: 8px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.thumb img {
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.thumb.active {
+    border: 2px solid #ff7a00;
+    box-shadow: 0 0 10px rgba(255,122,0,0.7);
 }
 
 /* ── Dati prodotto ── */

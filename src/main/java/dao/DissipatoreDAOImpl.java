@@ -48,7 +48,9 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
 
         String sql = "SELECT * FROM " + TABLE_NAME + 
                      " d JOIN prodotto p ON d.fk_prodotto = p.id_prodotto WHERE p.id_prodotto = ?";
-
+        
+        ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+        
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -72,7 +74,8 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
                 d.setAttivo(rs.getBoolean("attivo"));
                 d.setSconto(rs.getInt("sconto"));
 	            d.setCategoria(rs.getString("categoria"));
-
+	            d.setImmagini(immaginiDAO.doRetrieveByProdotto(d.getIdProdotto()));
+	            
                 d.setIdDissipatore(rs.getInt("id_dissipatore"));
                 d.setTipo(DissipatoreBean.Tipo.valueOf(rs.getString("tipo").toUpperCase()));
                 d.setSocketSupportati(rs.getString("socket_supportati"));
@@ -93,6 +96,7 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
     		throws SQLException {
 
         List<DissipatoreBean> lista = new LinkedList<>();
+        ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
         
         categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
         marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
@@ -155,8 +159,9 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
                     d.setPeso(rs.getString("peso"));
                     d.setAttivo(rs.getBoolean("attivo"));
                     d.setSconto(rs.getInt("sconto"));
-    	            	    d.setCategoria(rs.getString("categoria"));
-
+    	            d.setCategoria(rs.getString("categoria"));
+    	            
+    	            d.setImmagini(immaginiDAO.doRetrieveByProdotto(d.getIdProdotto()));
                     d.setIdDissipatore(rs.getInt("id_dissipatore"));
                     d.setTipo(DissipatoreBean.Tipo.valueOf(rs.getString("tipo").toUpperCase()));
                     d.setSocketSupportati(rs.getString("socket_supportati"));

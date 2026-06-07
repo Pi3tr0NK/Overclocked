@@ -2,13 +2,12 @@
 <%@ page import="model.ProdottoBean" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
-<%ProdottoBean p = (ProdottoBean) request.getAttribute("prodotto");%>
 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title><%= p.getNome() %></title>
+<title> ${prodotto.nome}</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/prodotto.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
@@ -30,17 +29,20 @@
     <div class="left">
 
         <div class="main-image">
-
-            <img src="<%= request.getContextPath() %>/img/prodotti/default.png">
+		
+            <img id ="mainImg" src="${pageContext.request.contextPath}/${prodotto.immagini[0].path}">
 
         </div>
 
         <div class="thumbs">
 
-            <div class="thumb"></div>
-            <div class="thumb"></div>
-            <div class="thumb"></div>
-            <div class="thumb"></div>
+		<c:forEach var="img" items="${prodotto.immagini}" varStatus="status">
+		
+		    <div class="thumb ${status.first ? 'active' : ''}">
+		        <img src="${pageContext.request.contextPath}/${img.path}">
+		    </div>
+		
+		</c:forEach>
 
         </div>
 
@@ -49,14 +51,15 @@
     <div class="right">
 
         <div class="brand">
-
-            <%= p.getMarca() %>
+		
+            ${prodotto.marca}
 
         </div>
 
         <div class="title">
 
-            <%= p.getNome() %>
+             ${prodotto.nome}
+
 
         </div>
 
@@ -91,12 +94,12 @@
 		    <c:when test="${prodotto.sconto > 0}">
 		
 		        <div class="old-price">
-		            € <%= String.format("%.2f", p.getPrezzo()) %>
+		        
+		            € ${p.prezzo}
 		        </div>
 		
 		        <div class="price">
-		            € <%= String.format("%.2f",
-		                    p.getPrezzo() - (p.getSconto() * p.getPrezzo() / 100.0)) %>
+					€ ${prodotto.prezzo - (prodotto.sconto * prodotto.prezzo / 100.0)}
 		        </div>
 		
 		    </c:when>
@@ -104,7 +107,7 @@
 		    <c:otherwise>
 		
 		        <div class="price">
-		            € <%= String.format("%.2f", p.getPrezzo()) %>
+		            € ${p.prezzo}
 		        </div>
 		
 		    </c:otherwise>
@@ -121,34 +124,11 @@
 		           min="1">
 		</div>
 		
-		<button type="button" class="cart-btn" onclick="addToCart(<%=p.getIdProdotto()%>)" <c:if test="${prodotto.stock == 0}">disabled</c:if>>
+		<button type="button" class="cart-btn" onclick="addToCart(${prodotto.idProdotto})" <c:if test="${prodotto.stock == 0}">disabled</c:if>>
 		    Aggiungi al carrello
 		</button>
 
-        <!--  <form action="${pageContext.request.contextPath}/carrello/add?aggiungi=<%=p.getIdProdotto()%>" method="post">
 
-            <input type="hidden"
-                   name="idProdotto"
-                   value="<%= p.getIdProdotto() %>">
-
-            <div class="qty">
-
-                Quantità
-
-                <input type="number" name="quantita" value="1" min="1">
-
-            </div>
-
-			<button
-			    type="submit"
-			    class="cart-btn"
-			    <c:if test="${prodotto.stock == 0}">disabled</c:if>>
-			
-			    Aggiungi al carrello
-			
-			</button>
-
-        </form>-->
 
         <div class="features">
 
@@ -172,36 +152,33 @@
 
         <div class="specs">
 			
-	  
-
-	    
             <h2>Specifiche tecniche</h2>
 
             <table>
             
                 <tr>
                     <td>Nome</td>
-                    <td><%= p.getNome() %></td>
+                    <td>${prodotto.nome}</td>
                 </tr>
                 
                 <tr>
                     <td>Marca</td>
-                    <td><%= p.getMarca() %></td>
+                    <td>${prodotto.marca}</td>
                 </tr>
 
                 <tr>
                     <td>Modello</td>
-                    <td><%= p.getModello() %></td>
+                    <td>${prodotto.modello}</td>
                 </tr>
                 
                 <tr>
                     <td>Dimensioni</td>
-                    <td><%= p.getDimensioni() %></td>
+                    <td>${prodotto.dimensioni}</td>
                 </tr>
              
                 <tr>
                     <td>Peso</td>
-                    <td><%= p.getPeso() %></td>
+                    <td>${prodotto.peso}</td>
                 </tr>
                 <c:forEach var="spec" items="${prodotto.specifiche}">
 
@@ -218,7 +195,7 @@
 			 	
 			 <table>
                 <tr>
-                    <td><%= p.getDescrizione() %></td>
+                    <td>${prodotto.descrizione}</td>
                 </tr>			 
 			 </table>
 			 
@@ -286,6 +263,27 @@
 </body>
 
 <script type="text/javascript">
+
+// immagini
+
+const mainImage = document.querySelector(".main-image img");
+const thumbs = document.querySelectorAll(".thumb img");
+
+thumbs.forEach(img => {
+
+    img.addEventListener("mouseenter", function() {
+
+        mainImage.src = this.src;
+
+        document.querySelectorAll(".thumb").forEach(t =>
+            t.classList.remove("active")
+        );
+
+        this.parentElement.classList.add("active");
+    });
+
+});
+
 function addToCart(idProdotto) {
 	var qty = document.getElementById("quantita").value;
     var params = "aggiungi=" + idProdotto + "&quantita=" + qty;

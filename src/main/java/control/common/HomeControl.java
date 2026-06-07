@@ -40,8 +40,8 @@ public class HomeControl extends HttpServlet {
             throws ServletException, IOException {
     		
     		countByCategory(request);
-        novita(request);
-        bestseller(request);
+    		novita(request);
+    		bestseller(request);
         
         request.getRequestDispatcher("/WEB-INF/views/common/HomeView.jsp").forward(request, response);
     }

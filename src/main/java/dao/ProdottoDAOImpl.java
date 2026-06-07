@@ -2,7 +2,6 @@ package dao;
 
 import java.sql.*;
 import java.util.*;
-
 import javax.sql.DataSource;
 import model.ProdottoBean;
 
@@ -46,9 +45,10 @@ public class ProdottoDAOImpl implements ProdottoDAO{
     }
 
     public synchronized ProdottoBean doRetrieveByKey(int id) throws SQLException {
-
+    	
         String sql =
-            "SELECT categoria FROM prodotto WHERE id_prodotto = ?";
+            "SELECT categoria FROM " + TABLE_NAME +" "
+            + "WHERE id_prodotto = ?";
 
         try(Connection con = ds.getConnection();
             PreparedStatement ps = con.prepareStatement(sql)) {
@@ -62,6 +62,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
             
             
             String categoria = rs.getString("categoria");
+
 
             switch(categoria) {
 

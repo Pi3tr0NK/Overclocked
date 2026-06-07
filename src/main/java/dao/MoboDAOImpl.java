@@ -50,7 +50,9 @@ public class MoboDAOImpl implements MoboDAO{
 	public synchronized MoboBean doRetrieveByKey(int idMobo) throws SQLException {
 
 	    String sql = "SELECT * FROM " + TABLE_NAME + " m JOIN prodotto p ON m.fk_prodotto = p.id_prodotto WHERE p.id_prodotto = ?";
-
+	    
+	    ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+	    
 	    try (Connection con = ds.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -74,7 +76,8 @@ public class MoboDAOImpl implements MoboDAO{
 		            mobo.setAttivo(rs.getBoolean("attivo"));
 		            mobo.setSconto(rs.getInt("sconto"));
 			        mobo.setCategoria(rs.getString("categoria"));
-
+			        mobo.setImmagini(immaginiDAO.doRetrieveByProdotto(mobo.getIdProdotto()));
+			        
 		            mobo.setIdMobo(rs.getInt("id_mobo"));
 		            mobo.setChipset(rs.getString("chipset"));
 		            mobo.setSocket(rs.getString("socket"));
@@ -99,6 +102,7 @@ public class MoboDAOImpl implements MoboDAO{
 			throws SQLException {
 
 	    List<MoboBean> lista = new LinkedList<>();
+	    ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
 	    
 	    categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
 	    marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
@@ -183,7 +187,8 @@ public class MoboDAOImpl implements MoboDAO{
 		            mobo.setAttivo(rs.getBoolean("attivo"));
 		            mobo.setSconto(rs.getInt("sconto"));
 			        mobo.setCategoria(rs.getString("categoria"));
-
+			        mobo.setImmagini(immaginiDAO.doRetrieveByProdotto(mobo.getIdProdotto()));
+			        
 		            mobo.setIdMobo(rs.getInt("id_mobo"));
 		            mobo.setChipset(rs.getString("chipset"));
 		            mobo.setSocket(rs.getString("socket"));

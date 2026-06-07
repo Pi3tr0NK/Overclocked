@@ -48,7 +48,7 @@ public class ImmaginiDAOImpl implements ImmaginiDAO {
 	{
 	    List<ImmagineBean> lista = new LinkedList<>();
         String sql = "SELECT * FROM "+TABLE_NAME+ " WHERE fk_prodotto=?";
-
+        // System.out.print("\nprima chiamata");
         try (Connection con = ds.getConnection();
                 PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -61,6 +61,7 @@ public class ImmaginiDAOImpl implements ImmaginiDAO {
 	            i.setIdImmagine(rs.getInt("id_immagine"));
 	            i.setPath(rs.getString("path"));
 	            lista.add(i);
+	            // System.out.print("\npath: " + i.getPath());
             }
         }
         return lista;
