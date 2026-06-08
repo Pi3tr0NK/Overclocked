@@ -196,7 +196,7 @@ public class CPUDAOImpl implements CPUDAO{
         prodottoDAO.doUpdate(cpu);
 
    
-        String sql = "UPDATE cpu SET core = ?, thread = ?, frequenza = ?, socket = ?, tdp = ? WHERE id_cpu = ?";
+        String sql = "UPDATE cpu SET core = ?, thread = ?, frequenza = ?, frequenza_ram = ?, tiporam = ?, socket = ?, tdp = ? WHERE id_cpu = ?";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {

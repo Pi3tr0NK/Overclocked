@@ -12,6 +12,6 @@ public interface ImmaginiDAO {
 
 	public Collection<ImmagineBean> doRetrieveByProdotto(int idProdotto) throws SQLException;
 	
-	public void updateImage(String path, int idProdotto) throws SQLException;
+	public void updateImage(int idImmagine, String path, int idProdotto) throws SQLException;
 }
 

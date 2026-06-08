@@ -67,15 +67,16 @@ public class ImmaginiDAOImpl implements ImmaginiDAO {
         return lista;
 	}
 	
-	public synchronized void updateImage(String path, int idProdotto) throws SQLException
+	public synchronized void updateImage(int idImmagine,String path, int idProdotto) throws SQLException
 	{
-		String sql = "UPDATE "+TABLE_NAME+" SET path= ? WHERE fk_prodotto= ?";
+		String sql = "UPDATE "+TABLE_NAME+" SET path= ? WHERE id_immagine = ? AND fk_prodotto= ?";
 		
 		 try(Connection con = ds.getConnection();
 			        PreparedStatement ps = con.prepareStatement(sql)) {
 
 			        ps.setString(1, path);
-			        ps.setInt(2, idProdotto);
+			        ps.setInt(2, idImmagine);
+			        ps.setInt(3, idProdotto);
 			        ps.executeUpdate();
 			    }
 	}

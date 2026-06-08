@@ -134,7 +134,7 @@ public class AdminProdottoControl extends HttpServlet {
     
     private void aggiungiViewProdotto(HttpServletRequest request,HttpServletResponse response) throws IOException, ServletException
     {
-    	request.getRequestDispatcher("/WEB-INF/views/admin/AdminView.jsp").forward(request, response);
+    	request.getRequestDispatcher("/WEB-INF/views/admin/AggiungiProdotto.jsp").forward(request, response);
     	
     }
     
@@ -165,13 +165,8 @@ public class AdminProdottoControl extends HttpServlet {
         }
         catch(Exception e) {
         	
-        	System.out.println("arrivo nel catch");
             e.printStackTrace();
-
-            
             request.setAttribute("errore", e.getMessage());
-            
-            System.out.println(e.getMessage());
             
             response.sendRedirect(request.getContextPath() + "/home");
         }
@@ -183,7 +178,7 @@ public class AdminProdottoControl extends HttpServlet {
         switch(categoria.toUpperCase()) {
 
             case "CPU":
-                CPUBean cpu = creaCPU(request);
+                CPUBean cpu = creaCPU(action, request);
                 cpuDAO.doSave(cpu);
                 return cpu.getIdProdotto();
                 
@@ -193,42 +188,38 @@ public class AdminProdottoControl extends HttpServlet {
                 return gpu.getIdProdotto();
                 
             case "RAM":
-                RAMBean ram = creaRAM(request);
+                RAMBean ram = creaRAM(action, request);
                 ramDAO.doSave(ram);
                 return ram.getIdProdotto();
                 	
             case "DISSIPATORE":
-                DissipatoreBean dissipatore = creaDissipatore(request);
+                DissipatoreBean dissipatore = creaDissipatore(action, request);
                 dissipatoreDAO.doSave(dissipatore);
                 return dissipatore.getIdProdotto();
                 
             case "CASE":
-                ChassisBean chassis = creaCase(request);
+                ChassisBean chassis = creaCase(action, request);
                 chassisDAO.doSave(chassis);
                 return chassis.getIdProdotto();
                 
             case "PSU":
-                PSUBean psu = creaPSU(request);
+                PSUBean psu = creaPSU(action, request);
                 psuDAO.doSave(psu);
                 return psu.getIdProdotto();
                 
             case "MOBO":
-                MoboBean mobo = creaMOBO(request);
+                MoboBean mobo = creaMOBO(action, request);
                 moboDAO.doSave(mobo);
                 return mobo.getIdProdotto();
                 
             case "STORAGE":
-                MemoriaBean mem = creaStorage(request);
+                MemoriaBean mem = creaStorage(action, request);
                 memDAO.doSave(mem);
                 return mem.getIdProdotto();
                 
             default:
                 throw new Exception( "Categoria non supportata: "+ categoria);
         	}
-        
-        
-        
-
     }
 
   
@@ -251,7 +242,7 @@ public class AdminProdottoControl extends HttpServlet {
     }
     
 
-    private CPUBean creaCPU(HttpServletRequest request) {
+    private CPUBean creaCPU(String action, HttpServletRequest request) {
     	
     	CPUBean cpu = new CPUBean();
     	
@@ -264,7 +255,10 @@ public class AdminProdottoControl extends HttpServlet {
         cpu.setTiporam(request.getParameter("tiporam"));
         cpu.setSocket(request.getParameter("socket"));
         cpu.setTdp(Integer.parseInt(request.getParameter("tdp")));
-
+        
+	    if(action.equals("modifica"))
+	    	cpu.setIdCpu(Integer.valueOf(request.getParameter("idCpu")));
+	    
         return cpu;
     }
 
@@ -272,7 +266,7 @@ public class AdminProdottoControl extends HttpServlet {
 
     	GPUBean gpu = new GPUBean();
     	
-    	creaProdotto(gpu,request);
+    	creaProdotto(action,gpu,request);
         
     	gpu.setFrequenza(request.getParameter("frequenza"));
 	    gpu.setVram(request.getParameter("vram"));
@@ -288,25 +282,28 @@ public class AdminProdottoControl extends HttpServlet {
         return gpu;
     }
 
-    private PSUBean creaPSU(HttpServletRequest request) {
+    private PSUBean creaPSU(String action, HttpServletRequest request) {
 
     	PSUBean psu = new PSUBean();
 
-    	creaProdotto(psu,request);
+    	creaProdotto(action,psu,request);
     	
     	psu.setPotenza(Integer.parseInt(request.getParameter("potenza")));
     	psu.setCertificazione(request.getParameter("certificazione"));
     	psu.setModulare(Modulare.valueOf(request.getParameter("modulare")));
     	psu.setFormato(Formato.valueOf(request.getParameter("formato")));
     	
+	    if(action.equals("modifica"))
+	    	psu.setIdPsu(Integer.valueOf(request.getParameter("idPsu")));
+	    
         return psu;
     }
     
-    private MoboBean creaMOBO(HttpServletRequest request) {
+    private MoboBean creaMOBO(String action,HttpServletRequest request) {
 
     	MoboBean mobo = new MoboBean();
 
-    	creaProdotto(mobo,request);
+    	creaProdotto(action,mobo,request);
     	
 	    mobo.setChipset(request.getParameter("chipset"));
 	    mobo.setSocket(request.getParameter("socket"));
@@ -319,14 +316,17 @@ public class AdminProdottoControl extends HttpServlet {
 	    mobo.setPorteSata(Integer.parseInt(request.getParameter("porteSata")));
 	    mobo.setPorteUsb(Integer.parseInt(request.getParameter("porteUsb")));
 	    
+	    if(action.equals("modifica"))
+	    	mobo.setIdMobo(Integer.valueOf(request.getParameter("idMobo")));
+	    
         return mobo;
     }
     
-    private MemoriaBean creaStorage(HttpServletRequest request) {
+    private MemoriaBean creaStorage(String action,HttpServletRequest request) {
 
     	MemoriaBean mem = new MemoriaBean();
 
-    	creaProdotto(mem,request);
+    	creaProdotto(action,mem,request);
     	
     	mem.setCapacita(request.getParameter("capacita"));
     	mem.setVelScrittura(Integer.parseInt(request.getParameter("scrittura")));
@@ -335,27 +335,32 @@ public class AdminProdottoControl extends HttpServlet {
     	mem.setTecnologia(Tecnologia.valueOf(request.getParameter("tecnologia")));
     	mem.setFormato(request.getParameter("formato"));
     	
+	    if(action.equals("modifica"))
+	    	mem.setIdMemoria(Integer.valueOf(request.getParameter("idMemoria")));
         return mem;
     }
     
-    private ChassisBean creaCase(HttpServletRequest request) {
+    private ChassisBean creaCase(String action,HttpServletRequest request) {
 
     	ChassisBean c = new ChassisBean();
 
-    	creaProdotto(c,request);
+    	creaProdotto(action,c,request);
     	
     	c.setFormato(request.getParameter("formato"));
     	c.setColore(request.getParameter("colore"));
     	c.setMateriale(request.getParameter("materiale"));
     	
+	    if(action.equals("modifica"))
+	    	c.setIdCase(Integer.valueOf(request.getParameter("idCase")));
+	    
         return c;
     }
     
-    private DissipatoreBean creaDissipatore(HttpServletRequest request) {
+    private DissipatoreBean creaDissipatore(String action, HttpServletRequest request) {
 
     	DissipatoreBean dissipatore = new DissipatoreBean();
 
-    	creaProdotto(dissipatore,request);
+    	creaProdotto(action, dissipatore,request);
     	
     	dissipatore.setTipo(model.DissipatoreBean.Tipo.valueOf(request.getParameter("tipo")));
     	dissipatore.setSocketSupportati(request.getParameter("socket"));
@@ -363,18 +368,28 @@ public class AdminProdottoControl extends HttpServlet {
     	dissipatore.setRpmMax(Integer.parseInt(request.getParameter("rpm")));
     	dissipatore.setRumore(Integer.parseInt(request.getParameter("rumore")));
     	dissipatore.setTdpSupportato(Integer.parseInt(request.getParameter("tdp")));
+    	
+	    if(action.equals("modifica"))
+	    	dissipatore.setIdDissipatore(Integer.valueOf(request.getParameter("idDissipatore")));
+	    
         return dissipatore;
+        
+
     }
     
-    private RAMBean creaRAM(HttpServletRequest request) {
+    private RAMBean creaRAM(String action, HttpServletRequest request) {
     	
     	RAMBean ram = new RAMBean();
     	
-    	creaProdotto(ram,request);
+    	creaProdotto(action, ram,request);
         
     	ram.setCapacita(request.getParameter("capacita"));
     	ram.setFrequenza(request.getParameter("frequenza"));
     	ram.setTipo(request.getParameter("tipo"));
+    	
+	    if(action.equals("modifica"))
+	    	ram.setIdRam(Integer.valueOf(request.getParameter("idRam")));
+	    
         return ram;
     }  
     
@@ -394,7 +409,7 @@ public class AdminProdottoControl extends HttpServlet {
                     && part.getSubmittedFileName() != null
                     && !part.getSubmittedFileName().isBlank()) {
 
-                // è arrivato un file nuovo per questo slot
+                // arrivato un file nuovo per questo slot
                 String nomeOriginale = Paths.get(part.getSubmittedFileName())
                                             .getFileName().toString();
                 String nomeFile = System.currentTimeMillis() + "_" + nomeOriginale;
@@ -405,13 +420,18 @@ public class AdminProdottoControl extends HttpServlet {
                 img.setPath("img/prodotti/" + nomeFile);
 
                 if (action.equals("aggiungi")) {
+
                     immaginiDAO.doSave(img, idProdotto);
+
                 } else {
-                    // cerca se esiste già un'immagine per questo slot
-                    String pathEsistente = request.getParameter("pathEsistente" + i);
-                    if (pathEsistente != null && !pathEsistente.isBlank()) {
-                        // sostituisce quella esistente
-                        immaginiDAO.updateImage(img.getPath(), idProdotto);
+
+                    String idImmagineStr = request.getParameter("idImmagine" + i);
+
+                    if (idImmagineStr != null && !idImmagineStr.isBlank()) {
+                        // sostituisce immagine esistente tramite id
+                        int idImmagine = Integer.parseInt(idImmagineStr);
+                        img.setIdImmagine(idImmagine);
+                        immaginiDAO.updateImage(idImmagine, img.getPath(), idProdotto);
                     } else {
                         // slot prima vuoto, ora ha un'immagine nuova
                         immaginiDAO.doSave(img, idProdotto);
@@ -422,10 +442,15 @@ public class AdminProdottoControl extends HttpServlet {
 
             } else if (action.equals("modifica")) {
 
-                // nessun file nuovo: mantieni il path esistente
-                String pathEsistente = request.getParameter("pathEsistente" + i);
-                if (pathEsistente != null && !pathEsistente.isBlank()) {
+                // nessun file nuovo: mantieni immagine esistente
+                String idImmagineStr  = request.getParameter("idImmagine" + i);
+                String pathEsistente  = request.getParameter("pathEsistente" + i);
+
+                if (idImmagineStr != null && !idImmagineStr.isBlank()
+                        && pathEsistente != null && !pathEsistente.isBlank()) {
+
                     ImmagineBean img = new ImmagineBean();
+                    img.setIdImmagine(Integer.parseInt(idImmagineStr));
                     img.setPath(pathEsistente);
                     listaImmagini.add(img);
                 }
@@ -453,49 +478,49 @@ public class AdminProdottoControl extends HttpServlet {
     }  
     
     
-    private void modificaProdotto (String categoria, HttpServletRequest request) throws SQLException {
+    private void modificaProdotto (String action, String categoria, HttpServletRequest request) throws SQLException {
      	
 
         switch(categoria.toUpperCase()) {
 
         case "CPU":
-            CPUBean cpu = creaCPU(request);
+            CPUBean cpu = creaCPU(action, request);
             cpuDAO.doUpdate(cpu);
             return;
             
         case "GPU":
-            GPUBean gpu = creaGPU(request);
+            GPUBean gpu = creaGPU(action, request);
             System.out.println("PRODOTTO:" +gpu.getIdProdotto() + "gpu: "+ gpu.getIdGpu());
             gpuDAO.doUpdate(gpu);
             return;
             
         case "RAM":
-            RAMBean ram = creaRAM(request);
+            RAMBean ram = creaRAM(action, request);
             ramDAO.doUpdate(ram);
             return;
             	
         case "DISSIPATORE":
-            DissipatoreBean dissipatore = creaDissipatore(request);
+            DissipatoreBean dissipatore = creaDissipatore(action, request);
             dissipatoreDAO.doUpdate(dissipatore);
             return;
             
         case "CASE":
-            ChassisBean chassis = creaCase(request);
+            ChassisBean chassis = creaCase(action, request);
             chassisDAO.doUpdate(chassis);
             return;
             
         case "PSU":
-            PSUBean psu = creaPSU(request);
+            PSUBean psu = creaPSU(action, request);
             psuDAO.doUpdate(psu);
             return;
             
         case "MOBO":
-            MoboBean mobo = creaMOBO(request);
+            MoboBean mobo = creaMOBO(action, request);
             moboDAO.doUpdate(mobo);
             return;
             
         case "STORAGE":
-            MemoriaBean mem = creaStorage(request);
+            MemoriaBean mem = creaStorage(action, request);
             memDAO.doUpdate(mem);
             return;
             

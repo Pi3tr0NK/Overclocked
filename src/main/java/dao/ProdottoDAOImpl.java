@@ -101,7 +101,9 @@ public class ProdottoDAOImpl implements ProdottoDAO{
     @Override
     public synchronized Collection<ProdottoBean> doRetrieveAll(String cerca, String prezzo, String marca) 
     		throws SQLException {
-
+    	
+    	ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+    	
         List<ProdottoBean> lista = new LinkedList<>();
         
         marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
@@ -156,6 +158,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
                     p.setAttivo(rs.getBoolean("attivo"));
                     p.setSconto(rs.getInt("sconto"));
                     p.setCategoria(rs.getString("categoria"));
+                    p.setImmagini(immaginiDAO.doRetrieveByProdotto(p.getIdProdotto()));
 
                     lista.add(p);
                 }
@@ -260,6 +263,8 @@ public class ProdottoDAOImpl implements ProdottoDAO{
     
     public synchronized List<ProdottoBean> doRetrieveBestseller(int n) throws SQLException {
 
+    	ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+    	
         List<ProdottoBean> prodotti = new ArrayList<>();
 
         String sql =
@@ -296,6 +301,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
                     p.setAttivo(rs.getBoolean("attivo"));
                     p.setSconto(rs.getInt("sconto"));
                     p.setCategoria(rs.getString("categoria"));
+                    p.setImmagini(immaginiDAO.doRetrieveByProdotto(p.getIdProdotto()));
                     
                     prodotti.add(p);
                 }
@@ -306,7 +312,9 @@ public class ProdottoDAOImpl implements ProdottoDAO{
     }
     
     public synchronized List<ProdottoBean> doRetrieveCorrelati(int limit ,int idProdotto,String categoria,double prezzo) throws SQLException {
-
+    	
+    	ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+    	
         List<ProdottoBean> correlati = new ArrayList<>();
 
         String sql =
@@ -343,6 +351,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
                     p.setAttivo(rs.getBoolean("attivo"));
                     p.setSconto(rs.getInt("sconto"));
                     p.setCategoria(rs.getString("categoria"));
+                    p.setImmagini(immaginiDAO.doRetrieveByProdotto(p.getIdProdotto()));
 
                     correlati.add(p);
                 }

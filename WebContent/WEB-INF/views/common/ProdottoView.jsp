@@ -12,7 +12,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/prodotto.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css">
-<script src="${pageContext.request.contextPath}/script/prodotto.js"></script>
 
 <!-- Aggiungi il CSS della sidebar -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/cart-sidebar.css">
@@ -269,5 +268,8 @@
 <jsp:include page="/WEB-INF/views/components/footer.jsp" />
 
 </body>
+
+
+<script src="${pageContext.request.contextPath}/script/prodotto.js"></script>
 
 </html>

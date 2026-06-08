@@ -253,7 +253,7 @@ button:hover { opacity: .9; }
                 <div class="form-group">
                     <label>Core</label>
                     <input type="number" name="core" value="${prodotto.core}"/>
-                    <input type="hidden" name="idProdotto" value="${prodotto.idCpu}"/>
+                    <input type="hidden" name="idCpu" value="${prodotto.idCpu}"/>
                 </div>
                 <div class="form-group">
                     <label>Thread</label>
@@ -293,7 +293,7 @@ button:hover { opacity: .9; }
                 <div class="form-group">
                     <label>VRAM</label>
                     <input type="text" name="vram" value="${prodotto.vram}"/>
-                    <input type="hidden" name="idProdotto" value="${prodotto.idGpu}"/>
+                    <input type="hidden" name="idGpu" value="${prodotto.idGpu}"/>
                 </div>
                 <div class="form-group">
                     <label>Tipo VRAM</label>
@@ -333,6 +333,7 @@ button:hover { opacity: .9; }
                 <div class="form-group">
                     <label>Capacit&agrave;</label>
                     <input type="text" name="capacita" value="${prodotto.capacita}"/>
+                    <input type="hidden" name="idRam" value="${prodotto.idRam}"/>
                 </div>
                 <div class="form-group">
                     <label>Frequenza</label>
@@ -354,6 +355,7 @@ button:hover { opacity: .9; }
                 <div class="form-group">
                     <label>Capacit&agrave;</label>
                     <input type="text" name="capacita" value="${prodotto.capacita}"/>
+                    <input type="hidden" name="idMemoria" value="${prodotto.idMemoria}"/>
                 </div>
                 <div class="form-group">
                     <label>Formato</label>
@@ -395,6 +397,7 @@ button:hover { opacity: .9; }
                 <div class="form-group">
                     <label>Chipset</label>
                     <input type="text" name="chipset" value="${prodotto.chipset}"/>
+                    <input type="hidden" name="idMobo" value="${prodotto.idMobo}"/>
                 </div>
                 <div class="form-group">
                     <label>Socket</label>
@@ -451,6 +454,7 @@ button:hover { opacity: .9; }
                 <div class="form-group">
                     <label>Potenza (W)</label>
                     <input type="number" name="potenza" value="${prodotto.potenza}"/>
+                    <input type="hidden" name="idPsu" value="${prodotto.idPsu}"/>
                 </div>
                 <div class="form-group">
                     <label>Certificazione</label>
@@ -485,6 +489,7 @@ button:hover { opacity: .9; }
                 <div class="form-group">
                     <label>Formato</label>
                     <input type="text" name="formato" value="${prodotto.formato}"/>
+                    <input type="hidden" name="idCase" value="${prodotto.idCASE}"/>
                 </div>
                 <div class="form-group">
                     <label>Colore</label>
@@ -508,11 +513,13 @@ button:hover { opacity: .9; }
                     <select name="tipo">
                         <option value="ARIA"    ${prodotto.tipo == 'ARIA'    ? 'selected' : ''}>Aria</option>
                         <option value="LIQUIDO" ${prodotto.tipo == 'LIQUIDO' ? 'selected' : ''}>Liquido</option>
+                        
                     </select>
                 </div>
                 <div class="form-group">
                     <label>TDP supportato (W)</label>
                     <input type="number" name="tdp" value="${prodotto.tdpSupportato}"/>
+                    <input type="hidden" name="idDissipatore" value="${prodotto.idDissipatore}"/>
                 </div>
                 <div class="form-group">
                     <label>Socket supportati</label>
@@ -542,9 +549,12 @@ button:hover { opacity: .9; }
             <div class="image-container">
 
                 <c:forEach var="img" items="${prodotto.immagini}" varStatus="s">
+                
                 <div class="image-slot" onclick="apriSlot(this)">
+                
                     <input type="file"   name="immagine${s.count}" accept="image/*" hidden onchange="gestisciSlot(this)"/>
                     <input type="hidden" name="pathEsistente${s.count}" value="${img.path}"/>
+                    <input type="hidden" name="idImmagine${s.count}" value="${img.idImmagine}"/>
                     <span style="display:none">&#43;</span>
                     <img src="${pageContext.request.contextPath}/${img.path}" alt="" style="display:block"/>
                 </div>
