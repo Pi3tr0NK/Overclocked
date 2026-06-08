@@ -28,7 +28,7 @@
         <!-- CPU -->
 		<a class="category-card"
 		   href="${pageContext.request.contextPath}/Catalogo?categoria=CPU">
-		    <img src="${pageContext.request.contextPath}/img/cpu.jpg" alt="CPU">
+		    <img src="${pageContext.request.contextPath}/img/cpu.png" alt="CPU">
 		    <h3>CPU</h3>
 		    <p>${countByCategory["CPU"] != null ? countByCategory["CPU"] : 0} prodotti</p>
 		</a>
@@ -36,7 +36,7 @@
 		<!-- GPU -->
 		<a class="category-card"
 		   href="${pageContext.request.contextPath}/Catalogo?categoria=GPU">
-		    <img src="${pageContext.request.contextPath}/img/gpu.jpg" alt="GPU">
+		    <img src="${pageContext.request.contextPath}/img/gpu.png" alt="GPU">
 		    <h3>GPU</h3>
 		    <p>${countByCategory["GPU"] != null ? countByCategory["GPU"] : 0} prodotti</p>
 		</a>
@@ -44,7 +44,7 @@
 		<!-- RAM -->
 		<a class="category-card"
 		   href="${pageContext.request.contextPath}/Catalogo?categoria=RAM">
-		    <img src="${pageContext.request.contextPath}/img/ram.jpg" alt="RAM">
+		    <img src="${pageContext.request.contextPath}/img/ram.png" alt="RAM">
 		    <h3>RAM</h3>
 		    <p>${countByCategory["RAM"] != null ? countByCategory["RAM"] : 0} prodotti</p>
 		</a>
@@ -52,7 +52,7 @@
 		<!-- PSU -->
 		<a class="category-card"
 		   href="${pageContext.request.contextPath}/Catalogo?categoria=PSU">
-		    <img src="${pageContext.request.contextPath}/img/psu.jpg" alt="PSU">
+		    <img src="${pageContext.request.contextPath}/img/psu.png" alt="PSU">
 		    <h3>PSU</h3>
 		    <p>${countByCategory["PSU"] != null ? countByCategory["PSU"] : 0} prodotti</p>
 		</a>
@@ -60,7 +60,7 @@
 		<!-- CASE -->
 		<a class="category-card"
 		   href="${pageContext.request.contextPath}/Catalogo?categoria=CASE">
-		    <img src="${pageContext.request.contextPath}/img/case.jpg" alt="CASE">
+		    <img src="${pageContext.request.contextPath}/img/case.png" alt="CASE">
 		    <h3>CASE</h3>
 		    <p>${countByCategory["CASE"] != null ? countByCategory["CASE"] : 0} prodotti</p>
 		</a>
@@ -68,7 +68,7 @@
 		<!-- STORAGE -->
 		<a class="category-card"
 		   href="${pageContext.request.contextPath}/Catalogo?categoria=STORAGE">
-		    <img src="${pageContext.request.contextPath}/img/ssd.jpg" alt="STORAGE">
+		    <img src="${pageContext.request.contextPath}/img/memoria.png" alt="STORAGE">
 		    <h3>STORAGE</h3>
 		    <p>${countByCategory["STORAGE"] != null ? countByCategory["STORAGE"] : 0} prodotti</p>
 		</a>
@@ -76,7 +76,7 @@
 		<!-- MOBO -->
 		<a class="category-card"
 		   href="${pageContext.request.contextPath}/Catalogo?categoria=MOBO">
-		    <img src="${pageContext.request.contextPath}/img/mobo.jpg" alt="MOBO">
+		    <img src="${pageContext.request.contextPath}/img/mobo.png" alt="MOBO">
 		    <h3>MOBO</h3>
 		    <p>${countByCategory["MOBO"] != null ? countByCategory["MOBO"] : 0} prodotti</p>
 		</a>
@@ -84,7 +84,7 @@
 		<!-- DISSIPATORE -->
 		<a class="category-card"
 		   href="${pageContext.request.contextPath}/Catalogo?categoria=DISSIPATORE">
-		    <img src="${pageContext.request.contextPath}/img/cooler.jpg" alt="DISSIPATORE">
+		    <img src="${pageContext.request.contextPath}/img/dissipatore.png" alt="DISSIPATORE">
 		    <h3>DISSIPATORE</h3>
 		    <p>${countByCategory["DISSIPATORE"] != null ? countByCategory["DISSIPATORE"] : 0} prodotti</p>
 		</a>
