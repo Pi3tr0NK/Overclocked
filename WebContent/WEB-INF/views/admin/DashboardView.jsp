@@ -90,12 +90,10 @@
 
             </div>
 
-            <a class="new-product-btn"
-               href="${pageContext.request.contextPath}/admin/aggiungiProdotto?action=insert">
 
-                + Nuovo prodotto
-
-            </a>
+             <form action="${pageContext.request.contextPath}/admin/aggiungiProdotto?action=aggiungiView" method="post" style="display:inline;">
+    				<button class="new-product-btn" type="submit">+ Nuovo prodotto</button>
+			</form>
 
         </div>
 
@@ -213,10 +211,11 @@
             			</td>
 
                         <td>
-
-                            <button>
-                                Modifica
-                            </button>
+                        
+                			<form action="${pageContext.request.contextPath}/admin/aggiungiProdotto?action=modificaView&id=${p.idProdotto}&categoria=${p.categoria}" method="post" style="display:inline;">
+    							<button type="submit">Modifica</button>
+							</form>
+                            
                         <c:choose>       
                         	<c:when test="${p.attivo}">
 

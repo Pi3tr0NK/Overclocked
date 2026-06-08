@@ -93,7 +93,7 @@ public class AdminProdottoControl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
 
-        request.getRequestDispatcher("/WEB-INF/views/admin/AdminView.jsp").forward(request, response);
+        doPost(request,response);
     }
 
     @Override
@@ -101,50 +101,66 @@ public class AdminProdottoControl extends HttpServlet {
     	
         request.setCharacterEncoding("UTF-8");
         
-        
-        
         try {
 			processAction(request,response);
 		} catch (IOException | SQLException e) {
 			e.printStackTrace();
 		}
-        
-
-    	response.sendRedirect(request.getContextPath() + "/admin/dashboard");
-        
-
-
+          
     }
 
     
-    private void processAction(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException
+    private void processAction(HttpServletRequest request,HttpServletResponse response) throws IOException, SQLException, ServletException
     {
     	String action = request.getParameter("action");
     	
-    	System.out.print("action = " + action);
-    	
+    	System.out.print(action);
     	
     	if(action.equals("attiva"))
     		attivaProdotto(request);
     	else if(action.equals("disattiva"))
     		disattivaProdotto(request);
     	else if(action.equals("aggiungi"))
-    		aggiungiProdotto(request,response);
+    		aggiungiProdotto(action,request,response);
+    	else if(action.equals("aggiungiView"))
+    		aggiungiViewProdotto(request,response);
+    	else if(action.equals("modifica"))
+    		aggiungiProdotto(action,request,response);
+    	else if(action.equals("modificaView"))
+    		modificaViewProdotto(request,response);
     	
     }
     
     
-    private void aggiungiProdotto(HttpServletRequest request,HttpServletResponse response) throws IOException
+    private void aggiungiViewProdotto(HttpServletRequest request,HttpServletResponse response) throws IOException, ServletException
+    {
+    	request.getRequestDispatcher("/WEB-INF/views/admin/AdminView.jsp").forward(request, response);
+    	
+    }
+    
+    private void aggiungiProdotto(String action, HttpServletRequest request,HttpServletResponse response) throws IOException
     {
         try {
         	
+        	int idProdotto;
+        	
             String categoria = request.getParameter("categoria");
             
-            int idProdotto = CreateAndSave(categoria, request);
+            if(action.equals("aggiungi"))
+            {
+            	idProdotto = CreateAndSave(action, categoria, request);
+            	salvaImmagini(action,request, idProdotto);
+            }
+            else
+            {
+            	idProdotto = Integer.valueOf(request.getParameter("idProdotto"));
+            	modificaProdotto(action, categoria, request);
+            	salvaImmagini(action,request, idProdotto);
+            }
             
-            salvaImmagini(request, idProdotto);
+           
             
-            response.sendRedirect( request.getContextPath() + "/admin/aggiungiProdotto?success=1");
+            response.sendRedirect( request.getContextPath() + "/admin/dashboard");
             
         }
         catch(Exception e) {
@@ -162,7 +178,7 @@ public class AdminProdottoControl extends HttpServlet {
     	
     	
     }
-    private int CreateAndSave(String categoria, HttpServletRequest request) throws Exception {
+    private int CreateAndSave(String action, String categoria, HttpServletRequest request) throws Exception {
 
         switch(categoria.toUpperCase()) {
 
@@ -172,7 +188,7 @@ public class AdminProdottoControl extends HttpServlet {
                 return cpu.getIdProdotto();
                 
             case "GPU":
-                GPUBean gpu = creaGPU(request);
+                GPUBean gpu = creaGPU(action, request);
                 gpuDAO.doSave(gpu);
                 return gpu.getIdProdotto();
                 
@@ -216,8 +232,11 @@ public class AdminProdottoControl extends HttpServlet {
     }
 
   
-    private void creaProdotto(ProdottoBean p,HttpServletRequest request) {
+    private void creaProdotto(String action, ProdottoBean p,HttpServletRequest request) {
 
+	    if(action.equals("modifica"))
+	    	p.setIdProdotto(Integer.valueOf(request.getParameter("idProdotto")));
+	    
         p.setNome(request.getParameter("nome"));
         p.setModello(request.getParameter("modello"));
         p.setDescrizione(request.getParameter("descrizione"));
@@ -236,7 +255,7 @@ public class AdminProdottoControl extends HttpServlet {
     	
     	CPUBean cpu = new CPUBean();
     	
-    	creaProdotto(cpu,request);
+    	creaProdotto(action,cpu,request);
         
         cpu.setCore(Integer.parseInt(request.getParameter("core")));
         cpu.setThread(Integer.parseInt(request.getParameter("thread")));
@@ -249,7 +268,7 @@ public class AdminProdottoControl extends HttpServlet {
         return cpu;
     }
 
-    private GPUBean creaGPU(HttpServletRequest request) {
+    private GPUBean creaGPU(String action, HttpServletRequest request) {
 
     	GPUBean gpu = new GPUBean();
     	
@@ -262,6 +281,9 @@ public class AdminProdottoControl extends HttpServlet {
 	    gpu.setMaxRes(request.getParameter("maxres"));
 	    gpu.setPcie(request.getParameter("pcie"));
 	    gpu.setTdp(Integer.parseInt(request.getParameter("tdp")));
+	    
+	    if(action.equals("modifica"))
+	    	gpu.setIdGpu(Integer.valueOf(request.getParameter("idGpu")));
 	    
         return gpu;
     }
@@ -356,21 +378,7 @@ public class AdminProdottoControl extends HttpServlet {
         return ram;
     }  
     
-    private List<ImmagineBean> salvaImmagini(HttpServletRequest request, int idProdotto) throws Exception {
-
-        List<Part> immagini = new ArrayList<>();
-
-        for (Part part : request.getParts()) {
-            if (part.getSubmittedFileName() != null
-                    && !part.getSubmittedFileName().isBlank()
-                    && part.getSize() > 0) {
-                immagini.add(part);
-            }
-        }
-
-        if (immagini.size() > MAX_IMMAGINI) {
-            throw new Exception("Puoi caricare massimo " + MAX_IMMAGINI + " immagini");
-        }
+    private List<ImmagineBean> salvaImmagini(String action, HttpServletRequest request, int idProdotto) throws Exception {
 
         String uploadDir = getServletContext().getRealPath("/img/prodotti");
         File folder = new File(uploadDir);
@@ -378,26 +386,54 @@ public class AdminProdottoControl extends HttpServlet {
 
         List<ImmagineBean> listaImmagini = new ArrayList<>();
 
-        for (Part part : immagini) {
+        for (int i = 1; i <= MAX_IMMAGINI; i++) {
 
-            String nomeOriginale = Paths.get(part.getSubmittedFileName())
-                                        .getFileName()
-                                        .toString();
-            String nomeFile = System.currentTimeMillis() + "_" + nomeOriginale;
+            Part part = request.getPart("immagine" + i);
 
-            part.write(uploadDir + File.separator + nomeFile);
+            if (part != null && part.getSize() > 0
+                    && part.getSubmittedFileName() != null
+                    && !part.getSubmittedFileName().isBlank()) {
 
-            ImmagineBean img = new ImmagineBean();
-            img.setPath("img/prodotti/" + nomeFile);
+                // è arrivato un file nuovo per questo slot
+                String nomeOriginale = Paths.get(part.getSubmittedFileName())
+                                            .getFileName().toString();
+                String nomeFile = System.currentTimeMillis() + "_" + nomeOriginale;
 
-            immaginiDAO.doSave(img, idProdotto);
+                part.write(uploadDir + File.separator + nomeFile);
 
-            listaImmagini.add(img);
+                ImmagineBean img = new ImmagineBean();
+                img.setPath("img/prodotti/" + nomeFile);
+
+                if (action.equals("aggiungi")) {
+                    immaginiDAO.doSave(img, idProdotto);
+                } else {
+                    // cerca se esiste già un'immagine per questo slot
+                    String pathEsistente = request.getParameter("pathEsistente" + i);
+                    if (pathEsistente != null && !pathEsistente.isBlank()) {
+                        // sostituisce quella esistente
+                        immaginiDAO.updateImage(img.getPath(), idProdotto);
+                    } else {
+                        // slot prima vuoto, ora ha un'immagine nuova
+                        immaginiDAO.doSave(img, idProdotto);
+                    }
+                }
+
+                listaImmagini.add(img);
+
+            } else if (action.equals("modifica")) {
+
+                // nessun file nuovo: mantieni il path esistente
+                String pathEsistente = request.getParameter("pathEsistente" + i);
+                if (pathEsistente != null && !pathEsistente.isBlank()) {
+                    ImmagineBean img = new ImmagineBean();
+                    img.setPath(pathEsistente);
+                    listaImmagini.add(img);
+                }
+            }
         }
 
         return listaImmagini;
     }
-    
     
     
     
@@ -416,6 +452,98 @@ public class AdminProdottoControl extends HttpServlet {
     	
     }  
     
+    
+    private void modificaProdotto (String categoria, HttpServletRequest request) throws SQLException {
+     	
+
+        switch(categoria.toUpperCase()) {
+
+        case "CPU":
+            CPUBean cpu = creaCPU(request);
+            cpuDAO.doUpdate(cpu);
+            return;
+            
+        case "GPU":
+            GPUBean gpu = creaGPU(request);
+            System.out.println("PRODOTTO:" +gpu.getIdProdotto() + "gpu: "+ gpu.getIdGpu());
+            gpuDAO.doUpdate(gpu);
+            return;
+            
+        case "RAM":
+            RAMBean ram = creaRAM(request);
+            ramDAO.doUpdate(ram);
+            return;
+            	
+        case "DISSIPATORE":
+            DissipatoreBean dissipatore = creaDissipatore(request);
+            dissipatoreDAO.doUpdate(dissipatore);
+            return;
+            
+        case "CASE":
+            ChassisBean chassis = creaCase(request);
+            chassisDAO.doUpdate(chassis);
+            return;
+            
+        case "PSU":
+            PSUBean psu = creaPSU(request);
+            psuDAO.doUpdate(psu);
+            return;
+            
+        case "MOBO":
+            MoboBean mobo = creaMOBO(request);
+            moboDAO.doUpdate(mobo);
+            return;
+            
+        case "STORAGE":
+            MemoriaBean mem = creaStorage(request);
+            memDAO.doUpdate(mem);
+            return;
+            
+        }
+    }  
+    
+    private void modificaViewProdotto (HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
     	
+       	int id = Integer.valueOf(request.getParameter("id"));
+        String categoria = request.getParameter("categoria");
+    	
+        switch(categoria.toUpperCase()) {
+
+        case "CPU":
+        	request.setAttribute("prodotto",cpuDAO.doRetrieveByKey(id));
+        	break;
+            
+        case "GPU":
+        	request.setAttribute("prodotto",gpuDAO.doRetrieveByKey(id));
+            break;
+        case "RAM":
+        	request.setAttribute("prodotto",ramDAO.doRetrieveByKey(id));
+        	break;
+        case "DISSIPATORE":
+        	request.setAttribute("prodotto",dissipatoreDAO.doRetrieveByKey(id));
+            break;
+        case "CASE":
+        	request.setAttribute("prodotto",chassisDAO.doRetrieveByKey(id));
+            break;
+        case "PSU":
+        	request.setAttribute("prodotto",psuDAO.doRetrieveByKey(id));
+            break;
+        case "MOBO":
+        	request.setAttribute("prodotto",moboDAO.doRetrieveByKey(id));
+            break;
+        case "STORAGE":
+        	request.setAttribute("prodotto",memDAO.doRetrieveByKey(id));
+        	break;
+        }
+        
+        request.getRequestDispatcher("/WEB-INF/views/admin/ModificaProdotto.jsp").forward(request, response);
+          
+         
+    
+        
+    }
+    
+    
+    
     
 }
