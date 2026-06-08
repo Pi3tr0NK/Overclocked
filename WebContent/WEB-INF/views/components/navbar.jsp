@@ -3,7 +3,7 @@
 <nav class="navbar">
 	
     <div class="nav-left">
-	        <a href=${pageContext.request.contextPath}/home><img src="${pageContext.request.contextPath}/img/logo.png" alt="Overclocked Logo"></a>
+	        <a href=${pageContext.request.contextPath}/home><img src="${pageContext.request.contextPath}/img/logo.png" alt="Overclocked Logo"><h2>OVERCLOCKED</h2></a>
 	</div>
 	
 
