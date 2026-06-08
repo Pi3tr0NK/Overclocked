@@ -3,7 +3,6 @@ package dao;
 import java.sql.SQLException;
 import java.util.Collection;
 
-import model.CPUBean;
 import model.MoboBean;
 
 public interface MoboDAO {
@@ -15,5 +14,5 @@ public interface MoboDAO {
 	
 	public boolean setProductStatus(MoboBean ram, boolean attivo) throws SQLException;
 	
-	public Collection<MoboBean> moboCompatibili(CPUBean cpu) throws SQLException;
+	public Collection<MoboBean> moboCompatibili(int cpuId) throws SQLException;
 }

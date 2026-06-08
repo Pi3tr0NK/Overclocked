@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.Collection;
 
 import model.MemoriaBean;
-import model.MoboBean;
 
 public interface MemoriaDAO {
 public void doSave(MemoriaBean cpu) throws SQLException;
@@ -17,5 +16,5 @@ public void doSave(MemoriaBean cpu) throws SQLException;
 	
 	public boolean setProductStatus(MemoriaBean cpu, boolean attivo) throws SQLException;
 	
-	public Collection<MemoriaBean> moboCompatibili(MoboBean mobo) throws SQLException;
+	public Collection<MemoriaBean> memoriaCompatibili(int moboId) throws SQLException;
 }

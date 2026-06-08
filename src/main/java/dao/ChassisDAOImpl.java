@@ -198,9 +198,13 @@ public class ChassisDAOImpl implements ChassisDAO{
 	    return prodottoDAO.setProductStatus(chassis.getIdProdotto(), attivo);
 	}
 	
-	public Collection<ChassisBean> chassisCompatibili(MoboBean mobo) throws SQLException {
+	public Collection<ChassisBean> chassisCompatibili(int moboId) throws SQLException {
 
 	    Collection<ChassisBean> lista = new LinkedList<>();
+	    
+	    MoboDAOImpl moboDAO = new MoboDAOImpl(ds);
+
+        MoboBean mobo = moboDAO.doRetrieveByKey(moboId);
 
 	    String sql =
 	        "SELECT * " +

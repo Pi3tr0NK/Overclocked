@@ -220,10 +220,16 @@ public class PSUDAOImpl implements PSUDAO {
     		return prodottoDAO.setProductStatus(psu.getIdProdotto(), attivo);
     }
     
-    public Collection<PSUBean> psuCompatibili(CPUBean cpu, GPUBean gpu) throws SQLException {
+    public Collection<PSUBean> psuCompatibili(int cpuId, int gpuId) throws SQLException {
 
         List<PSUBean> lista = new LinkedList<>();
         ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+        
+        CPUDAOImpl cpuDAO = new CPUDAOImpl(ds);
+        GPUDAOImpl gpuDAO = new GPUDAOImpl(ds);
+
+        CPUBean cpu = cpuDAO.doRetrieveByKey(cpuId);
+        GPUBean gpu = gpuDAO.doRetrieveByKey(gpuId);
 
         String sql =
             "SELECT * " +

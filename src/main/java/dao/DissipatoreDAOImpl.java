@@ -209,10 +209,14 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
         return prodottoDAO.setProductStatus(dissipatore.getIdProdotto(), attivo);
     }
     
-    public Collection<DissipatoreBean> dissipatoriCompatibili(CPUBean cpu) throws SQLException {
+    public Collection<DissipatoreBean> dissipatoriCompatibili(int cpuId) throws SQLException {
 
         List<DissipatoreBean> lista = new LinkedList<>();
         ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+        
+        CPUDAOImpl cpuDAO = new CPUDAOImpl(ds);
+
+        CPUBean cpu = cpuDAO.doRetrieveByKey(cpuId);
 
         String sql =
             "SELECT * " +

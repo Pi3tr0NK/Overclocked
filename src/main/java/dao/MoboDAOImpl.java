@@ -242,9 +242,12 @@ public class MoboDAOImpl implements MoboDAO{
 	    }
 	}
 	
-	public Collection<MoboBean> moboCompatibili(CPUBean cpu) throws SQLException
+	public Collection<MoboBean> moboCompatibili(int cpuId) throws SQLException
 	{
 		 Collection<MoboBean> lista = new LinkedList<>();
+		 CPUDAOImpl cpuDAO = new CPUDAOImpl(ds);
+
+	      CPUBean cpu = cpuDAO.doRetrieveByKey(cpuId);
 
 		    String sql =
 		        "SELECT * " +

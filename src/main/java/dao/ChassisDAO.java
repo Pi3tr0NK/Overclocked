@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.Collection;
 
 import model.ChassisBean;
-import model.MoboBean;
 
 public interface ChassisDAO {
 public void doSave(ChassisBean cpu) throws SQLException;
@@ -17,5 +16,5 @@ public void doSave(ChassisBean cpu) throws SQLException;
 	
 	public boolean setProductStatus(ChassisBean cpu, boolean attivo) throws SQLException;
 	
-	public Collection<ChassisBean> chassisCompatibili(MoboBean mobo) throws SQLException;
+	public Collection<ChassisBean> chassisCompatibili(int moboId) throws SQLException;
 }

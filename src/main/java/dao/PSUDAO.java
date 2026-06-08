@@ -3,8 +3,6 @@ package dao;
 import java.sql.SQLException;
 import java.util.Collection;
 
-import model.CPUBean;
-import model.GPUBean;
 import model.PSUBean;
 
 public interface PSUDAO {
@@ -19,5 +17,5 @@ public interface PSUDAO {
 	
 	public boolean setProductStatus(PSUBean psu, boolean attivo) throws SQLException;
 	
-	public Collection<PSUBean> psuCompatibili(CPUBean cpu, GPUBean gpu) throws SQLException;
+	public Collection<PSUBean> psuCompatibili(int cpuId, int gpuId) throws SQLException;
 }

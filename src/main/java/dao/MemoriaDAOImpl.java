@@ -221,10 +221,14 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 	    return prodottoDAO.setProductStatus(mem.getIdProdotto(), attivo);
 	}
 	
-	public Collection<MemoriaBean> moboCompatibili(MoboBean mobo) throws SQLException {
+	public Collection<MemoriaBean> memoriaCompatibili(int moboId) throws SQLException {
 
 	    List<MemoriaBean> lista = new LinkedList<>();
 	    ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+	    
+	    MoboDAOImpl moboDAO = new MoboDAOImpl(ds);
+
+        MoboBean mobo = moboDAO.doRetrieveByKey(moboId);
 
 	    String sql =
 	        "SELECT * " +

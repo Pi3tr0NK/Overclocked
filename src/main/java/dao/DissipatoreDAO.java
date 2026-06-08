@@ -3,7 +3,6 @@ package dao;
 import java.sql.SQLException;
 import java.util.Collection;
 
-import model.CPUBean;
 import model.DissipatoreBean;
 
 public interface DissipatoreDAO {
@@ -17,5 +16,5 @@ public interface DissipatoreDAO {
 	
 	public boolean setProductStatus(DissipatoreBean d, boolean attivo) throws SQLException;
 	
-	public Collection<DissipatoreBean> dissipatoriCompatibili(CPUBean cpu) throws SQLException;
+	public Collection<DissipatoreBean> dissipatoriCompatibili(int cpuId) throws SQLException;
 }
