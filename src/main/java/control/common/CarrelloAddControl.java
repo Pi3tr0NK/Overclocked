@@ -54,20 +54,6 @@ public class CarrelloAddControl extends HttpServlet {
 		    } catch (Exception e) {
 		        throw new ServletException(e);
 		    }
-		    
-		 // 🔥 DEBUG CARRELLO
-		    System.out.println("===== CARRELLO =====");
-
-		    cart.getItems().forEach(item -> {
-		        System.out.println(
-		            "ID: " + item.getProdotto().getIdProdotto() +
-		            " | Nome: " + item.getProdotto().getNome() +
-		            " | Quantità: " + item.getQuantita()
-		        );
-		    });
-
-		    System.out.println("====================");
-		    
 
 		    // RISPOSTA AJAX (JSON)
 		    response.setContentType("application/json");

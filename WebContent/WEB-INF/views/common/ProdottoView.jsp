@@ -12,10 +12,14 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/prodotto.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css">
+<script src="${pageContext.request.contextPath}/script/prodotto.js"></script>
 
-<style type="text/css">
+<!-- Aggiungi il CSS della sidebar -->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/cart-sidebar.css">
 
-</style>
+<!-- Definisci contextPath per il JS -->
+<script>const contextPath = "${pageContext.request.contextPath}";</script>
+<jsp:include page="/WEB-INF/views/components/cart-sidebar.jsp" />
 
 </head>
 <body>
@@ -265,117 +269,5 @@
 <jsp:include page="/WEB-INF/views/components/footer.jsp" />
 
 </body>
-
-<script type="text/javascript">
-
-// immagini
-
-const mainImage = document.querySelector(".main-image img");
-const thumbs = document.querySelectorAll(".thumb img");
-
-thumbs.forEach(img => {
-
-    img.addEventListener("mouseenter", function() {
-
-        mainImage.src = this.src;
-
-        document.querySelectorAll(".thumb").forEach(t =>
-            t.classList.remove("active")
-        );
-
-        this.parentElement.classList.add("active");
-    });
-
-});
-
-function addToCart(idProdotto) {
-	var qty = document.getElementById("quantita").value;
-    var params = "aggiungi=" + idProdotto + "&quantita=" + qty;
-	
-    loadAjaxDoc("carrello/add", "GET", params, handleAddCart);
-}
-
-function handleAddCart(request) {
-    var response = JSON.parse(request.responseText);
-
-    if (response.success) {
-        
-    } else {
-        
-    }
-}
-
-function createXMLHttpRequest() {
-	var request;
-	try {
-		// Firefox 1+, Chrome 1+, Opera 8+, Safari 1.2+, Edge 12+, Internet Explorer 7+
-		request = new XMLHttpRequest();
-	} catch (e) {
-		// past versions of Internet Explorer 
-		try {
-			request = new ActiveXObject("Msxml2.XMLHTTP");  
-		} catch (e) {
-			try {
-				request = new ActiveXObject("Microsoft.XMLHTTP");
-			} catch (e) {
-				alert("Il browser non supporta AJAX");
-				return null;
-			}
-		}
-	}
-	return request;
-}
-
-function loadAjaxDoc(url, method, params, cFuction) {
-	var request = createXMLHttpRequest();
-	if(request){
-		
-		request.onreadystatechange = function() {
-			if (this.readyState == 4) {
-				if (this.status == 200) {
-				    cFuction(this);
-				} else {				
-					if(this.status == 0){ // When aborting the request
-						alert("Problemi nell'esecuzione della richiesta: nessuna risposta ricevuta nel tempo limite");
-					} else { // Any other situation
-						alert("Problemi nell'esecuzione della richiesta:\n" + this.statusText);
-					}
-					return null;
-				}
-		    }
-		};
-		
-		setTimeout(function () {     // to abort after 15 sec
-        	if (request.readyState < 4) {
-            	request.abort();
-        	}
-    	}, 15000); 
-		
-		if(method.toLowerCase() == "get"){
-			if(params){
-				request.open("GET", url + "?" + params, true);
-			} else {
-				request.open("GET", url, true);
-			}
-			request.setRequestHeader("Connection", "close");
-	        request.send(null);
-	        
-		} else {
-			
-			if(params){
-				request.open("POST", url, true);
-				request.setRequestHeader("Connection", "close");
-				request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	        	request.send(params);
-			} else {
-				console.log("Usa GET se non ci sono parametri!");
-				return null;
-			}
-			
-		}
-		
-	}
-}
-</script>
 
 </html>
