@@ -19,83 +19,80 @@ import java.util.List;
  */
 @WebServlet("/Carrello")
 public class CarrelloControl extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		    CarrelloBean cart = (CarrelloBean)
-		            request.getSession().getAttribute("cart");
+        CarrelloBean cart = (CarrelloBean) request.getSession().getAttribute("cart");
+        if (cart == null) {
+            cart = new CarrelloBean();
+            request.getSession().setAttribute("cart", cart);
+        }
 
-		    if (cart == null) {
-		        cart = new CarrelloBean();
-		        request.getSession().setAttribute("cart", cart);
-		    }
+        String action        = request.getParameter("action");
+        String idProdottoStr = request.getParameter("idProdotto");
 
-		    String action = request.getParameter("action");
-		    String idProdottoStr = request.getParameter("idProdotto");
+        if (action != null && idProdottoStr != null) {
+            int idProdotto = Integer.parseInt(idProdottoStr);
+            CarrelloItemBean item = cart.findProduct(idProdotto);
 
-		    if(action != null && idProdottoStr != null) {
+            if (item != null) {
+                switch (action) {
+                    case "incrementa": item.aumentaQuantita(1);       break;
+                    case "decrementa": item.diminuisciQuantita(1);    break;
+                    case "rimuovi":    cart.removeProduct(idProdotto); break;
+                }
+            }
 
-		        int idProdotto = Integer.parseInt(idProdottoStr);
+            if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+                CarrelloItemBean updated = cart.findProduct(idProdotto);
+                int nuovaQuantita = (updated != null) ? updated.getQuantita() : 0;
+                double totale     = calcolaTotale(cart);
 
-		        CarrelloItemBean item = cart.findProduct(idProdotto);
+                String json = String.format(java.util.Locale.US,
+                    "{\"idProdotto\":%d,\"quantita\":%d,\"totale\":%.2f,\"numProdotti\":%d}",
+                    idProdotto, nuovaQuantita, totale, cart.getTotalQuantity()
+                );
 
-		        if(item != null) {
-		            switch(action) {
-		                case "incrementa":
-		                    item.aumentaQuantita(1);
-		                    break;
+                response.setContentType("application/json;charset=UTF-8");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(json);
+                response.getWriter().flush();
+                return;
+            }
+        }
 
-		                case "decrementa":
-		                    item.diminuisciQuantita(1);
-		                    break;
+        totalCart(request, cart);
+        prodotti(request, cart);
+        numProdotti(request, cart);
+        request.getRequestDispatcher("/WEB-INF/views/common/CarrelloView.jsp")
+               .forward(request, response);
+    }
 
-		                case "rimuovi":
-		                    cart.removeProduct(idProdotto);
-		                    break;
-		            }
-		        }
-		    }
+    private double calcolaTotale(CarrelloBean cart) {
+        double totale = 0;
+        for (CarrelloItemBean i : cart.getItems())
+            totale += (i.getProdotto().getPrezzo()
+                      - (i.getProdotto().getPrezzo() * i.getProdotto().getSconto() / 100.0))
+                      * i.getQuantita();
+        return totale;
+    }
 
-		    totalCart(request, cart);
-		    prodotti(request, cart);
-		    numProdotti(request, cart);
+    private void totalCart(HttpServletRequest request, CarrelloBean cart) {
+        request.setAttribute("totale", calcolaTotale(cart));
+    }
 
-	        request.getRequestDispatcher("/WEB-INF/views/common/CarrelloView.jsp").forward(request, response);
-	}
-	
-	private void totalCart(HttpServletRequest request, CarrelloBean cart)
-	{
-		double totale=0;
-		List<CarrelloItemBean> items= cart.getItems();
-		
-		for(CarrelloItemBean i : items)
-		{
-			totale+= (i.getProdotto().getPrezzo() - (i.getProdotto().getPrezzo()*i.getProdotto().getSconto()/100))*i.getQuantita();
-		}
-		
-		request.setAttribute("totale", totale);
-	}
-	
-	private void prodotti(HttpServletRequest request, CarrelloBean cart)
-	{
-		request.setAttribute("prodotti", cart.getItems());
-	}
-	
-	private void numProdotti(HttpServletRequest request, CarrelloBean cart)
-	{
-		request.setAttribute("numProdotti", cart.getTotalQuantity());
-	}
+    private void prodotti(HttpServletRequest request, CarrelloBean cart) {
+        request.setAttribute("prodotti", cart.getItems());
+    }
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+    private void numProdotti(HttpServletRequest request, CarrelloBean cart) {
+        request.setAttribute("numProdotti", cart.getTotalQuantity());
+    }
 
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doGet(request, response);
+    }
 }
