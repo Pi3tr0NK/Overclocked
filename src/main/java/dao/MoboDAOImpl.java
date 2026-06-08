@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import model.CPUBean;
 import model.MoboBean;
 
 public class MoboDAOImpl implements MoboDAO{
@@ -214,49 +215,6 @@ public class MoboDAOImpl implements MoboDAO{
 	    return lista;
 	}
 
-	public synchronized Collection<MoboBean> doRetrieveAll() throws SQLException {
-
-	    List<MoboBean> lista = new LinkedList<>();
-
-	    String sql = "SELECT * FROM " + TABLE_NAME + " m JOIN prodotto p ON m.fk_prodotto = p.id_prodotto";
-
-	    try (Connection con = ds.getConnection();
-	         PreparedStatement ps = con.prepareStatement(sql);
-	         ResultSet rs = ps.executeQuery()) {
-
-	        while (rs.next()) {
-
-	        	    MoboBean mobo = new MoboBean();
-
-	            mobo.setIdProdotto(rs.getInt("id_prodotto"));
-	            mobo.setNome(rs.getString("nome"));
-	            mobo.setModello(rs.getString("modello"));
-	            mobo.setDescrizione(rs.getString("descrizione"));
-	            mobo.setMarca(rs.getString("marca"));
-	            mobo.setPrezzo(rs.getDouble("prezzo"));
-	            mobo.setStock(rs.getInt("stock"));
-	            mobo.setAttivo(rs.getBoolean("attivo"));
-	            mobo.setSconto(rs.getInt("sconto"));
-		        mobo.setCategoria(rs.getString("categoria"));
-
-	            mobo.setIdMobo(rs.getInt("id_mobo"));
-	            mobo.setChipset(rs.getString("chipset"));
-	            mobo.setSocket(rs.getString("socket"));
-	            mobo.setTipoRam(rs.getString("tiporam"));
-	            mobo.setMaxFreq(rs.getString("maxfreq"));
-	            mobo.setFormato(rs.getString("formato"));
-	            mobo.setPcie(rs.getString("pcie"));
-	            mobo.setSlotRam(rs.getInt("slotram"));
-	            mobo.setNvme(rs.getBoolean("nvme"));
-	            mobo.setPorteSata(rs.getInt("portesata"));
-	            mobo.setPorteUsb(rs.getInt("porteusb"));
-
-	            lista.add(mobo);
-	        }
-	    }
-
-	    return lista;
-	}
 
 	public synchronized boolean doUpdate(MoboBean mobo) throws SQLException {
 
@@ -282,6 +240,65 @@ public class MoboDAOImpl implements MoboDAO{
 
 	        return ps.executeUpdate() > 0;
 	    }
+	}
+	
+	public Collection<MoboBean> moboCompatibili(CPUBean cpu) throws SQLException
+	{
+		 Collection<MoboBean> lista = new LinkedList<>();
+
+		    String sql =
+		        "SELECT * " +
+		        "FROM mobo m " +
+		        "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto " +
+		        "WHERE m.socket = ? " +
+		        "AND m.tiporam = ? " +
+		        "AND p.attivo = true";
+
+		    ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+
+		    try (Connection con = ds.getConnection();
+		         PreparedStatement ps = con.prepareStatement(sql)) {
+
+		        ps.setString(1, cpu.getSocket());
+		        ps.setString(2, cpu.getTiporam());
+
+		        try (ResultSet rs = ps.executeQuery()) {
+
+		            while (rs.next()) {
+
+		                MoboBean mobo = new MoboBean();
+		                mobo.setIdProdotto(rs.getInt("id_prodotto"));
+			            mobo.setNome(rs.getString("nome"));
+			            mobo.setModello(rs.getString("modello"));
+			            mobo.setDescrizione(rs.getString("descrizione"));
+			            mobo.setMarca(rs.getString("marca"));
+			            mobo.setPrezzo(rs.getDouble("prezzo"));
+			            mobo.setStock(rs.getInt("stock"));
+			            mobo.setDimensioni(rs.getString("dimensioni"));
+	                    mobo.setPeso(rs.getString("peso"));
+			            mobo.setAttivo(rs.getBoolean("attivo"));
+			            mobo.setSconto(rs.getInt("sconto"));
+				        mobo.setCategoria(rs.getString("categoria"));
+				        mobo.setImmagini(immaginiDAO.doRetrieveByProdotto(mobo.getIdProdotto()));
+				        
+			            mobo.setIdMobo(rs.getInt("id_mobo"));
+			            mobo.setChipset(rs.getString("chipset"));
+			            mobo.setSocket(rs.getString("socket"));
+			            mobo.setTipoRam(rs.getString("tiporam"));
+			            mobo.setMaxFreq(rs.getString("maxfreq"));
+			            mobo.setFormato(rs.getString("formato"));
+			            mobo.setPcie(rs.getString("pcie"));
+			            mobo.setSlotRam(rs.getInt("slotram"));
+			            mobo.setNvme(rs.getBoolean("nvme"));
+			            mobo.setPorteSata(rs.getInt("portesata"));
+			            mobo.setPorteUsb(rs.getInt("porteusb"));
+
+		                lista.add(mobo);
+		            }
+		        }
+		    }
+
+		    return lista;
 	}
 
 	public synchronized boolean setProductStatus(MoboBean mobo, boolean attivo) throws SQLException {

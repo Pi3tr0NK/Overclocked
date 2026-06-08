@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.sql.DataSource;
 
+import model.CPUBean;
 import model.DissipatoreBean;
 
 public class DissipatoreDAOImpl implements DissipatoreDAO {
@@ -159,9 +160,9 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
                     d.setPeso(rs.getString("peso"));
                     d.setAttivo(rs.getBoolean("attivo"));
                     d.setSconto(rs.getInt("sconto"));
-    	            d.setCategoria(rs.getString("categoria"));
-    	            
-    	            d.setImmagini(immaginiDAO.doRetrieveByProdotto(d.getIdProdotto()));
+	    	            d.setCategoria(rs.getString("categoria"));
+	    	            d.setImmagini(immaginiDAO.doRetrieveByProdotto(d.getIdProdotto()));
+	    	            
                     d.setIdDissipatore(rs.getInt("id_dissipatore"));
                     d.setTipo(DissipatoreBean.Tipo.valueOf(rs.getString("tipo").toUpperCase()));
                     d.setSocketSupportati(rs.getString("socket_supportati"));
@@ -206,5 +207,58 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
 
         ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
         return prodottoDAO.setProductStatus(dissipatore.getIdProdotto(), attivo);
+    }
+    
+    public Collection<DissipatoreBean> dissipatoriCompatibili(CPUBean cpu) throws SQLException {
+
+        List<DissipatoreBean> lista = new LinkedList<>();
+        ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+
+        String sql =
+            "SELECT * " +
+            "FROM dissipatore d " +
+            "JOIN prodotto p ON d.fk_prodotto = p.id_prodotto " +
+            "WHERE p.attivo = true " +
+            "AND d.socket_supportati LIKE ? ";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, "%" + cpu.getSocket() + "%");
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+
+                    DissipatoreBean d = new DissipatoreBean();
+
+                    d.setIdProdotto(rs.getInt("id_prodotto"));
+                    d.setNome(rs.getString("nome"));
+                    d.setModello(rs.getString("modello"));
+                    d.setDescrizione(rs.getString("descrizione"));
+                    d.setMarca(rs.getString("marca"));
+                    d.setPrezzo(rs.getDouble("prezzo"));
+                    d.setStock(rs.getInt("stock"));
+                    d.setDimensioni(rs.getString("dimensioni"));
+                    d.setPeso(rs.getString("peso"));
+                    d.setAttivo(rs.getBoolean("attivo"));
+                    d.setSconto(rs.getInt("sconto"));
+	    	            d.setCategoria(rs.getString("categoria"));
+	    	            d.setImmagini(immaginiDAO.doRetrieveByProdotto(d.getIdProdotto()));
+	    	            
+                    d.setIdDissipatore(rs.getInt("id_dissipatore"));
+                    d.setTipo(DissipatoreBean.Tipo.valueOf(rs.getString("tipo").toUpperCase()));
+                    d.setSocketSupportati(rs.getString("socket_supportati"));
+                    d.setDimensioniVentola(rs.getString("dimensioni_ventola"));
+                    d.setRpmMax(rs.getInt("rpm_max"));
+                    d.setRumore(rs.getInt("rumore"));
+                    d.setTdpSupportato(rs.getInt("tdp_supportato"));
+
+                    lista.add(d);
+                }
+            }
+        }
+
+        return lista;
     }
 }

@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import model.CPUBean;
+import model.GPUBean;
 import model.PSUBean;
 import model.PSUBean.Formato;
 import model.PSUBean.Modulare;
@@ -174,8 +176,8 @@ public class PSUDAOImpl implements PSUDAO {
                     psu.setPeso(rs.getString("peso"));
                     psu.setAttivo(rs.getBoolean("attivo"));
                     psu.setSconto(rs.getInt("sconto"));
-    		        psu.setCategoria(rs.getString("categoria"));
-    		        psu.setImmagini(immaginiDAO.doRetrieveByProdotto(psu.getIdProdotto()));
+	    		        psu.setCategoria(rs.getString("categoria"));
+	    		        psu.setImmagini(immaginiDAO.doRetrieveByProdotto(psu.getIdProdotto()));
 
                     psu.setIdPsu(rs.getInt("id_psu"));
                     psu.setPotenza(rs.getInt("potenza"));
@@ -216,5 +218,56 @@ public class PSUDAOImpl implements PSUDAO {
     		ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
 
     		return prodottoDAO.setProductStatus(psu.getIdProdotto(), attivo);
+    }
+    
+    public Collection<PSUBean> psuCompatibili(CPUBean cpu, GPUBean gpu) throws SQLException {
+
+        List<PSUBean> lista = new LinkedList<>();
+        ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+
+        String sql =
+            "SELECT * " +
+            "FROM psu ps " +
+            "JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto " +
+            "WHERE p.attivo = true " +
+            "AND (ps.potenza * 0.8) >= ?";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, cpu.getTdp() + gpu.getTdp());
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+
+                    PSUBean psu = new PSUBean();
+
+                    psu.setIdProdotto(rs.getInt("id_prodotto"));
+                    psu.setNome(rs.getString("nome"));
+                    psu.setModello(rs.getString("modello"));
+                    psu.setDescrizione(rs.getString("descrizione"));
+                    psu.setMarca(rs.getString("marca"));
+                    psu.setPrezzo(rs.getDouble("prezzo"));
+                    psu.setStock(rs.getInt("stock"));
+                    psu.setDimensioni(rs.getString("dimensioni"));
+                    psu.setPeso(rs.getString("peso"));
+                    psu.setAttivo(rs.getBoolean("attivo"));
+                    psu.setSconto(rs.getInt("sconto"));
+	    		        psu.setCategoria(rs.getString("categoria"));
+	    		        psu.setImmagini(immaginiDAO.doRetrieveByProdotto(psu.getIdProdotto()));
+
+                    psu.setIdPsu(rs.getInt("id_psu"));
+                    psu.setPotenza(rs.getInt("potenza"));
+                    psu.setCertificazione(rs.getString("certificazione"));
+                    psu.setModulare(Modulare.valueOf(rs.getString("modulare")));
+                    psu.setFormato(Formato.valueOf(rs.getString("formato")));
+
+                    lista.add(psu);
+                }
+            }
+        }
+
+        return lista;
     }
 }

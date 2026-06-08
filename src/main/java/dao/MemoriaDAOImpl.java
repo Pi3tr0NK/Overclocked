@@ -11,6 +11,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import model.MemoriaBean;
+import model.MoboBean;
 import model.MemoriaBean.Tecnologia;
 import model.MemoriaBean.Tipo;
 
@@ -189,44 +190,7 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 	    return lista;
 	}
 
-	public synchronized Collection<MemoriaBean> doRetrieveAll() throws SQLException {
-
-	    List<MemoriaBean> lista = new LinkedList<>();
-
-	    String sql = "SELECT * FROM "+TABLE_NAME+" m JOIN prodotto p ON m.fk_prodotto = p.id_prodotto";
-
-	    try (Connection con = ds.getConnection();
-	         PreparedStatement ps = con.prepareStatement(sql);
-	         ResultSet rs = ps.executeQuery()) {
-
-	        while (rs.next()) {
-
-	        	MemoriaBean mem = new MemoriaBean();
-
-	        	mem.setIdProdotto(rs.getInt("id_prodotto"));
-	        	mem.setNome(rs.getString("nome"));
-	        	mem.setModello(rs.getString("modello"));
-	        	mem.setDescrizione(rs.getString("descrizione"));
-	        	mem.setMarca(rs.getString("marca"));
-	        	mem.setPrezzo(rs.getDouble("prezzo"));
-	        	mem.setStock(rs.getInt("stock"));
-	        	mem.setAttivo(rs.getBoolean("attivo"));
-	        	mem.setSconto(rs.getInt("sconto"));
-		    mem.setCategoria(rs.getString("categoria"));
-
-	        	mem.setIdMemoria(rs.getInt("id_memoria"));
-	        	mem.setCapacita(rs.getString("capacita"));
-	        	mem.setVelLettura(rs.getInt("vel_lettura"));
-	        	mem.setVelScrittura(rs.getInt("vel_scrittura"));
-	        	mem.setTipo(Tipo.valueOf(rs.getString("tipo")));
-	        	mem.setTecnologia(Tecnologia.valueOf(rs.getString("tecnologia")));
-	        	mem.setFormato(rs.getString("formato"));
-	            lista.add(mem);
-	        }
-	    }
-
-	    return lista;
-	}
+	
 
 	public boolean doUpdate(MemoriaBean mem) throws SQLException {
 
@@ -255,5 +219,62 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 	    ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
 
 	    return prodottoDAO.setProductStatus(mem.getIdProdotto(), attivo);
+	}
+	
+	public Collection<MemoriaBean> moboCompatibili(MoboBean mobo) throws SQLException {
+
+	    List<MemoriaBean> lista = new LinkedList<>();
+	    ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+
+	    String sql =
+	        "SELECT * " +
+	        "FROM memoria m " +
+	        "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto " +
+	        "WHERE p.attivo = true " +
+	        "AND (" +
+	        "   (? = true AND m.tecnologia = 'NVME') " +
+	        "   OR (? > 0 AND m.tecnologia = 'SATA')" +
+	        ")";
+
+	    try (Connection con = ds.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setBoolean(1, mobo.isNvme());
+	        ps.setInt(2, mobo.getPorteSata());
+
+	        try (ResultSet rs = ps.executeQuery()) {
+
+	            while (rs.next()) {
+
+	                MemoriaBean mem = new MemoriaBean();
+
+		            	mem.setIdProdotto(rs.getInt("id_prodotto"));
+		        		mem.setNome(rs.getString("nome"));
+		        		mem.setModello(rs.getString("modello"));
+		        		mem.setDescrizione(rs.getString("descrizione"));
+		        		mem.setMarca(rs.getString("marca"));
+		        		mem.setPrezzo(rs.getDouble("prezzo"));
+		        		mem.setStock(rs.getInt("stock"));
+		        		mem.setDimensioni(rs.getString("dimensioni"));
+		        		mem.setPeso(rs.getString("peso"));
+		        		mem.setAttivo(rs.getBoolean("attivo"));
+		        		mem.setSconto(rs.getInt("sconto"));
+		        		mem.setCategoria(rs.getString("categoria"));
+		        		mem.setImmagini(immaginiDAO.doRetrieveByProdotto(mem.getIdProdotto()));
+		        		
+		        		mem.setIdMemoria(rs.getInt("id_memoria"));
+		        		mem.setCapacita(rs.getString("capacita"));
+		        		mem.setVelLettura(rs.getInt("vel_lettura"));
+		        		mem.setVelScrittura(rs.getInt("vel_scrittura"));
+		        		mem.setTipo(Tipo.valueOf(rs.getString("tipo")));
+		        		mem.setTecnologia(Tecnologia.valueOf(rs.getString("tecnologia")));
+		        		mem.setFormato(rs.getString("formato"));
+
+	                lista.add(mem);
+	            }
+	        }
+	    }
+
+	    return lista;
 	}
 }

@@ -11,6 +11,7 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import model.ChassisBean;
+import model.MoboBean;
 
 public class ChassisDAOImpl implements ChassisDAO{
 	private static final String TABLE_NAME = "chassis";
@@ -195,5 +196,56 @@ public class ChassisDAOImpl implements ChassisDAO{
 	    ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
 
 	    return prodottoDAO.setProductStatus(chassis.getIdProdotto(), attivo);
+	}
+	
+	public Collection<ChassisBean> chassisCompatibili(MoboBean mobo) throws SQLException {
+
+	    Collection<ChassisBean> lista = new LinkedList<>();
+
+	    String sql =
+	        "SELECT * " +
+	        "FROM chassis ch " +
+	        "JOIN prodotto p ON ch.fk_prodotto = p.id_prodotto " +
+	        "WHERE ch.formato = ? " +
+	        "AND p.attivo = true";
+
+	    ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+
+	    try (Connection con = ds.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+
+	        ps.setString(1, mobo.getFormato());
+
+	        try (ResultSet rs = ps.executeQuery()) {
+
+	            while (rs.next()) {
+
+	                ChassisBean chassis = new ChassisBean();
+
+	                chassis.setIdProdotto(rs.getInt("id_prodotto"));
+		            chassis.setNome(rs.getString("nome"));
+		            chassis.setModello(rs.getString("modello"));
+		            chassis.setDescrizione(rs.getString("descrizione"));
+		            chassis.setMarca(rs.getString("marca"));
+		            chassis.setPrezzo(rs.getDouble("prezzo"));
+		            chassis.setStock(rs.getInt("stock"));
+		            chassis.setDimensioni(rs.getString("dimensioni"));
+		            chassis.setPeso(rs.getString("peso"));
+		            chassis.setAttivo(rs.getBoolean("attivo"));
+		            chassis.setSconto(rs.getInt("sconto"));
+		            chassis.setCategoria(rs.getString("categoria"));
+		            chassis.setImmagini(immaginiDAO.doRetrieveByProdotto(chassis.getIdProdotto()));
+		            
+		            chassis.setIdCase(rs.getInt("id_case"));
+		            chassis.setFormato(rs.getString("formato"));
+		            chassis.setColore(rs.getString("colore"));
+		            chassis.setMateriale(rs.getString("materiale"));
+
+	                lista.add(chassis);
+	            }
+	        }
+	    }
+
+	    return lista;
 	}
 }

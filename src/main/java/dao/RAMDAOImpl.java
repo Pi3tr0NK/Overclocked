@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import javax.sql.DataSource;
+
+import model.MoboBean;
 import model.RAMBean;
 
 public class RAMDAOImpl implements RAMDAO{
@@ -199,4 +201,64 @@ public class RAMDAOImpl implements RAMDAO{
 
 	    return prodottoDAO.setProductStatus(ram.getIdProdotto(), attivo);
 	}
+	
+	public Collection<RAMBean> ramCompatibili(MoboBean mobo) throws SQLException
+	{
+		 List<RAMBean> lista = new LinkedList<>();
+		    ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+
+		    String tipoRam = mobo.getTipoRam(); // DDR4 / DDR5
+
+		    String sql =
+		        "SELECT * " +
+		        "FROM ram r " +
+		        "JOIN prodotto p ON r.fk_prodotto = p.id_prodotto " +
+		        "WHERE p.attivo = true " +
+		        "AND (? IS NULL OR r.tipo = ?)";
+
+		    try (Connection con = ds.getConnection();
+		         PreparedStatement ps = con.prepareStatement(sql)) {
+
+		        ps.setString(1, tipoRam);
+		        ps.setString(2, tipoRam);
+
+		        try (ResultSet rs = ps.executeQuery()) {
+		            while (rs.next()) {
+
+		                RAMBean ram = new RAMBean();
+
+		                ram.setIdProdotto(rs.getInt("id_prodotto"));
+			            ram.setNome(rs.getString("nome"));
+			            ram.setModello(rs.getString("modello"));
+			            ram.setDescrizione(rs.getString("descrizione"));
+			            ram.setMarca(rs.getString("marca"));
+			            ram.setPrezzo(rs.getDouble("prezzo"));
+			            ram.setStock(rs.getInt("stock"));
+			            ram.setDimensioni(rs.getString("dimensioni"));
+	                    ram.setPeso(rs.getString("peso"));
+			            ram.setAttivo(rs.getBoolean("attivo"));
+			            ram.setSconto(rs.getInt("sconto"));
+				        ram.setCategoria(rs.getString("categoria"));
+				        ram.setImmagini(immaginiDAO.doRetrieveByProdotto(ram.getIdProdotto()));
+
+			            ram.setIdRam(rs.getInt("id_ram"));
+			            ram.setCapacita(rs.getString("capacita"));
+			            ram.setFrequenza(rs.getString("frequenza"));
+			            ram.setTipo(rs.getString("tipo"));
+
+		                lista.add(ram);
+		            }
+		        }
+		    }
+
+		    return lista;
+	}
 }
+
+
+
+
+
+
+
+
