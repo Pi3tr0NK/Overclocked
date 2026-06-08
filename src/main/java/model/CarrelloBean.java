@@ -47,6 +47,19 @@ public class CarrelloBean implements Serializable {
             }
         }
     }
+    
+    public CarrelloItemBean findProduct(int idProdotto)
+    {
+    	Iterator<CarrelloItemBean> it = items.iterator();
+
+        while (it.hasNext()) {
+            CarrelloItemBean item = it.next();
+
+            if (item.getProdotto().getIdProdotto() == idProdotto) 
+                return item;
+        }
+        return null;
+    }
 
     // QUANTITÀ TOTALE (utile per badge carrello)
     public int getTotalQuantity() {

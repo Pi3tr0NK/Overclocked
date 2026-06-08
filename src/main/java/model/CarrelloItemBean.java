@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class CarrelloItemBean implements Serializable {
 
@@ -43,6 +44,20 @@ public class CarrelloItemBean implements Serializable {
         if (this.quantita < 0) {
             this.quantita = 0;
         }
-    }	
+    }
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CarrelloItemBean other = (CarrelloItemBean) obj;
+		return Objects.equals(prodotto, other.prodotto) && quantita == other.quantita;
+	}	
+    
+    
 }
 

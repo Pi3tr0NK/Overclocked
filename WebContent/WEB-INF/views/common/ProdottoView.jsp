@@ -92,14 +92,18 @@
 		<c:choose>
 		
 		    <c:when test="${prodotto.sconto > 0}">
+		    
+		    	<c:set var="scontato" value="${prodotto.prezzo - (prodotto.prezzo * prodotto.sconto / 100.0)}" />
 		
 		        <div class="old-price">
 		        
-		            € ${p.prezzo}
+		            € ${prodotto.prezzo}
 		        </div>
-		
+				
+				
+				
 		        <div class="price">
-					€ ${prodotto.prezzo - (prodotto.sconto * prodotto.prezzo / 100.0)}
+					€ ${String.format('%.2f', scontato)}
 		        </div>
 		
 		    </c:when>
@@ -107,7 +111,7 @@
 		    <c:otherwise>
 		
 		        <div class="price">
-		            € ${p.prezzo}
+		            € ${prodotto.prezzo}
 		        </div>
 		
 		    </c:otherwise>

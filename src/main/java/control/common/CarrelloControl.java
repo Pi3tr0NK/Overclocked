@@ -26,17 +26,43 @@ public class CarrelloControl extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		 CarrelloBean cart = (CarrelloBean) request.getSession().getAttribute("cart");
+		    CarrelloBean cart = (CarrelloBean)
+		            request.getSession().getAttribute("cart");
 
 		    if (cart == null) {
 		        cart = new CarrelloBean();
 		        request.getSession().setAttribute("cart", cart);
 		    }
 
-	        
-	        totalCart(request, cart);
-	        prodotti(request, cart);
-	        numProdotti(request,cart);
+		    String action = request.getParameter("action");
+		    String idProdottoStr = request.getParameter("idProdotto");
+
+		    if(action != null && idProdottoStr != null) {
+
+		        int idProdotto = Integer.parseInt(idProdottoStr);
+
+		        CarrelloItemBean item = cart.findProduct(idProdotto);
+
+		        if(item != null) {
+		            switch(action) {
+		                case "incrementa":
+		                    item.aumentaQuantita(1);
+		                    break;
+
+		                case "decrementa":
+		                    item.diminuisciQuantita(1);
+		                    break;
+
+		                case "rimuovi":
+		                    cart.removeProduct(idProdotto);
+		                    break;
+		            }
+		        }
+		    }
+
+		    totalCart(request, cart);
+		    prodotti(request, cart);
+		    numProdotti(request, cart);
 
 	        request.getRequestDispatcher("/WEB-INF/views/common/CarrelloView.jsp").forward(request, response);
 	}

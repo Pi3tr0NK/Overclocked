@@ -48,9 +48,11 @@
 
                         <div class="cart-item">
 
-                            <img class="cart-item-img"
-                                 src="${pageContext.request.contextPath}/${item.prodotto.immagini[0].path}"
-                                 alt="${item.prodotto.nome}">
+                            <a href="${pageContext.request.contextPath}/prodotto?id=${item.prodotto.idProdotto}">
+							    <img class="cart-item-img"
+							         src="${pageContext.request.contextPath}/${item.prodotto.immagini[0].path}"
+							         alt="${item.prodotto.nome}">
+							</a>
 
                             <div class="cart-item-info">
 
@@ -58,19 +60,27 @@
                                     ${item.prodotto.marca}
                                 </div>
 
-                                <div class="cart-item-name">
-                                    ${item.prodotto.nome} ${item.prodotto.modello}
-                                </div>
+                                <a class="cart-item-link" href="${pageContext.request.contextPath}/prodotto?id=${item.prodotto.idProdotto}">
+							        <div class="cart-item-name">
+							            ${item.prodotto.nome} ${item.prodotto.modello}
+							        </div>
+							    </a>
 
                                 <div>
-                                    <c:if test="${item.prodotto.sconto > 0}">
-                                        <span class="cart-item-old-price">
-                                            € <c:out value="${prezzo}" />
-                                        </span>
-                                    </c:if>
-                                    <span class="cart-item-price">
-                                        € <c:out value="${scontato}" />
-                                    </span>
+                                    <c:set var="scontato" value="${item.prodotto.prezzo - (item.prodotto.prezzo * item.prodotto.sconto / 100.0)}" />
+
+		                            <c:choose>
+		
+		                                <c:when test="${item.prodotto.sconto > 0}">
+		                                    <div class="old-price">${item.prodotto.prezzo} €</div>
+		                                    <div class="product-price">${String.format('%.2f', scontato)} €</div>
+		                                </c:when>
+		
+		                                <c:otherwise>
+		                                    <div class="product-price">${item.prodotto.prezzo} €</div>
+		                                </c:otherwise>
+		
+		                            </c:choose>
                                 </div>
 
                             </div>
@@ -78,33 +88,25 @@
                             <%-- Controlli quantità e rimozione --%>
                             <div class="cart-item-controls">
 
-                                <form action="${pageContext.request.contextPath}/cart"
-                                      method="post">
-                                    <input type="hidden" name="action"    value="decrementa">
-                                    <input type="hidden" name="idProdotto" value="${item.prodotto.idProdotto}">
-                                    <button class="qty-btn" type="submit">−</button>
-                                </form>
-
-                                <span class="qty-value">
-                                    ${item.quantita}
-                                </span>
-
-                                <form action="${pageContext.request.contextPath}/cart"
-                                      method="post">
-                                    <input type="hidden" name="action"    value="incrementa">
-                                    <input type="hidden" name="idProdotto" value="${item.prodotto.idProdotto}">
-                                    <button class="qty-btn" type="submit">+</button>
-                                </form>
-
-                                <form action="${pageContext.request.contextPath}/cart"
-                                      method="post">
-                                    <input type="hidden" name="action"    value="rimuovi">
-                                    <input type="hidden" name="idProdotto" value="${item.prodotto.idProdotto}">
-                                    <button class="remove-btn" type="submit"
-                                            title="Rimuovi">✕</button>
-                                </form>
-
-                            </div>
+							    <a class="qty-btn"
+							       href="${pageContext.request.contextPath}/Carrello?action=decrementa&idProdotto=${item.prodotto.idProdotto}">
+							        −
+							    </a>
+							
+							    <span class="qty-value">${item.quantita}</span>
+							
+							    <a class="qty-btn"
+							       href="${pageContext.request.contextPath}/Carrello?action=incrementa&idProdotto=${item.prodotto.idProdotto}">
+							        +
+							    </a>
+							
+							    <a class="remove-btn"
+							       href="${pageContext.request.contextPath}/Carrello?action=rimuovi&idProdotto=${item.prodotto.idProdotto}"
+							       title="Rimuovi">
+							        ✕
+							    </a>
+							
+							</div>
 
                         </div>
 
@@ -131,7 +133,7 @@
 
                     <div class="summary-total">
                         <span>Totale</span>
-                        <span>€ <c:out value="${totale}" /></span>
+                        <span>€ <c:out value="${String.format('%.2f',totale)}" /></span>
                     </div>
 
                     <form action="${pageContext.request.contextPath}/checkout"
