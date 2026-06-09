@@ -34,13 +34,17 @@ body {
     background: #1a0d00;
     border: 1px solid #ff7300;
     margin: 0 auto 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
 .logo img {
-    width: 100%;
-    height: 150px;
-    object-fit: contain; 
-    margin-bottom: 10px;
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
     display: block;
 }
 

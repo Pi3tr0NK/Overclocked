@@ -18,7 +18,7 @@
 <div class="register-container">
 
     <div class="logo">
-        
+    	<img src="${pageContext.request.contextPath}/img/register.png" alt="">    
     </div>
 
     <h1>Crea il tuo account</h1>

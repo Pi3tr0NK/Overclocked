@@ -15,7 +15,9 @@
 
 <div class="login-container">
 
-    <div class="logo"><img src="${pageContext.request.contextPath}/img/lock.png" alt="CPU"></div>
+    <div class="logo">
+    	<img src="${pageContext.request.contextPath}/img/lock.png" alt="">
+    </div>
 
     <h1>Bentornato</h1>
 
