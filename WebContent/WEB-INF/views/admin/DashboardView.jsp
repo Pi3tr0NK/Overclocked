@@ -11,10 +11,13 @@
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/admin/dashboard.css">
 
-</head>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/dashboard.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
+
+</head>
+
+
 
 <body>
 
@@ -26,29 +29,14 @@
 
     <aside class="sidebar">
 
-        <div class="logo">
-            ⚡ OVERCLOCKED
-        </div>
-
         <div class="menu-title">
             PANORAMICA
         </div>
 
         <a href="#" class="menu-item active">
-            Dashboard
+            Dashboard Prodotti
         </a>
 
-        <div class="menu-title">
-            CATALOGO
-        </div>
-
-        <a href="#" class="menu-item">
-            Prodotti
-        </a>
-
-        <a href="#" class="menu-item">
-            Categorie
-        </a>
 
         <div class="menu-title">
             VENDITE

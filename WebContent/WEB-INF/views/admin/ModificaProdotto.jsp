@@ -7,156 +7,14 @@
 <meta charset="UTF-8">
 <title>Modifica Prodotto</title>
 
-<style>
 
-body {
-    background: #0b0b0b;
-    color: white;
-    font-family: Arial;
-    margin: 0;
-}
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/modificaProdotto.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
 
-.container {
-    width: 1000px;
-    margin: auto;
-    padding: 30px;
-}
-
-h1 { color: #ff7300; }
-
-.form-group { margin-bottom: 15px; }
-
-label {
-    display: block;
-    margin-bottom: 5px;
-    color: #999;
-    font-size: 13px;
-}
-
-input,
-textarea,
-select {
-    width: 100%;
-    padding: 10px;
-    background: #1a1a1a;
-    border: 1px solid #333;
-    border-radius: 6px;
-    color: white;
-    box-sizing: border-box;
-    font-family: Arial;
-    font-size: 14px;
-}
-
-input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: #ff7300;
-}
-
-textarea { min-height: 120px; resize: vertical; }
-
-.section {
-    background: #111;
-    padding: 20px;
-    border-radius: 10px;
-    margin-top: 20px;
-}
-
-.section h2 {
-    color: #ff7300;
-    margin-bottom: 15px;
-    font-size: 16px;
-}
-
-.row2 { display: grid; grid-template-columns: 1fr 1fr;         gap: 14px; }
-.row3 { display: grid; grid-template-columns: 1fr 1fr 1fr;     gap: 14px; }
-
-.error   { background: #c62828; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-.success { background: #2e7d32; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-
-.image-container {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-top: 10px;
-}
-
-.image-slot {
-    width: 150px;
-    height: 150px;
-    border: 2px dashed #666;
-    border-radius: 10px;
-    background: #1a1a1a;
-    cursor: pointer;
-    overflow: hidden;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.image-slot:hover { border-color: #ff7300; }
-
-.image-slot span {
-    font-size: 50px;
-    color: #999;
-    user-select: none;
-}
-
-.image-slot img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: none;
-    position: absolute;
-    top: 0; left: 0;
-}
-
-.btn-row { display: flex; gap: 12px; margin-top: 20px; }
-
-button {
-    background: #ff7300;
-    color: black;
-    border: none;
-    padding: 12px 25px;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-}
-button:hover { opacity: .9; }
-
-.btn-cancel {
-    background: transparent;
-    color: #888;
-    border: 1px solid #333;
-    padding: 12px 25px;
-    border-radius: 8px;
-    cursor: pointer;
-    text-decoration: none;
-    font-weight: bold;
-    display: inline-flex;
-    align-items: center;
-}
-.btn-cancel:hover { border-color: #888; color: white; }
-
-.cat-badge {
-    display: inline-block;
-    background: #110a00;
-    border: 1px solid #ff7300;
-    color: #ff7300;
-    font-size: 12px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    border-radius: 6px;
-    padding: 4px 12px;
-    margin-left: 12px;
-    vertical-align: middle;
-}
-
-</style>
 </head>
 
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
 
 <body>
 
@@ -575,7 +433,7 @@ button:hover { opacity: .9; }
         <%-- ===== BOTTONI ===== --%>
         <div class="btn-row">
             <button type="submit">Salva modifiche</button>
-            <a class="btn-cancel" href="${pageContext.request.contextPath}/admin">Annulla</a>
+            <a class="btn-cancel" href="${pageContext.request.contextPath}/admin/dashboard">Annulla</a>
         </div>
 
     </form>

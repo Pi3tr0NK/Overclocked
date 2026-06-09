@@ -159,12 +159,15 @@ body {
     border: 1px solid var(--border-light);
 
     border-radius: 10px;
+    
+    cursor: pointer;
 
     padding: 12px 20px;
 
     font-weight: bold;
 
     transition: 0.2s;
+    
 }
 
 .new-product-btn:hover {
