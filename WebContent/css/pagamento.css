@@ -1,0 +1,250 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+        .checkout-wrapper {
+            width: 92%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 36px 0 60px;
+        }
+
+        .checkout-header {
+            margin-bottom: 28px;
+        }
+
+        .checkout-header h1 {
+            font-size: 22px;
+            color: #ff7300;
+            margin-bottom: 4px;
+        }
+
+        .checkout-header p {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .checkout-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .co-card {
+            background: #0f0f0f;
+            border: 1px solid #1a1a1a;
+            border-radius: 11px;
+            padding: 22px;
+            margin-bottom: 16px;
+        }
+
+        .co-card:last-child { margin-bottom: 0; }
+
+        .co-title {
+            font-size: 10px;
+            color: #ff7300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .co-field {
+            margin-bottom: 13px;
+        }
+
+        .co-field:last-child { margin-bottom: 0; }
+
+        .co-field label {
+            display: block;
+            font-size: 11px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .co-field span {
+            font-size: 14px;
+            color: #ddd;
+        }
+
+        .co-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .co-table th {
+            text-align: left;
+            font-size: 10px;
+            color: #555;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 0 0 10px 0;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        .co-table td {
+            padding: 12px 0;
+            border-bottom: 1px solid #111;
+            vertical-align: middle;
+            color: #ccc;
+        }
+
+        .co-table tr:last-child td { border-bottom: none; }
+
+        .nome-prodotto {
+            font-weight: bold;
+            color: #e0e0e0;
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .marca-prodotto {
+            font-size: 11px;
+            color: #444;
+        }
+
+        .col-qta    { width: 60px;  text-align: center; }
+        .col-prezzo { width: 120px; text-align: right; }
+
+        .badge-sconto {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff3b3b, #ff7300);
+            color: #fff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 5px;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+
+        /* prezzi — stesso stile del catalogo */
+        .old-price {
+            font-size: 12px;
+            color: #777;
+            text-decoration: line-through;
+        }
+
+        .product-price {
+            font-size: 15px;
+            font-weight: bold;
+            color: #ff7300;
+        }
+
+        /* riepilogo destra */
+        .co-riepilogo {
+            position: sticky;
+            top: 24px;
+        }
+
+        .riepilogo-riga {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 9px 0;
+            border-bottom: 1px solid #141414;
+            font-size: 13px;
+            color: #bbb;
+        }
+
+        .riepilogo-riga:last-of-type { border-bottom: none; }
+
+        .riepilogo-riga .riga-nome { flex: 1; }
+
+        .riepilogo-riga .riga-prezzo {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .riepilogo-totale {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid #1a1a1a;
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff7300;
+        }
+
+        .btn-conferma {
+            width: 100%;
+            height: 46px;
+            background: #ff7300;
+            color: #000;
+            border: none;
+            border-radius: 9px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 16px;
+            transition: opacity .15s;
+        }
+
+        .btn-conferma:hover { opacity: .85; }
+
+        .btn-torna {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #444;
+            text-decoration: none;
+        }
+
+        .btn-torna:hover { color: #888; }
+
+        .alert-error {
+            background: #1a0808;
+            border: 1px solid #5a1a1a;
+            color: #f44336;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .conferma-box {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .conferma-box .icona {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .conferma-box h2 {
+            font-size: 24px;
+            color: #ff7300;
+            margin-bottom: 10px;
+        }
+
+        .conferma-box p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 28px;
+        }
+
+        .btn-home {
+            display: inline-block;
+            padding: 12px 32px;
+            background: #ff7300;
+            color: #000;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: opacity .15s;
+        }
+
+        .btn-home:hover { opacity: .85; }
+
+        @media (max-width: 800px) {
+            .checkout-layout { grid-template-columns: 1fr; }
+            .co-riepilogo { position: static; }
+        }

@@ -133,8 +133,8 @@
                         <span id="summary-totale">€ <c:out value="${String.format('%.2f',totale)}" /></span>
                     </div>
 
-                    <form action="${pageContext.request.contextPath}/checkout"
-                          method="post">
+                    <form action="${pageContext.request.contextPath}/common/pagamento"
+                          method="get">
                         <button class="checkout-btn" type="submit">
                             Procedi all'acquisto
                         </button>

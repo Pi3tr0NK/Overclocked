@@ -62,7 +62,8 @@ public class IndirizzoDAOImpl implements IndirizzoDAO {
 
             if (rs.next()) {
                 IndirizzoBean i = new IndirizzoBean();
-                
+
+                i.setIdIndirizzo(rs.getInt("id_indirizzo"));
                 i.setViaNumciv(rs.getString("via_numciv"));
                 i.setPaese(rs.getString("paese"));
                 i.setCitta(rs.getString("citta"));

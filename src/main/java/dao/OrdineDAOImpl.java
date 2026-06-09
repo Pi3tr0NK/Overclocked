@@ -2,11 +2,16 @@ package dao;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import model.CarrelloBean;
+import model.CarrelloItemBean;
 import model.OrdineBean;
+import model.ProdottoBean;
+import model.UtenteBean;
 import model.OrdineBean.Stato;
 
 public class OrdineDAOImpl implements OrdineDAO{
@@ -146,6 +151,73 @@ public class OrdineDAOImpl implements OrdineDAO{
        }
 
        return 0;
-      
     }    	
+    
+    public synchronized int doSaveOrdineCompleto(CarrelloBean cart, UtenteBean utente, int idIndirizzo)
+            throws SQLException {
+
+        double totale = 0;
+        for (CarrelloItemBean item : cart.getItems()) {
+            double prezzoScontato = item.getProdotto().getPrezzo() * (1.0 - item.getProdotto().getSconto() / 100.0);
+            totale += prezzoScontato * item.getQuantita();
+        }
+
+        Connection con = null;
+        try {
+            con = ds.getConnection();
+            con.setAutoCommit(false);
+
+            // 1. Inserisci ordine
+            int idOrdine;
+            String sqlOrdine = "INSERT INTO ordine (data, stato, totale, fattura_path, fk_utente, fk_indirizzo) " +
+                               "VALUES (?, ?, ?, NULL, ?, ?)";
+            try (PreparedStatement ps = con.prepareStatement(sqlOrdine, Statement.RETURN_GENERATED_KEYS)) {
+                ps.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
+                ps.setString(2, OrdineBean.Stato.IN_PREPARAZIONE.name());
+                ps.setDouble(3, totale);
+                ps.setInt(4, utente.getIdUtente());
+                ps.setInt(5, idIndirizzo);
+                ps.executeUpdate();
+                try (ResultSet rs = ps.getGeneratedKeys()) {
+                    if (rs.next()) idOrdine = rs.getInt(1);
+                    else throw new SQLException("Id ordine non generato");
+                }
+            }
+
+            // 2. Inserisci dettagli e scala stock
+            String sqlDettaglio = "INSERT INTO dettagliOrdine (fk_ordine, fk_prodotto, quantita, prezzo_unitario) " +
+                                  "VALUES (?, ?, ?, ?)";
+            String sqlStock = "UPDATE prodotto SET stock = stock - ? WHERE id_prodotto = ? AND stock >= ?";
+
+            for (CarrelloItemBean item : cart.getItems()) {
+                ProdottoBean p = item.getProdotto();
+                double prezzoScontato = p.getPrezzo() * (1.0 - p.getSconto() / 100.0);
+
+                try (PreparedStatement ps = con.prepareStatement(sqlDettaglio)) {
+                    ps.setInt(1, idOrdine);
+                    ps.setInt(2, p.getIdProdotto());
+                    ps.setInt(3, item.getQuantita());
+                    ps.setDouble(4, prezzoScontato);
+                    ps.executeUpdate();
+                }
+
+                try (PreparedStatement ps = con.prepareStatement(sqlStock)) {
+                    ps.setInt(1, item.getQuantita());
+                    ps.setInt(2, p.getIdProdotto());
+                    ps.setInt(3, item.getQuantita());
+                    int righe = ps.executeUpdate();
+                    if (righe == 0) throw new SQLException("Stock insufficiente per: " + p.getNome());
+                }
+            }
+
+            con.commit();
+            return idOrdine;
+
+        } catch (SQLException e) {
+            if (con != null) try { con.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+            throw e;
+        } finally {
+            if (con != null) try { con.setAutoCommit(true); con.close(); } catch (SQLException ex) { ex.printStackTrace(); }
+        }
+    }
 }
