@@ -1,6 +1,5 @@
 package control.common;
 
-import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,7 +9,6 @@ import model.CarrelloBean;
 import model.CarrelloItemBean;
 
 import java.io.IOException;
-import java.util.List;
 
 
 
