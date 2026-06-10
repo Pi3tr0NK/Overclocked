@@ -28,15 +28,14 @@ public class AuthFilter extends HttpFilter {
 	    
 	    // Controllo che il token sia in sessione
 	    HttpSession session = request.getSession(false);
-	    String role = (session != null) ? (  (UtenteBean) session.getAttribute("user")).getRuolo().name() : null;
-	    
-	    System.out.print(role);
+	    UtenteBean utente = (session != null) ? (UtenteBean) session.getAttribute("user") : null;
+	    String role = (utente != null) ? utente.getRuolo().name() : null;
 	    
 	    // Controllo autenticazione e autorizzazione
 	    boolean autorizzato = false;
 	    if (role != null) {
 	    		if (path.startsWith("/admin/")) {
-	            autorizzato = role.equals("admin");
+	            autorizzato = role.equals("ADMIN");
 	        } else if (path.startsWith("/common/")) {
 	            autorizzato = role.equals("ADMIN") || role.equals("USER");
 	        }

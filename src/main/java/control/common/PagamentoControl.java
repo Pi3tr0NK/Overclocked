@@ -38,11 +38,7 @@ public class PagamentoControl extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        UtenteBean utente = (UtenteBean) request.getSession().getAttribute("user");
-        if (utente == null) {
-            response.sendRedirect(request.getContextPath() + "/indexlogin");
-            return;
-        }
+    		UtenteBean utente = (UtenteBean) request.getSession().getAttribute("user");
 
         // Pagina di conferma dopo il salvataggio
         if ("ok".equals(request.getParameter("conferma"))) {
