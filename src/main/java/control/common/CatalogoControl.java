@@ -181,7 +181,7 @@ public class CatalogoControl extends HttpServlet {
 		{
 			try 
 			{
-				request.setAttribute("products", prodottoDAO.doRetrieveAll(cerca, prezzo, marca));
+				request.setAttribute("products", prodottoDAO.doRetrieveAll(cerca, prezzo, marca, null, null));
 			} catch (SQLException e) {
 				System.err.println("Error:" + e.getMessage());
 			}

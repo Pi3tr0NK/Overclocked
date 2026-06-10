@@ -99,7 +99,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
     }
     
     @Override
-    public synchronized Collection<ProdottoBean> doRetrieveAll(String cerca, String prezzo, String marca) 
+    public synchronized Collection<ProdottoBean> doRetrieveAll(String cerca, String prezzo, String marca, String categoria, String attivo) 
     		throws SQLException {
     	
     	ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
@@ -107,37 +107,62 @@ public class ProdottoDAOImpl implements ProdottoDAO{
         List<ProdottoBean> lista = new LinkedList<>();
         
         marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
+        categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
+        attivo = (attivo == null || attivo.trim().isEmpty()) ? null : attivo;
 
         Double prezzoMax = null;
         if (prezzo != null && !prezzo.trim().isEmpty()) {
             prezzoMax = Double.parseDouble(prezzo);
         }
 
+        Boolean attivoBool = null;
+        if (attivo != null) {
+            attivoBool = Boolean.parseBoolean(attivo);
+        }
+
         String sql =
             "SELECT * " +
             "FROM prodotto p " +
             "WHERE (? IS NULL OR p.marca = ?) " +
-            "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "+
+            "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
+            "AND (? IS NULL OR p.categoria = ?) " +
+            "AND (? IS NULL OR p.attivo = ?) " +
             "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setString(1, marca);
-            ps.setString(2, marca);
+        	ps.setString(1, marca);
+        	ps.setString(2, marca);
 
-            if (prezzoMax == null) {
-                ps.setNull(3, java.sql.Types.DOUBLE);
-                ps.setNull(4, java.sql.Types.DOUBLE);
-            } else {
-                ps.setDouble(3, prezzoMax);
-                ps.setDouble(4, prezzoMax);
-            }
-            
-            ps.setString(5, cerca);
-            ps.setString(6, cerca);
-            ps.setString(7, cerca);
-            ps.setString(8, cerca);
+        	if (prezzoMax == null) {
+        	    ps.setNull(3, Types.DOUBLE);
+        	    ps.setNull(4, Types.DOUBLE);
+        	} else {
+        	    ps.setDouble(3, prezzoMax);
+        	    ps.setDouble(4, prezzoMax);
+        	}
+
+        	ps.setString(5, categoria);
+        	ps.setString(6, categoria);
+
+        	if (attivoBool == null) {
+        	    ps.setNull(7, Types.BOOLEAN);
+        	    ps.setNull(8, Types.BOOLEAN);
+        	} else {
+        	    ps.setBoolean(7, attivoBool);
+        	    ps.setBoolean(8, attivoBool);
+        	}
+
+        	String ricerca = null;
+        	if (cerca != null && !cerca.trim().isEmpty()) {
+        	    ricerca = "%" + cerca + "%";
+        	}
+
+        	ps.setString(9, ricerca);
+        	ps.setString(10, ricerca);
+        	ps.setString(11, ricerca);
+        	ps.setString(12, ricerca);
 
 
             try (ResultSet rs = ps.executeQuery()) {
@@ -167,6 +192,7 @@ public class ProdottoDAOImpl implements ProdottoDAO{
 
         return lista;
     }
+    
     
     public synchronized boolean doUpdate(ProdottoBean p) throws SQLException {
 

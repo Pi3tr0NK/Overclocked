@@ -54,11 +54,15 @@ public class AdminDashboardControl extends HttpServlet {
     protected void doGet(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
 
         
+    	String categoria = request.getParameter("categoria");
+    	String attivoStr = request.getParameter("attivo");
+    	
+    	
         contaProdotti(request);
         contaOrdini(request);
         contaUtenti(request);
         contaProdottiEsauriti(request);
-        ottieniProdotti(request);
+        ottieniProdotti(request,categoria,attivoStr);
         
         
         request.getRequestDispatcher("/WEB-INF/views/admin/DashboardView.jsp").forward(request, response);
@@ -101,10 +105,10 @@ public class AdminDashboardControl extends HttpServlet {
 		}
     }
     
-    private void ottieniProdotti(HttpServletRequest request)
+    private void ottieniProdotti(HttpServletRequest request,String categoria, String stato)
     {
     	try {
-			 request.setAttribute("prodotto", productDAO.doRetrieveAll(null,null,null));
+			 request.setAttribute("prodotto", productDAO.doRetrieveAll(null,null,null, categoria, stato));
 		} catch(SQLException e){
 			System.err.println("Error:" + e.getMessage());
 		}

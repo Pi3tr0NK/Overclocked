@@ -221,7 +221,7 @@ public class ProfiloControl extends HttpServlet {
 		int idOrdine = Integer.parseInt(idOrdineStr);
 		
 		// Recupera ordine e dettagli
-		OrdineBean ordine = ordineDAO.doRetrieveByKey(idOrdine, utente.getIdUtente());
+		OrdineBean ordine = ordineDAO.doRetrieveByKey(idOrdine);
 		if (ordine == null) {
 		response.sendRedirect(request.getContextPath() + "/common/profilo?view=ordini");
 		return;

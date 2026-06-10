@@ -47,16 +47,15 @@ public class OrdineDAOImpl implements OrdineDAO {
         }
     }
     
-    public synchronized OrdineBean doRetrieveByKey(int idOrdine, int idUtente) throws SQLException {
+    public synchronized OrdineBean doRetrieveByKey(int idOrdine) throws SQLException {
 
         String sql = "SELECT * FROM " + TABLE_NAME +
-                     " WHERE id_ordine = ? AND fk_utente = ?";
+                     " WHERE id_ordine = ?";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idOrdine);
-            ps.setInt(2, idUtente);
 
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -151,22 +150,34 @@ public class OrdineDAOImpl implements OrdineDAO {
     //  RETRIEVE tutti gli ordini (admin)
     // ─────────────────────────────────────────────
 
-    public synchronized Collection<OrdineBean> doRetrieveAll() throws SQLException {
+    public synchronized Collection<OrdineBean> doRetrieveAll(String stato) throws SQLException {
 
         List<OrdineBean> lista = new LinkedList<>();
-        String sql = "SELECT * FROM " + TABLE_NAME + " ORDER BY data DESC";
+
+        String sql =
+            "SELECT * FROM " + TABLE_NAME +
+            " WHERE (? = '' OR stato = ?)" +
+            " ORDER BY data DESC";
 
         try (Connection con = ds.getConnection();
-             Statement st = con.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
+             PreparedStatement st = con.prepareStatement(sql)) {
 
-            IndirizzoDAOImpl indirizzoDAO = new IndirizzoDAOImpl(ds);
-            UtenteDAOImpl utenteDAO = new UtenteDAOImpl(ds);
+            String filtro = (stato == null) ? "" : stato;
 
-            while (rs.next()) {
-                lista.add(mapRow(rs, indirizzoDAO, utenteDAO));
+            st.setString(1, filtro);
+            st.setString(2, filtro);
+
+            try (ResultSet rs = st.executeQuery()) {
+
+                IndirizzoDAOImpl indirizzoDAO = new IndirizzoDAOImpl(ds);
+                UtenteDAOImpl utenteDAO = new UtenteDAOImpl(ds);
+
+                while (rs.next()) {
+                    lista.add(mapRow(rs, indirizzoDAO, utenteDAO));
+                }
             }
         }
+
         return lista;
     }
 
@@ -357,6 +368,32 @@ public class OrdineDAOImpl implements OrdineDAO {
         }
         return 0;
     }
+    
+    // ─────────────────────────────────────────────
+    //  COUNT ordini per stato
+    // ─────────────────────────────────────────────
+
+    public synchronized int doCount(String stato) throws SQLException {
+
+        boolean filtra = stato != null && !stato.isBlank();
+
+        String sql = "SELECT COUNT(*) FROM " + TABLE_NAME
+                   + (filtra ? " WHERE stato = ?" : "");
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            if (filtra) {
+                ps.setString(1, stato);
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getInt(1);
+            }
+        }
+
+        return 0;
+    }
 
     // ─────────────────────────────────────────────
     //  Utility: mappa una riga ResultSet in OrdineBean
@@ -373,6 +410,10 @@ public class OrdineDAOImpl implements OrdineDAO {
         o.setFatturaPath(rs.getString("fattura_path"));
         o.setIndirizzo(indirizzoDAO.doRetrieveByKey(rs.getInt("fk_indirizzo")));
         o.setUtente(utenteDAO.doRetrieveByKey(rs.getInt("fk_utente")));
+        
+        
         return o;
+        
+        
     }
 }

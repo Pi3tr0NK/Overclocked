@@ -12,6 +12,7 @@
       href="${pageContext.request.contextPath}/css/admin/dashboard.css">
 
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/dashboard.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
 
@@ -42,25 +43,13 @@
             VENDITE
         </div>
 
-        <a href="#" class="menu-item">
+        <a href="${pageContext.request.contextPath}/admin/ordini" class="menu-item">
             Ordini
         </a>
 
-        <a href="#" class="menu-item">
+        <a href="${pageContext.request.contextPath}/admin/utenti" class="menu-item">
             Utenti
         </a>
-
-        <div class="sidebar-bottom">
-
-            <a href="#" class="menu-item">
-                Impostazioni
-            </a>
-
-            <a href="#" class="menu-item">
-                Esci
-            </a>
-
-        </div>
 
     </aside>
 
@@ -131,27 +120,82 @@
 
         </div>
 
-        <!-- FILTRI -->
-
-        <div class="filters">
-
-            <select>
-
-                <option>
-                    Tutte le categorie
-                </option>
-
-            </select>
-
-            <select>
-
-                <option>
-                    Tutti gli stati
-                </option>
-
-            </select>
-
-        </div>
+		<div class="filters">
+		
+		    <form method="get"
+		          action="${pageContext.request.contextPath}/admin/dashboard">
+		
+		        <!-- Categoria -->
+		        <select name="categoria" onchange="this.form.submit()">
+		
+		            <option value="">
+		                Tutte le categorie
+		            </option>
+		
+		            <option value="CPU"
+		                ${param.categoria == 'CPU' ? 'selected' : ''}>
+		                CPU
+		            </option>
+		
+		            <option value="GPU"
+		                ${param.categoria == 'GPU' ? 'selected' : ''}>
+		                GPU
+		            </option>
+		
+		            <option value="RAM"
+		                ${param.categoria == 'RAM' ? 'selected' : ''}>
+		                RAM
+		            </option>
+		
+		            <option value="STORAGE"
+		                ${param.categoria == 'STORAGE' ? 'selected' : ''}>
+		                Storage
+		            </option>
+		
+		            <option value="MOBO"
+		                ${param.categoria == 'MOBO' ? 'selected' : ''}>
+		                Scheda Madre
+		            </option>
+		
+		            <option value="PSU"
+		                ${param.categoria == 'PSU' ? 'selected' : ''}>
+		                Alimentatore
+		            </option>
+		
+		            <option value="CASE"
+		                ${param.categoria == 'CASE' ? 'selected' : ''}>
+		                Case
+		            </option>
+		
+		            <option value="DISSIPATORE"
+		                ${param.categoria == 'DISSIPATORE' ? 'selected' : ''}>
+		                Dissipatore
+		            </option>
+		
+		        </select>
+		
+		        <!-- Attivo -->
+		        <select name="attivo" onchange="this.form.submit()">
+		
+		            <option value="">
+		                Tutti gli stati
+		            </option>
+		
+		            <option value="true"
+		                ${param.attivo == 'true' ? 'selected' : ''}>
+		                Attivo
+		            </option>
+		
+		            <option value="false"
+		                ${param.attivo == 'false' ? 'selected' : ''}>
+		                Disattivato
+		            </option>
+		
+		        </select>
+		
+		    </form>
+		
+		</div>
 
         <!-- TABELLA -->
 

@@ -12,9 +12,9 @@ import model.OrdineBean.Stato;
 public interface OrdineDAO {
 	public void doSave(OrdineBean ordine) throws SQLException;
 	
-	public OrdineBean doRetrieveByKey(int idOrdine, int idUtente) throws SQLException;
+	public OrdineBean doRetrieveByKey(int idOrdine) throws SQLException;
 
-	public Collection<OrdineBean> doRetrieveAll() throws SQLException;
+	public Collection<OrdineBean> doRetrieveAll(String stato) throws SQLException;
 	
 	public Collection<OrdineBean> doRetrieveAllByUser(int idUser) throws SQLException;
 	
@@ -27,4 +27,8 @@ public interface OrdineDAO {
 	public Collection<OrdineBean> doRetrieveResiByUser(int idUser) throws SQLException;
 
 	public boolean doRimborsa(int idOrdine, int idUtente) throws SQLException;
+	
+	public  int doCountByLastMonth() throws SQLException;
+
+	public  int doCount(String stato) throws SQLException;
 }	
