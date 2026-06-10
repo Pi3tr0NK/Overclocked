@@ -32,9 +32,11 @@
             </c:otherwise>
         </c:choose>
 		
+		<c:if test="${not empty sessionScope.utente and sessionScope.utente.ruolo == 'ADMIN'}">
 		<a class="nav-btn" href="${pageContext.request.contextPath}/admin/dashboard">
             ADMIN
         </a>
+        </c:if>
         
         <a class="nav-btn" href="${pageContext.request.contextPath}/Carrello">
             CARRELLO

@@ -117,9 +117,9 @@ public class AdminProdottoControl extends HttpServlet {
     	System.out.print(action);
     	
     	if(action.equals("attiva"))
-    		attivaProdotto(request);
+    		attivaProdotto(request,response);
     	else if(action.equals("disattiva"))
-    		disattivaProdotto(request);
+    		disattivaProdotto(request,response);
     	else if(action.equals("aggiungi"))
     		aggiungiProdotto(action,request,response);
     	else if(action.equals("aggiungiView"))
@@ -462,18 +462,20 @@ public class AdminProdottoControl extends HttpServlet {
     
     
     
-    // DISABILITA PRODOTTO
+    // DISABILITA - ATTIVA PRODOTTO
     
-    private void disattivaProdotto (HttpServletRequest request) throws SQLException {
+    private void disattivaProdotto (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
     	
     	int id = Integer.valueOf(request.getParameter("id"));
     	productDAO.setProductStatus(id, false);
+    	response.sendRedirect( request.getContextPath() + "/admin/dashboard");
     }  
     
-    private void attivaProdotto (HttpServletRequest request) throws SQLException {
+    private void attivaProdotto (HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
     	
     	int id = Integer.valueOf(request.getParameter("id"));
     	productDAO.setProductStatus(id, true);
+    	response.sendRedirect( request.getContextPath() + "/admin/dashboard");
     	
     }  
     
