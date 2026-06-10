@@ -67,7 +67,7 @@ public class HomeControl extends HttpServlet {
     private void bestseller(HttpServletRequest request)
     {
     		try {
-			 request.setAttribute("bestseller", productDao.doRetrieveBestseller(10));
+			 request.setAttribute("bestSeller", productDao.doRetrieveBestseller(10));
 		} catch(SQLException e){
 			System.err.println("Error:" + e.getMessage());
 		}
