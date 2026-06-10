@@ -37,13 +37,14 @@ public class DettaglioOrdineDAOImpl implements DettaglioOrdineDAO {
 	}
 
 	@Override
-	public synchronized List<ProdottoBean> doRetrieveByOrdine(int idOrdine) throws SQLException {
+	public synchronized List<DettaglioOrdineBean> doRetrieveByOrdine(int idOrdine) throws SQLException {
 
-	    List<ProdottoBean> lista = new LinkedList<>();
+	    List<DettaglioOrdineBean> lista = new LinkedList<>();
 
-	    String sql = "SELECT p.* FROM "+TABLE_NAME+" d " +
+	    String sql = "SELECT d.quantita, d.prezzo_unitario, p.* " +
+	                 "FROM dettagliOrdine d " +
 	                 "JOIN prodotto p ON d.fk_prodotto = p.id_prodotto " +
-	                 "WHERE p.id_prodotto = ?";
+	                 "WHERE d.fk_ordine = ?";
 
 	    try (Connection con = ds.getConnection();
 	         PreparedStatement ps = con.prepareStatement(sql)) {
@@ -51,23 +52,23 @@ public class DettaglioOrdineDAOImpl implements DettaglioOrdineDAO {
 	        ps.setInt(1, idOrdine);
 
 	        try (ResultSet rs = ps.executeQuery()) {
-
 	            while (rs.next()) {
+	                DettaglioOrdineBean d = new DettaglioOrdineBean();
+
+	                d.setQuantita(rs.getInt("quantita"));
+	                d.setPrezzoUnitario(rs.getDouble("prezzo_unitario"));
 
 	                ProdottoBean p = new ProdottoBean();
 	                p.setIdProdotto(rs.getInt("id_prodotto"));
 	                p.setNome(rs.getString("nome"));
-	                p.setModello(rs.getString("modello"));
-	                p.setDescrizione(rs.getString("descrizione"));
 	                p.setMarca(rs.getString("marca"));
-	                p.setStock(rs.getInt("stock"));
-	                p.setAttivo(rs.getBoolean("attivo"));
+	                p.setModello(rs.getString("modello"));
+	                d.setProdotto(p);
 
-	                lista.add(p);
+	                lista.add(d);
 	            }
 	        }
 	    }
-
 	    return lista;
 	}
 

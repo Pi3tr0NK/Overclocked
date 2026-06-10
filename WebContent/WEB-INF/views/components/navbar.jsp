@@ -18,7 +18,7 @@
 
         <c:choose>
             <c:when test="${not empty sessionScope.utente}">
-                <a class="nav-btn" href="${pageContext.request.contextPath}/profilo">
+                <a class="nav-btn" href="${pageContext.request.contextPath}/common/profilo">
                     ${sessionScope.utente.nome}
                 </a>
                 <a class="nav-btn" href="${pageContext.request.contextPath}/logout">
