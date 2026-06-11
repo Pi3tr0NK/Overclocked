@@ -1,0 +1,43 @@
+@charset "UTF-8";
+
+.pagination{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+    margin-top:25px;
+}
+
+.pagination a,
+.pagination button{
+
+    width:40px;
+    height:40px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#0f0f0f;
+    border:1px solid #222;
+    border-radius:8px;
+
+    color:#fff;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+
+    transition:.2s;
+    cursor:pointer;
+}
+
+.pagination a:hover,
+.pagination button:hover{
+    border-color:#ff7300;
+}
+
+.pagination .active{
+    background:#ff7300;
+    border-color:#ff7300;
+    color:#fff;
+}

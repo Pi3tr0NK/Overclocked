@@ -57,12 +57,21 @@ public class AdminDashboardControl extends HttpServlet {
     	String categoria = request.getParameter("categoria");
     	String attivoStr = request.getParameter("attivo");
     	
+    	int pagina = 1;
+
+    	String p = request.getParameter("pagina");
+
+    	if (p != null && !p.isBlank()) {
+    	    pagina = Integer.parseInt(p);
+    	}
+    	
     	
         contaProdotti(request);
         contaOrdini(request);
         contaUtenti(request);
         contaProdottiEsauriti(request);
-        ottieniProdotti(request,categoria,attivoStr);
+        contaPagine(request,categoria, attivoStr);
+        ottieniProdotti(request,categoria,attivoStr,pagina);
         
         
         request.getRequestDispatcher("/WEB-INF/views/admin/DashboardView.jsp").forward(request, response);
@@ -72,7 +81,10 @@ public class AdminDashboardControl extends HttpServlet {
     private void contaProdotti(HttpServletRequest request)
     {
     	try {
-			 request.setAttribute("numProdotti", productDAO.doCountProducts());
+    		int numProdotti = productDAO.doCountProducts();
+			
+			request.setAttribute("numProdotti", numProdotti);
+			 
 		} catch(SQLException e){
 			System.err.println("Error:" + e.getMessage());
 		}
@@ -90,7 +102,7 @@ public class AdminDashboardControl extends HttpServlet {
     private void contaUtenti(HttpServletRequest request)
     {
     	try {
-			 request.setAttribute("numUtenti", utenteDAO.doCountUtenti());
+			 request.setAttribute("numUtenti", utenteDAO.doCountUtenti(null));
 		} catch(SQLException e){
 			System.err.println("Error:" + e.getMessage());
 		}
@@ -105,14 +117,42 @@ public class AdminDashboardControl extends HttpServlet {
 		}
     }
     
-    private void ottieniProdotti(HttpServletRequest request,String categoria, String stato)
+    private void ottieniProdotti(HttpServletRequest request,String categoria, String stato, int pagina)
     {
+
+    	
     	try {
-			 request.setAttribute("prodotto", productDAO.doRetrieveAll(null,null,null, categoria, stato));
+    		 request.setAttribute("paginaCorrente", pagina);
+			 request.setAttribute("prodotto", productDAO.doRetrieveAll(null,null,null, categoria, stato, pagina));
 		} catch(SQLException e){
 			System.err.println("Error:" + e.getMessage());
 		}
     }
+    
+    private void contaPagine(HttpServletRequest request,String categoria, String stato)
+    {
+    	try {
+			 int numFiltrato =  productDAO.doCountFilteredProducts(null,null,null, categoria, stato);
+			 int totalePagine = (int)Math.ceil((double)numFiltrato / 10);
+			 request.setAttribute("totalePagine", totalePagine);
+			 
+		} catch(SQLException e){
+			System.err.println("Error:" + e.getMessage());
+		}
+    }
+    
+    
+    
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+	
+    
+    
+
+    
+ 
     
     
 }
