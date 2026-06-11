@@ -205,7 +205,7 @@ public class PSUDAOImpl implements PSUDAO {
         ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
         prodottoDAO.doUpdate(psu);
         
-        String sql = "UPDATE "+ TABLE_NAME +" SET potenza = ?, certificazione = ?, modulare = ?, formato = ? WHERE id_cpu = ?";
+        String sql = "UPDATE "+ TABLE_NAME +" SET potenza = ?, certificazione = ?, modulare = ?, formato = ? WHERE id_psu = ?";
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
@@ -214,7 +214,7 @@ public class PSUDAOImpl implements PSUDAO {
             ps.setString(2, psu.getCertificazione());
             ps.setString(3, psu.getModulare().name());
             ps.setString(4, psu.getFormato().name());
-            ps.setInt(6, psu.getIdPsu());
+            ps.setInt(5, psu.getIdPsu());
 
             return ps.executeUpdate() > 0;
         }
