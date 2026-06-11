@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet("/admin/ordini")
@@ -42,9 +43,9 @@ public class AdminOrdiniControl extends HttpServlet {
 
         try {
 
-            String stato = request.getParameter("stato");
             String action = request.getParameter("action");
-               
+            
+            
             if (action != null && !action.isBlank())
             {
 	                switch (action) {
@@ -56,24 +57,19 @@ public class AdminOrdiniControl extends HttpServlet {
 	                case "dettaglio":
 	                    dettaglio(request, response);
 	                    return;
-	
 	                default:
 	                    throw new Exception("Azione non riconosciuta: " + action);
 	            }
             }
             
-            if (stato != null && !stato.isBlank()) {
-            	request.setAttribute("ordini",ordineDAO.doRetrieveAll(stato));
-            } else {
-            	request.setAttribute("ordini",ordineDAO.doRetrieveAll(null));
-            }
+
             
-            // contatori per le stat card
-            request.setAttribute("numOrdiniTotali",      ordineDAO.doCount(null));
-            request.setAttribute("numOrdiniInAttesa",    ordineDAO.doCount("IN_PREPARAZIONE"));
-            request.setAttribute("numOrdiniSpediti",     ordineDAO.doCount("SPEDITO"));
-            request.setAttribute("numOrdiniConsegnati",  ordineDAO.doCount("CONSEGNATO"));
-            
+        	getOrdiniAndPagina(request);
+            settaPagineAndTotale(request);
+            settaOrdiniPrep(request);
+            settaOrdiniSped(request);
+            settaOrdiniCons(request);
+;            
             request.getRequestDispatcher("/WEB-INF/views/admin/OrdiniView.jsp").forward(request, response);
             
 
@@ -86,13 +82,7 @@ public class AdminOrdiniControl extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/admin/OrdiniView.jsp").forward(request, response);
         }
     }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
     
-
     // ── Azioni ───────────────────────────────────────────────────────────
 
     private void cambiaStato(HttpServletRequest request) throws Exception {
@@ -139,4 +129,93 @@ public class AdminOrdiniControl extends HttpServlet {
                .forward(request, response);
     }
     
+    private void ordineByUtenti(HttpServletRequest request,String idUtenteStr)
+            throws Exception, IOException, ServletException {
+
+        int idUtente = Integer.parseInt(idUtenteStr);
+        request.setAttribute("ordini", ordineDAO.doRetrieveAllByUser(idUtente));
+        request.setAttribute("idUtente", idUtenteStr);
+    }
+    
+    
+    private void settaPagineAndTotale(HttpServletRequest request)
+    {
+		int numOrdini = 0;
+		
+		try {
+			numOrdini = ordineDAO.doCount(null);
+			int totalePagine = (int)Math.ceil((double)numOrdini / 10);
+			
+			request.setAttribute("numOrdini", numOrdini);
+			request.setAttribute("totalePagine", totalePagine);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    }
+
+    private void settaOrdiniPrep(HttpServletRequest request)
+    {
+		
+		try {
+			request.setAttribute("numOrdiniInAttesa",    ordineDAO.doCount("IN_PREPARAZIONE"));
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    private void settaOrdiniSped(HttpServletRequest request)
+    {
+		try {
+			request.setAttribute("numOrdiniSpediti",     ordineDAO.doCount("SPEDITO"));
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    private void settaOrdiniCons(HttpServletRequest request)
+    {
+		try {
+			request.setAttribute("numOrdiniConsegnati",  ordineDAO.doCount("CONSEGNATO"));
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    
+    private void getOrdiniAndPagina(HttpServletRequest request) throws IOException, ServletException, Exception
+    {
+        String idUtenteStr = request.getParameter("idUtente");
+    	String p = request.getParameter("pagina");
+        String stato = request.getParameter("stato");
+    	int pagina = 1;
+
+
+    	if (p != null && !p.isBlank()) {
+    	    pagina = Integer.parseInt(p);
+    	}
+    	
+        request.setAttribute("paginaCorrente", pagina);	
+        
+        
+        if(idUtenteStr != null && !idUtenteStr.isBlank())
+        {
+        	ordineByUtenti(request,idUtenteStr);
+        }
+        else if (stato != null && !stato.isBlank())
+        	{
+        		request.setAttribute("ordini",ordineDAO.doRetrieveAll(stato,pagina));
+        	} 
+        	else
+        		request.setAttribute("ordini",ordineDAO.doRetrieveAll(null,pagina));
+    	
+    }
+    
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
 }

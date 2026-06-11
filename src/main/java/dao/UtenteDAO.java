@@ -24,5 +24,7 @@ public interface UtenteDAO
 	
 	public boolean updateRuolo(int idUtente, Ruolo ruolo) throws SQLException;
 	
-	public int doCountUtenti() throws SQLException;
+	public int doCountUtenti(String ruolo) throws SQLException;
+	
+	public boolean setUtenteRuolo(int idUtente, Ruolo ruolo) throws SQLException;
 }

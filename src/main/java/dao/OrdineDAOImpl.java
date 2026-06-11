@@ -150,14 +150,15 @@ public class OrdineDAOImpl implements OrdineDAO {
     //  RETRIEVE tutti gli ordini (admin)
     // ─────────────────────────────────────────────
 
-    public synchronized Collection<OrdineBean> doRetrieveAll(String stato) throws SQLException {
+    public synchronized Collection<OrdineBean> doRetrieveAll(String stato, int pagina) throws SQLException {
 
         List<OrdineBean> lista = new LinkedList<>();
 
         String sql =
             "SELECT * FROM " + TABLE_NAME +
             " WHERE (? = '' OR stato = ?)" +
-            " ORDER BY data DESC";
+            " ORDER BY data DESC" +
+    	    " LIMIT ? OFFSET ?";;
 
         try (Connection con = ds.getConnection();
              PreparedStatement st = con.prepareStatement(sql)) {
@@ -166,7 +167,11 @@ public class OrdineDAOImpl implements OrdineDAO {
 
             st.setString(1, filtro);
             st.setString(2, filtro);
-
+            
+        	int offset = (pagina - 1) * 10;
+        	st.setInt(3, 10);
+        	st.setInt(4, offset);
+        	
             try (ResultSet rs = st.executeQuery()) {
 
                 IndirizzoDAOImpl indirizzoDAO = new IndirizzoDAOImpl(ds);
@@ -182,14 +187,15 @@ public class OrdineDAOImpl implements OrdineDAO {
     }
 
     // ─────────────────────────────────────────────
-    //  RETRIEVE ordini NON rimborsati per utente
+    //  RETRIEVE ordini per utente
     // ─────────────────────────────────────────────
 
     public synchronized Collection<OrdineBean> doRetrieveAllByUser(int idUser) throws SQLException {
 
         List<OrdineBean> lista = new LinkedList<>();
         String sql = "SELECT * FROM " + TABLE_NAME +
-                     " WHERE fk_utente = ? AND stato != 'RIMBORSATO' ORDER BY data DESC";
+                     " WHERE fk_utente = ? AND stato != 'RIMBORSATO' ORDER BY data DESC" +
+             	    "LIMIT ? OFFSET ?";;
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {

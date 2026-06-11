@@ -12,203 +12,262 @@ import model.GPUBean;
 public class GPUDAOImpl implements GPUDAO {
 
 	private static final String TABLE_NAME = "gpu";
-    private DataSource ds = null;
-    
-    public GPUDAOImpl(DataSource ds) {
-        this.ds = ds;
-    }
-    
+	private DataSource ds = null;
+
+	public GPUDAOImpl(DataSource ds) {
+		this.ds = ds;
+	}
+
 	public synchronized void doSave(GPUBean gpu) throws SQLException {
-        
+
 		ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
-        int id = prodottoDAO.doSave(gpu);
-         
-        String sql = "INSERT INTO "+ TABLE_NAME +" (frequenza, vram, video, tipovram, pcie, maxres, tdp, fk_prodotto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		int id = prodottoDAO.doSave(gpu);
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+		String sql = "INSERT INTO " + TABLE_NAME
+				+ " (frequenza, vram, video, tipovram, pcie, maxres, tdp, fk_prodotto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-            ps.setString(1, gpu.getFrequenza());
-            ps.setString(2, gpu.getVram());
-            ps.setString(3, gpu.getVideo());
-            ps.setString(4, gpu.getTipoVram());
-            ps.setString(5, gpu.getPcie());
-            ps.setString(6, gpu.getMaxRes());
-            ps.setInt(7, gpu.getTdp());
-            ps.setInt(8, id);
-            ps.executeUpdate();
-        }
-    }
-	
-	public GPUBean doRetrieveByKey (int idGPU) throws SQLException {
-		
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setString(1, gpu.getFrequenza());
+			ps.setString(2, gpu.getVram());
+			ps.setString(3, gpu.getVideo());
+			ps.setString(4, gpu.getTipoVram());
+			ps.setString(5, gpu.getPcie());
+			ps.setString(6, gpu.getMaxRes());
+			ps.setInt(7, gpu.getTdp());
+			ps.setInt(8, id);
+			ps.executeUpdate();
+		}
+	}
+
+	public GPUBean doRetrieveByKey(int idGPU) throws SQLException {
+
 		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
-		
-        String sql = "SELECT * FROM "+TABLE_NAME+" g "
-        		+ "JOIN prodotto p ON g.fk_prodotto = p.id_prodotto "
-        		+ "WHERE p.id_prodotto = ?";
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+		String sql = "SELECT * FROM " + TABLE_NAME + " g " + "JOIN prodotto p ON g.fk_prodotto = p.id_prodotto "
+				+ "WHERE p.id_prodotto = ?";
 
-            ps.setInt(1, idGPU);
-            ResultSet rs = ps.executeQuery();
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-            if (rs.next()) {
-                GPUBean gpu = new GPUBean();
-                gpu.setIdProdotto(rs.getInt("id_prodotto"));
-                gpu.setNome(rs.getString("nome"));
-                gpu.setModello(rs.getString("modello"));
-                gpu.setDescrizione(rs.getString("descrizione"));
-                gpu.setMarca(rs.getString("marca"));
-                gpu.setPrezzo(rs.getDouble("prezzo"));
-                gpu.setStock(rs.getInt("stock"));
-                gpu.setDimensioni(rs.getString("dimensioni"));
-                gpu.setPeso(rs.getString("peso"));
-                gpu.setAttivo(rs.getBoolean("attivo"));
-                gpu.setSconto(rs.getInt("sconto"));
-                gpu.setCategoria(rs.getString("categoria"));
-                gpu.setImmagini(immaginiDAO.doRetrieveByProdotto(gpu.getIdProdotto()));
-                
-                gpu.setIdGpu(rs.getInt("id_gpu"));
-                gpu.setFrequenza(rs.getString("frequenza"));
-                gpu.setVram(rs.getString("vram"));
-                gpu.setVideo(rs.getString("video"));
-                gpu.setTipoVram(rs.getString("tipovram"));
-                gpu.setPcie(rs.getString("pcie"));
-                gpu.setMaxRes(rs.getString("maxres"));
-                gpu.setTdp(rs.getInt("tdp"));
-                
-                return gpu;
-            }
-        }
-        return null;
+			ps.setInt(1, idGPU);
+			ResultSet rs = ps.executeQuery();
+
+			if (rs.next()) {
+				GPUBean gpu = new GPUBean();
+				gpu.setIdProdotto(rs.getInt("id_prodotto"));
+				gpu.setNome(rs.getString("nome"));
+				gpu.setModello(rs.getString("modello"));
+				gpu.setDescrizione(rs.getString("descrizione"));
+				gpu.setMarca(rs.getString("marca"));
+				gpu.setPrezzo(rs.getDouble("prezzo"));
+				gpu.setStock(rs.getInt("stock"));
+				gpu.setDimensioni(rs.getString("dimensioni"));
+				gpu.setPeso(rs.getString("peso"));
+				gpu.setAttivo(rs.getBoolean("attivo"));
+				gpu.setSconto(rs.getInt("sconto"));
+				gpu.setCategoria(rs.getString("categoria"));
+				gpu.setImmagini(immaginiDAO.doRetrieveByProdotto(gpu.getIdProdotto()));
+
+				gpu.setIdGpu(rs.getInt("id_gpu"));
+				gpu.setFrequenza(rs.getString("frequenza"));
+				gpu.setVram(rs.getString("vram"));
+				gpu.setVideo(rs.getString("video"));
+				gpu.setTipoVram(rs.getString("tipovram"));
+				gpu.setPcie(rs.getString("pcie"));
+				gpu.setMaxRes(rs.getString("maxres"));
+				gpu.setTdp(rs.getInt("tdp"));
+
+				return gpu;
+			}
+		}
+		return null;
 	}
-	
+
 	@Override
-	public synchronized List<GPUBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String vram, String pcie) 
-			throws SQLException {
+	public synchronized List<GPUBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca,
+			String vram, String pcie, int pagina) throws SQLException {
 
-	    List<GPUBean> lista = new LinkedList<>();
-	    ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
-	    
-	    categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
-	    marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
-	    vram = (vram == null || vram.trim().isEmpty()) ? null : vram;
-	    pcie = (pcie == null || pcie.trim().isEmpty()) ? null : pcie;
+		List<GPUBean> lista = new LinkedList<>();
+		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
 
-	    Double prezzoMax = null;
-	    if (prezzo != null && !prezzo.trim().isEmpty()) {
-	        prezzoMax = Double.parseDouble(prezzo);
-	    }
+		categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
+		marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
+		vram = (vram == null || vram.trim().isEmpty()) ? null : vram;
+		pcie = (pcie == null || pcie.trim().isEmpty()) ? null : pcie;
 
-	    String sql =
-	        "SELECT * " +
-	        "FROM gpu g " +
-	        "JOIN prodotto p ON g.fk_prodotto = p.id_prodotto " +
-	        "WHERE (? IS NULL OR p.categoria = ?) " +
-	        "AND (? IS NULL OR p.marca = ?) " +
-	        "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
-	        "AND (? IS NULL OR g.vram = ?) " +
-	        "AND (? IS NULL OR g.pcie = ?) "+
-	        "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
+		Double prezzoMax = null;
+		if (prezzo != null && !prezzo.trim().isEmpty()) {
+			prezzoMax = Double.parseDouble(prezzo);
+		}
 
-	    try (Connection con = ds.getConnection();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
+		String sql = "SELECT * " + "FROM gpu g " + "JOIN prodotto p ON g.fk_prodotto = p.id_prodotto "
+				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
+				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " + "AND (? IS NULL OR g.vram = ?) "
+				+ "AND (? IS NULL OR g.pcie = ?) "
+				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
-	        ps.setString(1, categoria);
-	        ps.setString(2, categoria);
+		if (pagina > 0) {
+			sql += " LIMIT ? OFFSET ?";
+		}
 
-	        ps.setString(3, marca);
-	        ps.setString(4, marca);
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-	        if (prezzoMax == null) {
-	            ps.setNull(5, java.sql.Types.DOUBLE);
-	            ps.setNull(6, java.sql.Types.DOUBLE);
-	        } else {
-	            ps.setDouble(5, prezzoMax);
-	            ps.setDouble(6, prezzoMax);
-	        }
+			ps.setString(1, categoria);
+			ps.setString(2, categoria);
 
-	        ps.setString(7, vram);
-	        ps.setString(8, vram);
+			ps.setString(3, marca);
+			ps.setString(4, marca);
 
-	        ps.setString(9, pcie);
-	        ps.setString(10, pcie);
-	        
-	        ps.setString(11, cerca);
-	        ps.setString(12, cerca);
-	        ps.setString(13, cerca);
-	        ps.setString(14, cerca);
+			if (prezzoMax == null) {
+				ps.setNull(5, java.sql.Types.DOUBLE);
+				ps.setNull(6, java.sql.Types.DOUBLE);
+			} else {
+				ps.setDouble(5, prezzoMax);
+				ps.setDouble(6, prezzoMax);
+			}
 
-	        try (ResultSet rs = ps.executeQuery()) {
+			ps.setString(7, vram);
+			ps.setString(8, vram);
 
-	            while (rs.next()) {
+			ps.setString(9, pcie);
+			ps.setString(10, pcie);
 
-	                GPUBean gpu = new GPUBean();
+			ps.setString(11, cerca);
+			ps.setString(12, cerca);
+			ps.setString(13, cerca);
+			ps.setString(14, cerca);
 
-	                gpu.setIdProdotto(rs.getInt("id_prodotto"));
-	                gpu.setNome(rs.getString("nome"));
-	                gpu.setModello(rs.getString("modello"));
-	                gpu.setDescrizione(rs.getString("descrizione"));
-	                gpu.setMarca(rs.getString("marca"));
-	                gpu.setPrezzo(rs.getDouble("prezzo"));
-	                gpu.setStock(rs.getInt("stock"));
-	                gpu.setDimensioni(rs.getString("dimensioni"));
-	                gpu.setPeso(rs.getString("peso"));
-	                gpu.setAttivo(rs.getBoolean("attivo"));
-	                gpu.setSconto(rs.getInt("sconto"));
-	                gpu.setCategoria(rs.getString("categoria"));
-	                gpu.setImmagini(immaginiDAO.doRetrieveByProdotto(gpu.getIdProdotto()));
-	                
-	                gpu.setIdGpu(rs.getInt("id_gpu"));
-	                gpu.setFrequenza(rs.getString("frequenza"));
-	                gpu.setVram(rs.getString("vram"));
-	                gpu.setVideo(rs.getString("video"));
-	                gpu.setTipoVram(rs.getString("tipovram"));
-	                gpu.setPcie(rs.getString("pcie"));
-	                gpu.setMaxRes(rs.getString("maxres"));
-	                gpu.setTdp(rs.getInt("tdp"));
+			if (pagina > 0) {
 
-	                lista.add(gpu);
-	            }
-	        }
-	    }
+				int offset = (pagina - 1) * 10;
 
-	    return lista;
+				ps.setInt(15, 10);
+				ps.setInt(16, offset);
+			}
+
+			try (ResultSet rs = ps.executeQuery()) {
+
+				while (rs.next()) {
+
+					GPUBean gpu = new GPUBean();
+
+					gpu.setIdProdotto(rs.getInt("id_prodotto"));
+					gpu.setNome(rs.getString("nome"));
+					gpu.setModello(rs.getString("modello"));
+					gpu.setDescrizione(rs.getString("descrizione"));
+					gpu.setMarca(rs.getString("marca"));
+					gpu.setPrezzo(rs.getDouble("prezzo"));
+					gpu.setStock(rs.getInt("stock"));
+					gpu.setDimensioni(rs.getString("dimensioni"));
+					gpu.setPeso(rs.getString("peso"));
+					gpu.setAttivo(rs.getBoolean("attivo"));
+					gpu.setSconto(rs.getInt("sconto"));
+					gpu.setCategoria(rs.getString("categoria"));
+					gpu.setImmagini(immaginiDAO.doRetrieveByProdotto(gpu.getIdProdotto()));
+
+					gpu.setIdGpu(rs.getInt("id_gpu"));
+					gpu.setFrequenza(rs.getString("frequenza"));
+					gpu.setVram(rs.getString("vram"));
+					gpu.setVideo(rs.getString("video"));
+					gpu.setTipoVram(rs.getString("tipovram"));
+					gpu.setPcie(rs.getString("pcie"));
+					gpu.setMaxRes(rs.getString("maxres"));
+					gpu.setTdp(rs.getInt("tdp"));
+
+					lista.add(gpu);
+				}
+			}
+		}
+
+		return lista;
 	}
-    
-	public synchronized boolean doUpdate(GPUBean gpu) throws SQLException
-	{
+
+	public synchronized boolean doUpdate(GPUBean gpu) throws SQLException {
 		ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
 		prodottoDAO.doUpdate(gpu);
-		
-        String sql = "UPDATE " + TABLE_NAME + " SET frequenza=?, vram=?, video=?, tipovram=?, pcie=?, maxres=?, tdp=? WHERE id_gpu=?";
 
-        try(Connection con = ds.getConnection();
-            PreparedStatement ps = con.prepareStatement(sql)) {
+		String sql = "UPDATE " + TABLE_NAME
+				+ " SET frequenza=?, vram=?, video=?, tipovram=?, pcie=?, maxres=?, tdp=? WHERE id_gpu=?";
 
-            ps.setString(1, gpu.getFrequenza());
-            ps.setString(2, gpu.getVram());
-            ps.setString(3, gpu.getVideo());
-            ps.setString(4, gpu.getTipoVram());
-            ps.setString(5, gpu.getPcie());
-            ps.setString(6, gpu.getMaxRes());
-            ps.setInt(7, gpu.getTdp());
-            ps.setInt(8, gpu.getIdGpu());
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-            return ps.executeUpdate() > 0;
-        }
+			ps.setString(1, gpu.getFrequenza());
+			ps.setString(2, gpu.getVram());
+			ps.setString(3, gpu.getVideo());
+			ps.setString(4, gpu.getTipoVram());
+			ps.setString(5, gpu.getPcie());
+			ps.setString(6, gpu.getMaxRes());
+			ps.setInt(7, gpu.getTdp());
+			ps.setInt(8, gpu.getIdGpu());
+
+			return ps.executeUpdate() > 0;
+		}
 	}
-	
-    public synchronized boolean setProductStatus(GPUBean gpu, boolean attivo) throws SQLException {
 
-    	ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
-    	
-    	return prodottoDAO.setProductStatus(gpu.getIdProdotto(),attivo);
+	public synchronized boolean setProductStatus(GPUBean gpu, boolean attivo) throws SQLException {
 
+		ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
 
-    }
- }
- 
+		return prodottoDAO.setProductStatus(gpu.getIdProdotto(), attivo);
 
+	}
+
+	@Override
+	public synchronized int doCountFilteredProducts(String cerca, String categoria, String prezzo, String marca,
+			String vram, String pcie) throws SQLException {
+
+		List<GPUBean> lista = new LinkedList<>();
+		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+
+		categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
+		marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
+		vram = (vram == null || vram.trim().isEmpty()) ? null : vram;
+		pcie = (pcie == null || pcie.trim().isEmpty()) ? null : pcie;
+
+		Double prezzoMax = null;
+		if (prezzo != null && !prezzo.trim().isEmpty()) {
+			prezzoMax = Double.parseDouble(prezzo);
+		}
+
+		String sql = "SELECT COUNT(*) " + "FROM gpu g " + "JOIN prodotto p ON g.fk_prodotto = p.id_prodotto "
+				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
+				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " + "AND (? IS NULL OR g.vram = ?) "
+				+ "AND (? IS NULL OR g.pcie = ?) "
+				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
+
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setString(1, categoria);
+			ps.setString(2, categoria);
+
+			ps.setString(3, marca);
+			ps.setString(4, marca);
+
+			if (prezzoMax == null) {
+				ps.setNull(5, java.sql.Types.DOUBLE);
+				ps.setNull(6, java.sql.Types.DOUBLE);
+			} else {
+				ps.setDouble(5, prezzoMax);
+				ps.setDouble(6, prezzoMax);
+			}
+
+			ps.setString(7, vram);
+			ps.setString(8, vram);
+
+			ps.setString(9, pcie);
+			ps.setString(10, pcie);
+
+			ps.setString(11, cerca);
+			ps.setString(12, cerca);
+			ps.setString(13, cerca);
+			ps.setString(14, cerca);
+
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getInt(1);
+				}
+			}
+			return 0;
+		}
+	}
+}

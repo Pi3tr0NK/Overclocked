@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -91,7 +92,7 @@ public class PSUDAOImpl implements PSUDAO {
     }
     
     @Override
-    public synchronized Collection<PSUBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String potenza, String certificazione, String modulare) throws SQLException
+    public synchronized Collection<PSUBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String potenza, String certificazione, String modulare, int pagina) throws SQLException
     {
     		
 	    	 List<PSUBean> lista = new LinkedList<>();
@@ -122,7 +123,8 @@ public class PSUDAOImpl implements PSUDAO {
              "AND (? IS NULL OR ps.potenza = ?) " +
              "AND (? IS NULL OR ps.certificazione = ?) " +
              "AND (? IS NULL OR ps.modulare = ?) "+
-             "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
+             "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))" +
+     	     "LIMIT ? OFFSET ?";;
 
          try (Connection con = ds.getConnection();
               PreparedStatement ps = con.prepareStatement(sql)) {
@@ -159,7 +161,12 @@ public class PSUDAOImpl implements PSUDAO {
              ps.setString(14, cerca);
              ps.setString(15, cerca);
              ps.setString(16, cerca);
-             
+
+         	int offset = (pagina - 1) * 10;
+
+         	ps.setInt(17, 10);
+         	ps.setInt(18, offset);
+         	
              try (ResultSet rs = ps.executeQuery()){
     	        		while (rs.next()) {
 
@@ -193,7 +200,7 @@ public class PSUDAOImpl implements PSUDAO {
     	    return lista;
     }
     
-    public boolean doUpdate(PSUBean psu) throws SQLException
+    public synchronized boolean doUpdate(PSUBean psu) throws SQLException
     {
         ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
         prodottoDAO.doUpdate(psu);
@@ -220,7 +227,7 @@ public class PSUDAOImpl implements PSUDAO {
     		return prodottoDAO.setProductStatus(psu.getIdProdotto(), attivo);
     }
     
-    public Collection<PSUBean> psuCompatibili(int cpuId, int gpuId) throws SQLException {
+    public synchronized Collection<PSUBean> psuCompatibili(int cpuId, int gpuId) throws SQLException {
 
         List<PSUBean> lista = new LinkedList<>();
         ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
@@ -275,5 +282,85 @@ public class PSUDAOImpl implements PSUDAO {
         }
 
         return lista;
+    }
+    
+    public synchronized int doCountFilteredProducts(String cerca, String categoria, String prezzo,String marca, String potenza, String certificazione, String modulare) throws SQLException
+    {
+       
+        	
+    	    	 List<PSUBean> lista = new LinkedList<>();
+    	    	 ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+    	    	 
+    	    	 categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
+    	    	 marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
+    	    	 certificazione = (certificazione == null || certificazione.trim().isEmpty()) ? null : certificazione;
+    	    	 modulare = (modulare == null || modulare.trim().isEmpty()) ? null : modulare;
+    	
+    	    	 Double prezzoMax = null;
+    	    	 if (prezzo != null && !prezzo.trim().isEmpty()) {
+    	    	     prezzoMax = Double.parseDouble(prezzo);
+    	    	 }
+    	
+    	    	 Integer potenzaInt = null;
+    	    	 if (potenza != null && !potenza.trim().isEmpty()) {
+    	    	     potenzaInt = Integer.parseInt(potenza);
+    	    	 }
+
+             String sql =
+                 "SELECT COUNT(*) " +
+                 "FROM psu ps " +
+                 "JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto " +
+                 "WHERE (? IS NULL OR p.categoria = ?) " +
+                 "AND (? IS NULL OR p.marca = ?) " +
+                 "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
+                 "AND (? IS NULL OR ps.potenza = ?) " +
+                 "AND (? IS NULL OR ps.certificazione = ?) " +
+                 "AND (? IS NULL OR ps.modulare = ?) "+
+                 "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
+             
+             try (Connection con = ds.getConnection();
+                  PreparedStatement ps = con.prepareStatement(sql)) {
+
+                 ps.setString(1, categoria);
+                 ps.setString(2, categoria);
+
+                 ps.setString(3, marca);
+                 ps.setString(4, marca);
+
+                 if (prezzoMax == null) {
+                     ps.setNull(5, java.sql.Types.DOUBLE);
+                     ps.setNull(6, java.sql.Types.DOUBLE);
+                 } else {
+                     ps.setDouble(5, prezzoMax);
+                     ps.setDouble(6, prezzoMax);
+                 }
+
+                 if (potenzaInt == null) {
+                     ps.setNull(7, java.sql.Types.INTEGER);
+                     ps.setNull(8, java.sql.Types.INTEGER);
+                 } else {
+                     ps.setInt(7, potenzaInt);
+                     ps.setInt(8, potenzaInt);
+                 }
+
+                 ps.setString(9, certificazione);
+                 ps.setString(10, certificazione);
+
+                 ps.setString(11, modulare);
+                 ps.setString(12, modulare);
+                 
+                 ps.setString(13, cerca);
+                 ps.setString(14, cerca);
+                 ps.setString(15, cerca);
+                 ps.setString(16, cerca);
+
+             	
+             	try(ResultSet rs = ps.executeQuery()) {
+             	    if(rs.next()) {
+             	        return rs.getInt(1);
+             	    }
+             	}
+             	return 0;
+        }
     }
 }

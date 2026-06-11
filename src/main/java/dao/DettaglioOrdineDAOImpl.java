@@ -40,7 +40,8 @@ public class DettaglioOrdineDAOImpl implements DettaglioOrdineDAO {
 	public synchronized List<DettaglioOrdineBean> doRetrieveByOrdine(int idOrdine) throws SQLException {
 
 	    List<DettaglioOrdineBean> lista = new LinkedList<>();
-
+	    ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+	    
 	    String sql = "SELECT d.quantita, d.prezzo_unitario, p.* " +
 	                 "FROM dettagliOrdine d " +
 	                 "JOIN prodotto p ON d.fk_prodotto = p.id_prodotto " +
@@ -59,12 +60,22 @@ public class DettaglioOrdineDAOImpl implements DettaglioOrdineDAO {
 	                d.setPrezzoUnitario(rs.getDouble("prezzo_unitario"));
 
 	                ProdottoBean p = new ProdottoBean();
-	                p.setIdProdotto(rs.getInt("id_prodotto"));
-	                p.setNome(rs.getString("nome"));
-	                p.setMarca(rs.getString("marca"));
-	                p.setModello(rs.getString("modello"));
-	                d.setProdotto(p);
-
+                    p.setIdProdotto(rs.getInt("id_prodotto"));
+                    p.setNome(rs.getString("nome"));
+                    p.setModello(rs.getString("modello"));
+                    p.setDescrizione(rs.getString("descrizione"));
+                    p.setMarca(rs.getString("marca"));
+                    p.setPrezzo(rs.getDouble("prezzo"));
+                    p.setStock(rs.getInt("stock"));
+                    p.setDimensioni(rs.getString("dimensioni"));
+                    p.setPeso(rs.getString("peso"));
+                    p.setAttivo(rs.getBoolean("attivo"));
+                    p.setSconto(rs.getInt("sconto"));
+                    p.setCategoria(rs.getString("categoria"));
+                    p.setImmagini(immaginiDAO.doRetrieveByProdotto(p.getIdProdotto()));
+                    
+                    d.setProdotto(p);
+                    
 	                lista.add(d);
 	            }
 	        }

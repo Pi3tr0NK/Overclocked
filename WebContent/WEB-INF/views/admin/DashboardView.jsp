@@ -15,7 +15,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/dashboard.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/pagination.css">
 </head>
 
 
@@ -277,31 +277,7 @@
 
         </div>
 
-        <!-- PAGINAZIONE -->
-
-        <div class="pagination">
-
-            <button>
-                <
-            </button>
-
-            <button class="active">
-                1
-            </button>
-
-            <button>
-                2
-            </button>
-
-            <button>
-                3
-            </button>
-
-            <button>
-                >
-            </button>
-
-        </div>
+		<jsp:include page="/WEB-INF/views/components/pagination.jsp" />
 
     </main>
 

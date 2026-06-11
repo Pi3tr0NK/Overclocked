@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/dashboard.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/pagination.css">
 
 </head>
 
@@ -81,9 +82,11 @@
 		
 		    <form method="get"
 		          action="${pageContext.request.contextPath}/admin/ordini">
-		
+			
+				<input type="hidden" name="idUtente" value="${idUtente}"/>
 		        <select name="stato" onchange="this.form.submit()">
-		
+				
+				
 		            <option value="">Tutti gli stati</option>
 		
 		            <option value="IN_PREPARAZIONE"
@@ -150,7 +153,7 @@
                         <td>
 
                             <%-- Dettaglio ordine --%>
-                            <form action="${pageContext.request.contextPath}/admin/ordini" method="get" style="display:inline;">
+                            <form action="${pageContext.request.contextPath}/admin/dettaglioOrdini" method="get" style="display:inline;">
                                 <input type="hidden" name="action"   value="dettaglio"/>
                                 <input type="hidden" name="idOrdine" value="${o.idOrdine}"/>
                                 <button type="submit">Dettaglio</button>
@@ -196,14 +199,7 @@
 
         </div>
 
-        <!-- PAGINAZIONE -->
-        <div class="pagination">
-            <button>&lt;</button>
-            <button class="active">1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>&gt;</button>
-        </div>
+		<jsp:include page="/WEB-INF/views/components/pagination.jsp" />
 
     </main>
 

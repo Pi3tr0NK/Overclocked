@@ -225,20 +225,42 @@ public class UtenteDAOImpl implements UtenteDAO{
         }
     }
     
-    public synchronized int doCountUtenti() throws SQLException {
+    public synchronized int doCountUtenti(String ruolo) throws SQLException {
 
-        String sql = "SELECT COUNT(*) FROM " + TABLE_NAME;
+        String sql =
+            "SELECT COUNT(*) " +
+            "FROM " + TABLE_NAME + " " +
+            "WHERE (? IS NULL OR ruolo = ?)";
 
         try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-            if (rs.next()) {
-                return rs.getInt(1);
+            ps.setString(1, ruolo);
+            ps.setString(2, ruolo);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
             }
         }
 
         return 0;
+    }
+    
+    public synchronized boolean setUtenteRuolo(int idUtente, Ruolo ruolo) throws SQLException {
+
+        String sql = "UPDATE " + TABLE_NAME + " SET ruolo=? WHERE id_utente=?";
+
+        try (Connection con = ds.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setString(1, ruolo.name());
+            ps.setInt(2, idUtente);
+
+            return ps.executeUpdate() > 0;
+        }
     }
     
 }

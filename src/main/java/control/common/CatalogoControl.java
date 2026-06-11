@@ -68,9 +68,11 @@ public class CatalogoControl extends HttpServlet {
     }
  
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
 		loadProducList(request);
 		request.getRequestDispatcher("/WEB-INF/views/common/CatalogoView.jsp").forward(request, response);
 	}
+	
 	
 	private void loadProducList(HttpServletRequest request) {
 		String cat = request.getParameter("categoria");
@@ -79,6 +81,16 @@ public class CatalogoControl extends HttpServlet {
 		String marca = request.getParameter("marca");
 		String cerca = request.getParameter("cerca");
 
+		
+    	int pagina = 1;
+    	String p = request.getParameter("pagina");
+
+    	if (p != null && !p.isBlank()) {
+    	    pagina = Integer.parseInt(p);
+    	}
+        
+        
+        
 		cerca = (cerca == null || cerca.trim().isEmpty())
 		        ? null
 		        : "%" + cerca.trim() + "%";
@@ -92,7 +104,9 @@ public class CatalogoControl extends HttpServlet {
 				String modulare= request.getParameter("modulare");
 				try
 				{
-					request.setAttribute("products", psuDAO.doRetrieveAll(cerca, cat, prezzo, marca, potenza, certificazione, modulare));
+					int totalePagine = (int)Math.ceil((double)psuDAO.doCountFilteredProducts(cerca, cat, prezzo, marca, potenza, certificazione, modulare) / 10);
+					request.setAttribute("totalePagine",totalePagine);
+					request.setAttribute("products", psuDAO.doRetrieveAll(cerca, cat, prezzo, marca, potenza, certificazione, modulare, pagina));
 				} catch (SQLException e) {
 					System.err.println("Error:" + e.getMessage());
 				}
@@ -102,7 +116,9 @@ public class CatalogoControl extends HttpServlet {
 				String tipo= request.getParameter("tipo");
 				try 
 				{
-					request.setAttribute("products", dissipatoreDAO.doRetrieveAll(cerca, cat, prezzo, marca, tipo));
+					int totalePagine = (int)Math.ceil((double)dissipatoreDAO.doCountFilteredProducts(cerca, cat, prezzo, marca, tipo) / 10);
+					request.setAttribute("totalePagine",totalePagine);
+					request.setAttribute("products", dissipatoreDAO.doRetrieveAll(cerca, cat, prezzo, marca, tipo, pagina));
 				} catch (SQLException e) {
 					System.err.println("Error:" + e.getMessage());
 				}
@@ -113,7 +129,9 @@ public class CatalogoControl extends HttpServlet {
 				String frequenza= request.getParameter("frequenza");
 				try 
 				{
-					request.setAttribute("products", cpuDAO.doRetrieveAll(cerca, cat, prezzo, marca, core, frequenza));  
+					int totalePagine = (int)Math.ceil((double)cpuDAO.doCountFilteredProducts(cerca, cat, prezzo, marca, core, frequenza) / 10);
+					request.setAttribute("totalePagine",totalePagine);
+					request.setAttribute("products", cpuDAO.doRetrieveAll(cerca, cat, prezzo, marca, core, frequenza, pagina));  
 				} catch (SQLException e) {
 					System.err.println("Error:" + e.getMessage());
 				}
@@ -125,7 +143,9 @@ public class CatalogoControl extends HttpServlet {
 				String tipo= request.getParameter("tipo");
 				try 
 				{
-					request.setAttribute("products", ramDAO.doRetrieveAll(cerca, cat, prezzo, marca, capacita, frequenza, tipo));
+					int totalePagine = (int)Math.ceil((double)ramDAO.doCountFilteredProducts(cerca, cat, prezzo, marca, capacita, frequenza, tipo) / 10);
+					request.setAttribute("totalePagine",totalePagine);
+					request.setAttribute("products", ramDAO.doRetrieveAll(cerca, cat, prezzo, marca, capacita, frequenza, tipo, pagina));
 				} catch (SQLException e) {
 					System.err.println("Error:" + e.getMessage());
 				}
@@ -136,7 +156,9 @@ public class CatalogoControl extends HttpServlet {
 				String colore = request.getParameter("colore");
 				try 
 				{
-					request.setAttribute("products", chassisDAO.doRetrieveAll(cerca, cat, prezzo, marca, formato, colore));
+					int totalePagine = (int)Math.ceil((double)chassisDAO.doCountFilteredProducts(cerca, cat, prezzo, marca, formato, colore) / 10);
+					request.setAttribute("totalePagine",totalePagine);
+					request.setAttribute("products", chassisDAO.doRetrieveAll(cerca, cat, prezzo, marca, formato, colore, pagina));
 				} catch (SQLException e) {
 					System.err.println("Error:" + e.getMessage());
 				}
@@ -147,7 +169,9 @@ public class CatalogoControl extends HttpServlet {
 				String pcie = request.getParameter("pcie");
 				try 
 				{
-					request.setAttribute("products", gpuDAO.doRetrieveAll(cerca, cat, prezzo, marca, vram, pcie));
+					int totalePagine = (int)Math.ceil((double)gpuDAO.doCountFilteredProducts(cerca, cat, prezzo, marca, vram, pcie) / 10);
+					request.setAttribute("totalePagine",totalePagine);
+					request.setAttribute("products", gpuDAO.doRetrieveAll(cerca, cat, prezzo, marca, vram, pcie, pagina));
 				} catch (SQLException e) {
 					System.err.println("Error:" + e.getMessage());
 				}
@@ -159,7 +183,9 @@ public class CatalogoControl extends HttpServlet {
 				String slotram = request.getParameter("slotram"); //integer
 				try 
 				{
-					request.setAttribute("products", moboDAO.doRetrieveAll(cerca, cat, prezzo, marca, formato, nvme, slotram));
+					int totalePagine = (int)Math.ceil((double)moboDAO.doCountFilteredProducts(cerca, cat, prezzo, marca, formato, nvme, slotram) / 10);
+					request.setAttribute("totalePagine",totalePagine);
+					request.setAttribute("products", moboDAO.doRetrieveAll(cerca, cat, prezzo, marca, formato, nvme, slotram, pagina));
 				} catch (SQLException e) {
 					System.err.println("Error:" + e.getMessage());
 				}
@@ -171,7 +197,9 @@ public class CatalogoControl extends HttpServlet {
 				String tecnologia = request.getParameter("tecnologia");
 				try 
 				{
-					request.setAttribute("products", memoriaDAO.doRetrieveAll(cerca, cat, prezzo, marca, capacita, tipo, tecnologia));
+					int totalePagine = (int)Math.ceil((double)memoriaDAO.doCountFilteredProducts(cerca, cat, prezzo, marca, capacita, tipo, tecnologia) / 10);
+					request.setAttribute("totalePagine",totalePagine);
+					request.setAttribute("products", memoriaDAO.doRetrieveAll(cerca, cat, prezzo, marca, capacita, tipo, tecnologia, pagina));
 				} catch (SQLException e) {
 					System.err.println("Error:" + e.getMessage());
 				}
@@ -181,11 +209,15 @@ public class CatalogoControl extends HttpServlet {
 		{
 			try 
 			{
-				request.setAttribute("products", prodottoDAO.doRetrieveAll(cerca, prezzo, marca, null, null));
+				int totalePagine = (int)Math.ceil((double)prodottoDAO.doCountFilteredProducts(cerca, prezzo, marca, null, null) / 10);
+				request.setAttribute("totalePagine",totalePagine);
+				request.setAttribute("products", prodottoDAO.doRetrieveAll(cerca, prezzo, marca, null, null,pagina));
 			} catch (SQLException e) {
 				System.err.println("Error:" + e.getMessage());
 			}
 		}
+		
+        request.setAttribute("paginaCorrente", pagina);
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

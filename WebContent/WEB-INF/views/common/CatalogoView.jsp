@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/catalogo.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/pagination.css">
 </head>
 
 <body>
@@ -296,6 +297,8 @@
         <c:if test="${empty products}">
             <p>Nessun prodotto trovato</p>
         </c:if>
+        
+  		<jsp:include page="/WEB-INF/views/components/pagination.jsp" />
 
     </div>
 
