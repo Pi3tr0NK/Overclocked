@@ -100,7 +100,7 @@ public class ProfiloControl extends HttpServlet {
 
                 case "ordini":
                     request.setAttribute("ordini",
-                        ordineDAO.doRetrieveAllByUser(utente.getIdUtente()));
+                        ordineDAO.doRetrieveAllByUser(utente.getIdUtente(),0));
                     request.setAttribute("view", "ordini");
                     request.getRequestDispatcher("/WEB-INF/views/common/OrdiniView.jsp")
                            .forward(request, response);
@@ -160,7 +160,7 @@ public class ProfiloControl extends HttpServlet {
             }
 
             request.setAttribute("ordini",
-                ordineDAO.doRetrieveAllByUser(utente.getIdUtente()));
+                ordineDAO.doRetrieveAllByUser(utente.getIdUtente(),0));
             request.setAttribute("view", "ordini");
             request.getRequestDispatcher("/WEB-INF/views/common/OrdiniView.jsp")
                    .forward(request, response);

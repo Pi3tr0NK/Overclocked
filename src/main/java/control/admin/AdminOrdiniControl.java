@@ -129,11 +129,11 @@ public class AdminOrdiniControl extends HttpServlet {
                .forward(request, response);
     }
     
-    private void ordineByUtenti(HttpServletRequest request,String idUtenteStr)
+    private void ordineByUtenti(HttpServletRequest request,String idUtenteStr, int pagina)
             throws Exception, IOException, ServletException {
 
         int idUtente = Integer.parseInt(idUtenteStr);
-        request.setAttribute("ordini", ordineDAO.doRetrieveAllByUser(idUtente));
+        request.setAttribute("ordini", ordineDAO.doRetrieveAllByUser(idUtente,pagina));
         request.setAttribute("idUtente", idUtenteStr);
     }
     
@@ -203,7 +203,7 @@ public class AdminOrdiniControl extends HttpServlet {
         
         if(idUtenteStr != null && !idUtenteStr.isBlank())
         {
-        	ordineByUtenti(request,idUtenteStr);
+        	ordineByUtenti(request,idUtenteStr,pagina);
         }
         else if (stato != null && !stato.isBlank())
         	{

@@ -106,7 +106,7 @@
 		
 		            <option value="RIMBORSATO"
 		                ${param.stato == 'RIMBORSATO' ? 'selected' : ''}>
-		                Rimborsato
+		                Rimborsa
 		            </option>
 		
 		        </select>

@@ -190,18 +190,28 @@ public class OrdineDAOImpl implements OrdineDAO {
     //  RETRIEVE ordini per utente
     // ─────────────────────────────────────────────
 
-    public synchronized Collection<OrdineBean> doRetrieveAllByUser(int idUser) throws SQLException {
+    public synchronized Collection<OrdineBean> doRetrieveAllByUser(int idUser, int pagina) throws SQLException {
 
         List<OrdineBean> lista = new LinkedList<>();
         String sql = "SELECT * FROM " + TABLE_NAME +
-                     " WHERE fk_utente = ? AND stato != 'RIMBORSATO' ORDER BY data DESC" +
-             	    "LIMIT ? OFFSET ?";;
+                     " WHERE fk_utente = ? AND stato != 'RIMBORSATO' ORDER BY data DESC";
+		if (pagina > 0) {
+			sql += " LIMIT ? OFFSET ?";
+		}
 
         try (Connection con = ds.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idUser);
+            
+    		if (pagina > 0) {
 
+				int offset = (pagina - 1) * 10;
+
+				ps.setInt(2, 10);
+				ps.setInt(3, offset);
+			}
+    		
             IndirizzoDAOImpl indirizzoDAO = new IndirizzoDAOImpl(ds);
             UtenteDAOImpl utenteDAO = new UtenteDAOImpl(ds);
 
