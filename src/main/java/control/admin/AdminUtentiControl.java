@@ -69,7 +69,6 @@ public class AdminUtentiControl extends HttpServlet {
             }
         }
         
-        settaPagineAndUtenti(request);
         contaAdmin(request);
         contaUser(request);
     	ottieniUtenti(request);
@@ -80,6 +79,10 @@ public class AdminUtentiControl extends HttpServlet {
     private void ottieniUtenti(HttpServletRequest request)
     {
     	String p = request.getParameter("pagina");
+    	String ruolo = request.getParameter("filtroRuolo");
+
+        settaPagineAndUtenti(request,ruolo);
+        
     	int pagina = 1;
     	if (p != null && !p.isBlank()) {
     	    pagina = Integer.parseInt(p);
@@ -87,7 +90,7 @@ public class AdminUtentiControl extends HttpServlet {
     	
     	try {
              request.setAttribute("paginaCorrente", pagina);	
-			 request.setAttribute("utenti", utenteDAO.doRetrieveAll());
+			 request.setAttribute("utenti", utenteDAO.doRetrieveAll(ruolo,pagina));
 		} catch(SQLException e){
 			System.err.println("Error:" + e.getMessage());
 		}
@@ -105,12 +108,12 @@ public class AdminUtentiControl extends HttpServlet {
 		}
     }
     
-    private void settaPagineAndUtenti(HttpServletRequest request)
+    private void settaPagineAndUtenti(HttpServletRequest request,String ruolo)
     {
 		int numUtenti = 0;
 		
 		try {
-			numUtenti = utenteDAO.doCountUtenti(null);
+			numUtenti = utenteDAO.doCountFilteredUtenti(ruolo);
 			int totalePagine = (int)Math.ceil((double)numUtenti / 10);
 			
 			request.setAttribute("numUtenti", numUtenti);

@@ -154,36 +154,65 @@ public class UtenteDAOImpl implements UtenteDAO {
 		return u;
 	}
 
-	public synchronized List<UtenteBean> doRetrieveAll() throws SQLException {
+	public synchronized List<UtenteBean> doRetrieveAll(String ruolo, int pagina) throws SQLException {
 
 		List<UtenteBean> list = new LinkedList<>();
+		
+		ruolo = (ruolo == null || ruolo.trim().isEmpty()) ? null : ruolo.trim();
 
-		String sql = "SELECT * FROM " + TABLE_NAME;
+		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE (? IS NULL OR ruolo = ?) LIMIT ? OFFSET ?";
 
-		try (Connection con = ds.getConnection();
-				PreparedStatement ps = con.prepareStatement(sql);
-				ResultSet rs = ps.executeQuery()) {
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, ruolo);
+			ps.setString(2, ruolo);
 
-			IndirizzoDAOImpl ind = new IndirizzoDAOImpl(ds);
+			int offset = (pagina - 1) * 10;
 
-			while (rs.next()) {
+			ps.setInt(3, 10);
+			ps.setInt(4, offset);
 
-				UtenteBean u = new UtenteBean();
+			try (ResultSet rs = ps.executeQuery()) {
 
-				u.setIdUtente(rs.getInt("id_utente"));
-				u.setEmail(rs.getString("email"));
-				u.setNome(rs.getString("nome"));
-				u.setCognome(rs.getString("cognome"));
-				u.setPassword(rs.getString("password"));
-				u.setCellulare(rs.getString("cellulare"));
-				u.setIndirizzo(ind.doRetrieveByKey(rs.getInt("fk_indirizzo")));
-				u.setRuolo(Ruolo.valueOf(rs.getString("ruolo")));
+				IndirizzoDAOImpl ind = new IndirizzoDAOImpl(ds);
 
-				list.add(u);
+				while (rs.next()) {
+
+					UtenteBean u = new UtenteBean();
+
+					u.setIdUtente(rs.getInt("id_utente"));
+					u.setEmail(rs.getString("email"));
+					u.setNome(rs.getString("nome"));
+					u.setCognome(rs.getString("cognome"));
+					u.setPassword(rs.getString("password"));
+					u.setCellulare(rs.getString("cellulare"));
+					u.setIndirizzo(ind.doRetrieveByKey(rs.getInt("fk_indirizzo")));
+					u.setRuolo(Ruolo.valueOf(rs.getString("ruolo")));
+
+					list.add(u);
+				}
 			}
 		}
-
 		return list;
+	}
+
+	public synchronized int doCountFilteredUtenti(String ruolo) throws SQLException {
+		
+		ruolo = (ruolo == null || ruolo.trim().isEmpty()) ? null : ruolo.trim();
+		
+		String sql = "SELECT COUNT(*) FROM " + TABLE_NAME + " WHERE (? IS NULL OR ruolo = ?)";
+		
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, ruolo);
+			ps.setString(2, ruolo);
+
+
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getInt(1);
+				}
+			}
+		}
+		return 0;
 	}
 
 	public synchronized boolean updatePassword(int idUtente, String newPassword) throws SQLException {

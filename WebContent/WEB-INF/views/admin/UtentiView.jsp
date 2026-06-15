@@ -45,7 +45,6 @@
         <div class="page-header">
             <div>
                 <h1>Gestione Utenti</h1>
-                <p>Amministra gli account e i permessi</p>
             </div>
         </div>
 
@@ -75,16 +74,18 @@
 
         <!-- FILTRI -->
         <div class="filters">
-            <select id="filtroRuolo" onchange="filtraTabella()">
+        
+        <form method="get" action="${pageContext.request.contextPath}/admin/utenti">
+        
+            <select name ="filtroRuolo">
                 <option value="">Tutti i ruoli</option>
-                <option value="ADMIN">Admin</option>
-                <option value="USER">User</option>
+                <option value="ADMIN" ${param.filtroRuolo == 'ADMIN' ? 'selected' : ''}>Admin</option>
+                <option value="USER" ${param.filtroRuolo == 'USER' ? 'selected' : ''}>User</option>
             </select>
-            <select id="filtroStato" onchange="filtraTabella()">
-                <option value="">Tutti gli stati</option>
-                <option value="attivo">Attivo</option>
-                <option value="disattivato">Disattivato</option>
-            </select>
+            
+            <button type="submit">Cerca</button>
+            
+            </form>
         </div>
 
         <!-- TABELLA -->
@@ -136,7 +137,9 @@
 
 							<%-- Visualizza gli ordini --%>
                             <form action="${pageContext.request.contextPath}/admin/ordini" method="post" style="display:inline;">
-                                <input type="hidden" name="idUtente"  value="${u.idUtente}"/>
+                                <input type="hidden" name="cercaNome"  value="${u.nome}"/>
+                                <input type="hidden" name="cercaCognome"  value="${u.cognome}"/>
+                                <input type="hidden" name="cercaEmail"  value="${u.email}"/>
                                 <button type="submit" class="action-btn">Visualizza Ordini</button>
                             </form>
                             

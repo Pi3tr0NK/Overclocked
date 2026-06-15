@@ -162,10 +162,10 @@ public class OrdineDAOImpl implements OrdineDAO {
 		cognome = (cognome == null || cognome.trim().isEmpty()) ? null : "%" + cognome.trim() + "%";
 		email = (email == null || email.trim().isEmpty()) ? null : "%" + email.trim() + "%";
 		stato = (stato == null || stato.trim().isEmpty()) ? null : stato.trim();
-		
+
 		dataStart = (dataStart == null || dataStart.trim().isEmpty()) ? null : dataStart.trim();
 		dataEnd = (dataEnd == null || dataEnd.trim().isEmpty()) ? null : dataEnd.trim();
-		
+
 		List<OrdineBean> lista = new LinkedList<>();
 
 		String sql = "SELECT o.* " + "FROM " + TABLE_NAME + " o " + "JOIN utente u ON o.fk_utente = u.id_utente "
@@ -258,7 +258,7 @@ public class OrdineDAOImpl implements OrdineDAO {
 		}
 		return lista;
 	}
-	
+
 	public synchronized int doCountFilteredProducts(String nome, String cognome, String email, String stato,
 			String dataStart, String dataEnd) throws SQLException {
 
@@ -266,11 +266,11 @@ public class OrdineDAOImpl implements OrdineDAO {
 		cognome = (cognome == null || cognome.trim().isEmpty()) ? null : "%" + cognome.trim() + "%";
 		email = (email == null || email.trim().isEmpty()) ? null : "%" + email.trim() + "%";
 		stato = (stato == null || stato.trim().isEmpty()) ? null : stato.trim();
-		
+
 		dataStart = (dataStart == null || dataStart.trim().isEmpty()) ? null : dataStart.trim();
 		dataEnd = (dataEnd == null || dataEnd.trim().isEmpty()) ? null : dataEnd.trim();
-		
-		String sql = "SELECT o.* " + "FROM " + TABLE_NAME + " o " + "JOIN utente u ON o.fk_utente = u.id_utente "
+
+		String sql = "SELECT COUNT(*) FROM " + TABLE_NAME + " o JOIN utente u ON o.fk_utente = u.id_utente "
 				+ "WHERE (? IS NULL OR o.stato = ?) " + "AND (? IS NULL OR u.nome LIKE ?) "
 				+ "AND (? IS NULL OR u.cognome LIKE ?) " + "AND (? IS NULL OR u.email LIKE ?) "
 				+ "AND (? IS NULL OR o.data >= ?) " + "AND (? IS NULL OR o.data <= ?) " + "ORDER BY o.data DESC";

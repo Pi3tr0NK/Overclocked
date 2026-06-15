@@ -116,7 +116,6 @@ public class PSUDAOImpl implements PSUDAO {
 				+ "AND (? IS NULL OR ps.potenza = ?) " + "AND (? IS NULL OR ps.certificazione = ?) "
 				+ "AND (? IS NULL OR ps.modulare = ?) "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))" + "LIMIT ? OFFSET ?";
-		;
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 

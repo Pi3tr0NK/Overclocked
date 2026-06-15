@@ -149,7 +149,7 @@ public class AdminOrdiniControl extends HttpServlet {
 			numOrdini = ordineDAO.doCountFilteredProducts(cercaNome,cercaCognome,cercaEmail,stato, dataStart, dataEnd);
 			int totalePagine = (int)Math.ceil((double)numOrdini / 10);
 			
-			request.setAttribute("numOrdini", ordineDAO.doCount(null));
+			request.setAttribute("numOrdini", numOrdini);
 			request.setAttribute("totalePagine", totalePagine);
 			
 		} catch (SQLException e) {

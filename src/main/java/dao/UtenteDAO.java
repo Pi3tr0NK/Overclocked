@@ -18,7 +18,7 @@ public interface UtenteDAO
 	
 	public UtenteBean checkLogin(String email, String password) throws SQLException;
 	
-	public Collection<UtenteBean> doRetrieveAll() throws SQLException;
+	public Collection<UtenteBean> doRetrieveAll(String ruolo, int pagina) throws SQLException;
 	
 	public boolean updatePassword(int idUtente, String newPassword) throws SQLException;
 	

@@ -57,7 +57,7 @@
 			<div class="stats-grid">
 
 				<div class="stat-card">
-					<h2>${numOrdiniTotali}</h2>
+					<h2>${numOrdini}</h2>
 					<span>Ordini totali</span>
 				</div>
 
