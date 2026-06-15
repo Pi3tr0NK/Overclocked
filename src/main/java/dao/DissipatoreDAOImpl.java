@@ -106,7 +106,7 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
 			prezzoMax = Double.parseDouble(prezzo);
 		}
 
-		String sql = "SELECT * " + "FROM dissipatore d " + "JOIN prodotto p ON d.fk_prodotto = p.id_prodotto "
+		String sql = "SELECT * " + "FROM " + TABLE_NAME + " d " + "JOIN prodotto p ON d.fk_prodotto = p.id_prodotto "
 				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
 				+ "AND (? IS NULL OR p.prezzo <= ?) " + "AND (? IS NULL OR d.tipo = ?) "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?)) "
@@ -205,7 +205,7 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
 		return prodottoDAO.setProductStatus(dissipatore.getIdProdotto(), attivo);
 	}
 
-	public Collection<DissipatoreBean> dissipatoriCompatibili(int cpuId) throws SQLException {
+	public synchronized Collection<DissipatoreBean> dissipatoriCompatibili(int cpuId) throws SQLException {
 
 		List<DissipatoreBean> lista = new LinkedList<>();
 		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
@@ -214,7 +214,7 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
 
 		CPUBean cpu = cpuDAO.doRetrieveByKey(cpuId);
 
-		String sql = "SELECT * " + "FROM dissipatore d " + "JOIN prodotto p ON d.fk_prodotto = p.id_prodotto "
+		String sql = "SELECT * " + "FROM " + TABLE_NAME + " d " + "JOIN prodotto p ON d.fk_prodotto = p.id_prodotto "
 				+ "WHERE p.attivo = true " + "AND d.socket_supportati LIKE ? ";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -261,9 +261,6 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
 	public synchronized int doCountFilteredProducts(String cerca, String categoria, String prezzo, String marca,
 			String tipo) throws SQLException {
 
-		List<DissipatoreBean> lista = new LinkedList<>();
-		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
-
 		categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
 		marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
 		tipo = (tipo == null || tipo.trim().isEmpty()) ? null : tipo;
@@ -273,9 +270,10 @@ public class DissipatoreDAOImpl implements DissipatoreDAO {
 			prezzoMax = Double.parseDouble(prezzo);
 		}
 
-		String sql = "SELECT COUNT(*) " + "FROM dissipatore d " + "JOIN prodotto p ON d.fk_prodotto = p.id_prodotto "
-				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
-				+ "AND (? IS NULL OR p.prezzo <= ?) " + "AND (? IS NULL OR d.tipo = ?) "
+		String sql = "SELECT COUNT(*) " + "FROM " + TABLE_NAME + " d "
+				+ "JOIN prodotto p ON d.fk_prodotto = p.id_prodotto " + "WHERE (? IS NULL OR p.categoria = ?) "
+				+ "AND (? IS NULL OR p.marca = ?) " + "AND (? IS NULL OR p.prezzo <= ?) "
+				+ "AND (? IS NULL OR d.tipo = ?) "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {

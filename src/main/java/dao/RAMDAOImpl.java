@@ -98,7 +98,7 @@ public class RAMDAOImpl implements RAMDAO {
 
 		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
 
-		String sql = "SELECT * " + "FROM ram r " + "JOIN prodotto p ON r.fk_prodotto = p.id_prodotto "
+		String sql = "SELECT * " + "FROM " + TABLE_NAME + " r " + "JOIN prodotto p ON r.fk_prodotto = p.id_prodotto "
 				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
 				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
 				+ "AND (? IS NULL OR r.capacita = ?) " + "AND (? IS NULL OR r.frequenza = ?) "
@@ -207,7 +207,7 @@ public class RAMDAOImpl implements RAMDAO {
 
 		String tipoRam = mobo.getTipoRam(); // DDR4 / DDR5
 
-		String sql = "SELECT * " + "FROM ram r " + "JOIN prodotto p ON r.fk_prodotto = p.id_prodotto "
+		String sql = "SELECT * " + "FROM " + TABLE_NAME + " r " + "JOIN prodotto p ON r.fk_prodotto = p.id_prodotto "
 				+ "WHERE p.attivo = true " + "AND (? IS NULL OR r.tipo = ?)";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -247,9 +247,8 @@ public class RAMDAOImpl implements RAMDAO {
 		return lista;
 	}
 
-	public int doCountFilteredProducts(String cerca, String categoria, String prezzo, String marca, String capacita,
-			String frequenza, String tipo) throws SQLException {
-		List<RAMBean> lista = new LinkedList<>();
+	public synchronized int doCountFilteredProducts(String cerca, String categoria, String prezzo, String marca,
+			String capacita, String frequenza, String tipo) throws SQLException {
 
 		categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
 		marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
@@ -262,11 +261,9 @@ public class RAMDAOImpl implements RAMDAO {
 			prezzoMax = Double.parseDouble(prezzo);
 		}
 
-		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
-
-		String sql = "SELECT COUNT(*) " + "FROM ram r " + "JOIN prodotto p ON r.fk_prodotto = p.id_prodotto "
-				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
-				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
+		String sql = "SELECT COUNT(*) " + "FROM " + TABLE_NAME + " r "
+				+ "JOIN prodotto p ON r.fk_prodotto = p.id_prodotto " + "WHERE (? IS NULL OR p.categoria = ?) "
+				+ "AND (? IS NULL OR p.marca = ?) " + "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
 				+ "AND (? IS NULL OR r.capacita = ?) " + "AND (? IS NULL OR r.frequenza = ?) "
 				+ "AND (? IS NULL OR r.tipo = ?) "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
@@ -301,7 +298,6 @@ public class RAMDAOImpl implements RAMDAO {
 			ps.setString(14, cerca);
 			ps.setString(15, cerca);
 			ps.setString(16, cerca);
-
 
 			try (ResultSet rs = ps.executeQuery()) {
 				if (rs.next()) {

@@ -99,7 +99,7 @@ public class ChassisDAOImpl implements ChassisDAO {
 			prezzoMax = Double.parseDouble(prezzo);
 		}
 
-		String sql = "SELECT * " + "FROM chassis ch " + "JOIN prodotto p ON ch.fk_prodotto = p.id_prodotto "
+		String sql = "SELECT * " + "FROM " + TABLE_NAME + " ch " + "JOIN prodotto p ON ch.fk_prodotto = p.id_prodotto "
 				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
 				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
 				+ "AND (? IS NULL OR ch.formato = ?) " + "AND (? IS NULL OR ch.colore = ?) "
@@ -171,7 +171,7 @@ public class ChassisDAOImpl implements ChassisDAO {
 		return lista;
 	}
 
-	public boolean doUpdate(ChassisBean chassis) throws SQLException {
+	public synchronized boolean doUpdate(ChassisBean chassis) throws SQLException {
 
 		ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
 		prodottoDAO.doUpdate(chassis);
@@ -196,7 +196,7 @@ public class ChassisDAOImpl implements ChassisDAO {
 		return prodottoDAO.setProductStatus(chassis.getIdProdotto(), attivo);
 	}
 
-	public Collection<ChassisBean> chassisCompatibili(int moboId) throws SQLException {
+	public synchronized Collection<ChassisBean> chassisCompatibili(int moboId) throws SQLException {
 
 		Collection<ChassisBean> lista = new LinkedList<>();
 
@@ -204,7 +204,7 @@ public class ChassisDAOImpl implements ChassisDAO {
 
 		MoboBean mobo = moboDAO.doRetrieveByKey(moboId);
 
-		String sql = "SELECT * " + "FROM chassis ch " + "JOIN prodotto p ON ch.fk_prodotto = p.id_prodotto "
+		String sql = "SELECT * " + "FROM " + TABLE_NAME + " ch " + "JOIN prodotto p ON ch.fk_prodotto = p.id_prodotto "
 				+ "WHERE ch.formato = ? " + "AND p.attivo = true";
 
 		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
@@ -249,9 +249,6 @@ public class ChassisDAOImpl implements ChassisDAO {
 	@Override
 	public synchronized int doCountFilteredProducts(String cerca, String categoria, String prezzo, String marca, String formato, String colore) 
 			throws SQLException {
-
-	    List<ChassisBean> lista = new LinkedList<>();
-	    ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
 	    
 	    categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
 	    marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
@@ -265,7 +262,7 @@ public class ChassisDAOImpl implements ChassisDAO {
 	    
 	    String sql =
 	        "SELECT COUNT(*) " +
-	        "FROM chassis ch " +
+	        "FROM " + TABLE_NAME + " ch " +
 	        "JOIN prodotto p ON ch.fk_prodotto = p.id_prodotto " +
 	        "WHERE (? IS NULL OR p.categoria = ?) " +
 	        "AND (? IS NULL OR p.marca = ?) " +

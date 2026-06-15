@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.Collection;
 
 import model.PSUBean;
-import model.RAMBean;
 
 public interface PSUDAO {
 	

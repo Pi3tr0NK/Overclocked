@@ -12,255 +12,237 @@ import javax.sql.DataSource;
 import model.UtenteBean;
 import model.UtenteBean.Ruolo;
 
-public class UtenteDAOImpl implements UtenteDAO{
+public class UtenteDAOImpl implements UtenteDAO {
 	private static final String TABLE_NAME = "utente";
-    private DataSource ds;
+	private DataSource ds;
 
-    public UtenteDAOImpl(DataSource ds) {
-        this.ds = ds;
-    }
-    
-    public synchronized void doSave(UtenteBean u) throws SQLException {
+	public UtenteDAOImpl(DataSource ds) {
+		this.ds = ds;
+	}
 
-        String sql =
-            "INSERT INTO " + TABLE_NAME +
-            " (email, nome, cognome, password, cellulare, fk_indirizzo, ruolo) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?)";
+	public synchronized void doSave(UtenteBean u) throws SQLException {
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+		String sql = "INSERT INTO " + TABLE_NAME + " (email, nome, cognome, password, cellulare, fk_indirizzo, ruolo) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-            ps.setString(1, u.getEmail());
-            ps.setString(2, u.getNome());
-            ps.setString(3, u.getCognome());
-            ps.setString(4, u.getPassword());
-            ps.setString(5, u.getCellulare());
-            ps.setInt(6, u.getIndirizzo().getIdIndirizzo());
-            ps.setString(7, u.getRuolo().name());
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.executeUpdate();
-        }
-    }
-    
-    public synchronized UtenteBean doRetrieveByKey(int id) throws SQLException {
+			ps.setString(1, u.getEmail());
+			ps.setString(2, u.getNome());
+			ps.setString(3, u.getCognome());
+			ps.setString(4, u.getPassword());
+			ps.setString(5, u.getCellulare());
+			ps.setInt(6, u.getIndirizzo().getIdIndirizzo());
+			ps.setString(7, u.getRuolo().name());
 
-        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id_utente = ?";
+			ps.executeUpdate();
+		}
+	}
 
-        UtenteBean u = null;
+	public synchronized UtenteBean doRetrieveByKey(int id) throws SQLException {
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id_utente = ?";
 
-            ps.setInt(1, id);
+		UtenteBean u = null;
 
-            try (ResultSet rs = ps.executeQuery()) {
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-                if (rs.next()) {
-                    u = new UtenteBean();
-                    
-                    IndirizzoDAOImpl ind= new IndirizzoDAOImpl(ds);
-                    
+			ps.setInt(1, id);
 
-                    u.setIdUtente(rs.getInt("id_utente"));
-                    u.setEmail(rs.getString("email"));
-                    u.setNome(rs.getString("nome"));
-                    u.setCognome(rs.getString("cognome"));
-                    u.setPassword(rs.getString("password"));
-                    u.setCellulare(rs.getString("cellulare"));
-                    u.setIndirizzo(ind.doRetrieveByKey(rs.getInt("fk_indirizzo")));
-                    u.setRuolo(Ruolo.valueOf(rs.getString("ruolo")));
-                }
-            }
-        }
+			try (ResultSet rs = ps.executeQuery()) {
 
-        return u;
-    }
-    
-    public synchronized UtenteBean doRetrieveByEmail(String email) throws SQLException {
+				if (rs.next()) {
+					u = new UtenteBean();
 
-        String sql =
-            "SELECT * FROM " + TABLE_NAME +" WHERE email = ?";
+					IndirizzoDAOImpl ind = new IndirizzoDAOImpl(ds);
 
-        UtenteBean u = null;
+					u.setIdUtente(rs.getInt("id_utente"));
+					u.setEmail(rs.getString("email"));
+					u.setNome(rs.getString("nome"));
+					u.setCognome(rs.getString("cognome"));
+					u.setPassword(rs.getString("password"));
+					u.setCellulare(rs.getString("cellulare"));
+					u.setIndirizzo(ind.doRetrieveByKey(rs.getInt("fk_indirizzo")));
+					u.setRuolo(Ruolo.valueOf(rs.getString("ruolo")));
+				}
+			}
+		}
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+		return u;
+	}
 
-            ps.setString(1, email);
+	public synchronized UtenteBean doRetrieveByEmail(String email) throws SQLException {
 
-            try (ResultSet rs = ps.executeQuery()) {
+		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE email = ?";
 
-                if (rs.next()) {
-                    u = new UtenteBean();
+		UtenteBean u = null;
 
-                    IndirizzoDAOImpl ind= new IndirizzoDAOImpl(ds);
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-                    u.setIdUtente(rs.getInt("id_utente"));
-                    u.setEmail(rs.getString("email"));
-                    u.setNome(rs.getString("nome"));
-                    u.setCognome(rs.getString("cognome"));
-                    u.setPassword(rs.getString("password"));
-                    u.setCellulare(rs.getString("cellulare"));
-                    u.setIndirizzo(ind.doRetrieveByKey(rs.getInt("fk_indirizzo")));
-                    u.setRuolo(Ruolo.valueOf(rs.getString("ruolo")));
-                }
-            }
-        }
+			ps.setString(1, email);
 
-        return u;
-    }
-    
-    public synchronized boolean doUpdate(UtenteBean u) throws SQLException {
+			try (ResultSet rs = ps.executeQuery()) {
 
-        String sql =
-            "UPDATE " + TABLE_NAME + " SET nome=?, cognome=?, cellulare=?, fk_indirizzo=?, ruolo=? WHERE id_utente=?";
+				if (rs.next()) {
+					u = new UtenteBean();
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+					IndirizzoDAOImpl ind = new IndirizzoDAOImpl(ds);
 
-            ps.setString(1, u.getNome());
-            ps.setString(2, u.getCognome());
-            ps.setString(3, u.getCellulare());
-            ps.setInt(4, u.getIndirizzo().getIdIndirizzo());
-            ps.setString(5, u.getRuolo().name());
-            ps.setInt(6, u.getIdUtente());
+					u.setIdUtente(rs.getInt("id_utente"));
+					u.setEmail(rs.getString("email"));
+					u.setNome(rs.getString("nome"));
+					u.setCognome(rs.getString("cognome"));
+					u.setPassword(rs.getString("password"));
+					u.setCellulare(rs.getString("cellulare"));
+					u.setIndirizzo(ind.doRetrieveByKey(rs.getInt("fk_indirizzo")));
+					u.setRuolo(Ruolo.valueOf(rs.getString("ruolo")));
+				}
+			}
+		}
 
-            return ps.executeUpdate() > 0;
-        }
-    }
-    
-    public synchronized UtenteBean checkLogin(String email, String password) throws SQLException {
+		return u;
+	}
 
-        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE email = ? AND password = ?";
+	public synchronized boolean doUpdate(UtenteBean u) throws SQLException {
 
-        UtenteBean u = null;
+		String sql = "UPDATE " + TABLE_NAME
+				+ " SET nome=?, cognome=?, cellulare=?, fk_indirizzo=?, ruolo=? WHERE id_utente=?";
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setString(1, email);
-            ps.setString(2, password);
+			ps.setString(1, u.getNome());
+			ps.setString(2, u.getCognome());
+			ps.setString(3, u.getCellulare());
+			ps.setInt(4, u.getIndirizzo().getIdIndirizzo());
+			ps.setString(5, u.getRuolo().name());
+			ps.setInt(6, u.getIdUtente());
 
-            try (ResultSet rs = ps.executeQuery()) {
+			return ps.executeUpdate() > 0;
+		}
+	}
 
-                if (rs.next()) {
-                    u = new UtenteBean();
+	public synchronized UtenteBean checkLogin(String email, String password) throws SQLException {
 
-                    IndirizzoDAOImpl ind= new IndirizzoDAOImpl(ds);
+		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE email = ? AND password = ?";
 
-                    u.setIdUtente(rs.getInt("id_utente"));
-                    u.setEmail(rs.getString("email"));
-                    u.setNome(rs.getString("nome"));
-                    u.setCognome(rs.getString("cognome"));
-                    u.setPassword(rs.getString("password"));
-                    u.setCellulare(rs.getString("cellulare"));
-                    u.setIndirizzo(ind.doRetrieveByKey(rs.getInt("fk_indirizzo")));
-                    u.setRuolo(Ruolo.valueOf(rs.getString("ruolo")));
-                }
-            }
-        }
+		UtenteBean u = null;
 
-        return u;
-    }
-    
-    public synchronized List<UtenteBean> doRetrieveAll() throws SQLException {
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-        List<UtenteBean> list = new LinkedList<>();
+			ps.setString(1, email);
+			ps.setString(2, password);
 
-        String sql = "SELECT * FROM " + TABLE_NAME;
+			try (ResultSet rs = ps.executeQuery()) {
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-        	
-        		IndirizzoDAOImpl ind= new IndirizzoDAOImpl(ds);
+				if (rs.next()) {
+					u = new UtenteBean();
 
-            while (rs.next()) {
+					IndirizzoDAOImpl ind = new IndirizzoDAOImpl(ds);
 
-                UtenteBean u = new UtenteBean();
+					u.setIdUtente(rs.getInt("id_utente"));
+					u.setEmail(rs.getString("email"));
+					u.setNome(rs.getString("nome"));
+					u.setCognome(rs.getString("cognome"));
+					u.setPassword(rs.getString("password"));
+					u.setCellulare(rs.getString("cellulare"));
+					u.setIndirizzo(ind.doRetrieveByKey(rs.getInt("fk_indirizzo")));
+					u.setRuolo(Ruolo.valueOf(rs.getString("ruolo")));
+				}
+			}
+		}
 
-                
+		return u;
+	}
 
-                u.setIdUtente(rs.getInt("id_utente"));
-                u.setEmail(rs.getString("email"));
-                u.setNome(rs.getString("nome"));
-                u.setCognome(rs.getString("cognome"));
-                u.setPassword(rs.getString("password"));
-                u.setCellulare(rs.getString("cellulare"));
-                u.setIndirizzo(ind.doRetrieveByKey(rs.getInt("fk_indirizzo")));
-                u.setRuolo(Ruolo.valueOf(rs.getString("ruolo")));
+	public synchronized List<UtenteBean> doRetrieveAll() throws SQLException {
 
-                list.add(u);
-            }
-        }
+		List<UtenteBean> list = new LinkedList<>();
 
-        return list;
-    }
-    
-    public synchronized boolean updatePassword(int idUtente, String newPassword) throws SQLException {
+		String sql = "SELECT * FROM " + TABLE_NAME;
 
-        String sql = "UPDATE " + TABLE_NAME + " SET password = ? WHERE id_utente = ?";
+		try (Connection con = ds.getConnection();
+				PreparedStatement ps = con.prepareStatement(sql);
+				ResultSet rs = ps.executeQuery()) {
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+			IndirizzoDAOImpl ind = new IndirizzoDAOImpl(ds);
 
-            ps.setString(1, newPassword);
-            ps.setInt(2, idUtente);
+			while (rs.next()) {
 
-            return ps.executeUpdate() > 0;
-        }
-    }
-    
-    public synchronized boolean updateRuolo(int idUtente, Ruolo ruolo) throws SQLException {
+				UtenteBean u = new UtenteBean();
 
-        String sql = "UPDATE utente SET ruolo = ? WHERE id_utente = ?";
+				u.setIdUtente(rs.getInt("id_utente"));
+				u.setEmail(rs.getString("email"));
+				u.setNome(rs.getString("nome"));
+				u.setCognome(rs.getString("cognome"));
+				u.setPassword(rs.getString("password"));
+				u.setCellulare(rs.getString("cellulare"));
+				u.setIndirizzo(ind.doRetrieveByKey(rs.getInt("fk_indirizzo")));
+				u.setRuolo(Ruolo.valueOf(rs.getString("ruolo")));
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+				list.add(u);
+			}
+		}
 
-            ps.setString(1, ruolo.name());
-            ps.setInt(2, idUtente);
+		return list;
+	}
 
-            return ps.executeUpdate() > 0;
-        }
-    }
-    
-    public synchronized int doCountUtenti(String ruolo) throws SQLException {
+	public synchronized boolean updatePassword(int idUtente, String newPassword) throws SQLException {
 
-        String sql =
-            "SELECT COUNT(*) " +
-            "FROM " + TABLE_NAME + " " +
-            "WHERE (? IS NULL OR ruolo = ?)";
+		String sql = "UPDATE " + TABLE_NAME + " SET password = ? WHERE id_utente = ?";
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setString(1, ruolo);
-            ps.setString(2, ruolo);
+			ps.setString(1, newPassword);
+			ps.setInt(2, idUtente);
 
-            try (ResultSet rs = ps.executeQuery()) {
+			return ps.executeUpdate() > 0;
+		}
+	}
 
-                if (rs.next()) {
-                    return rs.getInt(1);
-                }
-            }
-        }
+	public synchronized boolean updateRuolo(int idUtente, Ruolo ruolo) throws SQLException {
 
-        return 0;
-    }
-    
-    public synchronized boolean setUtenteRuolo(int idUtente, Ruolo ruolo) throws SQLException {
+		String sql = "UPDATE " + TABLE_NAME + " SET ruolo = ? WHERE id_utente = ?";
 
-        String sql = "UPDATE " + TABLE_NAME + " SET ruolo=? WHERE id_utente=?";
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+			ps.setString(1, ruolo.name());
+			ps.setInt(2, idUtente);
 
-            ps.setString(1, ruolo.name());
-            ps.setInt(2, idUtente);
+			return ps.executeUpdate() > 0;
+		}
+	}
 
-            return ps.executeUpdate() > 0;
-        }
-    }
-    
+	public synchronized int doCountUtenti(String ruolo) throws SQLException {
+
+		String sql = "SELECT COUNT(*) " + "FROM " + TABLE_NAME + " " + "WHERE (? IS NULL OR ruolo = ?)";
+
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setString(1, ruolo);
+			ps.setString(2, ruolo);
+
+			try (ResultSet rs = ps.executeQuery()) {
+
+				if (rs.next()) {
+					return rs.getInt(1);
+				}
+			}
+		}
+
+		return 0;
+	}
+
+	public synchronized boolean setUtenteRuolo(int idUtente, Ruolo ruolo) throws SQLException {
+
+		String sql = "UPDATE " + TABLE_NAME + " SET ruolo=? WHERE id_utente=?";
+
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setString(1, ruolo.name());
+			ps.setInt(2, idUtente);
+
+			return ps.executeUpdate() > 0;
+		}
+	}
+
 }

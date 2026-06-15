@@ -121,7 +121,7 @@ public class MoboDAOImpl implements MoboDAO {
 			slotRamInt = Integer.parseInt(slotram);
 		}
 
-		String sql = "SELECT * " + "FROM mobo m " + "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto "
+		String sql = "SELECT * " + "FROM " + TABLE_NAME + " m " + "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto "
 				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
 				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " + "AND (? IS NULL OR m.formato = ?) "
 				+ "AND (? IS NULL OR m.nvme = ?) " + "AND (? IS NULL OR m.slotram = ?) "
@@ -239,13 +239,13 @@ public class MoboDAOImpl implements MoboDAO {
 		}
 	}
 
-	public Collection<MoboBean> moboCompatibili(int cpuId) throws SQLException {
+	public synchronized Collection<MoboBean> moboCompatibili(int cpuId) throws SQLException {
 		Collection<MoboBean> lista = new LinkedList<>();
 		CPUDAOImpl cpuDAO = new CPUDAOImpl(ds);
 
 		CPUBean cpu = cpuDAO.doRetrieveByKey(cpuId);
 
-		String sql = "SELECT * " + "FROM mobo m " + "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto "
+		String sql = "SELECT * " + "FROM " + TABLE_NAME + " m " + "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto "
 				+ "WHERE m.socket = ? " + "AND m.tiporam = ? " + "AND p.attivo = true";
 
 		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
@@ -305,9 +305,6 @@ public class MoboDAOImpl implements MoboDAO {
 	public synchronized int doCountFilteredProducts(String cerca, String categoria, String prezzo, String marca,
 			String formato, String nvme, String slotram) throws SQLException {
 
-		List<MoboBean> lista = new LinkedList<>();
-		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
-
 		categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
 		marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
 		formato = (formato == null || formato.trim().isEmpty()) ? null : formato;
@@ -324,10 +321,11 @@ public class MoboDAOImpl implements MoboDAO {
 			slotRamInt = Integer.parseInt(slotram);
 		}
 
-		String sql = "SELECT COUNT(*) " + "FROM mobo m " + "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto "
-				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
-				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " + "AND (? IS NULL OR m.formato = ?) "
-				+ "AND (? IS NULL OR m.nvme = ?) " + "AND (? IS NULL OR m.slotram = ?) "
+		String sql = "SELECT COUNT(*) " + "FROM " + TABLE_NAME + " m "
+				+ "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto " + "WHERE (? IS NULL OR p.categoria = ?) "
+				+ "AND (? IS NULL OR p.marca = ?) " + "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
+				+ "AND (? IS NULL OR m.formato = ?) " + "AND (? IS NULL OR m.nvme = ?) "
+				+ "AND (? IS NULL OR m.slotram = ?) "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {

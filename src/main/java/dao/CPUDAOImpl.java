@@ -108,7 +108,7 @@ public class CPUDAOImpl implements CPUDAO {
 			coreInt = Integer.parseInt(core);
 		}
 
-		String sql = "SELECT * " + "FROM cpu c " + "JOIN prodotto p ON c.fk_prodotto = p.id_prodotto "
+		String sql = "SELECT * " + "FROM " + TABLE_NAME + " c " + "JOIN prodotto p ON c.fk_prodotto = p.id_prodotto "
 				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
 				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " + "AND (? IS NULL OR c.core = ?) "
 				+ "AND (? IS NULL OR c.frequenza = ?) "
@@ -195,12 +195,12 @@ public class CPUDAOImpl implements CPUDAO {
 		return lista;
 	}
 
-	public boolean doUpdate(CPUBean cpu) throws SQLException {
+	public synchronized boolean doUpdate(CPUBean cpu) throws SQLException {
 
 		ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
 		prodottoDAO.doUpdate(cpu);
 
-		String sql = "UPDATE cpu SET core = ?, thread = ?, frequenza = ?, frequenza_ram = ?, tiporam = ?, socket = ?, tdp = ? WHERE id_cpu = ?";
+		String sql = "UPDATE " + TABLE_NAME + " SET core = ?, thread = ?, frequenza = ?, frequenza_ram = ?, tiporam = ?, socket = ?, tdp = ? WHERE id_cpu = ?";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -227,9 +227,6 @@ public class CPUDAOImpl implements CPUDAO {
 	public synchronized int doCountFilteredProducts(String cerca, String categoria, String prezzo, String marca,
 			String core, String frequenza) throws SQLException {
 
-		List<CPUBean> lista = new LinkedList<>();
-		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
-
 		categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
 		marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
 		frequenza = (frequenza == null || frequenza.trim().isEmpty()) ? null : frequenza;
@@ -244,7 +241,7 @@ public class CPUDAOImpl implements CPUDAO {
 			coreInt = Integer.parseInt(core);
 		}
 
-		String sql = "SELECT COUNT(*) " + "FROM cpu c " + "JOIN prodotto p ON c.fk_prodotto = p.id_prodotto "
+		String sql = "SELECT COUNT(*) " + "FROM " + TABLE_NAME + " c " + "JOIN prodotto p ON c.fk_prodotto = p.id_prodotto "
 				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
 				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " + "AND (? IS NULL OR c.core = ?) "
 				+ "AND (? IS NULL OR c.frequenza = ?) "

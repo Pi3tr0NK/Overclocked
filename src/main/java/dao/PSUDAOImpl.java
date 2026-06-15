@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,349 +17,323 @@ import model.PSUBean.Formato;
 import model.PSUBean.Modulare;
 
 public class PSUDAOImpl implements PSUDAO {
-	
+
 	private static final String TABLE_NAME = "psu";
-    private DataSource ds;
+	private DataSource ds;
 
-    public PSUDAOImpl(DataSource ds) {
-        this.ds = ds;
-    }
+	public PSUDAOImpl(DataSource ds) {
+		this.ds = ds;
+	}
 
-    public synchronized void doSave(PSUBean psu) throws SQLException {
-        
-    	
-    	ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
-        int id = prodottoDAO.doSave(psu);
-        
-        
-    	String sql = "INSERT INTO "+ TABLE_NAME +" (potenza, certificazione, modulare, formato, fk_prodotto) VALUES (?, ?, ?, ?, ?)";
+	public synchronized void doSave(PSUBean psu) throws SQLException {
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+		ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
+		int id = prodottoDAO.doSave(psu);
 
-            ps.setInt(1, psu.getPotenza());
-            ps.setString(2, psu.getCertificazione());
-            ps.setString(3, psu.getModulare().name());
-            ps.setString(4, psu.getFormato().name());
-            ps.setInt(4, id);
-            ps.executeUpdate();
-        }
-    }
-    
-    public synchronized PSUBean doRetrieveByKey(int idPSU) throws SQLException {
-    	
-    	ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
-    	
-        String sql = "SELECT * FROM "+ TABLE_NAME +" ps JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto WHERE p.id_prodotto  = ?";
+		String sql = "INSERT INTO " + TABLE_NAME
+				+ " (potenza, certificazione, modulare, formato, fk_prodotto) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setInt(1, idPSU);
+			ps.setInt(1, psu.getPotenza());
+			ps.setString(2, psu.getCertificazione());
+			ps.setString(3, psu.getModulare().name());
+			ps.setString(4, psu.getFormato().name());
+			ps.setInt(4, id);
+			ps.executeUpdate();
+		}
+	}
 
-            ResultSet rs = ps.executeQuery();
+	public synchronized PSUBean doRetrieveByKey(int idPSU) throws SQLException {
 
-            if (rs.next()) {
+		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
 
-                PSUBean psu = new PSUBean();
+		String sql = "SELECT * FROM " + TABLE_NAME
+				+ " ps JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto WHERE p.id_prodotto  = ?";
 
-                psu.setIdProdotto(rs.getInt("id_prodotto"));
-                psu.setNome(rs.getString("nome"));
-                psu.setModello(rs.getString("modello"));
-                psu.setDescrizione(rs.getString("descrizione"));
-                psu.setMarca(rs.getString("marca"));
-                psu.setPrezzo(rs.getDouble("prezzo"));
-                psu.setStock(rs.getInt("stock"));
-                psu.setDimensioni(rs.getString("dimensioni"));
-                psu.setPeso(rs.getString("peso"));
-                psu.setAttivo(rs.getBoolean("attivo"));
-                psu.setSconto(rs.getInt("sconto"));
-		        psu.setCategoria(rs.getString("categoria"));
-		        psu.setImmagini(immaginiDAO.doRetrieveByProdotto(psu.getIdProdotto()));
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-                psu.setIdPsu(rs.getInt("id_psu"));
-                psu.setPotenza(rs.getInt("potenza"));
-                psu.setCertificazione(rs.getString("certificazione"));
-                psu.setModulare(Modulare.valueOf(rs.getString("modulare")));
-                psu.setFormato(Formato.valueOf(rs.getString("formato")));
+			ps.setInt(1, idPSU);
 
-                return psu;
-            }
-        }
+			ResultSet rs = ps.executeQuery();
 
-        return null;
-    }
-    
-    @Override
-    public synchronized Collection<PSUBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String potenza, String certificazione, String modulare, int pagina) throws SQLException
-    {
-    		
-	    	 List<PSUBean> lista = new LinkedList<>();
-	    	 ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
-	    	 
-	    	 categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
-	    	 marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
-	    	 certificazione = (certificazione == null || certificazione.trim().isEmpty()) ? null : certificazione;
-	    	 modulare = (modulare == null || modulare.trim().isEmpty()) ? null : modulare;
-	
-	    	 Double prezzoMax = null;
-	    	 if (prezzo != null && !prezzo.trim().isEmpty()) {
-	    	     prezzoMax = Double.parseDouble(prezzo);
-	    	 }
-	
-	    	 Integer potenzaInt = null;
-	    	 if (potenza != null && !potenza.trim().isEmpty()) {
-	    	     potenzaInt = Integer.parseInt(potenza);
-	    	 }
+			if (rs.next()) {
 
-         String sql =
-             "SELECT * " +
-             "FROM psu ps " +
-             "JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto " +
-             "WHERE (? IS NULL OR p.categoria = ?) " +
-             "AND (? IS NULL OR p.marca = ?) " +
-             "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
-             "AND (? IS NULL OR ps.potenza = ?) " +
-             "AND (? IS NULL OR ps.certificazione = ?) " +
-             "AND (? IS NULL OR ps.modulare = ?) "+
-             "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))" +
-     	     "LIMIT ? OFFSET ?";;
+				PSUBean psu = new PSUBean();
 
-         try (Connection con = ds.getConnection();
-              PreparedStatement ps = con.prepareStatement(sql)) {
+				psu.setIdProdotto(rs.getInt("id_prodotto"));
+				psu.setNome(rs.getString("nome"));
+				psu.setModello(rs.getString("modello"));
+				psu.setDescrizione(rs.getString("descrizione"));
+				psu.setMarca(rs.getString("marca"));
+				psu.setPrezzo(rs.getDouble("prezzo"));
+				psu.setStock(rs.getInt("stock"));
+				psu.setDimensioni(rs.getString("dimensioni"));
+				psu.setPeso(rs.getString("peso"));
+				psu.setAttivo(rs.getBoolean("attivo"));
+				psu.setSconto(rs.getInt("sconto"));
+				psu.setCategoria(rs.getString("categoria"));
+				psu.setImmagini(immaginiDAO.doRetrieveByProdotto(psu.getIdProdotto()));
 
-             ps.setString(1, categoria);
-             ps.setString(2, categoria);
+				psu.setIdPsu(rs.getInt("id_psu"));
+				psu.setPotenza(rs.getInt("potenza"));
+				psu.setCertificazione(rs.getString("certificazione"));
+				psu.setModulare(Modulare.valueOf(rs.getString("modulare")));
+				psu.setFormato(Formato.valueOf(rs.getString("formato")));
 
-             ps.setString(3, marca);
-             ps.setString(4, marca);
+				return psu;
+			}
+		}
 
-             if (prezzoMax == null) {
-                 ps.setNull(5, java.sql.Types.DOUBLE);
-                 ps.setNull(6, java.sql.Types.DOUBLE);
-             } else {
-                 ps.setDouble(5, prezzoMax);
-                 ps.setDouble(6, prezzoMax);
-             }
+		return null;
+	}
 
-             if (potenzaInt == null) {
-                 ps.setNull(7, java.sql.Types.INTEGER);
-                 ps.setNull(8, java.sql.Types.INTEGER);
-             } else {
-                 ps.setInt(7, potenzaInt);
-                 ps.setInt(8, potenzaInt);
-             }
+	@Override
+	public synchronized Collection<PSUBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca,
+			String potenza, String certificazione, String modulare, int pagina) throws SQLException {
 
-             ps.setString(9, certificazione);
-             ps.setString(10, certificazione);
+		List<PSUBean> lista = new LinkedList<>();
+		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
 
-             ps.setString(11, modulare);
-             ps.setString(12, modulare);
-             
-             ps.setString(13, cerca);
-             ps.setString(14, cerca);
-             ps.setString(15, cerca);
-             ps.setString(16, cerca);
+		categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
+		marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
+		certificazione = (certificazione == null || certificazione.trim().isEmpty()) ? null : certificazione;
+		modulare = (modulare == null || modulare.trim().isEmpty()) ? null : modulare;
 
-         	int offset = (pagina - 1) * 10;
+		Double prezzoMax = null;
+		if (prezzo != null && !prezzo.trim().isEmpty()) {
+			prezzoMax = Double.parseDouble(prezzo);
+		}
 
-         	ps.setInt(17, 10);
-         	ps.setInt(18, offset);
-         	
-             try (ResultSet rs = ps.executeQuery()){
-    	        		while (rs.next()) {
+		Integer potenzaInt = null;
+		if (potenza != null && !potenza.trim().isEmpty()) {
+			potenzaInt = Integer.parseInt(potenza);
+		}
 
-                    PSUBean psu = new PSUBean();
+		String sql = "SELECT * " + "FROM " + TABLE_NAME + " ps " + "JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto "
+				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
+				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
+				+ "AND (? IS NULL OR ps.potenza = ?) " + "AND (? IS NULL OR ps.certificazione = ?) "
+				+ "AND (? IS NULL OR ps.modulare = ?) "
+				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))" + "LIMIT ? OFFSET ?";
+		;
 
-                    psu.setIdProdotto(rs.getInt("id_prodotto"));
-                    psu.setNome(rs.getString("nome"));
-                    psu.setModello(rs.getString("modello"));
-                    psu.setDescrizione(rs.getString("descrizione"));
-                    psu.setMarca(rs.getString("marca"));
-                    psu.setPrezzo(rs.getDouble("prezzo"));
-                    psu.setStock(rs.getInt("stock"));
-                    psu.setDimensioni(rs.getString("dimensioni"));
-                    psu.setPeso(rs.getString("peso"));
-                    psu.setAttivo(rs.getBoolean("attivo"));
-                    psu.setSconto(rs.getInt("sconto"));
-	    		        psu.setCategoria(rs.getString("categoria"));
-	    		        psu.setImmagini(immaginiDAO.doRetrieveByProdotto(psu.getIdProdotto()));
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-                    psu.setIdPsu(rs.getInt("id_psu"));
-                    psu.setPotenza(rs.getInt("potenza"));
-                    psu.setCertificazione(rs.getString("certificazione"));
-                    psu.setModulare(Modulare.valueOf(rs.getString("modulare")));
-                    psu.setFormato(Formato.valueOf(rs.getString("formato")));
+			ps.setString(1, categoria);
+			ps.setString(2, categoria);
 
-    	            		lista.add(psu);
-    	        		}
-             }
-    	    }
+			ps.setString(3, marca);
+			ps.setString(4, marca);
 
-    	    return lista;
-    }
-    
-    public synchronized boolean doUpdate(PSUBean psu) throws SQLException
-    {
-        ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
-        prodottoDAO.doUpdate(psu);
-        
-        String sql = "UPDATE "+ TABLE_NAME +" SET potenza = ?, certificazione = ?, modulare = ?, formato = ? WHERE id_psu = ?";
+			if (prezzoMax == null) {
+				ps.setNull(5, java.sql.Types.DOUBLE);
+				ps.setNull(6, java.sql.Types.DOUBLE);
+			} else {
+				ps.setDouble(5, prezzoMax);
+				ps.setDouble(6, prezzoMax);
+			}
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+			if (potenzaInt == null) {
+				ps.setNull(7, java.sql.Types.INTEGER);
+				ps.setNull(8, java.sql.Types.INTEGER);
+			} else {
+				ps.setInt(7, potenzaInt);
+				ps.setInt(8, potenzaInt);
+			}
 
-            ps.setInt(1, psu.getPotenza());
-            ps.setString(2, psu.getCertificazione());
-            ps.setString(3, psu.getModulare().name());
-            ps.setString(4, psu.getFormato().name());
-            ps.setInt(5, psu.getIdPsu());
+			ps.setString(9, certificazione);
+			ps.setString(10, certificazione);
 
-            return ps.executeUpdate() > 0;
-        }
-    }
-    
-    public synchronized boolean setProductStatus(PSUBean psu, boolean attivo) throws SQLException
-    {
-    		ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
+			ps.setString(11, modulare);
+			ps.setString(12, modulare);
 
-    		return prodottoDAO.setProductStatus(psu.getIdProdotto(), attivo);
-    }
-    
-    public synchronized Collection<PSUBean> psuCompatibili(int cpuId, int gpuId) throws SQLException {
+			ps.setString(13, cerca);
+			ps.setString(14, cerca);
+			ps.setString(15, cerca);
+			ps.setString(16, cerca);
 
-        List<PSUBean> lista = new LinkedList<>();
-        ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
-        
-        CPUDAOImpl cpuDAO = new CPUDAOImpl(ds);
-        GPUDAOImpl gpuDAO = new GPUDAOImpl(ds);
+			int offset = (pagina - 1) * 10;
 
-        CPUBean cpu = cpuDAO.doRetrieveByKey(cpuId);
-        GPUBean gpu = gpuDAO.doRetrieveByKey(gpuId);
+			ps.setInt(17, 10);
+			ps.setInt(18, offset);
 
-        String sql =
-            "SELECT * " +
-            "FROM psu ps " +
-            "JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto " +
-            "WHERE p.attivo = true " +
-            "AND (ps.potenza * 0.8) >= ?";
+			try (ResultSet rs = ps.executeQuery()) {
+				while (rs.next()) {
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+					PSUBean psu = new PSUBean();
 
-            ps.setInt(1, cpu.getTdp() + gpu.getTdp());
+					psu.setIdProdotto(rs.getInt("id_prodotto"));
+					psu.setNome(rs.getString("nome"));
+					psu.setModello(rs.getString("modello"));
+					psu.setDescrizione(rs.getString("descrizione"));
+					psu.setMarca(rs.getString("marca"));
+					psu.setPrezzo(rs.getDouble("prezzo"));
+					psu.setStock(rs.getInt("stock"));
+					psu.setDimensioni(rs.getString("dimensioni"));
+					psu.setPeso(rs.getString("peso"));
+					psu.setAttivo(rs.getBoolean("attivo"));
+					psu.setSconto(rs.getInt("sconto"));
+					psu.setCategoria(rs.getString("categoria"));
+					psu.setImmagini(immaginiDAO.doRetrieveByProdotto(psu.getIdProdotto()));
 
-            try (ResultSet rs = ps.executeQuery()) {
+					psu.setIdPsu(rs.getInt("id_psu"));
+					psu.setPotenza(rs.getInt("potenza"));
+					psu.setCertificazione(rs.getString("certificazione"));
+					psu.setModulare(Modulare.valueOf(rs.getString("modulare")));
+					psu.setFormato(Formato.valueOf(rs.getString("formato")));
 
-                while (rs.next()) {
+					lista.add(psu);
+				}
+			}
+		}
 
-                    PSUBean psu = new PSUBean();
+		return lista;
+	}
 
-                    psu.setIdProdotto(rs.getInt("id_prodotto"));
-                    psu.setNome(rs.getString("nome"));
-                    psu.setModello(rs.getString("modello"));
-                    psu.setDescrizione(rs.getString("descrizione"));
-                    psu.setMarca(rs.getString("marca"));
-                    psu.setPrezzo(rs.getDouble("prezzo"));
-                    psu.setStock(rs.getInt("stock"));
-                    psu.setDimensioni(rs.getString("dimensioni"));
-                    psu.setPeso(rs.getString("peso"));
-                    psu.setAttivo(rs.getBoolean("attivo"));
-                    psu.setSconto(rs.getInt("sconto"));
-	    		        psu.setCategoria(rs.getString("categoria"));
-	    		        psu.setImmagini(immaginiDAO.doRetrieveByProdotto(psu.getIdProdotto()));
+	public synchronized boolean doUpdate(PSUBean psu) throws SQLException {
+		ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
+		prodottoDAO.doUpdate(psu);
 
-                    psu.setIdPsu(rs.getInt("id_psu"));
-                    psu.setPotenza(rs.getInt("potenza"));
-                    psu.setCertificazione(rs.getString("certificazione"));
-                    psu.setModulare(Modulare.valueOf(rs.getString("modulare")));
-                    psu.setFormato(Formato.valueOf(rs.getString("formato")));
+		String sql = "UPDATE " + TABLE_NAME
+				+ " SET potenza = ?, certificazione = ?, modulare = ?, formato = ? WHERE id_psu = ?";
 
-                    lista.add(psu);
-                }
-            }
-        }
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-        return lista;
-    }
-    
-    public synchronized int doCountFilteredProducts(String cerca, String categoria, String prezzo,String marca, String potenza, String certificazione, String modulare) throws SQLException
-    {
-       
-        	
-    	    	 List<PSUBean> lista = new LinkedList<>();
-    	    	 ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
-    	    	 
-    	    	 categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
-    	    	 marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
-    	    	 certificazione = (certificazione == null || certificazione.trim().isEmpty()) ? null : certificazione;
-    	    	 modulare = (modulare == null || modulare.trim().isEmpty()) ? null : modulare;
-    	
-    	    	 Double prezzoMax = null;
-    	    	 if (prezzo != null && !prezzo.trim().isEmpty()) {
-    	    	     prezzoMax = Double.parseDouble(prezzo);
-    	    	 }
-    	
-    	    	 Integer potenzaInt = null;
-    	    	 if (potenza != null && !potenza.trim().isEmpty()) {
-    	    	     potenzaInt = Integer.parseInt(potenza);
-    	    	 }
+			ps.setInt(1, psu.getPotenza());
+			ps.setString(2, psu.getCertificazione());
+			ps.setString(3, psu.getModulare().name());
+			ps.setString(4, psu.getFormato().name());
+			ps.setInt(5, psu.getIdPsu());
 
-             String sql =
-                 "SELECT COUNT(*) " +
-                 "FROM psu ps " +
-                 "JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto " +
-                 "WHERE (? IS NULL OR p.categoria = ?) " +
-                 "AND (? IS NULL OR p.marca = ?) " +
-                 "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
-                 "AND (? IS NULL OR ps.potenza = ?) " +
-                 "AND (? IS NULL OR ps.certificazione = ?) " +
-                 "AND (? IS NULL OR ps.modulare = ?) "+
-                 "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
-             
-             try (Connection con = ds.getConnection();
-                  PreparedStatement ps = con.prepareStatement(sql)) {
+			return ps.executeUpdate() > 0;
+		}
+	}
 
-                 ps.setString(1, categoria);
-                 ps.setString(2, categoria);
+	public synchronized boolean setProductStatus(PSUBean psu, boolean attivo) throws SQLException {
+		ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
 
-                 ps.setString(3, marca);
-                 ps.setString(4, marca);
+		return prodottoDAO.setProductStatus(psu.getIdProdotto(), attivo);
+	}
 
-                 if (prezzoMax == null) {
-                     ps.setNull(5, java.sql.Types.DOUBLE);
-                     ps.setNull(6, java.sql.Types.DOUBLE);
-                 } else {
-                     ps.setDouble(5, prezzoMax);
-                     ps.setDouble(6, prezzoMax);
-                 }
+	public synchronized Collection<PSUBean> psuCompatibili(int cpuId, int gpuId) throws SQLException {
 
-                 if (potenzaInt == null) {
-                     ps.setNull(7, java.sql.Types.INTEGER);
-                     ps.setNull(8, java.sql.Types.INTEGER);
-                 } else {
-                     ps.setInt(7, potenzaInt);
-                     ps.setInt(8, potenzaInt);
-                 }
+		List<PSUBean> lista = new LinkedList<>();
+		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
 
-                 ps.setString(9, certificazione);
-                 ps.setString(10, certificazione);
+		CPUDAOImpl cpuDAO = new CPUDAOImpl(ds);
+		GPUDAOImpl gpuDAO = new GPUDAOImpl(ds);
 
-                 ps.setString(11, modulare);
-                 ps.setString(12, modulare);
-                 
-                 ps.setString(13, cerca);
-                 ps.setString(14, cerca);
-                 ps.setString(15, cerca);
-                 ps.setString(16, cerca);
+		CPUBean cpu = cpuDAO.doRetrieveByKey(cpuId);
+		GPUBean gpu = gpuDAO.doRetrieveByKey(gpuId);
 
-             	
-             	try(ResultSet rs = ps.executeQuery()) {
-             	    if(rs.next()) {
-             	        return rs.getInt(1);
-             	    }
-             	}
-             	return 0;
-        }
-    }
+		String sql = "SELECT * " + "FROM " + TABLE_NAME + " ps " + "JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto "
+				+ "WHERE p.attivo = true " + "AND (ps.potenza * 0.8) >= ?";
+
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setInt(1, cpu.getTdp() + gpu.getTdp());
+
+			try (ResultSet rs = ps.executeQuery()) {
+
+				while (rs.next()) {
+
+					PSUBean psu = new PSUBean();
+
+					psu.setIdProdotto(rs.getInt("id_prodotto"));
+					psu.setNome(rs.getString("nome"));
+					psu.setModello(rs.getString("modello"));
+					psu.setDescrizione(rs.getString("descrizione"));
+					psu.setMarca(rs.getString("marca"));
+					psu.setPrezzo(rs.getDouble("prezzo"));
+					psu.setStock(rs.getInt("stock"));
+					psu.setDimensioni(rs.getString("dimensioni"));
+					psu.setPeso(rs.getString("peso"));
+					psu.setAttivo(rs.getBoolean("attivo"));
+					psu.setSconto(rs.getInt("sconto"));
+					psu.setCategoria(rs.getString("categoria"));
+					psu.setImmagini(immaginiDAO.doRetrieveByProdotto(psu.getIdProdotto()));
+
+					psu.setIdPsu(rs.getInt("id_psu"));
+					psu.setPotenza(rs.getInt("potenza"));
+					psu.setCertificazione(rs.getString("certificazione"));
+					psu.setModulare(Modulare.valueOf(rs.getString("modulare")));
+					psu.setFormato(Formato.valueOf(rs.getString("formato")));
+
+					lista.add(psu);
+				}
+			}
+		}
+
+		return lista;
+	}
+
+	public synchronized int doCountFilteredProducts(String cerca, String categoria, String prezzo, String marca,
+			String potenza, String certificazione, String modulare) throws SQLException {
+
+		categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
+		marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
+		certificazione = (certificazione == null || certificazione.trim().isEmpty()) ? null : certificazione;
+		modulare = (modulare == null || modulare.trim().isEmpty()) ? null : modulare;
+
+		Double prezzoMax = null;
+		if (prezzo != null && !prezzo.trim().isEmpty()) {
+			prezzoMax = Double.parseDouble(prezzo);
+		}
+
+		Integer potenzaInt = null;
+		if (potenza != null && !potenza.trim().isEmpty()) {
+			potenzaInt = Integer.parseInt(potenza);
+		}
+
+		String sql = "SELECT COUNT(*) " + "FROM " + TABLE_NAME + " ps "
+				+ "JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto " + "WHERE (? IS NULL OR p.categoria = ?) "
+				+ "AND (? IS NULL OR p.marca = ?) " + "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
+				+ "AND (? IS NULL OR ps.potenza = ?) " + "AND (? IS NULL OR ps.certificazione = ?) "
+				+ "AND (? IS NULL OR ps.modulare = ?) "
+				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
+
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setString(1, categoria);
+			ps.setString(2, categoria);
+
+			ps.setString(3, marca);
+			ps.setString(4, marca);
+
+			if (prezzoMax == null) {
+				ps.setNull(5, java.sql.Types.DOUBLE);
+				ps.setNull(6, java.sql.Types.DOUBLE);
+			} else {
+				ps.setDouble(5, prezzoMax);
+				ps.setDouble(6, prezzoMax);
+			}
+
+			if (potenzaInt == null) {
+				ps.setNull(7, java.sql.Types.INTEGER);
+				ps.setNull(8, java.sql.Types.INTEGER);
+			} else {
+				ps.setInt(7, potenzaInt);
+				ps.setInt(8, potenzaInt);
+			}
+
+			ps.setString(9, certificazione);
+			ps.setString(10, certificazione);
+
+			ps.setString(11, modulare);
+			ps.setString(12, modulare);
+
+			ps.setString(13, cerca);
+			ps.setString(14, cerca);
+			ps.setString(15, cerca);
+			ps.setString(16, cerca);
+
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getInt(1);
+				}
+			}
+			return 0;
+		}
+	}
 }

@@ -13,112 +13,108 @@ import javax.sql.DataSource;
 import model.IndirizzoBean;
 
 public class IndirizzoDAOImpl implements IndirizzoDAO {
-	
+
 	private static final String TABLE_NAME = "indirizzo";
-    private DataSource ds = null;
+	private DataSource ds = null;
 
-    public IndirizzoDAOImpl(DataSource ds) {
-        this.ds = ds;
-    }
+	public IndirizzoDAOImpl(DataSource ds) {
+		this.ds = ds;
+	}
 
-    @Override
-    public synchronized void doSave(IndirizzoBean indirizzo) throws SQLException {
-        String sql = "INSERT INTO "+TABLE_NAME+" (via_numciv, paese, citta, provincia, dati_plus, codice_postale) VALUES (?, ?, ?, ?, ?, ?)";
+	@Override
+	public synchronized void doSave(IndirizzoBean indirizzo) throws SQLException {
+		String sql = "INSERT INTO " + TABLE_NAME
+				+ " (via_numciv, paese, citta, provincia, dati_plus, codice_postale) VALUES (?, ?, ?, ?, ?, ?)";
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+		try (Connection con = ds.getConnection();
+				PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-            ps.setString(1, indirizzo.getViaNumciv());
-            ps.setString(2, indirizzo.getPaese());
-            ps.setString(3, indirizzo.getCitta());
-            ps.setString(4, indirizzo.getProvincia());
-            ps.setString(5, indirizzo.getDatiPlus());
-            ps.setString(6, indirizzo.getCodicePostale());
+			ps.setString(1, indirizzo.getViaNumciv());
+			ps.setString(2, indirizzo.getPaese());
+			ps.setString(3, indirizzo.getCitta());
+			ps.setString(4, indirizzo.getProvincia());
+			ps.setString(5, indirizzo.getDatiPlus());
+			ps.setString(6, indirizzo.getCodicePostale());
 
-            ps.executeUpdate();
-            
-            try(ResultSet rs =
-                    ps.getGeneratedKeys()) {
+			ps.executeUpdate();
 
-                    if(rs.next()) {
+			try (ResultSet rs = ps.getGeneratedKeys()) {
 
-                        indirizzo.setIdIndirizzo(
-                            rs.getInt(1)
-                        );
-                    }
-                }
-        }
-    }
+				if (rs.next()) {
 
-    @Override
-    public synchronized IndirizzoBean doRetrieveByKey(int id) throws SQLException {
-        String sql = "SELECT * FROM "+TABLE_NAME+" WHERE id_indirizzo = ?";
+					indirizzo.setIdIndirizzo(rs.getInt(1));
+				}
+			}
+		}
+	}
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+	@Override
+	public synchronized IndirizzoBean doRetrieveByKey(int id) throws SQLException {
+		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE id_indirizzo = ?";
 
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-            if (rs.next()) {
-                IndirizzoBean i = new IndirizzoBean();
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
 
-                i.setIdIndirizzo(rs.getInt("id_indirizzo"));
-                i.setViaNumciv(rs.getString("via_numciv"));
-                i.setPaese(rs.getString("paese"));
-                i.setCitta(rs.getString("citta"));
-                i.setProvincia(rs.getString("provincia"));
-                i.setDatiPlus(rs.getString("dati_plus"));
-                i.setCodicePostale(rs.getString("codice_postale"));
-                return i;
-            }
-        }
-        return null;
-    }
+			if (rs.next()) {
+				IndirizzoBean i = new IndirizzoBean();
 
-    @Override
-    public synchronized List<IndirizzoBean> doRetrieveAll() throws SQLException {
-        String sql = "SELECT * FROM "+TABLE_NAME ;
-        List<IndirizzoBean> lista = new LinkedList<>();
+				i.setIdIndirizzo(rs.getInt("id_indirizzo"));
+				i.setViaNumciv(rs.getString("via_numciv"));
+				i.setPaese(rs.getString("paese"));
+				i.setCitta(rs.getString("citta"));
+				i.setProvincia(rs.getString("provincia"));
+				i.setDatiPlus(rs.getString("dati_plus"));
+				i.setCodicePostale(rs.getString("codice_postale"));
+				return i;
+			}
+		}
+		return null;
+	}
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql);
-        		
-             ResultSet rs = ps.executeQuery()) {
-            
-        	
-            while (rs.next()) {
-                IndirizzoBean i = new IndirizzoBean();
-                
-                i.setViaNumciv(rs.getString("via_numciv"));
-                i.setPaese(rs.getString("paese"));
-                i.setCitta(rs.getString("citta"));
-                i.setProvincia(rs.getString("provincia"));
-                i.setDatiPlus(rs.getString("dati_plus"));
-                i.setCodicePostale(rs.getString("codice_postale"));
-                lista.add(i);
-            }
-        }
+	@Override
+	public synchronized List<IndirizzoBean> doRetrieveAll() throws SQLException {
+		String sql = "SELECT * FROM " + TABLE_NAME;
+		List<IndirizzoBean> lista = new LinkedList<>();
 
-        return lista;
-    }
+		try (Connection con = ds.getConnection();
+				PreparedStatement ps = con.prepareStatement(sql);
 
-    @Override
-    public synchronized boolean doUpdate(IndirizzoBean indirizzo) throws SQLException {
-        String sql = "UPDATE "+TABLE_NAME+" SET via_numciv=?, paese=?, citta=?, provincia=?, dati_plus=?, codice_postale=? WHERE id_indirizzo=?";
+				ResultSet rs = ps.executeQuery()) {
 
-        try (Connection con = ds.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+			while (rs.next()) {
+				IndirizzoBean i = new IndirizzoBean();
 
-            ps.setString(1, indirizzo.getViaNumciv());
-            ps.setString(2, indirizzo.getPaese());
-            ps.setString(3, indirizzo.getCitta());
-            ps.setString(4, indirizzo.getProvincia());
-            ps.setString(5, indirizzo.getDatiPlus());
-            ps.setString(6, indirizzo.getCodicePostale());
-            ps.setInt(7, indirizzo.getIdIndirizzo());
+				i.setViaNumciv(rs.getString("via_numciv"));
+				i.setPaese(rs.getString("paese"));
+				i.setCitta(rs.getString("citta"));
+				i.setProvincia(rs.getString("provincia"));
+				i.setDatiPlus(rs.getString("dati_plus"));
+				i.setCodicePostale(rs.getString("codice_postale"));
+				lista.add(i);
+			}
+		}
 
-            return ps.executeUpdate() > 0;
-        }
-    }
+		return lista;
+	}
+
+	@Override
+	public synchronized boolean doUpdate(IndirizzoBean indirizzo) throws SQLException {
+		String sql = "UPDATE " + TABLE_NAME
+				+ " SET via_numciv=?, paese=?, citta=?, provincia=?, dati_plus=?, codice_postale=? WHERE id_indirizzo=?";
+
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+
+			ps.setString(1, indirizzo.getViaNumciv());
+			ps.setString(2, indirizzo.getPaese());
+			ps.setString(3, indirizzo.getCitta());
+			ps.setString(4, indirizzo.getProvincia());
+			ps.setString(5, indirizzo.getDatiPlus());
+			ps.setString(6, indirizzo.getCodicePostale());
+			ps.setInt(7, indirizzo.getIdIndirizzo());
+
+			return ps.executeUpdate() > 0;
+		}
+	}
 }

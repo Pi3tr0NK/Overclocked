@@ -40,7 +40,7 @@ public class GPUDAOImpl implements GPUDAO {
 		}
 	}
 
-	public GPUBean doRetrieveByKey(int idGPU) throws SQLException {
+	public synchronized GPUBean doRetrieveByKey(int idGPU) throws SQLException {
 
 		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
 
@@ -100,7 +100,7 @@ public class GPUDAOImpl implements GPUDAO {
 			prezzoMax = Double.parseDouble(prezzo);
 		}
 
-		String sql = "SELECT * " + "FROM gpu g " + "JOIN prodotto p ON g.fk_prodotto = p.id_prodotto "
+		String sql = "SELECT * " + "FROM " + TABLE_NAME + " g " + "JOIN prodotto p ON g.fk_prodotto = p.id_prodotto "
 				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
 				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " + "AND (? IS NULL OR g.vram = ?) "
 				+ "AND (? IS NULL OR g.pcie = ?) "
@@ -216,9 +216,6 @@ public class GPUDAOImpl implements GPUDAO {
 	public synchronized int doCountFilteredProducts(String cerca, String categoria, String prezzo, String marca,
 			String vram, String pcie) throws SQLException {
 
-		List<GPUBean> lista = new LinkedList<>();
-		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
-
 		categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
 		marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
 		vram = (vram == null || vram.trim().isEmpty()) ? null : vram;
@@ -229,10 +226,10 @@ public class GPUDAOImpl implements GPUDAO {
 			prezzoMax = Double.parseDouble(prezzo);
 		}
 
-		String sql = "SELECT COUNT(*) " + "FROM gpu g " + "JOIN prodotto p ON g.fk_prodotto = p.id_prodotto "
-				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
-				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " + "AND (? IS NULL OR g.vram = ?) "
-				+ "AND (? IS NULL OR g.pcie = ?) "
+		String sql = "SELECT COUNT(*) " + "FROM " + TABLE_NAME + " g "
+				+ "JOIN prodotto p ON g.fk_prodotto = p.id_prodotto " + "WHERE (? IS NULL OR p.categoria = ?) "
+				+ "AND (? IS NULL OR p.marca = ?) " + "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
+				+ "AND (? IS NULL OR g.vram = ?) " + "AND (? IS NULL OR g.pcie = ?) "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {

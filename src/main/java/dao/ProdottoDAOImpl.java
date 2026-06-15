@@ -116,7 +116,7 @@ public class ProdottoDAOImpl implements ProdottoDAO {
 			attivoBool = Boolean.parseBoolean(attivo);
 		}
 
-		String sql = "SELECT * " + "FROM prodotto p " + "WHERE (? IS NULL OR p.marca = ?) "
+		String sql = "SELECT * " + "FROM " + TABLE_NAME + " p " + "WHERE (? IS NULL OR p.marca = ?) "
 				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
 				+ "AND (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.attivo = ?) "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?)) "
@@ -227,7 +227,7 @@ public class ProdottoDAOImpl implements ProdottoDAO {
 
 		Map<String, Integer> result = new HashMap<>();
 
-		String sql = "SELECT categoria, COUNT(*) AS totale FROM prodotto GROUP BY categoria";
+		String sql = "SELECT categoria, COUNT(*) AS totale FROM " + TABLE_NAME + " GROUP BY categoria";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -246,7 +246,7 @@ public class ProdottoDAOImpl implements ProdottoDAO {
 
 		List<ProdottoBean> novita = new ArrayList<>();
 
-		String sql = "SELECT * FROM prodotto WHERE attivo = true ORDER BY id_prodotto DESC LIMIT ?";
+		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE attivo = true ORDER BY id_prodotto DESC LIMIT ?";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -284,7 +284,7 @@ public class ProdottoDAOImpl implements ProdottoDAO {
 
 		List<ProdottoBean> prodotti = new ArrayList<>();
 
-		String sql = "SELECT p.*, SUM(d.quantita) AS totale_venduto " + "FROM prodotto p "
+		String sql = "SELECT p.*, SUM(d.quantita) AS totale_venduto " + "FROM " + TABLE_NAME + " p "
 				+ "JOIN dettagliOrdine d ON p.id_prodotto = d.fk_prodotto "
 				+ "JOIN ordine o ON d.fk_ordine = o.id_ordine " + "WHERE o.data >= CURDATE() - INTERVAL 365 DAY "
 				+ "AND p.attivo = true " + "GROUP BY p.id_prodotto " + "ORDER BY totale_venduto DESC " + "LIMIT ?";
@@ -328,7 +328,7 @@ public class ProdottoDAOImpl implements ProdottoDAO {
 
 		List<ProdottoBean> correlati = new ArrayList<>();
 
-		String sql = "SELECT * FROM prodotto " + "WHERE attivo = true " + "AND categoria = ? "
+		String sql = "SELECT * FROM " + TABLE_NAME + " " + "WHERE attivo = true " + "AND categoria = ? "
 				+ "AND prezzo BETWEEN ? AND ? " + "AND id_prodotto <> ? " + "LIMIT ?";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -397,8 +397,8 @@ public class ProdottoDAOImpl implements ProdottoDAO {
 		return 0;
 	}
 
-	public synchronized int doCountFilteredProducts(String cerca, String prezzo, String marca, String categoria, String attivo)
-			throws SQLException {
+	public synchronized int doCountFilteredProducts(String cerca, String prezzo, String marca, String categoria,
+			String attivo) throws SQLException {
 
 		marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
 		categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
@@ -414,7 +414,7 @@ public class ProdottoDAOImpl implements ProdottoDAO {
 			attivoBool = Boolean.parseBoolean(attivo);
 		}
 
-		String sql = "SELECT COUNT(*) " + "FROM prodotto p " + "WHERE (? IS NULL OR p.marca = ?) "
+		String sql = "SELECT COUNT(*) " + "FROM " + TABLE_NAME + " p " + "WHERE (? IS NULL OR p.marca = ?) "
 				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
 				+ "AND (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.attivo = ?) "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";

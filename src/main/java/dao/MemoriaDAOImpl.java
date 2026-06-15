@@ -109,7 +109,7 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 			prezzoMax = Double.parseDouble(prezzo);
 		}
 
-		String sql = "SELECT * " + "FROM memoria m " + "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto "
+		String sql = "SELECT * " + "FROM " + TABLE_NAME + " m " + "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto "
 				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
 				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
 				+ "AND (? IS NULL OR m.capacita = ?) " + "AND (? IS NULL OR m.tipo = ?) "
@@ -188,7 +188,7 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 		return lista;
 	}
 
-	public boolean doUpdate(MemoriaBean mem) throws SQLException {
+	public synchronized boolean doUpdate(MemoriaBean mem) throws SQLException {
 
 		ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
 		prodottoDAO.doUpdate(mem);
@@ -217,7 +217,7 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 		return prodottoDAO.setProductStatus(mem.getIdProdotto(), attivo);
 	}
 
-	public Collection<MemoriaBean> memoriaCompatibili(int moboId) throws SQLException {
+	public synchronized Collection<MemoriaBean> memoriaCompatibili(int moboId) throws SQLException {
 
 		List<MemoriaBean> lista = new LinkedList<>();
 		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
@@ -226,7 +226,7 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 
 		MoboBean mobo = moboDAO.doRetrieveByKey(moboId);
 
-		String sql = "SELECT * " + "FROM memoria m " + "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto "
+		String sql = "SELECT * " + "FROM " + TABLE_NAME + " m " + "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto "
 				+ "WHERE p.attivo = true " + "AND (" + "   (? = true AND m.tecnologia = 'NVME') "
 				+ "   OR (? > 0 AND m.tecnologia = 'SATA')" + ")";
 
@@ -271,11 +271,8 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 		return lista;
 	}
 
-	public int doCountFilteredProducts(String cerca, String categoria, String prezzo, String marca, String capacita,
-			String tipo, String tecnologia) throws SQLException {
-
-		List<MemoriaBean> lista = new LinkedList<>();
-		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
+	public synchronized int doCountFilteredProducts(String cerca, String categoria, String prezzo, String marca,
+			String capacita, String tipo, String tecnologia) throws SQLException {
 
 		categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
 		marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
@@ -288,9 +285,9 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 			prezzoMax = Double.parseDouble(prezzo);
 		}
 
-		String sql = "SELECT COUNT(*) " + "FROM memoria m " + "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto "
-				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
-				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
+		String sql = "SELECT COUNT(*) " + "FROM " + TABLE_NAME + " m "
+				+ "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto " + "WHERE (? IS NULL OR p.categoria = ?) "
+				+ "AND (? IS NULL OR p.marca = ?) " + "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
 				+ "AND (? IS NULL OR m.capacita = ?) " + "AND (? IS NULL OR m.tipo = ?) "
 				+ "AND (? IS NULL OR m.tecnologia = ?) "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";

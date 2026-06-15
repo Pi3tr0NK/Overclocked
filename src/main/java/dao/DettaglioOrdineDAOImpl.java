@@ -43,7 +43,7 @@ public class DettaglioOrdineDAOImpl implements DettaglioOrdineDAO {
 	    ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
 	    
 	    String sql = "SELECT d.quantita, d.prezzo_unitario, p.* " +
-	                 "FROM dettagliOrdine d " +
+	                 "FROM " + TABLE_NAME + " d " +
 	                 "JOIN prodotto p ON d.fk_prodotto = p.id_prodotto " +
 	                 "WHERE d.fk_ordine = ?";
 
