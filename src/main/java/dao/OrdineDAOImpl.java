@@ -155,24 +155,58 @@ public class OrdineDAOImpl implements OrdineDAO {
 	// RETRIEVE tutti gli ordini (admin)
 	// ─────────────────────────────────────────────
 
-	public synchronized Collection<OrdineBean> doRetrieveAll(String stato, int pagina) throws SQLException {
+	public synchronized Collection<OrdineBean> doRetrieveAll(String nome, String cognome, String email, String stato,
+			String dataStart, String dataEnd, int pagina) throws SQLException {
 
+		nome = (nome == null || nome.trim().isEmpty()) ? null : "%" + nome.trim() + "%";
+		cognome = (cognome == null || cognome.trim().isEmpty()) ? null : "%" + cognome.trim() + "%";
+		email = (email == null || email.trim().isEmpty()) ? null : "%" + email.trim() + "%";
+		stato = (stato == null || stato.trim().isEmpty()) ? null : stato.trim();
+		
+		dataStart = (dataStart == null || dataStart.trim().isEmpty()) ? null : dataStart.trim();
+		dataEnd = (dataEnd == null || dataEnd.trim().isEmpty()) ? null : dataEnd.trim();
+		
 		List<OrdineBean> lista = new LinkedList<>();
 
-		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE (? = '' OR stato = ?)" + " ORDER BY data DESC"
-				+ " LIMIT ? OFFSET ?";
-		;
+		String sql = "SELECT o.* " + "FROM " + TABLE_NAME + " o " + "JOIN utente u ON o.fk_utente = u.id_utente "
+				+ "WHERE (? IS NULL OR o.stato = ?) " + "AND (? IS NULL OR u.nome LIKE ?) "
+				+ "AND (? IS NULL OR u.cognome LIKE ?) " + "AND (? IS NULL OR u.email LIKE ?) "
+				+ "AND (? IS NULL OR o.data >= ?) " + "AND (? IS NULL OR o.data <= ?) " + "ORDER BY o.data DESC "
+				+ "LIMIT ? OFFSET ?";
 
 		try (Connection con = ds.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
 
-			String filtro = (stato == null) ? "" : stato;
+			st.setString(1, stato);
+			st.setString(2, stato);
 
-			st.setString(1, filtro);
-			st.setString(2, filtro);
+			st.setString(3, nome);
+			st.setString(4, nome);
+
+			st.setString(5, cognome);
+			st.setString(6, cognome);
+
+			st.setString(7, email);
+			st.setString(8, email);
+
+			if (dataStart == null) {
+				st.setNull(9, Types.DATE);
+				st.setNull(10, Types.DATE);
+			} else {
+				st.setDate(9, java.sql.Date.valueOf(dataStart));
+				st.setDate(10, java.sql.Date.valueOf(dataStart));
+			}
+
+			if (dataEnd == null) {
+				st.setNull(11, Types.DATE);
+				st.setNull(12, Types.DATE);
+			} else {
+				st.setDate(11, java.sql.Date.valueOf(dataEnd));
+				st.setDate(12, java.sql.Date.valueOf(dataEnd));
+			}
 
 			int offset = (pagina - 1) * 10;
-			st.setInt(3, 10);
-			st.setInt(4, offset);
+			st.setInt(13, 10);
+			st.setInt(14, offset);
 
 			try (ResultSet rs = st.executeQuery()) {
 
@@ -223,6 +257,61 @@ public class OrdineDAOImpl implements OrdineDAO {
 			}
 		}
 		return lista;
+	}
+	
+	public synchronized int doCountFilteredProducts(String nome, String cognome, String email, String stato,
+			String dataStart, String dataEnd) throws SQLException {
+
+		nome = (nome == null || nome.trim().isEmpty()) ? null : "%" + nome.trim() + "%";
+		cognome = (cognome == null || cognome.trim().isEmpty()) ? null : "%" + cognome.trim() + "%";
+		email = (email == null || email.trim().isEmpty()) ? null : "%" + email.trim() + "%";
+		stato = (stato == null || stato.trim().isEmpty()) ? null : stato.trim();
+		
+		dataStart = (dataStart == null || dataStart.trim().isEmpty()) ? null : dataStart.trim();
+		dataEnd = (dataEnd == null || dataEnd.trim().isEmpty()) ? null : dataEnd.trim();
+		
+		String sql = "SELECT o.* " + "FROM " + TABLE_NAME + " o " + "JOIN utente u ON o.fk_utente = u.id_utente "
+				+ "WHERE (? IS NULL OR o.stato = ?) " + "AND (? IS NULL OR u.nome LIKE ?) "
+				+ "AND (? IS NULL OR u.cognome LIKE ?) " + "AND (? IS NULL OR u.email LIKE ?) "
+				+ "AND (? IS NULL OR o.data >= ?) " + "AND (? IS NULL OR o.data <= ?) " + "ORDER BY o.data DESC";
+
+		try (Connection con = ds.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+
+			st.setString(1, stato);
+			st.setString(2, stato);
+
+			st.setString(3, nome);
+			st.setString(4, nome);
+
+			st.setString(5, cognome);
+			st.setString(6, cognome);
+
+			st.setString(7, email);
+			st.setString(8, email);
+
+			if (dataStart == null) {
+				st.setNull(9, Types.DATE);
+				st.setNull(10, Types.DATE);
+			} else {
+				st.setDate(9, java.sql.Date.valueOf(dataStart));
+				st.setDate(10, java.sql.Date.valueOf(dataStart));
+			}
+
+			if (dataEnd == null) {
+				st.setNull(11, Types.DATE);
+				st.setNull(12, Types.DATE);
+			} else {
+				st.setDate(11, java.sql.Date.valueOf(dataEnd));
+				st.setDate(12, java.sql.Date.valueOf(dataEnd));
+			}
+
+			try (ResultSet rs = st.executeQuery()) {
+				if (rs.next()) {
+					return rs.getInt(1);
+				}
+			}
+			return 0;
+		}
 	}
 
 	// ─────────────────────────────────────────────

@@ -11,17 +11,9 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import dao.CPUDAOImpl;
-import dao.ChassisDAOImpl;
-import dao.DissipatoreDAOImpl;
-import dao.GPUDAOImpl;
-import dao.ImmaginiDAOImpl;
-import dao.MemoriaDAOImpl;
-import dao.MoboDAOImpl;
+
 import dao.OrdineDAOImpl;
-import dao.PSUDAOImpl;
 import dao.ProdottoDAOImpl;
-import dao.RAMDAOImpl;
 import dao.UtenteDAOImpl;
 
 
@@ -65,8 +57,6 @@ public class AdminDashboardControl extends HttpServlet {
     	    pagina = Integer.parseInt(p);
     	}
     	
-    	
-        contaProdotti(request);
         contaOrdini(request);
         contaUtenti(request);
         contaProdottiEsauriti(request);
@@ -76,18 +66,6 @@ public class AdminDashboardControl extends HttpServlet {
         
         request.getRequestDispatcher("/WEB-INF/views/admin/DashboardView.jsp").forward(request, response);
         
-    }
-    
-    private void contaProdotti(HttpServletRequest request)
-    {
-    	try {
-    		int numProdotti = productDAO.doCountProducts();
-			
-			request.setAttribute("numProdotti", numProdotti);
-			 
-		} catch(SQLException e){
-			System.err.println("Error:" + e.getMessage());
-		}
     }
     
     private void contaOrdini(HttpServletRequest request)
@@ -134,6 +112,8 @@ public class AdminDashboardControl extends HttpServlet {
     	try {
 			 int numFiltrato =  productDAO.doCountFilteredProducts(null,null,null, categoria, stato);
 			 int totalePagine = (int)Math.ceil((double)numFiltrato / 10);
+
+			 request.setAttribute("numProdotti", numFiltrato);
 			 request.setAttribute("totalePagine", totalePagine);
 			 
 		} catch(SQLException e){

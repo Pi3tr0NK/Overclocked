@@ -15,31 +15,40 @@
     </div>
 
     <div class="nav-right">
-
-        <c:choose>
-            <c:when test="${not empty sessionScope.utente}">
-                <a class="nav-btn" href="${pageContext.request.contextPath}/common/profilo">
-                    ${sessionScope.utente.nome}
-                </a>
-                <a class="nav-btn" href="${pageContext.request.contextPath}/logout">
-                    ESCI
-                </a>
-            </c:when>
-            <c:otherwise>
-                <a class="nav-btn" href="${pageContext.request.contextPath}/indexlogin">
-                    ACCEDI
-                </a>
-            </c:otherwise>
-        </c:choose>
-		
+    
 		<c:if test="${not empty sessionScope.utente and sessionScope.utente.ruolo == 'ADMIN'}">
 		<a class="nav-btn" href="${pageContext.request.contextPath}/admin/dashboard">
+		 <img src="${pageContext.request.contextPath}/img/admin.png" alt="">
             ADMIN
         </a>
         </c:if>
         
+        
+        <c:choose>
+            <c:when test="${not empty sessionScope.utente}">
+                <a class="nav-btn" href="${pageContext.request.contextPath}/common/profilo">
+                    <img src="${pageContext.request.contextPath}/img/utente.png" alt="">${sessionScope.utente.nome}
+                </a>
+                <a class="nav-btn" href="${pageContext.request.contextPath}/logout">
+                     <img src="${pageContext.request.contextPath}/img/logout.png" alt="">ESCI
+                </a>
+            </c:when>
+            <c:otherwise>
+                <a class="nav-btn" href="${pageContext.request.contextPath}/indexlogin">
+                    <img src="${pageContext.request.contextPath}/img/utente.png" alt="">ACCEDI
+                </a>
+            </c:otherwise>
+        </c:choose>
+		
+
+    
+        
         <a class="nav-btn" href="${pageContext.request.contextPath}/Carrello">
-            CARRELLO
+           <img src="${pageContext.request.contextPath}/img/carrello.png" alt=""> 
+           <c:if test="${sessionScope.cart != null}">
+        		<span class="cart-badge">${sessionScope.cart.totalQuantity}</span>
+    		</c:if>
+           CARRELLO
         </a>
 
     </div>

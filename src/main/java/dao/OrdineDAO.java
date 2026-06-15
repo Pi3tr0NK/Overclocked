@@ -14,9 +14,11 @@ public interface OrdineDAO {
 	
 	public OrdineBean doRetrieveByKey(int idOrdine) throws SQLException;
 
-	public Collection<OrdineBean> doRetrieveAll(String stato, int pagina) throws SQLException;
+	public Collection<OrdineBean> doRetrieveAll(String nome, String cognome, String email, String stato, String dataStart, String dataEnd, int pagina) throws SQLException;
 	
 	public Collection<OrdineBean> doRetrieveAllByUser(int idUser, int pagina) throws SQLException;
+	
+	public int doCountFilteredProducts(String nome, String cognome, String email, String stato, String dataStart, String dataEnd) throws SQLException;
 	
 	public boolean doUpdate(OrdineBean o) throws SQLException;
 	

@@ -13,16 +13,7 @@ import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import dao.CPUDAOImpl;
-import dao.ChassisDAOImpl;
-import dao.DissipatoreDAOImpl;
-import dao.GPUDAOImpl;
-import dao.ImmaginiDAOImpl;
-import dao.MemoriaDAOImpl;
-import dao.MoboDAOImpl;
-import dao.PSUDAOImpl;
-import dao.ProdottoDAOImpl;
-import dao.RAMDAOImpl;
+
 import dao.UtenteDAOImpl;
 
 

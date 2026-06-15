@@ -6,7 +6,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.UtenteBean.Ruolo;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -15,7 +14,6 @@ import javax.sql.DataSource;
 
 import dao.DettaglioOrdineDAOImpl;
 import dao.OrdineDAOImpl;
-import dao.UtenteDAOImpl;
 
 /**
  * Servlet implementation class AdminDettaglioOrdiniControl

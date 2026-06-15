@@ -15,9 +15,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 @WebServlet("/admin/ordini")
+
 public class AdminOrdiniControl extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -65,7 +65,6 @@ public class AdminOrdiniControl extends HttpServlet {
 
             
         	getOrdiniAndPagina(request);
-            settaPagineAndTotale(request);
             settaOrdiniPrep(request);
             settaOrdiniSped(request);
             settaOrdiniCons(request);
@@ -129,6 +128,8 @@ public class AdminOrdiniControl extends HttpServlet {
                .forward(request, response);
     }
     
+    
+    /*
     private void ordineByUtenti(HttpServletRequest request,String idUtenteStr, int pagina)
             throws Exception, IOException, ServletException {
 
@@ -137,16 +138,18 @@ public class AdminOrdiniControl extends HttpServlet {
         request.setAttribute("idUtente", idUtenteStr);
     }
     
+    */
     
-    private void settaPagineAndTotale(HttpServletRequest request)
+    
+    private void settaPagineAndTotale(HttpServletRequest request, String cercaNome, String cercaCognome, String cercaEmail, String stato, String dataStart, String dataEnd)
     {
 		int numOrdini = 0;
 		
 		try {
-			numOrdini = ordineDAO.doCount(null);
+			numOrdini = ordineDAO.doCountFilteredProducts(cercaNome,cercaCognome,cercaEmail,stato, dataStart, dataEnd);
 			int totalePagine = (int)Math.ceil((double)numOrdini / 10);
 			
-			request.setAttribute("numOrdini", numOrdini);
+			request.setAttribute("numOrdini", ordineDAO.doCount(null));
 			request.setAttribute("totalePagine", totalePagine);
 			
 		} catch (SQLException e) {
@@ -191,26 +194,28 @@ public class AdminOrdiniControl extends HttpServlet {
         String idUtenteStr = request.getParameter("idUtente");
     	String p = request.getParameter("pagina");
         String stato = request.getParameter("stato");
+        String cercaNome = request.getParameter("cercaNome");
+        String cercaCognome = request.getParameter("cercaCognome");
+        String cercaEmail = request.getParameter("cercaEmail");
+        
+        String dataStart = request.getParameter("dataInizio");
+        String dataEnd = request.getParameter("dataFine");
+       
+        
     	int pagina = 1;
 
 
+        settaPagineAndTotale(request,cercaNome,cercaCognome,cercaEmail,stato,dataStart,dataEnd);
+        
+        
     	if (p != null && !p.isBlank()) {
     	    pagina = Integer.parseInt(p);
     	}
     	
         request.setAttribute("paginaCorrente", pagina);	
         
+        request.setAttribute("ordini",ordineDAO.doRetrieveAll(cercaNome,cercaCognome,cercaEmail,stato, dataStart, dataEnd, pagina));
         
-        if(idUtenteStr != null && !idUtenteStr.isBlank())
-        {
-        	ordineByUtenti(request,idUtenteStr,pagina);
-        }
-        else if (stato != null && !stato.isBlank())
-        	{
-        		request.setAttribute("ordini",ordineDAO.doRetrieveAll(stato,pagina));
-        	} 
-        	else
-        		request.setAttribute("ordini",ordineDAO.doRetrieveAll(null,pagina));
     	
     }
     
