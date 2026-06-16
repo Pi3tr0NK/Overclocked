@@ -58,7 +58,7 @@
 
 				<div class="stat-card">
 					<h2>${numOrdini}</h2>
-					<span>Ordini totali</span>
+					<span>Ordini caricati</span>
 				</div>
 
 				<div class="stat-card">
@@ -111,7 +111,7 @@
 
 						<option value="RIMBORSATO"
 							${param.stato == 'RIMBORSATO' ? 'selected' : ''}>
-							Rimborsato</option>
+							Rimborsa</option>
 
 					</select>
 

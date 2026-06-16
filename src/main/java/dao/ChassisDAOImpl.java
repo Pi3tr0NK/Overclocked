@@ -102,7 +102,7 @@ public class ChassisDAOImpl implements ChassisDAO {
 		String sql = "SELECT * " + "FROM " + TABLE_NAME + " ch " + "JOIN prodotto p ON ch.fk_prodotto = p.id_prodotto "
 				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
 				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
-				+ "AND (? IS NULL OR ch.formato = ?) " + "AND (? IS NULL OR ch.colore = ?) "
+				+ "AND (? IS NULL OR ch.formato = ?) " + "AND (? IS NULL OR ch.colore = ?) " + "AND attivo = true "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))" + "LIMIT ? OFFSET ?";
 		;
 
@@ -247,65 +247,58 @@ public class ChassisDAOImpl implements ChassisDAO {
 	}
 
 	@Override
-	public synchronized int doCountFilteredProducts(String cerca, String categoria, String prezzo, String marca, String formato, String colore) 
-			throws SQLException {
-	    
-	    categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
-	    marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
-	    formato = (formato == null || formato.trim().isEmpty()) ? null : formato;
-	    colore = (colore == null || colore.trim().isEmpty()) ? null : colore;
+	public synchronized int doCountFilteredProducts(String cerca, String categoria, String prezzo, String marca,
+			String formato, String colore) throws SQLException {
 
-	    Double prezzoMax = null;
-	    if (prezzo != null && !prezzo.trim().isEmpty()) {
-	        prezzoMax = Double.parseDouble(prezzo);
-	    }
-	    
-	    String sql =
-	        "SELECT COUNT(*) " +
-	        "FROM " + TABLE_NAME + " ch " +
-	        "JOIN prodotto p ON ch.fk_prodotto = p.id_prodotto " +
-	        "WHERE (? IS NULL OR p.categoria = ?) " +
-	        "AND (? IS NULL OR p.marca = ?) " +
-	        "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
-	        "AND (? IS NULL OR ch.formato = ?) " +
-	        "AND (? IS NULL OR ch.colore = ?) " +
-	        "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
+		categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
+		marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
+		formato = (formato == null || formato.trim().isEmpty()) ? null : formato;
+		colore = (colore == null || colore.trim().isEmpty()) ? null : colore;
 
-	    try (Connection con = ds.getConnection();
-	         PreparedStatement ps = con.prepareStatement(sql)) {
+		Double prezzoMax = null;
+		if (prezzo != null && !prezzo.trim().isEmpty()) {
+			prezzoMax = Double.parseDouble(prezzo);
+		}
 
-	        ps.setString(1, categoria);
-	        ps.setString(2, categoria);
+		String sql = "SELECT COUNT(*) " + "FROM " + TABLE_NAME + " ch "
+				+ "JOIN prodotto p ON ch.fk_prodotto = p.id_prodotto " + "WHERE (? IS NULL OR p.categoria = ?) "
+				+ "AND (? IS NULL OR p.marca = ?) " + "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
+				+ "AND (? IS NULL OR ch.formato = ?) " + "AND (? IS NULL OR ch.colore = ?) " + "AND attivo = true "
+				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
-	        ps.setString(3, marca);
-	        ps.setString(4, marca);
-	        
-	        if (prezzoMax == null) {
-	            ps.setNull(5, java.sql.Types.DOUBLE);
-	            ps.setNull(6, java.sql.Types.DOUBLE);
-	        } else {
-	            ps.setDouble(5, prezzoMax);
-	            ps.setDouble(6, prezzoMax);
-	        }
+		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
-	        ps.setString(7, formato);
-	        ps.setString(8, formato);
+			ps.setString(1, categoria);
+			ps.setString(2, categoria);
 
-	        ps.setString(9, colore);
-	        ps.setString(10, colore);
-	        
-	        ps.setString(11, cerca);
-            ps.setString(12, cerca);
-            ps.setString(13, cerca);
-            ps.setString(14, cerca);
+			ps.setString(3, marca);
+			ps.setString(4, marca);
 
+			if (prezzoMax == null) {
+				ps.setNull(5, java.sql.Types.DOUBLE);
+				ps.setNull(6, java.sql.Types.DOUBLE);
+			} else {
+				ps.setDouble(5, prezzoMax);
+				ps.setDouble(6, prezzoMax);
+			}
 
-            try(ResultSet rs = ps.executeQuery()) {
-                if(rs.next()) {
-                    return rs.getInt(1);
-                }
-            }
-	    }
+			ps.setString(7, formato);
+			ps.setString(8, formato);
+
+			ps.setString(9, colore);
+			ps.setString(10, colore);
+
+			ps.setString(11, cerca);
+			ps.setString(12, cerca);
+			ps.setString(13, cerca);
+			ps.setString(14, cerca);
+
+			try (ResultSet rs = ps.executeQuery()) {
+				if (rs.next()) {
+					return rs.getInt(1);
+				}
+			}
+		}
 		return 0;
 	}
 }

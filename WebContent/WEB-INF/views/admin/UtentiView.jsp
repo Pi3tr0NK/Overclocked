@@ -60,7 +60,7 @@
         <div class="stats-grid">
             <div class="stat-card">
                 <h2>${numUtenti}</h2>
-                <span>Utenti totali</span>
+                <span>Utenti caricati</span>
             </div>
             <div class="stat-card">
                 <h2>${numAdmin}</h2>
@@ -127,13 +127,6 @@
 
 
                         <td>
-
-                            <%-- Modifica --%>
-                            <form action="${pageContext.request.contextPath}/admin/utenti" method="post" style="display:inline;">
-                                <input type="hidden" name="action"    value="modificaView"/>
-                                <input type="hidden" name="idUtente"  value="${u.idUtente}"/>
-                                <button type="submit" class="action-btn">Modifica</button>
-                            </form>
 
 							<%-- Visualizza gli ordini --%>
                             <form action="${pageContext.request.contextPath}/admin/ordini" method="post" style="display:inline;">

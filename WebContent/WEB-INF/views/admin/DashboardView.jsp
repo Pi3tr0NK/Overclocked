@@ -83,7 +83,7 @@
                 <h2>${numProdotti}</h2>
 
                 <span>
-                    Prodotti totali
+                    Prodotti caricati
                 </span>
 
             </div>

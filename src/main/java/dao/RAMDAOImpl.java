@@ -101,7 +101,7 @@ public class RAMDAOImpl implements RAMDAO {
 		String sql = "SELECT * " + "FROM " + TABLE_NAME + " r " + "JOIN prodotto p ON r.fk_prodotto = p.id_prodotto "
 				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
 				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
-				+ "AND (? IS NULL OR r.capacita = ?) " + "AND (? IS NULL OR r.frequenza = ?) "
+				+ "AND (? IS NULL OR r.capacita = ?) " + "AND (? IS NULL OR r.frequenza = ?) " + "AND attivo = true "
 				+ "AND (? IS NULL OR r.tipo = ?) "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))" + "LIMIT ? OFFSET ?";
 		;
@@ -264,7 +264,7 @@ public class RAMDAOImpl implements RAMDAO {
 		String sql = "SELECT COUNT(*) " + "FROM " + TABLE_NAME + " r "
 				+ "JOIN prodotto p ON r.fk_prodotto = p.id_prodotto " + "WHERE (? IS NULL OR p.categoria = ?) "
 				+ "AND (? IS NULL OR p.marca = ?) " + "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
-				+ "AND (? IS NULL OR r.capacita = ?) " + "AND (? IS NULL OR r.frequenza = ?) "
+				+ "AND (? IS NULL OR r.capacita = ?) " + "AND (? IS NULL OR r.frequenza = ?) " + "AND attivo = true "
 				+ "AND (? IS NULL OR r.tipo = ?) "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 		;

@@ -227,7 +227,7 @@ public class ProdottoDAOImpl implements ProdottoDAO {
 
 		Map<String, Integer> result = new HashMap<>();
 
-		String sql = "SELECT categoria, COUNT(*) AS totale FROM " + TABLE_NAME + " GROUP BY categoria";
+		String sql = "SELECT categoria, COUNT(*) AS totale FROM " + TABLE_NAME + " WHERE attivo = 1 GROUP BY categoria";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 

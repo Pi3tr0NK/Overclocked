@@ -113,7 +113,7 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
 				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
 				+ "AND (? IS NULL OR m.capacita = ?) " + "AND (? IS NULL OR m.tipo = ?) "
-				+ "AND (? IS NULL OR m.tecnologia = ?) "
+				+ "AND (? IS NULL OR m.tecnologia = ?) " + "AND attivo = true "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))" + "LIMIT ? OFFSET ?";
 		;
 
@@ -289,7 +289,7 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 				+ "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto " + "WHERE (? IS NULL OR p.categoria = ?) "
 				+ "AND (? IS NULL OR p.marca = ?) " + "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
 				+ "AND (? IS NULL OR m.capacita = ?) " + "AND (? IS NULL OR m.tipo = ?) "
-				+ "AND (? IS NULL OR m.tecnologia = ?) "
+				+ "AND (? IS NULL OR m.tecnologia = ?) " + "AND attivo = true "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {

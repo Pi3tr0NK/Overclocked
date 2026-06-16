@@ -56,14 +56,6 @@ public class AdminUtentiControl extends HttpServlet {
                     promuoviUtente(request);
                     break;
 
-                case "modificaView":
-                    //m(request, response);
-                    return;
-                case "modifica":
-                	/*ordineByUtenti(request);
-                	settato = 1;
-                	*/
-                	break;
                 default:
                     throw new IOException("Azione non riconosciuta: " + action);
             }

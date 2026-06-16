@@ -113,7 +113,7 @@ public class PSUDAOImpl implements PSUDAO {
 		String sql = "SELECT * " + "FROM " + TABLE_NAME + " ps " + "JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto "
 				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
 				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
-				+ "AND (? IS NULL OR ps.potenza = ?) " + "AND (? IS NULL OR ps.certificazione = ?) "
+				+ "AND (? IS NULL OR ps.potenza = ?) " + "AND (? IS NULL OR ps.certificazione = ?) " + "AND attivo = true "
 				+ "AND (? IS NULL OR ps.modulare = ?) "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))" + "LIMIT ? OFFSET ?";
 
@@ -288,7 +288,7 @@ public class PSUDAOImpl implements PSUDAO {
 		String sql = "SELECT COUNT(*) " + "FROM " + TABLE_NAME + " ps "
 				+ "JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto " + "WHERE (? IS NULL OR p.categoria = ?) "
 				+ "AND (? IS NULL OR p.marca = ?) " + "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
-				+ "AND (? IS NULL OR ps.potenza = ?) " + "AND (? IS NULL OR ps.certificazione = ?) "
+				+ "AND (? IS NULL OR ps.potenza = ?) " + "AND (? IS NULL OR ps.certificazione = ?)  " + "AND attivo = true "
 				+ "AND (? IS NULL OR ps.modulare = ?) "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 

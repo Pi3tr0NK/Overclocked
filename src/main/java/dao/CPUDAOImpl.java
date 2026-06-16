@@ -111,7 +111,7 @@ public class CPUDAOImpl implements CPUDAO {
 		String sql = "SELECT * " + "FROM " + TABLE_NAME + " c " + "JOIN prodotto p ON c.fk_prodotto = p.id_prodotto "
 				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
 				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " + "AND (? IS NULL OR c.core = ?) "
-				+ "AND (? IS NULL OR c.frequenza = ?) "
+				+ "AND (? IS NULL OR c.frequenza = ?) " + "AND attivo = true "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
 		if (pagina > 0) {
@@ -244,7 +244,7 @@ public class CPUDAOImpl implements CPUDAO {
 		String sql = "SELECT COUNT(*) " + "FROM " + TABLE_NAME + " c " + "JOIN prodotto p ON c.fk_prodotto = p.id_prodotto "
 				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
 				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " + "AND (? IS NULL OR c.core = ?) "
-				+ "AND (? IS NULL OR c.frequenza = ?) "
+				+ "AND (? IS NULL OR c.frequenza = ?) " + "AND attivo = true "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {

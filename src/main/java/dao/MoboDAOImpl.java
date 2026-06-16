@@ -124,7 +124,7 @@ public class MoboDAOImpl implements MoboDAO {
 		String sql = "SELECT * " + "FROM " + TABLE_NAME + " m " + "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto "
 				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
 				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " + "AND (? IS NULL OR m.formato = ?) "
-				+ "AND (? IS NULL OR m.nvme = ?) " + "AND (? IS NULL OR m.slotram = ?) "
+				+ "AND (? IS NULL OR m.nvme = ?) " + "AND (? IS NULL OR m.slotram = ?) " + "AND attivo = true "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))" + "LIMIT ? OFFSET ?";
 		;
 
@@ -324,7 +324,7 @@ public class MoboDAOImpl implements MoboDAO {
 		String sql = "SELECT COUNT(*) " + "FROM " + TABLE_NAME + " m "
 				+ "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto " + "WHERE (? IS NULL OR p.categoria = ?) "
 				+ "AND (? IS NULL OR p.marca = ?) " + "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
-				+ "AND (? IS NULL OR m.formato = ?) " + "AND (? IS NULL OR m.nvme = ?) "
+				+ "AND (? IS NULL OR m.formato = ?) " + "AND (? IS NULL OR m.nvme = ?) " + "AND attivo = true "
 				+ "AND (? IS NULL OR m.slotram = ?) "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
