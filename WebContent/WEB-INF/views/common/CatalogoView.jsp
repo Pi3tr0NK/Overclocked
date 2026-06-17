@@ -14,6 +14,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/pagination.css">
 </head>
 
+<!-- LOGO SCHEDA -->
+<jsp:include page="/WEB-INF/views/components/icon.jsp" />
+
 <body>
 
 <jsp:include page="/WEB-INF/views/components/navbar.jsp" />

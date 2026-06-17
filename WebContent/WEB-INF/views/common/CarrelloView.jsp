@@ -11,6 +11,10 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/carrello.css">
 </head>
+
+<!-- LOGO SCHEDA -->
+<jsp:include page="/WEB-INF/views/components/icon.jsp" />
+
 <body>
 
 <jsp:include page="/WEB-INF/views/components/navbar.jsp" />

@@ -16,6 +16,9 @@
 
 </head>
 
+<!-- LOGO SCHEDA -->
+<jsp:include page="/WEB-INF/views/components/icon.jsp" />
+
 <body>
 
 <jsp:include page="/WEB-INF/views/components/navbar.jsp"/>

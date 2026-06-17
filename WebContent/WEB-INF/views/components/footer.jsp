@@ -17,24 +17,24 @@
         <div class="footer-col">
             <div class="footer-col-title">Supporto</div>
             <div class="footer-links">
-                <a class="footer-link" href="#">
+                <p class="footer-link">
                     <span class="footer-link-arrow">›</span> Come ordinare
-                </a>
-                <a class="footer-link" href="#">
+                </p>
+                <p class="footer-link">
                     <span class="footer-link-arrow">›</span> Spedizioni e consegne
-                </a>
-                <a class="footer-link" href="#">
+                </p>
+                <p class="footer-link">
                     <span class="footer-link-arrow">›</span> Resi e rimborsi
-                </a>
-                <a class="footer-link" href="#">
+                </p>
+                <p class="footer-link">
                     <span class="footer-link-arrow">›</span> Garanzia prodotti
-                </a>
-                <a class="footer-link" href="#">
+                </p>
+                <p class="footer-link">
                     <span class="footer-link-arrow">›</span> FAQ
-                </a>
-                <a class="footer-link" href="${pageContext.request.contextPath}/contatti">
+                </p>
+                <p class="footer-link"">
                     <span class="footer-link-arrow">›</span> Contattaci
-                </a>
+                </p>
             </div>
         </div>
 
@@ -108,10 +108,10 @@
             &mdash; Tutti i diritti riservati
         </span>
 
-        <div class="footer-legal">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Termini e condizioni</a>
-            <a href="#">Cookie Policy</a>
+        <div class="footer-link">
+            <p class="footer-link">Privacy Policy</p>
+            <p class="footer-link">Termini e condizioni</p>
+            <p class="footer-link">Cookie Policy</p>
         </div>
 
         <div class="footer-payments">

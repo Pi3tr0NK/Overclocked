@@ -13,6 +13,11 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/register.css">
 
 </head>
+
+<!-- LOGO SCHEDA -->
+<jsp:include page="/WEB-INF/views/components/icon.jsp" />
+
+
 <body>
 
 <div class="register-container">

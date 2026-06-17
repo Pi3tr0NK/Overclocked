@@ -11,6 +11,10 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
 
 </head>
+
+<!-- LOGO SCHEDA -->
+<jsp:include page="/WEB-INF/views/components/icon.jsp" />
+
 <body>
 
 <div class="login-container">

@@ -1,5 +1,10 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
+<head>
+    <link rel="icon" type="image/png"
+          href="${pageContext.request.contextPath}/assets/images/favicon.png">
+</head>
+
 <nav class="navbar">
 	
     <div class="nav-left">
