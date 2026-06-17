@@ -28,7 +28,7 @@ public class AuthFilter extends HttpFilter {
 	    
 	    // Controllo che il token sia in sessione
 	    HttpSession session = request.getSession(false);
-	    UtenteBean utente = (session != null) ? (UtenteBean) session.getAttribute("user") : null;
+	    UtenteBean utente = (session != null) ? (UtenteBean) session.getAttribute("utente") : null;
 	    String role = (utente != null) ? utente.getRuolo().name() : null;
 	    
 	    // Controllo autenticazione e autorizzazione

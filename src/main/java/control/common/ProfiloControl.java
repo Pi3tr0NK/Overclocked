@@ -68,7 +68,7 @@ public class ProfiloControl extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        UtenteBean utente = (UtenteBean) request.getSession().getAttribute("user");
+        UtenteBean utente = (UtenteBean) request.getSession().getAttribute("utente");
 
         String view   = request.getParameter("view");
         String action = request.getParameter("action");
@@ -195,7 +195,7 @@ public class ProfiloControl extends HttpServlet {
             utenteDAO.doUpdate(utente);
 
             // Aggiorna l'utente in sessione
-            request.getSession().setAttribute("user", utente);
+            request.getSession().setAttribute("utente", utente);
 
             request.setAttribute("successo", "Dati aggiornati con successo.");
 
