@@ -16,6 +16,7 @@
 
 <!-- Definisci contextPath per il JS -->
 <script>const contextPath = "${pageContext.request.contextPath}";</script>
+
 <jsp:include page="/WEB-INF/views/components/cart-sidebar.jsp" />
 
 </head>
@@ -263,10 +264,10 @@
 
 
 <jsp:include page="/WEB-INF/views/components/footer.jsp" />
-
+<script src="${pageContext.request.contextPath}/script/prodotto.js"></script>
 </body>
 
 
-<script src="${pageContext.request.contextPath}/script/prodotto.js"></script>
+
 
 </html>

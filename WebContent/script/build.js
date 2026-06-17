@@ -340,11 +340,13 @@
                 'aggiungi=' + idProdotto + '&quantita=1',
                 function(request) {
                     var response = JSON.parse(request.responseText);
+				    console.log(response);
                     if (response.success) { completati++; } else { errori++; }
                     if (completati + errori === ids.length) {
                         if (errori === 0) {
                             msg.innerHTML = '&#x2713; Tutti i componenti aggiunti al carrello!';
                             msg.className = 'builder-cart-msg success';
+						    aggiornaBadgeCarrello(response.numProdotti);
                         } else {
                             msg.innerHTML = '&#x26A0; ' + errori + ' componente/i non aggiunto/i.';
                             msg.className = 'builder-cart-msg error';

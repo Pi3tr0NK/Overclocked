@@ -17,13 +17,14 @@ thumbs.forEach(img => {
 function addToCart(idProdotto) {
     var qty = document.getElementById("quantita").value;
     var params = "aggiungi=" + idProdotto + "&quantita=" + qty;
-    loadAjaxDoc("carrello/add", "GET", params, handleAddCart);
+    loadAjaxDoc(contextPath + "/carrello/add", "GET", params, handleAddCart);
 }
 
 function handleAddCart(request) {
     var response = JSON.parse(request.responseText);
     if (response.success) {
-        loadAjaxDoc("carrello/summary", "GET", null, handleCartSummary);
+		aggiornaBadgeCarrello(response.numProdotti);
+        loadAjaxDoc(contextPath + "/carrello/summary", "GET", null, handleCartSummary);
     } else {
         alert("Errore durante l'aggiunta al carrello.");
     }
@@ -38,6 +39,8 @@ function handleCartSummary(request) {
 }
 
 function renderCartSidebar(data) {
+	console.log(data);
+	
     var itemsEl = document.getElementById("sidebarItems");
     var totalEl = document.getElementById("sidebarTotal");
     var badgeEl = document.getElementById("cartBadge");

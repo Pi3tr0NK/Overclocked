@@ -59,7 +59,7 @@ public class CarrelloAddControl extends HttpServlet {
 		    response.setContentType("application/json");
 		    response.setCharacterEncoding("UTF-8");
 
-		    response.getWriter().write("{\"success\":true, \"id\":" + idProdotto + "}");
+		    response.getWriter().write(String.format("{\"success\":true, \"id\":%d, \"numProdotti\":%d}",idProdotto, cart.getTotalQuantity()));
 	}
 
 	/**

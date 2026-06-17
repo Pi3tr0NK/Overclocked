@@ -1,8 +1,8 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <head>
-    <link rel="icon" type="image/png"
-          href="${pageContext.request.contextPath}/assets/images/favicon.png">
+    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/assets/images/favicon.png">
+    <script src="${pageContext.request.contextPath}/script/numeroCarrello.js"></script>
 </head>
 
 <nav class="navbar">
@@ -51,7 +51,9 @@
         <a class="nav-btn" href="${pageContext.request.contextPath}/Carrello">
            <img src="${pageContext.request.contextPath}/img/carrello.png" alt=""> 
            <c:if test="${sessionScope.cart != null}">
-        		<span class="cart-badge">${sessionScope.cart.totalQuantity}</span>
+           		<c:if test="${sessionScope.cart.totalQuantity != 0}">
+        				<span class="cart-badge">${sessionScope.cart.totalQuantity}</span>
+        			</c:if>
     		</c:if>
            CARRELLO
         </a>

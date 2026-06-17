@@ -59,6 +59,7 @@ if (cartItemsEl) {
 
             var numEl    = document.getElementById("summary-num-prodotti");
             var totaleEl = document.getElementById("summary-totale");
+			aggiornaBadgeCarrello(data.numProdotti);
 
             if (numEl)    numEl.textContent    = data.numProdotti;
             if (totaleEl) totaleEl.textContent = "\u20AC " + data.totale.toFixed(2).replace(".", ",");
