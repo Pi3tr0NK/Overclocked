@@ -1,38 +1,48 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Errore - Overclocked</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/errore.css">
 </head>
 
 <jsp:include page="/WEB-INF/views/components/icon.jsp" />
 
 <body>
 
-<div class="register-container" style="text-align: center;">
+<jsp:include page="/WEB-INF/views/components/navbar.jsp" />
 
-    <div class="logo" style="border-color: #ff3333;">
-        <span style="color: #ff3333; font-weight: bold; font-size: 24px;">!</span>
+<div class="container">
+
+    <div class="error-page">
+
+        <div class="error-code">
+            <span class="error-number">${statusCode}</span>
+        </div>
+
+        <div class="error-divider"></div>
+
+        <h1 class="error-title">Qualcosa è andato storto</h1>
+
+        <p class="error-subtitle">
+            La pagina che cercavi non esiste o si è verificato un problema imprevisto sul server.
+        </p>
+
+        <a class="error-btn" href="${pageContext.request.contextPath}/">
+            ← Torna alla Home
+        </a>
+
     </div>
 
-    <h1>Qualcosa è andato storto</h1>
-
-    <div class="orange-line" style="background: #ff3333;"></div>
-
-    <p class="subtitle">Codice Errore: <strong>${statusCode}</strong></p>
-    
-    <p style="color: #999; margin-bottom: 30px;">
-        La pagina che cercavi non esiste o si è verificato un problema imprevisto sul server.
-    </p>
-
-    <a class="register-btn" href="${pageContext.request.contextPath}/" style="display: block; text-decoration: none; line-height: 20px;">
-        Torna alla Home
-    </a>
-
 </div>
+
+<jsp:include page="/WEB-INF/views/components/footer.jsp" />
 
 </body>
 </html>

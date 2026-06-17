@@ -1,0 +1,58 @@
+.error-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 100px 20px;
+}
+
+.error-code {
+    margin-bottom: 20px;
+}
+
+.error-number {
+    font-size: 120px;
+    font-weight: bold;
+    color: #ff7300;
+    line-height: 1;
+    letter-spacing: -4px;
+}
+
+.error-divider {
+    width: 60px;
+    height: 3px;
+    background: #ff7300;
+    margin: 0 auto 30px;
+    border-radius: 2px;
+}
+
+.error-title {
+    font-size: 28px;
+    color: white;
+    margin-bottom: 16px;
+}
+
+.error-subtitle {
+    color: #888;
+    font-size: 15px;
+    max-width: 400px;
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.error-btn {
+    display: inline-block;
+    padding: 14px 32px;
+    background: #ff7300;
+    color: black;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.error-btn:hover {
+    opacity: 0.9;
+}
