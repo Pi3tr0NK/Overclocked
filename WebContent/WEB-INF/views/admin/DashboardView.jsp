@@ -6,7 +6,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Dashboard Admin</title>
+<title>Overclocked - Admin</title>
 
 <link rel="stylesheet"
       href="${pageContext.request.contextPath}/css/admin/dashboard.css">

@@ -19,13 +19,13 @@ public class CSPFilter extends HttpFilter {
                             HttpServletResponse response,
                             FilterChain chain)
             throws IOException, ServletException {
-
+		
         response.setHeader(
             "Content-Security-Policy",
             "default-src 'self'; " +
             	"script-src 'self' 'unsafe-inline'; " +
             	"style-src 'self' 'unsafe-inline'; " +
-            "img-src 'self'; " +
+            	  "img-src 'self' data:; " +
             "object-src 'none'; " +
             "frame-ancestors 'none';"
         );

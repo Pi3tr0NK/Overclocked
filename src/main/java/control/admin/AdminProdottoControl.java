@@ -112,7 +112,6 @@ public class AdminProdottoControl extends HttpServlet {
     {
     	String action = request.getParameter("action");
     	
-    	System.out.print(action);
     	
     	if(action.equals("attiva"))
     		attivaProdotto(request,response);
@@ -490,7 +489,6 @@ public class AdminProdottoControl extends HttpServlet {
             
         case "GPU":
             GPUBean gpu = creaGPU(action, request);
-            System.out.println("PRODOTTO:" +gpu.getIdProdotto() + "gpu: "+ gpu.getIdGpu());
             gpuDAO.doUpdate(gpu);
             return;
             

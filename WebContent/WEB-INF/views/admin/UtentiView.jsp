@@ -6,7 +6,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>Gestione Utenti - Admin</title>
+<title>Overclocked - Admin</title>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/dashboard.css">

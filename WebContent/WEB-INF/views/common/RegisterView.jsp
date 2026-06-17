@@ -22,6 +22,8 @@
 
 <body>
 
+    <a href="${pageContext.request.contextPath}/" class="brand-header"><h2>OVERCLOCKED</h2></a>
+
 	<div class="register-container">
 
 		<div class="logo">

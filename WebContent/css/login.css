@@ -8,9 +8,11 @@
 body {
     background: #000;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    position: relative;
 }
 
 /* ── Card ── */
@@ -31,7 +33,7 @@ body {
     width: 65px;
     height: 65px;
     border-radius: 15px;
-    background: #1a0d00;
+    background: #000000;
     border: 1px solid #ff7300;
     margin: 0 auto 20px;
 
@@ -155,4 +157,19 @@ input:focus {
     color: red;
     text-align: center;
     margin-bottom: 20px;
+}
+
+.brand-header {
+    position: absolute;
+    top: 40px; 
+    font-size: 2rem; 
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #ff7300;
+    text-decoration: none;
+    text-align: center;
+}
+
+.brand-header:hover {
+    opacity: 0.85;
 }

@@ -46,7 +46,7 @@ import model.RAMBean;
 @WebServlet("/pcBuilder")
 public class BuildControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	
+
 	private PSUDAO psuDAO;
 	private ChassisDAO chassisDAO;
 	private CPUDAO cpuDAO;
@@ -55,183 +55,180 @@ public class BuildControl extends HttpServlet {
 	private MemoriaDAO memoriaDAO;
 	private MoboDAO moboDAO;
 	private RAMDAO ramDAO;
-	
+
 	public void init(ServletConfig servletConfig) throws ServletException {
-        super.init(servletConfig);
+		super.init(servletConfig);
 
-        DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
 
-        if (ds == null) {
-            throw new ServletException("DataSource non disponibile nel contesto");
-        }
+		if (ds == null) {
+			throw new ServletException("DataSource non disponibile nel contesto");
+		}
 
-    		psuDAO =new PSUDAOImpl(ds);
-    		chassisDAO =new ChassisDAOImpl(ds);
-    		cpuDAO =new CPUDAOImpl(ds);
-    		dissipatoreDAO =new DissipatoreDAOImpl(ds);
-    		gpuDAO =new GPUDAOImpl(ds);
-    		memoriaDAO =new MemoriaDAOImpl(ds);
-    		moboDAO =new MoboDAOImpl(ds);
-    		ramDAO =new RAMDAOImpl(ds);
-    }
-  
-	
-	 protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-	            throws ServletException, IOException {
+		psuDAO = new PSUDAOImpl(ds);
+		chassisDAO = new ChassisDAOImpl(ds);
+		cpuDAO = new CPUDAOImpl(ds);
+		dissipatoreDAO = new DissipatoreDAOImpl(ds);
+		gpuDAO = new GPUDAOImpl(ds);
+		memoriaDAO = new MemoriaDAOImpl(ds);
+		moboDAO = new MoboDAOImpl(ds);
+		ramDAO = new RAMDAOImpl(ds);
+	}
 
-	        String action = request.getParameter("action");
+	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
-	        // Nessuna action → mostra la pagina JSP
-	        if (action == null || action.isEmpty()) {
-	            request.getRequestDispatcher("/WEB-INF/views/common/BuildView.jsp")
-	                   .forward(request, response);
-	            return;
-	        }
+		String action = request.getParameter("action");
 
-	        // Tutte le richieste AJAX rispondono in JSON
-	        response.setContentType("application/json");
-	        response.setCharacterEncoding("UTF-8");
-	        PrintWriter out = response.getWriter();
+		// Nessuna action → mostra la pagina JSP
+		if (action == null || action.isEmpty()) {
+			request.getRequestDispatcher("/WEB-INF/views/common/BuildView.jsp").forward(request, response);
+			return;
+		}
 
-	        JSONObject json = new JSONObject();
+		// Tutte le richieste AJAX rispondono in JSON
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		PrintWriter out = response.getWriter();
 
-	        try {
-	            switch (action) {
+		JSONObject json = new JSONObject();
 
-	                case "getCpus": {
-	                    Collection<CPUBean> cpus = cpuDAO.doRetrieveAll(null, null, null, null, null, null, 0);
-	                    json.put("functionName", "aggiornaCpus");
-	                    json.put("result", new JSONArray(cpus));
-	                    break;
-	                }
+		try {
+			switch (action) {
 
-	                case "getMobos": {
-	                    String cpuIdStr = request.getParameter("cpuId");
-	                    if (cpuIdStr == null || cpuIdStr.isEmpty()) {
-	                        json.put("functionName", "errore");
-	                        json.put("result", "cpuId mancante");
-	                        break;
-	                    }
-	                    int cpuId = Integer.parseInt(cpuIdStr);
-	                    Collection<MoboBean> mobos = moboDAO.moboCompatibili(cpuId);
-	                    json.put("functionName", "aggiornaMobos");
-	                    json.put("result", new JSONArray(mobos));
-	                    break;
-	                }
+			case "getCpus": {
+				Collection<CPUBean> cpus = cpuDAO.doRetrieveAll(null, null, null, null, null, null, 0);
+				json.put("functionName", "aggiornaCpus");
+				json.put("result", new JSONArray(cpus));
+				break;
+			}
 
-	                case "getRams": {
-	                    String moboIdStr = request.getParameter("moboId");
-	                    if (moboIdStr == null || moboIdStr.isEmpty()) {
-	                        json.put("functionName", "errore");
-	                        json.put("result", "moboId mancante");
-	                        break;
-	                    }
-	                    int moboId = Integer.parseInt(moboIdStr);
-	                    Collection<RAMBean> rams = ramDAO.ramCompatibili(moboId);
-	                    json.put("functionName", "aggiornaRams");
-	                    json.put("result", new JSONArray(rams));
-	                    break;
-	                }
+			case "getMobos": {
+				String cpuIdStr = request.getParameter("cpuId");
+				if (cpuIdStr == null || cpuIdStr.isEmpty()) {
+					json.put("functionName", "errore");
+					json.put("result", "cpuId mancante");
+					break;
+				}
+				int cpuId = Integer.parseInt(cpuIdStr);
+				Collection<MoboBean> mobos = moboDAO.moboCompatibili(cpuId);
+				json.put("functionName", "aggiornaMobos");
+				json.put("result", new JSONArray(mobos));
+				break;
+			}
 
-	                case "getGpus": {
-	                    Collection<GPUBean> gpus = gpuDAO.doRetrieveAll(null, null, null, null, null, null, 0);
-	                    json.put("functionName", "aggiornaGpus");
-	                    json.put("result", new JSONArray(gpus));
-	                    break;
-	                }
+			case "getRams": {
+				String moboIdStr = request.getParameter("moboId");
+				if (moboIdStr == null || moboIdStr.isEmpty()) {
+					json.put("functionName", "errore");
+					json.put("result", "moboId mancante");
+					break;
+				}
+				int moboId = Integer.parseInt(moboIdStr);
+				Collection<RAMBean> rams = ramDAO.ramCompatibili(moboId);
+				json.put("functionName", "aggiornaRams");
+				json.put("result", new JSONArray(rams));
+				break;
+			}
 
-	                case "getStorages": {
-	                    String moboIdStr = request.getParameter("moboId");
-	                    if (moboIdStr == null || moboIdStr.isEmpty()) {
-	                        json.put("functionName", "errore");
-	                        json.put("result", "moboId mancante");
-	                        break;
-	                    }
-	                    int moboId = Integer.parseInt(moboIdStr);
-	                    Collection<MemoriaBean> storages = memoriaDAO.memoriaCompatibili(moboId);
-	                    json.put("functionName", "aggiornaStorages");
-	                    json.put("result", new JSONArray(storages));
-	                    break;
-	                }
+			case "getGpus": {
+				Collection<GPUBean> gpus = gpuDAO.doRetrieveAll(null, null, null, null, null, null, 0);
+				json.put("functionName", "aggiornaGpus");
+				json.put("result", new JSONArray(gpus));
+				break;
+			}
 
-	                case "getPsus": {
-	                    String cpuIdStr = request.getParameter("cpuId");
-	                    String gpuIdStr = request.getParameter("gpuId");
-	                    if (cpuIdStr == null || cpuIdStr.isEmpty()) {
-	                        json.put("functionName", "errore");
-	                        json.put("result", "cpuId mancante");
-	                        break;
-	                    }
-	                    if (gpuIdStr == null || gpuIdStr.isEmpty()) {
-	                        json.put("functionName", "errore");
-	                        json.put("result", "gpuId mancante");
-	                        break;
-	                    }
-	                    int cpuId = Integer.parseInt(cpuIdStr);
-	                    int gpuId = Integer.parseInt(gpuIdStr);
-	                    Collection<PSUBean> psus = psuDAO.psuCompatibili(cpuId, gpuId);
-	                    json.put("functionName", "aggiornaPsus");
-	                    json.put("result", new JSONArray(psus));
-	                    break;
-	                }
+			case "getStorages": {
+				String moboIdStr = request.getParameter("moboId");
+				if (moboIdStr == null || moboIdStr.isEmpty()) {
+					json.put("functionName", "errore");
+					json.put("result", "moboId mancante");
+					break;
+				}
+				int moboId = Integer.parseInt(moboIdStr);
+				Collection<MemoriaBean> storages = memoriaDAO.memoriaCompatibili(moboId);
+				json.put("functionName", "aggiornaStorages");
+				json.put("result", new JSONArray(storages));
+				break;
+			}
 
-	                case "getCases": {
-	                    String moboIdStr = request.getParameter("moboId");
-	                    if (moboIdStr == null || moboIdStr.isEmpty()) {
-	                        json.put("functionName", "errore");
-	                        json.put("result", "moboId mancante");
-	                        break;
-	                    }
-	                    int moboId = Integer.parseInt(moboIdStr);
-	                    Collection<ChassisBean> cases = chassisDAO.chassisCompatibili(moboId);
-	                    json.put("functionName", "aggiornaCases");
-	                    json.put("result", new JSONArray(cases));
-	                    break;
-	                }
+			case "getPsus": {
+				String cpuIdStr = request.getParameter("cpuId");
+				String gpuIdStr = request.getParameter("gpuId");
+				if (cpuIdStr == null || cpuIdStr.isEmpty()) {
+					json.put("functionName", "errore");
+					json.put("result", "cpuId mancante");
+					break;
+				}
+				if (gpuIdStr == null || gpuIdStr.isEmpty()) {
+					json.put("functionName", "errore");
+					json.put("result", "gpuId mancante");
+					break;
+				}
+				int cpuId = Integer.parseInt(cpuIdStr);
+				int gpuId = Integer.parseInt(gpuIdStr);
+				Collection<PSUBean> psus = psuDAO.psuCompatibili(cpuId, gpuId);
+				json.put("functionName", "aggiornaPsus");
+				json.put("result", new JSONArray(psus));
+				break;
+			}
 
-	                case "getDissipatori": {
-	                    String cpuIdStr = request.getParameter("cpuId");
-	                    if (cpuIdStr == null || cpuIdStr.isEmpty()) {
-	                        json.put("functionName", "errore");
-	                        json.put("result", "cpuId mancante");
-	                        break;
-	                    }
-	                    int cpuId = Integer.parseInt(cpuIdStr);
-	                    Collection<DissipatoreBean> dissipatori = dissipatoreDAO.dissipatoriCompatibili(cpuId);
-	                    json.put("functionName", "aggiornaDissipatori");
-	                    json.put("result", new JSONArray(dissipatori));
-	                    break;
-	                }
+			case "getCases": {
+				String moboIdStr = request.getParameter("moboId");
+				if (moboIdStr == null || moboIdStr.isEmpty()) {
+					json.put("functionName", "errore");
+					json.put("result", "moboId mancante");
+					break;
+				}
+				int moboId = Integer.parseInt(moboIdStr);
+				Collection<ChassisBean> cases = chassisDAO.chassisCompatibili(moboId);
+				json.put("functionName", "aggiornaCases");
+				json.put("result", new JSONArray(cases));
+				break;
+			}
 
-	                default: {
-	                    json.put("functionName", "errore");
-	                    json.put("result", "Azione non riconosciuta");
-	                    break;
-	                }
-	            }
+			case "getDissipatori": {
+				String cpuIdStr = request.getParameter("cpuId");
+				if (cpuIdStr == null || cpuIdStr.isEmpty()) {
+					json.put("functionName", "errore");
+					json.put("result", "cpuId mancante");
+					break;
+				}
+				int cpuId = Integer.parseInt(cpuIdStr);
+				Collection<DissipatoreBean> dissipatori = dissipatoreDAO.dissipatoriCompatibili(cpuId);
+				json.put("functionName", "aggiornaDissipatori");
+				json.put("result", new JSONArray(dissipatori));
+				break;
+			}
 
-	        } catch (NumberFormatException e) {
-	            json.put("functionName", "errore");
-	            json.put("result", "ID non valido: " + e.getMessage());
-	        } catch (Exception e) {
-	            json.put("functionName", "errore");
-	            json.put("result", "Errore interno: " + e.getMessage());
-	        }
+			default: {
+				json.put("functionName", "errore");
+				json.put("result", "Azione non riconosciuta");
+				break;
+			}
+			}
 
-	        out.print(json.toString());
-	        out.flush();
-	    }
+		} catch (NumberFormatException e) {
+			json.put("functionName", "errore");
+			json.put("result", "ID non valido: " + e.getMessage());
+		} catch (Exception e) {
+			json.put("functionName", "errore");
+			json.put("result", "Errore interno: " + e.getMessage());
+		}
 
-	    @Override
-	    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-	            throws ServletException, IOException {
-	        processRequest(request, response);
-	    }
+		out.print(json.toString());
+		out.flush();
+	}
 
-	    @Override
-	    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-	            throws ServletException, IOException {
-	        processRequest(request, response);
-	    }
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		processRequest(request, response);
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
 }
-
