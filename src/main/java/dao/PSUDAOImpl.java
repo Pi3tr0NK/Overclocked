@@ -39,7 +39,7 @@ public class PSUDAOImpl implements PSUDAO {
 			ps.setString(2, psu.getCertificazione());
 			ps.setString(3, psu.getModulare().name());
 			ps.setString(4, psu.getFormato().name());
-			ps.setInt(4, id);
+			ps.setInt(5, id);
 			ps.executeUpdate();
 		}
 	}

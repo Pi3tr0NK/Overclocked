@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Aggiungi Prodotto - Overclocked Admin</title>
+<title>Overclocked - Admin</title>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/modificaProdotto.css">

@@ -83,7 +83,6 @@ public class LoginControl extends HttpServlet {
 				 * UTENTE NORMALE
 				 */
 				} else {
-				// request.getSession().setAttribute("user", utente); 
 				response.sendRedirect(request.getContextPath()+ "/home");
 				}
 

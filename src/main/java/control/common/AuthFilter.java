@@ -20,7 +20,7 @@ public class AuthFilter extends HttpFilter {
 	protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 	        throws IOException, ServletException {
 	    String path = request.getServletPath();
-	    	// Se l'URL non è protetto, lascia passare
+	    // Se l'URL non è protetto, lascia passare
 	    if (!path.startsWith("/admin/") && !path.startsWith("/common/")) {
 	    		chain.doFilter(request, response);
 	        return; // Per evitare che il codice che segue venga eseguito

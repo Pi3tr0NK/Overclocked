@@ -14,6 +14,8 @@
 
 <body>
 
+    <a href="${pageContext.request.contextPath}/" class="brand-header"><h2>OVERCLOCKED</h2></a>
+
 <div class="login-container">
 
     <div class="logo">
@@ -42,9 +44,6 @@
         <label>Password</label>
         <input type="password" name="password" required>
 
-        <div class="row">
-            <a class="link" href="#">Password dimenticata?</a>
-        </div>
 
         <button class="login-btn" type="submit">Accedi</button>
 

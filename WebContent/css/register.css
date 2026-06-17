@@ -8,10 +8,12 @@
 body {
     background: #000;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: column; /* Allinea gli elementi in verticale (Titolo sopra, Container sotto) */
+    justify-content: center; /* Centra verticalmente la card nello schermo */
+    align-items: center; /* Centra orizzontalmente sia il titolo che la card */
     min-height: 100vh;
-    padding: 40px 0;
+    padding: 120px 0 40px; /* Aumentato il padding superiore per fare spazio al brand in alto */
+    position: relative;
 }
 
 /* ── Card ── */
@@ -28,11 +30,26 @@ body {
 
 /* ── Header ── */
 
+.brand-header {
+    position: absolute;
+    top: 40px; /* Distanza fissa dal bordo superiore dello schermo */
+    font-size: 2rem; 
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #ff7300;
+    text-decoration: none;
+    text-align: center;
+}
+
+.brand-header:hover {
+    opacity: 0.85;
+}
+
 .logo {
     width: 65px;
     height: 65px;
     border-radius: 15px;
-    background: #1a0d00;
+    background: #000000;
     border: 1px solid #ff7300;
     margin: 0 auto 20px;
 
@@ -179,6 +196,15 @@ input:focus {
 /* ── Responsive ── */
 
 @media (max-width: 600px) {
+    body {
+        padding-top: 100px; /* Riduce lo spazio in alto sui telefoni */
+    }
+
+    .brand-header {
+        font-size: 1.6rem; /* Rimpicciolisce leggermente il brand sui telefoni */
+        top: 30px;
+    }
+
     .register-container {
         width: 95%;
         padding: 25px;
