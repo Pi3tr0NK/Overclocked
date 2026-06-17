@@ -139,7 +139,7 @@
                         <c:choose>
                             <c:when test="${p.sconto > 0}">
                                 <div class="old-price"><c:out value="${p.prezzo} €"/></div>
-                                <div class="product-price">${String.format('%.2f', scontato)} €</div>
+                                <div class="product-price"><c:out value="${String.format('%.2f', scontato)} €"/></div>
                             </c:when>
                             <c:otherwise>
                                 <div class="product-price"><c:out value="${p.prezzo} €"/></div>
