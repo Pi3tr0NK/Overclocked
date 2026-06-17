@@ -159,7 +159,9 @@
 
 
 <jsp:include page="/WEB-INF/views/components/footer.jsp" />
-</body>
+
 
 <script src="${pageContext.request.contextPath}/script/build.js"></script>
+</body>
+
 </html>

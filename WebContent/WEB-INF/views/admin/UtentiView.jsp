@@ -63,15 +63,15 @@
         <!-- STATS -->
         <div class="stats-grid">
             <div class="stat-card">
-                <h2>${numUtenti}</h2>
+                <h2><c:out value="${numUtenti}"/></h2>
                 <span>Utenti caricati</span>
             </div>
             <div class="stat-card">
-                <h2>${numAdmin}</h2>
+                <h2><c:out value="${numAdmin}"/></h2>
                 <span>Amministratori</span>
             </div>
             <div class="stat-card">
-                <h2>${numUser}</h2>
+                <h2><c:out value="${numUser}"/></h2>
                 <span>Clienti</span>
             </div>
         </div>
@@ -116,15 +116,15 @@
                                     ${u.nome.charAt(0)}${u.cognome.charAt(0)}
                                 </div>
                                 <div>
-                                    <div class="user-name">${u.nome} ${u.cognome}</div>
-                                    <div class="user-email">${u.email}</div>
+                                    <div class="user-name"><c:out value="${u.nome}"/> <c:out value="${u.cognome}"/></div>
+                                    <div class="user-email"><c:out value="${u.email}"/></div>
                                 </div>
                             </div>
                         </td>
 
                         <td>
                             <span class="role-badge role-${u.ruolo}">
-                                ${u.ruolo}
+                                <c:out value="${u.ruolo}"/>
                             </span>
                         </td>
 
