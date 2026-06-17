@@ -65,9 +65,7 @@
                                 <div class="ordine-field">
                                     <span class="ordine-field-label">Indirizzo</span>
                                     <span class="ordine-field-value">
-                                        ${ordine.indirizzo.viaNumciv},
-                                        ${ordine.indirizzo.citta}
-                                        (${ordine.indirizzo.provincia})
+                                        <c:out value="${ordine.indirizzo.viaNumciv}, ${ordine.indirizzo.citta} (${ordine.indirizzo.provincia})"/>
                                     </span>
                                 </div>
                             </div>

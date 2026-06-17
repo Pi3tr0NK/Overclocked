@@ -54,15 +54,15 @@
                         <div class="co-title">&#x1F464; Dati acquirente</div>
                         <div class="co-field">
                             <label>Nome e cognome</label>
-                            <span>${utente.nome} ${utente.cognome}</span>
+                            <span><c:out value="${utente.nome} ${utente.cognome}"/></span>
                         </div>
                         <div class="co-field">
                             <label>Email</label>
-                            <span>${utente.email}</span>
+                            <span><c:out value="${utente.email}"/></span>
                         </div>
                         <div class="co-field">
                             <label>Cellulare</label>
-                            <span>${utente.cellulare}</span>
+                            <span><c:out value="${utente.cellulare}"/></span>
                         </div>
                     </div>
 
@@ -71,22 +71,21 @@
                         <div class="co-title">&#x1F4CD; Indirizzo di spedizione</div>
                         <div class="co-field">
                             <label>Indirizzo</label>
-                            <span>${utente.indirizzo.viaNumciv}</span>
+                            <span><c:out value="${utente.indirizzo.viaNumciv}"/></span>
                         </div>
                         <div class="co-field">
                             <label>Città</label>
-                            <span>${utente.indirizzo.citta} (${utente.indirizzo.provincia})</span>
+                            <span><c:out value="${utente.indirizzo.citta} (${utente.indirizzo.provincia})"/></span>
                         </div>
                         <div class="co-field">
                             <label>CAP</label>
-                            <span>${utente.indirizzo.codicePostale}</span>
+                            <span><c:out value="${utente.indirizzo.codicePostale}"/></span>
                         </div>
                         <div class="co-field">
                             <label>Paese</label>
-                            <span>${utente.indirizzo.paese}</span>
+                            <span><c:out value="${utente.indirizzo.paese}"/></span>
                         </div>
-                        <input type="hidden" name="idIndirizzo"
-                               value="${utente.indirizzo.idIndirizzo}"/>
+                        <input type="hidden" name="idIndirizzo" value="${utente.indirizzo.idIndirizzo}"/>
                     </div>
 
                     <%-- Prodotti --%>
@@ -103,27 +102,26 @@
                             <tbody>
                                 <c:forEach var="item" items="${prodotti}">
                                     <c:set var="p" value="${item.prodotto}"/>
-                                    <c:set var="scontato"
-                                           value="${p.prezzo - (p.prezzo * p.sconto / 100.0)}"/>
+                                    <c:set var="scontato" value="${p.prezzo - (p.prezzo * p.sconto / 100.0)}"/>
                                     <tr>
                                         <td>
                                             <span class="nome-prodotto">${p.nome}</span>
                                             <span class="marca-prodotto">
-                                                ${p.marca}
+                                                <c:out value="${p.marca}"/>
                                                 <c:if test="${p.sconto > 0}">
-                                                    <span class="badge-sconto">-${p.sconto}%</span>
+                                                    <span class="badge-sconto"><c:out value="-${p.sconto}%"/></span>
                                                 </c:if>
                                             </span>
                                         </td>
-                                        <td class="col-qta">${item.quantita}</td>
+                                        <td class="col-qta"><c:out value="${item.quantita}"/></td>
                                         <td class="col-prezzo">
                                             <c:choose>
                                                 <c:when test="${p.sconto > 0}">
-                                                    <div class="old-price">${p.prezzo} €</div>
-                                                    <div class="product-price">${String.format('%.2f', scontato * item.quantita)} €</div>
+                                                    <div class="old-price"><c:out value="${p.prezzo} €"/></div>
+                                                    <div class="product-price"><c:out value="${String.format('%.2f', scontato * item.quantita)} €"/></div>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <div class="product-price">${p.prezzo * item.quantita} €</div>
+                                                    <div class="product-price"><c:out value="${p.prezzo * item.quantita} €"/></div>
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
@@ -142,21 +140,20 @@
 
                         <c:forEach var="item" items="${prodotti}">
                             <c:set var="p" value="${item.prodotto}"/>
-                            <c:set var="scontato"
-                                   value="${p.prezzo - (p.prezzo * p.sconto / 100.0)}"/>
+                            <c:set var="scontato" value="${p.prezzo - (p.prezzo * p.sconto / 100.0)}"/>
                             <div class="riepilogo-riga">
                                 <span class="riga-nome">
-                                    ${p.nome}
+                                    <c:out value="${p.nome}"/>
                                     <c:if test="${item.quantita > 1}">&times;${item.quantita}</c:if>
                                 </span>
                                 <span class="riga-prezzo">
                                     <c:choose>
                                         <c:when test="${p.sconto > 0}">
-                                            <div class="old-price">${p.prezzo} €</div>
-                                            <div class="product-price">${String.format('%.2f', scontato * item.quantita)} €</div>
+                                            <div class="old-price"><c:out value="${p.prezzo} €"/></div>
+                                            <div class="product-price"><c:out value="${String.format('%.2f', scontato * item.quantita)} €"/></div>
                                         </c:when>
                                         <c:otherwise>
-                                            <div class="product-price">${p.prezzo * item.quantita} €</div>
+                                            <div class="product-price"><c:out value="${p.prezzo * item.quantita} €"/></div>
                                         </c:otherwise>
                                     </c:choose>
                                 </span>
@@ -165,7 +162,7 @@
 
                         <div class="riepilogo-totale">
                             <span>Totale</span>
-                            <span>${String.format('%.2f', totale)} €</span>
+                            <span><c:out value="${String.format('%.2f', totale)} €"/></span>
                         </div>
 
                         <button type="submit" class="btn-conferma">
