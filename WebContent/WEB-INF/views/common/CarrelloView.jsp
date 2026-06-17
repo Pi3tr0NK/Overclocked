@@ -127,7 +127,7 @@
 
                     <div class="summary-row">
                         <span>Spedizione</span>
-                        <span style="color:#28d14a">Gratuita</span>
+                        <span id="color-green">Gratuita</span>
                     </div>
 
                     <hr class="summary-divider">

@@ -194,7 +194,7 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 		prodottoDAO.doUpdate(mem);
 
 		String sql = "UPDATE " + TABLE_NAME
-				+ " SET capacita = ?, vel_scrittura = ?, vel_lettura = ?, tipo = ?, tecnologia = ?, formato = ? WHERE id_case = ?";
+				+ " SET capacita = ?, vel_scrittura = ?, vel_lettura = ?, tipo = ?, tecnologia = ?, formato = ? WHERE id_memoria = ?";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 

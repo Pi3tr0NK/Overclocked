@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 
-<%@ page import="java.util.List" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 
 <!DOCTYPE html>
 <html>
@@ -9,8 +9,10 @@
 <meta charset="UTF-8">
 <title>Registrazione - Overclocked</title>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/register.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/tema.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/register.css">
 
 </head>
 
@@ -20,237 +22,145 @@
 
 <body>
 
-<div class="register-container">
+	<div class="register-container">
 
-    <div class="logo">
-    	<img src="${pageContext.request.contextPath}/img/register.png" alt="">    
-    </div>
+		<div class="logo">
+			<img src="${pageContext.request.contextPath}/img/register.png" alt="">
+		</div>
 
-    <h1>Crea il tuo account</h1>
+		<h1>Crea il tuo account</h1>
 
-    <div class="orange-line"></div>
+		<div class="orange-line"></div>
 
-    <p class="subtitle">
-        Unisciti a Overclocked e inizia a costruire la tua build
-    </p>
+		<p class="subtitle">Unisciti a Overclocked e inizia a costruire la
+			tua build</p>
 
-    <%
-    List<String> errors =
-    (List<String>) request.getAttribute("errors");
+		<c:if test="${not empty errors}">
 
-    if(errors != null){
-    %>
+			<div class="error">
 
-        <div class="error">
+				<c:forEach var="e" items="${errors}">
+					<p>${e}</p>
+				</c:forEach>
 
-            <%
-            for(String e : errors){
-            %>
+			</div>
 
-                <p><%= e %></p>
+		</c:if>
 
-            <%
-            }
-            %>
+		<form action="register" method="post">
 
-        </div>
+			<!-- DATI PERSONALI -->
 
-    <%
-    }
-    %>
+			<div class="section-title">DATI PERSONALI</div>
 
-    <form action="register" method="post">
+			<div class="row">
 
-        <!-- DATI PERSONALI -->
+				<div class="field">
+					<label> Nome <span class="required">*</span>
+					</label> <input type="text" name="nome" required>
+				</div>
 
-        <div class="section-title">
-            DATI PERSONALI
-        </div>
+				<div class="field">
+					<label> Cognome <span class="required">*</span>
+					</label> <input type="text" name="cognome" required>
+				</div>
 
-        <div class="row">
+			</div>
 
-            <div class="field">
-                <label>
-                    Nome <span class="required">*</span>
-                </label>
+			<div class="field">
 
-                <input type="text"
-                       name="nome"
-                       required>
-            </div>
+				<label> Email <span class="required">*</span>
+				</label> <input type="email" name="email" required>
 
-            <div class="field">
-                <label>
-                    Cognome <span class="required">*</span>
-                </label>
+			</div>
 
-                <input type="text"
-                       name="cognome"
-                       required>
-            </div>
+			<div class="row">
 
-        </div>
+				<div class="field">
 
-        <div class="field">
+					<label> Password <span class="required">*</span>
+					</label> <input type="password" name="password" required>
 
-            <label>
-                Email <span class="required">*</span>
-            </label>
+				</div>
 
-            <input type="email"
-                   name="email"
-                   required>
+				<div class="field">
 
-        </div>
+					<label> Conferma password <span class="required">*</span>
+					</label> <input type="password" name="confermaPassword" required>
 
-        <div class="row">
+				</div>
 
-            <div class="field">
+			</div>
 
-                <label>
-                    Password <span class="required">*</span>
-                </label>
+			<div class="small-text">Minimo 8 caratteri, una maiuscola e un
+				numero</div>
 
-                <input type="password"
-                       name="password"
-                       required>
+			<div class="field">
 
-            </div>
+				<label>Cellulare</label> <input type="text" name="cellulare">
 
-            <div class="field">
+			</div>
 
-                <label>
-                    Conferma password
-                    <span class="required">*</span>
-                </label>
+			<!-- INDIRIZZO -->
 
-                <input type="password"
-                       name="confermaPassword"
-                       required>
+			<div class="section-title">INDIRIZZO DI SPEDIZIONE</div>
 
-            </div>
+			<div class="field">
 
-        </div>
+				<label> Via e numero civico <span class="required">*</span>
+				</label> <input type="text" name="via" required>
 
-        <div class="small-text">
-            Minimo 8 caratteri,
-            una maiuscola e un numero
-        </div>
+			</div>
 
-        <div class="field">
+			<div class="field">
 
-            <label>Cellulare</label>
+				<label>Dati aggiuntivi</label> <input type="text" name="datiPlus">
 
-            <input type="text"
-                   name="cellulare">
+			</div>
 
-        </div>
+			<div class="row">
 
-        <!-- INDIRIZZO -->
+				<div class="field">
 
-        <div class="section-title">
-            INDIRIZZO DI SPEDIZIONE
-        </div>
+					<label> Città <span class="required">*</span>
+					</label> <input type="text" name="citta" required>
 
-        <div class="field">
+				</div>
 
-            <label>
-                Via e numero civico
-                <span class="required">*</span>
-            </label>
+				<div class="field">
 
-            <input type="text"
-                   name="via"
-                   required>
+					<label> Provincia <span class="required">*</span>
+					</label> <input type="text" name="provincia" required>
 
-        </div>
+				</div>
 
-        <div class="field">
+				<div class="field">
 
-            <label>Dati aggiuntivi</label>
+					<label> CAP <span class="required">*</span>
+					</label> <input type="text" name="cap" required>
 
-            <input type="text"
-                   name="datiPlus">
+				</div>
 
-        </div>
+			</div>
 
-        <div class="row">
+			<div class="field">
 
-            <div class="field">
+				<label> Paese <span class="required">*</span>
+				</label> <input type="text" name="paese" value="Italia" required>
 
-                <label>
-                    Città
-                    <span class="required">*</span>
-                </label>
+			</div>
 
-                <input type="text"
-                       name="citta"
-                       required>
+			<button class="register-btn" type="submit">Crea account</button>
 
-            </div>
+		</form>
 
-            <div class="field">
+		<div class="login-link">
 
-                <label>
-                    Provincia
-                    <span class="required">*</span>
-                </label>
+			Hai già un account? <a href="indexlogin"> Accedi </a>
 
-                <input type="text"
-                       name="provincia"
-                       required>
+		</div>
 
-            </div>
-
-            <div class="field">
-
-                <label>
-                    CAP
-                    <span class="required">*</span>
-                </label>
-
-                <input type="text"
-                       name="cap"
-                       required>
-
-            </div>
-
-        </div>
-
-        <div class="field">
-
-            <label>
-                Paese
-                <span class="required">*</span>
-            </label>
-
-            <input type="text"
-                   name="paese"
-                   value="Italia"
-                   required>
-
-        </div>
-
-        <button class="register-btn"
-                type="submit">
-
-            Crea account
-
-        </button>
-
-    </form>
-
-    <div class="login-link">
-
-        Hai già un account?
-
-        <a href="indexlogin">
-            Accedi
-        </a>
-
-    </div>
-
-</div>
+	</div>
 
 </body>
 </html>

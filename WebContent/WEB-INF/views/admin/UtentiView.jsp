@@ -133,7 +133,7 @@
                         <td>
 
 							<%-- Visualizza gli ordini --%>
-                            <form action="${pageContext.request.contextPath}/admin/ordini" method="post" style="display:inline;">
+                            <form class="act-button" action="${pageContext.request.contextPath}/admin/ordini" method="post">
                                 <input type="hidden" name="cercaNome"  value="${u.nome}"/>
                                 <input type="hidden" name="cercaCognome"  value="${u.cognome}"/>
                                 <input type="hidden" name="cercaEmail"  value="${u.email}"/>
@@ -142,7 +142,7 @@
                             
                            <%-- Promuovi admin (solo per clienti) --%>
                             <c:if test="${u.ruolo == 'USER'}">
-                                <form action="${pageContext.request.contextPath}/admin/utenti" method="post" style="display:inline;">
+                                <form class="act-button" action="${pageContext.request.contextPath}/admin/utenti" method="post">
                                     <input type="hidden" name="action"   value="promuovi"/>
                                     <input type="hidden" name="idUtente" value="${u.idUtente}"/>
                                     <button type="submit" class="action-btn promote">Promuovi admin</button>

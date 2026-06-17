@@ -16,7 +16,7 @@
 	href="${pageContext.request.contextPath}/css/dashboard.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/navbar.css">
-	
+
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/dettaglioOrdine.css">
 
@@ -62,7 +62,7 @@
 					<h1>Ordine #${ordine.idOrdine}</h1>
 
 					<span class="stato-badge stato-${ordine.stato}">
-						${ordine.stato} </span>
+						<c:out value="${ordine.stato}"/> </span>
 
 					<p class="order-date">Effettuato il ${ordine.data}</p>
 
@@ -84,12 +84,17 @@
 					<h3>Cliente</h3>
 
 					<p>
-						Nome e cognome: <strong> ${ordine.utente.nome} ${ordine.utente.cognome} </strong>
+						Nome e cognome: <strong> <c:out value="${ordine.utente.nome}"/>
+							<c:out value="${ordine.utente.cognome}"/> </strong>
 					</p>
 
-					<p>Email: <strong>${ordine.utente.email}</strong></p>
+					<p>
+						Email: <strong><c:out value="${ordine.utente.email}"/></strong>
+					</p>
 
-					<p>Cellulare: <strong>${ordine.utente.cellulare}</strong></p>
+					<p>
+						Cellulare: <strong><c:out value="${ordine.utente.cellulare}"/></strong>
+					</p>
 
 				</div>
 
@@ -100,15 +105,15 @@
 					<h3>Riepilogo Ordine</h3>
 
 					<p>
-						ID Ordine: <strong>#${ordine.idOrdine}</strong>
+						ID Ordine: <strong>#<c:out value="${ordine.idOrdine}"/></strong>
 					</p>
 
 					<p>
-						Data: <strong>${ordine.data}</strong>
+						Data: <strong><c:out value="${ordine.data}"/></strong>
 					</p>
 
 					<p>
-						Stato: <strong>${ordine.stato}</strong>
+						Stato: <strong><c:out value="${ordine.stato}"/></strong>
 					</p>
 
 				</div>
@@ -119,13 +124,21 @@
 
 					<h3>Indirizzo di spedizione</h3>
 
-					<p>Indirizzo: <strong>${ordine.indirizzo.viaNumciv} </strong></p>
+					<p>
+						Indirizzo: <strong><c:out value="${ordine.indirizzo.viaNumciv}"/> </strong>
+					</p>
 
-					<p> Città: <strong> ${ordine.indirizzo.citta} </strong></p>
+					<p>
+						Città: <strong> <c:out value="${ordine.indirizzo.citta}"/> </strong>
+					</p>
 
-					<p>Codice postale: <strong>${ordine.indirizzo.codicePostale}</strong></p>
+					<p>
+						Codice postale: <strong><c:out value="${ordine.indirizzo.codicePostale}"/></strong>
+					</p>
 
-					<p>Paese: <strong>${ordine.indirizzo.paese}</strong></p>
+					<p>
+						Paese: <strong><c:out value="${ordine.indirizzo.paese}"/></strong>
+					</p>
 
 				</div>
 
@@ -135,9 +148,8 @@
 
 					<h3>Pagamento</h3>
 
-					<p>
-						Totale: <strong style="color: #ff7300;"> €
-							${ordine.totale} </strong>
+					<p class="color-red">
+						Totale: <strong> € <c:out value="${ordine.totale}"/> </strong>
 					</p>
 
 				</div>
@@ -172,24 +184,24 @@
 
 							<tr>
 
-								<td style="width: 70px;"><img class="product-thumb"
+								<td class="td-immagini"><img class="product-thumb"
 									src="${pageContext.request.contextPath}/${d.prodotto.immagini[0].path}">
 
 								</td>
 
 								<td>
 
-									<div class="product-name">${d.prodotto.nome}</div> <br>
+									<div class="product-name"><c:out value="${d.prodotto.nome}"/> </div> <br>
 
-									<div class="product-model">${d.prodotto.modello}</div>
+									<div class="product-model"><c:out value="${d.prodotto.modello}"/></div>
 
 								</td>
 
-								<td>${d.prodotto.categoria}</td>
+								<td><c:out value="${d.prodotto.categoria}"/></td>
 
-								<td class="price">€ ${d.prezzoUnitario}</td>
+								<td class="price">€ <c:out value="${d.prezzoUnitario}"/></td>
 
-								<td>${d.quantita}</td>
+								<td><c:out value="${d.quantita}"/></td>
 
 							</tr>
 

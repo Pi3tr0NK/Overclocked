@@ -537,7 +537,6 @@ public class AdminProdottoControl extends HttpServlet {
         case "CPU":
         	request.setAttribute("prodotto",cpuDAO.doRetrieveByKey(id));
         	break;
-            
         case "GPU":
         	request.setAttribute("prodotto",gpuDAO.doRetrieveByKey(id));
             break;

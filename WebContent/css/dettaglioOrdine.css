@@ -51,6 +51,10 @@
     padding:4px;
 }
 
+.td-immagini {
+	width: 70px;
+}
+
 .product-name{
     font-weight:bold;
     color:white;
@@ -62,6 +66,9 @@
     font-size:13px;
 }
 
+.color-red {
+	color: #ff7300;
+}
 .stato-badge{
     display:inline-flex;
     align-items:center;
