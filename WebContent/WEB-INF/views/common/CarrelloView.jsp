@@ -44,6 +44,16 @@
                 <%-- Lista prodotti --%>
                 <div class="cart-items">
 
+			    <%-- Bottone svuota carrello --%>
+			    <div class="cart-header">
+			        <span>${numProdotti} articoli</span>
+			        <button class="clear-btn" data-action="svuota">
+			            🗑 Svuota carrello
+			        </button>
+			    </div>
+    
+                
+
                     <c:forEach var="item" items="${prodotti}">
 
                         <div class="cart-item" id="cart-item-${item.prodotto.idProdotto}">

@@ -1,25 +1,42 @@
 var cartItemsEl = document.querySelector(".cart-items");
 
 if (cartItemsEl) {
-    cartItemsEl.addEventListener("click", function (e) {
+    cartItemsEl.addEventListener("click", function(e) {
+
         var btn = e.target.closest("[data-action]");
         if (!btn) return;
 
         var action     = btn.dataset.action;
         var idProdotto = btn.dataset.id;
-        var url        = contextPath + "/Carrello?action=" + action + "&idProdotto=" + idProdotto;
 
+        // Svuota carrello
+        if (action === "svuota") {
+            fetch(contextPath + "/Carrello?action=svuota", {
+                headers: { "X-Requested-With": "XMLHttpRequest" }
+            })
+            .then(function(res) {
+                if (!res.ok) throw new Error("Risposta server non valida: " + res.status);
+                location.reload();
+            })
+            .catch(function(err) {
+                console.error("Errore svuota carrello:", err);
+                alert("Si e' verificato un errore. Riprova.");
+            });
+            return;
+        }
+
+        // Incrementa / Decrementa / Rimuovi
         var cartItem = document.getElementById("cart-item-" + idProdotto);
+        var url      = contextPath + "/Carrello?action=" + action + "&idProdotto=" + idProdotto;
+
         if (cartItem) {
             cartItem.querySelectorAll("button").forEach(function(b) { b.disabled = true; });
         }
 
-        fetch(url, {
-            headers: { "X-Requested-With": "XMLHttpRequest" }
-        })
-        .then(function(r) {
-            if (!r.ok) throw new Error("Risposta server non valida: " + r.status);
-            return r.json();
+        fetch(url, { headers: { "X-Requested-With": "XMLHttpRequest" } })
+        .then(function(res) {
+            if (!res.ok) throw new Error("Risposta server non valida: " + res.status);
+            return res.json();
         })
         .then(function(data) {
 
@@ -44,14 +61,14 @@ if (cartItemsEl) {
             var totaleEl = document.getElementById("summary-totale");
 
             if (numEl)    numEl.textContent    = data.numProdotti;
-            if (totaleEl) totaleEl.textContent = "€ " + data.totale.toFixed(2).replace(".", ",");
+            if (totaleEl) totaleEl.textContent = "\u20AC " + data.totale.toFixed(2).replace(".", ",");
         })
         .catch(function(err) {
             console.error("Errore AJAX carrello:", err);
             if (cartItem) {
                 cartItem.querySelectorAll("button").forEach(function(b) { b.disabled = false; });
             }
-            alert("Si è verificato un errore. Riprova.");
+            alert("Si e' verificato un errore. Riprova.");
         });
     });
 }

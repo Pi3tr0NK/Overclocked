@@ -28,18 +28,29 @@ public class CarrelloControl extends HttpServlet {
             request.getSession().setAttribute("cart", cart);
         }
 
-        String action        = request.getParameter("action");
+        String action= request.getParameter("action");
         String idProdottoStr = request.getParameter("idProdotto");
-
+        
+        if(action != null)
+        {
+	        	if(action.equals("svuota"))
+	    			svuotaCarrello(cart, request, response);
+        }
+        
         if (action != null && idProdottoStr != null) {
             int idProdotto = Integer.parseInt(idProdottoStr);
             CarrelloItemBean item = cart.findProduct(idProdotto);
 
             if (item != null) {
                 switch (action) {
-                    case "incrementa": item.aumentaQuantita(1);       break;
-                    case "decrementa": item.diminuisciQuantita(1);    break;
-                    case "rimuovi":    cart.removeProduct(idProdotto); break;
+                    case "incrementa": item.aumentaQuantita(1);       
+                    		  break;
+                    		  
+                    case "decrementa": item.diminuisciQuantita(1);
+                    	      break;
+                    	      
+                    case "rimuovi": cart.removeProduct(idProdotto); 
+                          break;
                 }
             }
 
@@ -87,6 +98,16 @@ public class CarrelloControl extends HttpServlet {
 
     private void numProdotti(HttpServletRequest request, CarrelloBean cart) {
         request.setAttribute("numProdotti", cart.getTotalQuantity());
+    }
+    
+    private void svuotaCarrello(CarrelloBean cart, HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        cart.getItems().clear();
+        if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            return;
+        }
+        response.sendRedirect(request.getContextPath() + "/Carrello");
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
