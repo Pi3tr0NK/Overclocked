@@ -69,7 +69,7 @@
             </div>
 
 
-             <form action="${pageContext.request.contextPath}/admin/aggiungiProdotto?action=aggiungiView" method="post" style="display:inline;">
+             <form class="act-button" action="${pageContext.request.contextPath}/admin/aggiungiProdotto?action=aggiungiView" method="post">
     				<button class="new-product-btn" type="submit">+ Nuovo prodotto</button>
 			</form>
 
@@ -81,7 +81,7 @@
 
             <div class="stat-card">
 
-                <h2>${numProdotti}</h2>
+                <h2><c:out value="${numProdotti}"/></h2>
 
                 <span>
                     Prodotti caricati
@@ -91,7 +91,7 @@
 
             <div class="stat-card">
 
-                <h2>${numOrdini}</h2>
+                <h2><c:out value="${numOrdini}"/></h2>
 
                 <span>
                     Ordini nell'ultimo mese
@@ -101,7 +101,7 @@
 
             <div class="stat-card">
 
-                <h2>${numUtenti}</h2>
+                <h2><c:out value="${numUtenti}"/></h2>
 
                 <span>
                     Utenti registrati
@@ -111,7 +111,7 @@
 
             <div class="stat-card">
 
-                <h2>${numProdottiEsauriti}</h2>
+                <h2><c:out value="${numProdottiEsauriti}"/></h2>
 
                 <span>
                     Prodotti esauriti
@@ -225,11 +225,11 @@
 				<c:forEach var="p" items="${prodotto}">
 				 <tr>
 
-                        <td>${p.nome}</td>
-                        <td>${p.marca}</td>
-                        <td>${p.categoria}</td>
-                        <td>${p.prezzo}</td>
-                        <td>${p.stock}</td>
+                        <td> <c:out value="${p.nome}"/> </td>
+                        <td><c:out value="${p.marca}"/> </td>
+                        <td><c:out value="${p.categoria}"/></td>
+                        <td><c:out value="${p.prezzo}"/></td>
+                        <td><c:out value="${p.stock}"/></td>
                         
                         
                         <td> 
@@ -245,21 +245,21 @@
 
                         <td>
                         
-                			<form action="${pageContext.request.contextPath}/admin/aggiungiProdotto?action=modificaView&id=${p.idProdotto}&categoria=${p.categoria}" method="post" style="display:inline;">
+                			<form class ="act-button" action="${pageContext.request.contextPath}/admin/aggiungiProdotto?action=modificaView&id=${p.idProdotto}&categoria=${p.categoria}" method="post">
     							<button type="submit">Modifica</button>
 							</form>
                             
                         <c:choose>       
                         	<c:when test="${p.attivo}">
 
-                			<form action="${pageContext.request.contextPath}/admin/aggiungiProdotto?action=disattiva&id=${p.idProdotto}" method="post" style="display:inline;">
+                			<form class ="act-button" action="${pageContext.request.contextPath}/admin/aggiungiProdotto?action=disattiva&id=${p.idProdotto}" method="post">
     							<button type="submit">Disattiva</button>
 							</form>
 							
             				</c:when>
             				<c:otherwise>
             				
-            					<form action="${pageContext.request.contextPath}/admin/aggiungiProdotto?action=attiva&id=${p.idProdotto}" method="post" style="display:inline;">
+            					<form class ="act-button" action="${pageContext.request.contextPath}/admin/aggiungiProdotto?action=attiva&id=${p.idProdotto}" method="post">
             					<button>Attiva</button>
             					</form>
             					

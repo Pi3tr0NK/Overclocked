@@ -348,7 +348,7 @@
                 <div class="form-group">
                     <label>Formato</label>
                     <input type="text" name="formato" value="${prodotto.formato}"/>
-                    <input type="hidden" name="idCase" value="${prodotto.idCASE}"/>
+                    <input type="hidden" name="idCase" value="${prodotto.idCase}"/>
                 </div>
                 <div class="form-group">
                     <label>Colore</label>
@@ -401,7 +401,7 @@
         <%-- ===== IMMAGINI ===== --%>
         <div class="section">
             <h2>Immagini</h2>
-            <p style="font-size:12px;color:#666;margin-bottom:10px">
+            <p id="immagine">
                 Carica una nuova immagine per sostituire quella esistente. Lascia vuoto per mantenerla.
             </p>
 
@@ -414,8 +414,8 @@
                     <input type="file"   name="immagine${s.count}" accept="image/*" hidden onchange="gestisciSlot(this)"/>
                     <input type="hidden" name="pathEsistente${s.count}" value="${img.path}"/>
                     <input type="hidden" name="idImmagine${s.count}" value="${img.idImmagine}"/>
-                    <span style="display:none">&#43;</span>
-                    <img src="${pageContext.request.contextPath}/${img.path}" alt="" style="display:block"/>
+                    <span id="trasparenza">&#43;</span>
+                    <img id ="img" src="${pageContext.request.contextPath}/${img.path}" alt="">
                 </div>
                 </c:forEach>
 
@@ -440,28 +440,7 @@
     </form>
 </div>
 
-
-<script>
-
-function apriSlot(slot) {
-    slot.querySelector('input[type="file"]').click();
-}
-
-function gestisciSlot(input) {
-    if (!input.files || input.files.length === 0) return;
-    var slot = input.closest('.image-slot');
-    var img  = slot.querySelector('img');
-    var span = slot.querySelector('span');
-    var reader = new FileReader();
-    reader.onload = function(e) {
-        img.src = e.target.result;
-        img.style.display = 'block';
-        span.style.display = 'none';
-    };
-    reader.readAsDataURL(input.files[0]);
-}
-
-</script>
+<script src="${pageContext.request.contextPath}/script/modifica.js"></script>
 
 </body>
 </html>

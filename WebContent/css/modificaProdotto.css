@@ -178,3 +178,17 @@ button:hover {
 	border-radius: 8px; 
 	margin-bottom: 20px; 
 }
+
+#immagine {
+	font-size:12px;
+	color:#666;
+	margin-bottom:10px"
+}
+
+#trasparenza {
+	display:none
+}
+
+#img {
+	display:block;
+}

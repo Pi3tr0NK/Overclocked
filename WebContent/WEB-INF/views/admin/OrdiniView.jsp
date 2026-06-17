@@ -60,22 +60,22 @@
 			<div class="stats-grid">
 
 				<div class="stat-card">
-					<h2>${numOrdini}</h2>
+					<h2><c:out value="${numOrdini}"/></h2>
 					<span>Ordini caricati</span>
 				</div>
 
 				<div class="stat-card">
-					<h2>${numOrdiniInAttesa}</h2>
+					<h2><c:out value="${numOrdiniInAttesa}"/></h2>
 					<span>In preparazione</span>
 				</div>
 
 				<div class="stat-card">
-					<h2>${numOrdiniSpediti}</h2>
+					<h2><c:out value="${numOrdiniSpediti}"/></h2>
 					<span>Spediti</span>
 				</div>
 
 				<div class="stat-card">
-					<h2>${numOrdiniConsegnati}</h2>
+					<h2><c:out value="${numOrdiniConsegnati}"/></h2>
 					<span>Consegnati</span>
 				</div>
 
@@ -145,46 +145,46 @@
 						<c:forEach var="o" items="${ordini}">
 							<tr>
 
-								<td>${o.idOrdine}</td>
+								<td><c:out value="${o.idOrdine}"/></td>
 
-								<td>${o.utente.nome} ${o.utente.cognome}</td>
+								<td><c:out value="${o.utente.nome}"/> <c:out value="${o.utente.cognome}"/></td>
 
-								<td>${o.data}</td>
+								<td><c:out value="${o.data}"/></td>
 
-								<td>&euro; ${o.totale}</td>
+								<td>&euro; <c:out value="${o.totale}"/></td>
 
 								<td><span class="stato-badge stato-${o.stato}">
-										${o.stato} </span></td>
+										<c:out value="${o.stato}"/> </span></td>
 
 								<td>
 									<%-- Dettaglio ordine --%>
-									<form
+									<form class="act-button"
 										action="${pageContext.request.contextPath}/admin/dettaglioOrdini"
-										method="get" style="display: inline;">
+										method="get">
 										<input type="hidden" name="action" value="dettaglio" /> <input
 											type="hidden" name="idOrdine" value="${o.idOrdine}" />
 										<button type="submit">Dettaglio</button>
 									</form> <%-- Cambio stato: mostra solo le transizioni valide --%> <c:if
 										test="${o.stato == 'IN_PREPARAZIONE'}">
 
-										<form action="${pageContext.request.contextPath}/admin/ordini"
-											method="get" style="display: inline;">
+										<form class="act-button"action="${pageContext.request.contextPath}/admin/ordini"
+											method="get">
 											<input type="hidden" name="action" value="cambiaStato" /> <input
 												type="hidden" name="idOrdine" value="${o.idOrdine}" /> <input
 												type="hidden" name="nuovoStato" value="RIMBORSATO" />
 											<button type="submit" class="btn-danger">Rimborsato</button>
 										</form>
 
-										<form action="${pageContext.request.contextPath}/admin/ordini"
-											method="get" style="display: inline;">
+										<form class="act-button" action="${pageContext.request.contextPath}/admin/ordini"
+											method="get">
 											<input type="hidden" name="action" value="cambiaStato" /> <input
 												type="hidden" name="idOrdine" value="${o.idOrdine}" /> <input
 												type="hidden" name="nuovoStato" value="SPEDITO" />
 											<button type="submit" class="btn-danger">Spedito</button>
 										</form>
 									</c:if> <c:if test="${o.stato == 'SPEDITO'}">
-										<form action="${pageContext.request.contextPath}/admin/ordini"
-											method="get" style="display: inline;">
+										<form class="act-button"action="${pageContext.request.contextPath}/admin/ordini"
+											method="get">
 											<input type="hidden" name="action" value="cambiaStato" /> <input
 												type="hidden" name="idOrdine" value="${o.idOrdine}" /> <input
 												type="hidden" name="nuovoStato" value="CONSEGNATO" />
