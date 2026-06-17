@@ -1,0 +1,106 @@
+/* ===== DETTAGLIO ORDINE ===== */
+
+.order-date{
+    margin-top:10px;
+    color:var(--text-muted);
+}
+
+.order-products{
+    margin-top:30px;
+}
+
+.order-products h2{
+    margin:20px;
+    color:white;
+}
+
+.stat-card h3{
+    color:var(--text-muted);
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    margin-bottom:18px;
+    padding-bottom:10px;
+    border-bottom:1px solid var(--border);
+}
+
+.stat-card p{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+    font-size:14px;
+}
+
+.stat-card strong{
+    color:white;
+}
+
+.price{
+    color:var(--accent);
+    font-weight:bold;
+}
+
+.product-thumb{
+    width:55px;
+    height:55px;
+    object-fit:contain;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background:#181818;
+    padding:4px;
+}
+
+.product-name{
+    font-weight:bold;
+    color:white;
+    margin-bottom:4px;
+}
+
+.product-model{
+    color:var(--text-muted);
+    font-size:13px;
+}
+
+.stato-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:5px 14px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:bold;
+    letter-spacing:1px;
+    margin-top:8px;
+    text-transform:uppercase;
+}
+
+.stato-IN_PREPARAZIONE{
+    color:#ffbf47;
+    background:#221600;
+    border:1px solid #6d4a00;
+}
+
+.stato-SPEDITO{
+    color:#59a8ff;
+    background:#081828;
+    border:1px solid #2358a8;
+}
+
+.stato-CONSEGNATO{
+    color:#3ddc6d;
+    background:#0d1d11;
+    border:1px solid #248c48;
+}
+
+.stato-RIMBORSATO{
+    color:#ff6262;
+    background:#220d0d;
+    border:1px solid #8a2929;
+}
+
+.stat-card p{
+    display:grid;
+    grid-template-columns:90px 1fr;
+    gap:12px;
+}

@@ -489,3 +489,40 @@ body {
 .action-btn.danger:hover   { background: #f44336; border-color: #f44336; color: white; }
 .action-btn.promote        { border-color: #1a3a5a; color: #5a9aff; }
 .action-btn.promote:hover  { background: #5a9aff; border-color: #5a9aff; color: black; }
+
+.stato-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:5px 14px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:bold;
+    letter-spacing:1px;
+    margin-top:8px;
+    text-transform:uppercase;
+}
+
+.stato-IN_PREPARAZIONE{
+    color:#ffbf47;
+    background:#221600;
+    border:1px solid #6d4a00;
+}
+
+.stato-SPEDITO{
+    color:#59a8ff;
+    background:#081828;
+    border:1px solid #2358a8;
+}
+
+.stato-CONSEGNATO{
+    color:#3ddc6d;
+    background:#0d1d11;
+    border:1px solid #248c48;
+}
+
+.stato-RIMBORSATO{
+    color:#ff6262;
+    background:#220d0d;
+    border:1px solid #8a2929;
+}
