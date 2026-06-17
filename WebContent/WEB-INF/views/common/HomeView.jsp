@@ -131,18 +131,18 @@
 
                     <div class="card-content">
 
-                        <div class="product-brand">${p.marca}</div>
-                        <div class="product-name">${p.nome} ${p.modello}</div>
+                        <div class="product-brand"><c:out value="${p.marca}"/></div>
+                        <div class="product-name"><c:out value="${p.nome} ${p.modello}"/></div>
 
                         <c:set var="scontato" value="${p.prezzo - (p.prezzo * p.sconto / 100.0)}" />
 
                         <c:choose>
                             <c:when test="${p.sconto > 0}">
-                                <div class="old-price">${p.prezzo} €</div>
+                                <div class="old-price"><c:out value="${p.prezzo} €"/></div>
                                 <div class="product-price">${String.format('%.2f', scontato)} €</div>
                             </c:when>
                             <c:otherwise>
-                                <div class="product-price">${p.prezzo} €</div>
+                                <div class="product-price"><c:out value="${p.prezzo} €"/></div>
                             </c:otherwise>
                         </c:choose>
 
@@ -175,18 +175,18 @@
 
                     <div class="card-content">
 
-                        <div class="product-brand">${p.marca}</div>
-                        <div class="product-name">${p.nome} ${p.modello}</div>
+                        <div class="product-brand"><c:out value="${p.marca}"/></div>
+                        <div class="product-name"><c:out value="${p.nome} ${p.modello}"/></div>
 
                         <c:set var="scontato" value="${p.prezzo - (p.prezzo * p.sconto / 100.0)}" />
 
                         <c:choose>
                             <c:when test="${p.sconto > 0}">
-                                <div class="old-price">${p.prezzo} €</div>
+                                <div class="old-price"><c:out value="${p.prezzo} €"/></div>
                                 <div class="product-price">${String.format('%.2f', scontato)} €</div>
                             </c:when>
                             <c:otherwise>
-                                <div class="product-price">${p.prezzo} €</div>
+                                <div class="product-price"><c:out value="${p.prezzo} €"/></div>
                             </c:otherwise>
                         </c:choose>
 

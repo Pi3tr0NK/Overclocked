@@ -32,7 +32,7 @@
         <c:choose>
             <c:when test="${not empty sessionScope.utente}">
                 <a class="nav-btn" href="${pageContext.request.contextPath}/common/profilo">
-                    <img src="${pageContext.request.contextPath}/img/utente.png" alt="">${sessionScope.utente.nome}
+                    <img src="${pageContext.request.contextPath}/img/utente.png" alt=""> <c:out value="${sessionScope.utente.nome}"/>
                 </a>
                 <a class="nav-btn" href="${pageContext.request.contextPath}/logout">
                      <img src="${pageContext.request.contextPath}/img/logout.png" alt="">ESCI
