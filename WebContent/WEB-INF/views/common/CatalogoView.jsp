@@ -223,24 +223,16 @@
 			<div class="content-header">
 
 				<h2>Prodotti</h2>
-
-				<select name="ordinamento" onchange="this.form.submit()">
-					<option value=""
-						${empty param.ordinamento            ? 'selected' : ''}>Ordina
-						per</option>
-					<option value="prezzoASC"
-						${param.ordinamento == 'prezzoASC'  ? 'selected' : ''}>Prezzo:
-						dal più basso</option>
-					<option value="prezzoDESC"
-						${param.ordinamento == 'prezzoDESC' ? 'selected' : ''}>Prezzo:
-						dal più alto</option>
-					<option value="nomeASC"
-						${param.ordinamento == 'nomeASC'    ? 'selected' : ''}>Nome:
-						A-Z</option>
-					<option value="nomeDESC"
-						${param.ordinamento == 'nomeDESC'   ? 'selected' : ''}>Nome:
-						Z-A</option>
-				</select>
+				<div class="content-order">
+			        <label>Ordina per:</label>
+			        <select name="ordinamento" onchange="this.form.submit()">
+			            <option value=""            ${empty param.ordinamento            ? 'selected' : ''}>Rilevanza</option>
+			            <option value="prezzoASC"   ${param.ordinamento == 'prezzoASC'  ? 'selected' : ''}>Prezzo: dal più basso</option>
+			            <option value="prezzoDESC"  ${param.ordinamento == 'prezzoDESC' ? 'selected' : ''}>Prezzo: dal più alto</option>
+			            <option value="nomeASC"     ${param.ordinamento == 'nomeASC'    ? 'selected' : ''}>Nome: A-Z</option>
+			            <option value="nomeDESC"    ${param.ordinamento == 'nomeDESC'   ? 'selected' : ''}>Nome: Z-A</option>
+			        </select>
+			    </div>
 
 			</div>
 
