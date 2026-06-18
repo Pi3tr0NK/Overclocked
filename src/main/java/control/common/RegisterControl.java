@@ -47,7 +47,14 @@ public class RegisterControl extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+	    if (request.getSession(false) != null &&
+	            request.getSession(false).getAttribute("utente") != null) {
 
+	            response.sendRedirect(request.getContextPath() + "/home");
+	            return;
+	        }
+	    
 		RequestDispatcher dispatcher =request.getRequestDispatcher("/WEB-INF/views/common/RegisterView.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -55,7 +62,14 @@ public class RegisterControl extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+	    if (request.getSession(false) != null &&
+	            request.getSession(false).getAttribute("utente") != null) {
 
+	            response.sendRedirect(request.getContextPath() + "/home");
+	            return;
+	        }
+	    
 		String errors = null;
 
 		String nome = request.getParameter("nome");
