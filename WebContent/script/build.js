@@ -287,26 +287,34 @@ function aggiornaBottoneCarrello() {
 function aggiungiTuttiAlCarrello() {
     var ids = componenti.map(function (c) { return document.getElementById(c.id).value; });
     var msg = document.getElementById("msgCarrello");
-    msg.innerHTML  = "Aggiunta in corso...";
-    msg.className  = "builder-cart-msg";
+    msg.innerHTML = "Aggiunta in corso...";
+    msg.className = "builder-cart-msg";
 
-    var completati = 0, errori = 0;
-    ids.forEach(function (idProdotto) {
-        ajax("carrello/add", "aggiungi=" + idProdotto + "&quantita=1", function (req) {
-            var res = JSON.parse(req.responseText);
-            res.success ? completati++ : errori++;
-            if (completati + errori === ids.length) {
-                if (errori === 0) {
-                    msg.innerHTML = "✓ Tutti i componenti aggiunti al carrello!";
-                    msg.className = "builder-cart-msg success";
-                    aggiornaBadgeCarrello(res.numProdotti);
-                } else {
-                    msg.innerHTML = "⚠ " + errori + " componente/i non aggiunto/i.";
-                    msg.className = "builder-cart-msg error";
-                }
+    var errori = 0;
+
+    function aggiungiUno(index) {
+        if (index >= ids.length) {
+            if (errori === 0) {
+                msg.innerHTML = "✓ Tutti i componenti aggiunti al carrello!";
+                msg.className = "builder-cart-msg success";
+            } else {
+                msg.innerHTML = "⚠ " + errori + " componente/i non aggiunto/i.";
+                msg.className = "builder-cart-msg error";
             }
+            return;
+        }
+
+        ajax("carrello/add", "aggiungi=" + ids[index] + "&quantita=1", function (req) {
+            var res = JSON.parse(req.responseText);
+            if (!res.success) errori++;
+            if (index === ids.length - 1) {
+                aggiornaBadgeCarrello(res.numProdotti);
+            }
+            aggiungiUno(index + 1);
         });
-    });
+    }
+
+    aggiungiUno(0);
 }
 
 // ─────────────────────────────────────────────

@@ -41,9 +41,9 @@ public class CarrelloAddControl extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 	int idProdotto = Integer.parseInt(request.getParameter("aggiungi"));
 		    int quantita = Integer.parseInt(request.getParameter("quantita"));
-
+		    
 		    CarrelloBean cart = (CarrelloBean) request.getSession().getAttribute("cart");
-
+		    
 		    if (cart == null) {
 		        cart = new CarrelloBean();
 		        request.getSession().setAttribute("cart", cart);
