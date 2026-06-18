@@ -39,7 +39,8 @@
         action="${pageContext.request.contextPath}/admin/aggiungiProdotto?action=modifica"
         method="post"
         id= "formModifica"
-        enctype="multipart/form-data">
+        enctype="multipart/form-data"
+        novalidate>
 
         <input type="hidden" name="idProdotto" value="${prodotto.idProdotto}"/>
         <input type="hidden" name="categoria"  value="${prodotto.categoria}"/>
@@ -51,18 +52,18 @@
             <div class="row2">
                 <div class="form-group">
                     <label>Nome</label>
-                    <input type="text" name="nome" value="${prodotto.nome}"/>
+                    <input type="text" name="nome" value="${prodotto.nome}" required/>
                 </div>
                 <div class="form-group">
                     <label>Modello</label>
-                    <input type="text" name="modello" value="${prodotto.modello}"/>
+                    <input type="text" name="modello" value="${prodotto.modello}" required/>
                 </div>
             </div>
 
             <div class="row2">
                 <div class="form-group">
                     <label>Marca</label>
-                    <input type="text" name="marca" value="${prodotto.marca}"/>
+                    <input type="text" name="marca" value="${prodotto.marca}" required/>
                 </div>
                 <div class="form-group">
                     <label>Attivo</label>
@@ -81,26 +82,26 @@
             <div class="row3">
                 <div class="form-group">
                     <label>Prezzo (&euro;)</label>
-                    <input type="number" step="0.01" name="prezzo" value="${prodotto.prezzo}"/>
+                    <input type="number" step="0.01" name="prezzo" value="${prodotto.prezzo}" required/>
                 </div>
                 <div class="form-group">
                     <label>Sconto (%)</label>
-                    <input type="number" name="sconto" value="${prodotto.sconto}"/>
+                    <input type="number" name="sconto" value="${prodotto.sconto}" required/>
                 </div>
                 <div class="form-group">
                     <label>Stock</label>
-                    <input type="number" name="stock" value="${prodotto.stock}"/>
+                    <input type="number" name="stock" value="${prodotto.stock}" required/>
                 </div>
             </div>
 
             <div class="row2">
                 <div class="form-group">
                     <label>Dimensioni</label>
-                    <input type="text" name="dimensioni" value="${prodotto.dimensioni}"/>
+                    <input type="text" name="dimensioni" value="${prodotto.dimensioni}" required/>
                 </div>
                 <div class="form-group">
                     <label>Peso</label>
-                    <input type="text" name="peso" value="${prodotto.peso}"/>
+                    <input type="text" name="peso" value="${prodotto.peso}" required/>
                 </div>
             </div>
         </div>
@@ -112,35 +113,35 @@
             <div class="row3">
                 <div class="form-group">
                     <label>Core</label>
-                    <input type="number" name="core" value="${prodotto.core}"/>
+                    <input type="number" name="core" value="${prodotto.core}" required/>
                     <input type="hidden" name="idCpu" value="${prodotto.idCpu}"/>
                 </div>
                 <div class="form-group">
                     <label>Thread</label>
-                    <input type="number" name="thread" value="${prodotto.thread}"/>
+                    <input type="number" name="thread" value="${prodotto.thread}" required/>
                 </div>
                 <div class="form-group">
                     <label>TDP (W)</label>
-                    <input type="number" name="tdp" value="${prodotto.tdp}"/>
+                    <input type="number" name="tdp" value="${prodotto.tdp}" required/>
                 </div>
             </div>
             <div class="row3">
                 <div class="form-group">
                     <label>Frequenza</label>
-                    <input type="text" name="frequenza" value="${prodotto.frequenza}"/>
+                    <input type="text" name="frequenza" value="${prodotto.frequenza}" required/>
                 </div>
                 <div class="form-group">
                     <label>Socket</label>
-                    <input type="text" name="socket" value="${prodotto.socket}"/>
+                    <input type="text" name="socket" value="${prodotto.socket}" required/>
                 </div>
                 <div class="form-group">
                     <label>Tipo RAM</label>
-                    <input type="text" name="tiporam" value="${prodotto.tiporam}"/>
+                    <input type="text" name="tiporam" value="${prodotto.tiporam}" required/>
                 </div>
             </div>
             <div class="form-group">
                 <label>Frequenza RAM</label>
-                <input type="text" name="frequenzaram" value="${prodotto.frequenza_ram}"/>
+                <input type="text" name="frequenzaram" value="${prodotto.frequenza_ram}" required/>
             </div>
         </div>
         </c:if>
@@ -152,35 +153,35 @@
             <div class="row3">
                 <div class="form-group">
                     <label>VRAM</label>
-                    <input type="text" name="vram" value="${prodotto.vram}"/>
+                    <input type="text" name="vram" value="${prodotto.vram}" required/>
                     <input type="hidden" name="idGpu" value="${prodotto.idGpu}"/>
                 </div>
                 <div class="form-group">
                     <label>Tipo VRAM</label>
-                    <input type="text" name="tipovram" value="${prodotto.tipoVram}"/>
+                    <input type="text" name="tipovram" value="${prodotto.tipoVram}" required/>
                 </div>
                 <div class="form-group">
                     <label>TDP (W)</label>
-                    <input type="number" name="tdp" value="${prodotto.tdp}"/>
+                    <input type="number" name="tdp" value="${prodotto.tdp}" required/>
                 </div>
             </div>
             <div class="row3">
                 <div class="form-group">
                     <label>Frequenza boost</label>
-                    <input type="text" name="frequenza" value="${prodotto.frequenza}"/>
+                    <input type="text" name="frequenza" value="${prodotto.frequenza}" required/>
                 </div>
                 <div class="form-group">
                     <label>PCIe</label>
-                    <input type="text" name="pcie" value="${prodotto.pcie}"/>
+                    <input type="text" name="pcie" value="${prodotto.pcie}" required/>
                 </div>
                 <div class="form-group">
                     <label>Uscite video</label>
-                    <input type="text" name="video" value="${prodotto.video}"/>
+                    <input type="text" name="video" value="${prodotto.video}" required/>
                 </div>
             </div>
             <div class="form-group">
                 <label>Risoluzione massima</label>
-                <input type="text" name="maxres" value="${prodotto.maxRes}"/>
+                <input type="text" name="maxres" value="${prodotto.maxRes}" required/>
             </div>
         </div>
         </c:if>
@@ -192,16 +193,16 @@
             <div class="row3">
                 <div class="form-group">
                     <label>Capacit&agrave;</label>
-                    <input type="text" name="capacita" value="${prodotto.capacita}"/>
+                    <input type="text" name="capacita" value="${prodotto.capacita}" required/>
                     <input type="hidden" name="idRam" value="${prodotto.idRam}"/>
                 </div>
                 <div class="form-group">
                     <label>Frequenza</label>
-                    <input type="text" name="frequenza" value="${prodotto.frequenza}"/>
+                    <input type="text" name="frequenza" value="${prodotto.frequenza}" required/>
                 </div>
                 <div class="form-group">
                     <label>Tipo</label>
-                    <input type="text" name="tipo" value="${prodotto.tipo}"/>
+                    <input type="text" name="tipo" value="${prodotto.tipo}" required/>
                 </div>
             </div>
         </div>
@@ -214,22 +215,22 @@
             <div class="row3">
                 <div class="form-group">
                     <label>Capacit&agrave;</label>
-                    <input type="text" name="capacita" value="${prodotto.capacita}"/>
+                    <input type="text" name="capacita" value="${prodotto.capacita}" required/>
                     <input type="hidden" name="idMemoria" value="${prodotto.idMemoria}"/>
                 </div>
                 <div class="form-group">
                     <label>Formato</label>
-                    <input type="text" name="formato" value="${prodotto.formato}"/>
+                    <input type="text" name="formato" value="${prodotto.formato}" required/>
                 </div>
                 <div class="form-group">
                     <label>Vel. lettura (MB/s)</label>
-                    <input type="number" name="lettura" value="${prodotto.velLettura}"/>
+                    <input type="number" name="lettura" value="${prodotto.velLettura}" required/>
                 </div>
             </div>
             <div class="row3">
                 <div class="form-group">
                     <label>Vel. scrittura (MB/s)</label>
-                    <input type="number" name="scrittura" value="${prodotto.velScrittura}"/>
+                    <input type="number" name="scrittura" value="${prodotto.velScrittura}" required/>
                 </div>
                 <div class="form-group">
                     <label>Tipo</label>
@@ -256,44 +257,44 @@
             <div class="row3">
                 <div class="form-group">
                     <label>Chipset</label>
-                    <input type="text" name="chipset" value="${prodotto.chipset}"/>
+                    <input type="text" name="chipset" value="${prodotto.chipset}" required/>
                     <input type="hidden" name="idMobo" value="${prodotto.idMobo}"/>
                 </div>
                 <div class="form-group">
                     <label>Socket</label>
-                    <input type="text" name="socket" value="${prodotto.socket}"/>
+                    <input type="text" name="socket" value="${prodotto.socket}" required/>
                 </div>
                 <div class="form-group">
                     <label>Formato</label>
-                    <input type="text" name="formato" value="${prodotto.formato}"/>
+                    <input type="text" name="formato" value="${prodotto.formato}" required/>
                 </div>
             </div>
             <div class="row3">
                 <div class="form-group">
                     <label>Tipo RAM</label>
-                    <input type="text" name="tipoRam" value="${prodotto.tipoRam}"/>
+                    <input type="text" name="tipoRam" value="${prodotto.tipoRam}" required/>
                 </div>
                 <div class="form-group">
                     <label>Freq. max RAM</label>
-                    <input type="text" name="maxFreq" value="${prodotto.maxFreq}"/>
+                    <input type="text" name="maxFreq" value="${prodotto.maxFreq}" required/>
                 </div>
                 <div class="form-group">
                     <label>PCIe</label>
-                    <input type="text" name="pcie" value="${prodotto.pcie}"/>
+                    <input type="text" name="pcie" value="${prodotto.pcie}" required/>
                 </div>
             </div>
             <div class="row3">
                 <div class="form-group">
                     <label>Slot RAM</label>
-                    <input type="number" name="slotRam" value="${prodotto.slotRam}"/>
+                    <input type="number" name="slotRam" value="${prodotto.slotRam}" required/>
                 </div>
                 <div class="form-group">
                     <label>Porte SATA</label>
-                    <input type="number" name="porteSata" value="${prodotto.porteSata}"/>
+                    <input type="number" name="porteSata" value="${prodotto.porteSata}" required/>
                 </div>
                 <div class="form-group">
                     <label>Porte USB</label>
-                    <input type="number" name="porteUsb" value="${prodotto.porteUsb}"/>
+                    <input type="number" name="porteUsb" value="${prodotto.porteUsb}" required/>
                 </div>
             </div>
             <div class="form-group">
@@ -313,12 +314,12 @@
             <div class="row2">
                 <div class="form-group">
                     <label>Potenza (W)</label>
-                    <input type="number" name="potenza" value="${prodotto.potenza}"/>
+                    <input type="number" name="potenza" value="${prodotto.potenza}" required/>
                     <input type="hidden" name="idPsu" value="${prodotto.idPsu}"/>
                 </div>
                 <div class="form-group">
                     <label>Certificazione</label>
-                    <input type="text" name="certificazione" value="${prodotto.certificazione}"/>
+                    <input type="text" name="certificazione" value="${prodotto.certificazione}" required/>
                 </div>
             </div>
             <div class="row2">
@@ -348,16 +349,16 @@
             <div class="row3">
                 <div class="form-group">
                     <label>Formato</label>
-                    <input type="text" name="formato" value="${prodotto.formato}"/>
+                    <input type="text" name="formato" value="${prodotto.formato}" required/>
                     <input type="hidden" name="idCase" value="${prodotto.idCase}"/>
                 </div>
                 <div class="form-group">
                     <label>Colore</label>
-                    <input type="text" name="colore" value="${prodotto.colore}"/>
+                    <input type="text" name="colore" value="${prodotto.colore}" required/>
                 </div>
                 <div class="form-group">
                     <label>Materiale</label>
-                    <input type="text" name="materiale" value="${prodotto.materiale}"/>
+                    <input type="text" name="materiale" value="${prodotto.materiale}" required/>
                 </div>
             </div>
         </div>
@@ -378,22 +379,22 @@
                 </div>
                 <div class="form-group">
                     <label>TDP supportato (W)</label>
-                    <input type="number" name="tdp" value="${prodotto.tdpSupportato}"/>
+                    <input type="number" name="tdp" value="${prodotto.tdpSupportato}" required/>
                     <input type="hidden" name="idDissipatore" value="${prodotto.idDissipatore}"/>
                 </div>
                 <div class="form-group">
                     <label>Socket supportati</label>
-                    <input type="text" name="socket" value="${prodotto.socketSupportati}"/>
+                    <input type="text" name="socket" value="${prodotto.socketSupportati}" required/>
                 </div>
             </div>
             <div class="row2">
                 <div class="form-group">
                     <label>RPM max</label>
-                    <input type="number" name="rpm" value="${prodotto.rpmMax}"/>
+                    <input type="number" name="rpm" value="${prodotto.rpmMax}" required/>
                 </div>
                 <div class="form-group">
                     <label>Rumore (dBA)</label>
-                    <input type="number" name="rumore" value="${prodotto.rumore}"/>
+                    <input type="number" name="rumore" value="${prodotto.rumore}" required/>
                 </div>
             </div>
         </div>

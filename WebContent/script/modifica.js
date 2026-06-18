@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	
     var regole = {
         // --- DATI GENERALI (Tabella: prodotto) ---
-        categoria:     { regex: /^(CPU|GPU|RAM|STORAGE|MOBO|PSU|CASE|DISSIPATORE)$/, msg: "Seleziona una categoria valida tra quelle proposte." },
         nome:          { regex: /^.{2,255}$/, msg: "Il nome deve essere compreso tra 2 e 255 caratteri." }, 
         modello:       { regex: /^.{1,255}$/, msg: "Il modello deve essere compreso tra 1 e 255 caratteri." }, 
         marca:         { regex: /^[A-Za-z0-9À-ÿ\s'.&-]{1,255}$/, msg: "La marca non può superare i 255 caratteri." }, 
