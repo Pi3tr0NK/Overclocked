@@ -82,6 +82,10 @@
 											${ordine.indirizzo.viaNumciv}, ${ordine.indirizzo.citta}
 											(${ordine.indirizzo.provincia}) </span>
 									</div>
+									<div class="ordine-field">
+									    <span class="ordine-field-label">Carta</span>
+									    <span class="ordine-field-value">•••• ${ordine.pagamento}</span>
+									</div>
 								</div>
 
 								<div id="rimborso" class="ordine-footer">

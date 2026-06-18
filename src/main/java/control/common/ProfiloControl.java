@@ -266,6 +266,7 @@ public class ProfiloControl extends HttpServlet {
 		ordine.getIndirizzo().getCitta() + " (" +
 		ordine.getIndirizzo().getProvincia() + ") " +
 		ordine.getIndirizzo().getCodicePostale(), normalFont));
+		document.add(new Paragraph("Carta: •••• " + ordine.getPagamento(), normalFont));
 		
 		document.add(Chunk.NEWLINE);
 		
