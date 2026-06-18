@@ -490,9 +490,7 @@ public class ProdottoDAOImpl implements ProdottoDAO {
 	            Set<String> parole = new LinkedHashSet<>();
 	            while (rs.next()) {
 	                String valore = rs.getString("valore");
-	                System.out.println("DB valore: [" + valore + "]");
 	                for (String parola : valore.split("\\s+")) {
-	                    System.out.println("  parola: [" + parola + "] startsWith(" + query + "): " + parola.toLowerCase().startsWith(query.toLowerCase()));
 	                    if (parola.toLowerCase().startsWith(query.toLowerCase())) {
 	                        parole.add(parola.toLowerCase());
 	                        break;
@@ -500,7 +498,6 @@ public class ProdottoDAOImpl implements ProdottoDAO {
 	                }
 	                if (parole.size() >= limit) break;
 	            }
-	            System.out.println("Risultato finale: " + parole);
 	            return new ArrayList<>(parole);
 	        }
 	    }
