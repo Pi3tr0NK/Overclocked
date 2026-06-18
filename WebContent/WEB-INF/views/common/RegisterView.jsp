@@ -36,20 +36,16 @@
 
 		<p class="subtitle">Unisciti a Overclocked e inizia a costruire la
 			tua build</p>
-
-		<c:if test="${not empty errors}">
-
-			<div class="error">
-
-				<c:forEach var="e" items="${errors}">
-					<p>${e}</p>
-				</c:forEach>
-
-			</div>
-
-		</c:if>
-
-		<form action="register" method="post">
+		
+		
+					    
+			    <c:if test="${not empty errors}">
+			        <span class="field-error">
+			            ${errors}
+			        </span>
+			    </c:if>
+			    
+		<form action="register" method="post" novalidate>
 
 			<!-- DATI PERSONALI -->
 
@@ -70,10 +66,8 @@
 			</div>
 
 			<div class="field">
-
-				<label> Email <span class="required">*</span>
-				</label> <input type="email" name="email" required>
-
+			    <label> Email <span class="required">*</span></label> 
+			    <input type="email" name="email" required>
 			</div>
 
 			<div class="row">
@@ -164,5 +158,9 @@
 
 	</div>
 
+<script src="${pageContext.request.contextPath}/script/registerCheck.js"></script>
+
 </body>
+
+
 </html>

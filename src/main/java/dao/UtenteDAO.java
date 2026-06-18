@@ -27,4 +27,6 @@ public interface UtenteDAO
 	public int doCountUtenti(String ruolo) throws SQLException;
 	
 	public boolean setUtenteRuolo(int idUtente, Ruolo ruolo) throws SQLException;
+	
+	public boolean checkEmail(String email) throws SQLException;
 }

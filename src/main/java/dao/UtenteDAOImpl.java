@@ -273,5 +273,23 @@ public class UtenteDAOImpl implements UtenteDAO {
 			return ps.executeUpdate() > 0;
 		}
 	}
+	
+	public synchronized boolean checkEmail(String email) throws SQLException {
+		
+	    String sql = "SELECT email FROM " + TABLE_NAME + " WHERE email = ?";
+
+	    try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+	        
+	        ps.setString(1, email); 
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            if (rs.next()) {
+	                return true; 
+	            }
+	        }
+	    }
+	    
+	    return false;
+	}
 
 }

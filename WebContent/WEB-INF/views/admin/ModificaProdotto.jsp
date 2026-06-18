@@ -38,6 +38,7 @@
     <form
         action="${pageContext.request.contextPath}/admin/aggiungiProdotto?action=modifica"
         method="post"
+        id= "formModifica"
         enctype="multipart/form-data">
 
         <input type="hidden" name="idProdotto" value="${prodotto.idProdotto}"/>
