@@ -311,6 +311,6 @@
 	</div>
 
 	<jsp:include page="/WEB-INF/views/components/footer.jsp" />
-
+<script src="${pageContext.request.contextPath}/script/catalogo.js"></script>
 </body>
 </html>
