@@ -24,7 +24,7 @@ public interface OrdineDAO {
 	
 	public boolean setOrdineStatus(int idOrdine, Stato stato) throws SQLException;
 	
-	public int doSaveOrdineCompleto(CarrelloBean cart, UtenteBean utente, int idIndirizzo) throws SQLException;
+	public int doSaveOrdineCompleto(CarrelloBean cart, UtenteBean utente, int idIndirizzo, String pagamento) throws SQLException;
 	
 	public Collection<OrdineBean> doRetrieveResiByUser(int idUser) throws SQLException;
 

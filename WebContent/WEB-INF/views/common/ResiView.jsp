@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Il mio account — Overclocked</title>
+    <title>Overclocked</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css">

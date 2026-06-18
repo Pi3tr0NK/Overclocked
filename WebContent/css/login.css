@@ -1,17 +1,11 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial;
-}
-
 body {
     background: #000;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     height: 100vh;
+    padding-top: 20px;
     position: relative;
 }
 
@@ -121,7 +115,6 @@ input:focus {
 
 .link {
     color: #ff7300;
-    text-decoration: none;
 }
 
 /* ── Separatore ── */
@@ -159,15 +152,14 @@ input:focus {
     margin-bottom: 20px;
 }
 
+/* ── Brand header (logo testuale in alto) ── */
+
 .brand-header {
-    position: absolute;
-    top: 40px; 
-    font-size: 2rem; 
+    margin-bottom: 30px;
+    font-size: 2rem;
     font-weight: 800;
     letter-spacing: 2px;
     color: #ff7300;
-    text-decoration: none;
-    text-align: center;
 }
 
 .brand-header:hover {

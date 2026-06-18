@@ -13,7 +13,7 @@ public class OrdineBean implements Serializable {
     private LocalDate data;
     private Stato stato;
     private double totale;
-    private String fatturaPath;
+    private String pagamento;
     private UtenteBean utente;
     private IndirizzoBean indirizzo;
 
@@ -53,13 +53,13 @@ public class OrdineBean implements Serializable {
 	public void setTotale(double totale) {
 		this.totale = totale;
 	}
-
-	public String getFatturaPath() {
-		return fatturaPath;
+	
+	public String getPagamento() {
+		return pagamento;
 	}
 
-	public void setFatturaPath(String fatturaPath) {
-		this.fatturaPath = fatturaPath;
+	public void setPagamento(String pagamento) {
+		this.pagamento = pagamento;
 	}
 
 	public UtenteBean getUtente() {

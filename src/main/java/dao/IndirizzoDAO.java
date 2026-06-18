@@ -7,7 +7,7 @@ import model.IndirizzoBean;
 
 
 public interface IndirizzoDAO {
-	public void doSave(IndirizzoBean indirizzo) throws SQLException;
+	public int doSave(IndirizzoBean indirizzo) throws SQLException;
 
 	public IndirizzoBean doRetrieveByKey(int id) throws SQLException;
 

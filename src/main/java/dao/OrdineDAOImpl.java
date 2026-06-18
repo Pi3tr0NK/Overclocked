@@ -29,7 +29,7 @@ public class OrdineDAOImpl implements OrdineDAO {
 
 	public synchronized void doSave(OrdineBean ordine) throws SQLException {
 
-		String sql = "INSERT INTO " + TABLE_NAME + " (data, stato, totale, fattura_path, fk_utente, fk_indirizzo) "
+		String sql = "INSERT INTO " + TABLE_NAME + " (data, stato, totale, pagamento, fk_utente, fk_indirizzo) "
 				+ "VALUES (?, ?, ?, ?, ?, ?)";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -37,7 +37,7 @@ public class OrdineDAOImpl implements OrdineDAO {
 			ps.setDate(1, Date.valueOf(ordine.getData()));
 			ps.setString(2, ordine.getStato().name());
 			ps.setDouble(3, ordine.getTotale());
-			ps.setString(4, ordine.getFatturaPath());
+			ps.setString(4, ordine.getPagamento());
 			ps.setInt(5, ordine.getUtente().getIdUtente());
 			ps.setInt(6, ordine.getIndirizzo().getIdIndirizzo());
 
@@ -68,7 +68,7 @@ public class OrdineDAOImpl implements OrdineDAO {
 	// in un'unica transazione)
 	// ─────────────────────────────────────────────
 
-	public synchronized int doSaveOrdineCompleto(CarrelloBean cart, UtenteBean utente, int idIndirizzo)
+	public synchronized int doSaveOrdineCompleto(CarrelloBean cart, UtenteBean utente, int idIndirizzo, String pagamento)
 			throws SQLException {
 
 		double totale = 0;
@@ -85,14 +85,15 @@ public class OrdineDAOImpl implements OrdineDAO {
 			// 1. Inserisci ordine
 			int idOrdine;
 			String sqlOrdine = "INSERT INTO " + TABLE_NAME
-					+ " (data, stato, totale, fattura_path, fk_utente, fk_indirizzo) " + "VALUES (?, ?, ?, NULL, ?, ?)";
+					+ " (data, stato, totale, pagamento, fk_utente, fk_indirizzo) " + "VALUES (?, ?, ?, ?, ?, ?)";
 
 			try (PreparedStatement ps = con.prepareStatement(sqlOrdine, Statement.RETURN_GENERATED_KEYS)) {
 				ps.setDate(1, java.sql.Date.valueOf(LocalDate.now()));
 				ps.setString(2, Stato.IN_PREPARAZIONE.name());
 				ps.setDouble(3, totale);
-				ps.setInt(4, utente.getIdUtente());
-				ps.setInt(5, idIndirizzo);
+				ps.setString(4, pagamento);
+				ps.setInt(5, utente.getIdUtente());
+				ps.setInt(6, idIndirizzo);
 				ps.executeUpdate();
 				try (ResultSet rs = ps.getGeneratedKeys()) {
 					if (rs.next())
@@ -422,14 +423,14 @@ public class OrdineDAOImpl implements OrdineDAO {
 	public synchronized boolean doUpdate(OrdineBean o) throws SQLException {
 
 		String sql = "UPDATE " + TABLE_NAME
-				+ " SET data=?, stato=?, totale=?, fattura_path=?, fk_utente=?, fk_indirizzo=?" + " WHERE id_ordine=?";
+				+ " SET data=?, stato=?, totale=?, pagamento=?, fk_utente=?, fk_indirizzo=?" + " WHERE id_ordine=?";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
 			ps.setDate(1, Date.valueOf(o.getData()));
 			ps.setString(2, o.getStato().name());
 			ps.setDouble(3, o.getTotale());
-			ps.setString(4, o.getFatturaPath());
+			ps.setString(4, o.getPagamento());
 			ps.setInt(5, o.getUtente().getIdUtente());
 			ps.setInt(6, o.getIndirizzo().getIdIndirizzo());
 			ps.setInt(7, o.getIdOrdine());
@@ -510,7 +511,7 @@ public class OrdineDAOImpl implements OrdineDAO {
 		o.setData(rs.getDate("data").toLocalDate());
 		o.setStato(Stato.valueOf(rs.getString("stato")));
 		o.setTotale(rs.getDouble("totale"));
-		o.setFatturaPath(rs.getString("fattura_path"));
+		o.setPagamento(rs.getString("pagamento"));
 		o.setIndirizzo(indirizzoDAO.doRetrieveByKey(rs.getInt("fk_indirizzo")));
 		o.setUtente(utenteDAO.doRetrieveByKey(rs.getInt("fk_utente")));
 

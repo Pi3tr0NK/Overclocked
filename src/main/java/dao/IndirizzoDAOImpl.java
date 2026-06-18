@@ -22,30 +22,34 @@ public class IndirizzoDAOImpl implements IndirizzoDAO {
 	}
 
 	@Override
-	public synchronized void doSave(IndirizzoBean indirizzo) throws SQLException {
-		String sql = "INSERT INTO " + TABLE_NAME
-				+ " (via_numciv, paese, citta, provincia, dati_plus, codice_postale) VALUES (?, ?, ?, ?, ?, ?)";
+	public synchronized int doSave(IndirizzoBean indirizzo) throws SQLException {
 
-		try (Connection con = ds.getConnection();
-				PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+	    String sql = "INSERT INTO " + TABLE_NAME
+	            + " (via_numciv, paese, citta, provincia, dati_plus, codice_postale) "
+	            + "VALUES (?, ?, ?, ?, ?, ?)";
 
-			ps.setString(1, indirizzo.getViaNumciv());
-			ps.setString(2, indirizzo.getPaese());
-			ps.setString(3, indirizzo.getCitta());
-			ps.setString(4, indirizzo.getProvincia());
-			ps.setString(5, indirizzo.getDatiPlus());
-			ps.setString(6, indirizzo.getCodicePostale());
+	    try (Connection con = ds.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
-			ps.executeUpdate();
+	        ps.setString(1, indirizzo.getViaNumciv());
+	        ps.setString(2, indirizzo.getPaese());
+	        ps.setString(3, indirizzo.getCitta());
+	        ps.setString(4, indirizzo.getProvincia());
+	        ps.setString(5, indirizzo.getDatiPlus());
+	        ps.setString(6, indirizzo.getCodicePostale());
 
-			try (ResultSet rs = ps.getGeneratedKeys()) {
+	        ps.executeUpdate();
 
-				if (rs.next()) {
+	        try (ResultSet rs = ps.getGeneratedKeys()) {
+	            if (rs.next()) {
+	                int id = rs.getInt(1);
+	                indirizzo.setIdIndirizzo(id);
+	                return id;
+	            }
+	        }
+	    }
 
-					indirizzo.setIdIndirizzo(rs.getInt(1));
-				}
-			}
-		}
+	    throw new SQLException("Errore durante inserimento indirizzo");
 	}
 
 	@Override

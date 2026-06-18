@@ -12,7 +12,7 @@
         }
 
         .checkout-header h1 {
-            font-size: 22px;
+            font-size: 25px;
             color: #ff7300;
             margin-bottom: 4px;
         }
@@ -40,7 +40,7 @@
         .co-card:last-child { margin-bottom: 0; }
 
         .co-title {
-            font-size: 10px;
+            font-size: 15px;
             color: #ff7300;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -66,6 +66,67 @@
         .co-field span {
             font-size: 14px;
             color: #ddd;
+        }
+
+        /* ===== INPUT EDITABILI (indirizzo + pagamento) ===== */
+        .co-field input {
+            width: 100%;
+            background: #080808;
+            border: 1px solid #1f1f1f;
+            border-radius: 7px;
+            padding: 9px 11px;
+            font-size: 14px;
+            color: #e0e0e0;
+            outline: none;
+            font-family: Arial, sans-serif;
+        }
+
+        .co-field input::placeholder {
+            color: #3a3a3a;
+        }
+
+        .co-field input:focus {
+            border-color: #ff7300;
+        }
+
+        .co-field input:invalid:not(:placeholder-shown) {
+            border-color: #5a1a1a;
+        }
+
+        /* riga con due input affiancati (es. scadenza mese/anno) */
+        .co-field-row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .co-field-row .co-field {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        /* ===== PAGAMENTO: dettagli specifici ===== */
+        .co-card-pagamento .co-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .co-card-pagamento .co-title .icone-carte {
+            font-size: 13px;
+            letter-spacing: 0;
+            color: #555;
+            text-transform: none;
+            font-weight: normal;
+        }
+
+        .co-field input[name="cvv"] {
+            max-width: 110px;
+        }
+
+        .co-field-hint {
+            font-size: 10px;
+            color: #3d3d3d;
+            margin-top: 5px;
         }
 
         .co-table {
@@ -136,7 +197,7 @@
         /* riepilogo destra */
         .co-riepilogo {
             position: sticky;
-            top: 24px;
+            top: 90px; /* altezza navbar + margine, aggiusta in base alla tua navbar */
         }
 
         .riepilogo-riga {

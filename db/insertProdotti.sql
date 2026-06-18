@@ -110,22 +110,7 @@ VALUES
 (@first_id + 1, '2TB',   6600, 7300, 'SSD', 'NVME', 'M.2'),
 (@first_id + 2, '500GB',  530,  560, 'SSD', 'SATA', '2.5"');
 
-INSERT INTO indirizzo
-(via_numciv, paese, citta, provincia, dati_plus, codice_postale)
-VALUES
-('Via Roma 15', 'Italia', 'Napoli', 'NA', 'Scala B', '80100'),
-('Corso Italia 220', 'Italia', 'Milano', 'MI', 'Interno 4', '20100'),
-('Via Dante 8', 'Italia', 'Torino', 'TO', 'Piano 2', '10100');
-
-
-INSERT INTO utente
-(email, nome, cognome, password, ruolo, cellulare, fk_indirizzo)
-VALUES
-('admin@overclocked.it','Mario','Rossi','admin123','ADMIN','3331112222',1),
-('luca@gmail.com','Luca','Bianchi','1234','USER','3334445555',2),
-('anna@gmail.com','Anna','Verdi','password','USER','3337778888', 3);
-
--- UTENTE
+-- UTENTE: user@a.b
 INSERT INTO indirizzo (via_numciv, paese, citta, provincia, dati_plus, codice_postale)
 VALUES ('Via Roma 10', 'Italia', 'Pescara', 'PE', NULL, '65100');
 
@@ -139,6 +124,7 @@ VALUES ('user@a.b',
     LAST_INSERT_ID()
 );
 
+-- UTENTE: admin@a.b
 INSERT INTO indirizzo (via_numciv, paese, citta, provincia, dati_plus, codice_postale)
 VALUES ('Via Milano 25', 'Italia', 'Milano', 'MI', NULL, '20100');
 
@@ -153,8 +139,100 @@ VALUES (
     LAST_INSERT_ID()
 );
 
+-- =========================================================
+-- ORDINI: 3 ordini per user@a.b
+-- =========================================================
+INSERT INTO ordine (data, stato, totale, pagamento, fk_utente, fk_indirizzo)
+SELECT '2026-05-02', 'CONSEGNATO', 0, 'VISA', u.id_utente, u.fk_indirizzo
+FROM utente u WHERE u.email = 'user@a.b';
 
+SET @ord1 = LAST_INSERT_ID();
 
+INSERT INTO ordine (data, stato, totale, pagamento, fk_utente, fk_indirizzo)
+SELECT '2026-05-20', 'SPEDITO', 0, 'MAST', u.id_utente, u.fk_indirizzo
+FROM utente u WHERE u.email = 'user@a.b';
 
+SET @ord2 = LAST_INSERT_ID();
 
+INSERT INTO ordine (data, stato, totale, pagamento, fk_utente, fk_indirizzo)
+SELECT '2026-06-10', 'IN_PREPARAZIONE', 0, 'PAYP', u.id_utente, u.fk_indirizzo
+FROM utente u WHERE u.email = 'user@a.b';
 
+SET @ord3 = LAST_INSERT_ID();
+
+-- Dettagli ordine 1 (user@a.b): CPU Ryzen 7 7800X3D + RAM 32GB DDR5
+INSERT INTO dettagliOrdine (fk_ordine, fk_prodotto, quantita, prezzo_unitario)
+SELECT @ord1, p.id_prodotto, 1, p.prezzo FROM prodotto p WHERE p.modello = '7800X3D';
+INSERT INTO dettagliOrdine (fk_ordine, fk_prodotto, quantita, prezzo_unitario)
+SELECT @ord1, p.id_prodotto, 2, p.prezzo FROM prodotto p WHERE p.modello = 'Vengeance';
+
+-- Dettagli ordine 2 (user@a.b): Case Mid Tower H5 Flow + SSD NVMe 1TB
+INSERT INTO dettagliOrdine (fk_ordine, fk_prodotto, quantita, prezzo_unitario)
+SELECT @ord2, p.id_prodotto, 1, p.prezzo FROM prodotto p WHERE p.modello = 'H5 Flow';
+INSERT INTO dettagliOrdine (fk_ordine, fk_prodotto, quantita, prezzo_unitario)
+SELECT @ord2, p.id_prodotto, 1, p.prezzo FROM prodotto p WHERE p.modello = '980 Pro';
+
+-- Dettagli ordine 3 (user@a.b): GPU RTX 4070 Dual
+INSERT INTO dettagliOrdine (fk_ordine, fk_prodotto, quantita, prezzo_unitario)
+SELECT @ord3, p.id_prodotto, 1, p.prezzo FROM prodotto p WHERE p.modello = 'RTX 4070 Dual';
+
+-- Aggiorno il totale dei 3 ordini calcolandolo dai dettagli
+SET SQL_SAFE_UPDATES = 0;
+
+UPDATE ordine o
+JOIN (
+    SELECT fk_ordine, SUM(quantita * prezzo_unitario) AS tot
+    FROM dettagliOrdine
+    WHERE fk_ordine IN (@ord1, @ord2, @ord3)
+    GROUP BY fk_ordine
+) d ON d.fk_ordine = o.id_ordine
+SET o.totale = d.tot;
+
+-- =========================================================
+-- ORDINI: 3 ordini per admin@a.b
+-- =========================================================
+INSERT INTO ordine (data, stato, totale, pagamento, fk_utente, fk_indirizzo)
+SELECT '2026-04-15', 'CONSEGNATO', 0, 'VISA', u.id_utente, u.fk_indirizzo
+FROM utente u WHERE u.email = 'admin@a.b';
+
+SET @ord4 = LAST_INSERT_ID();
+
+INSERT INTO ordine (data, stato, totale, pagamento, fk_utente, fk_indirizzo)
+SELECT '2026-05-28', 'RIMBORSATO', 0, 'MAST', u.id_utente, u.fk_indirizzo
+FROM utente u WHERE u.email = 'admin@a.b';
+
+SET @ord5 = LAST_INSERT_ID();
+
+INSERT INTO ordine (data, stato, totale, pagamento, fk_utente, fk_indirizzo)
+SELECT '2026-06-15', 'IN_PREPARAZIONE', 0, 'PAYP', u.id_utente, u.fk_indirizzo
+FROM utente u WHERE u.email = 'admin@a.b';
+
+SET @ord6 = LAST_INSERT_ID();
+
+-- Dettagli ordine 4 (admin@a.b): Mobo Z790 Apex + Dissipatore AIO 240mm
+INSERT INTO dettagliOrdine (fk_ordine, fk_prodotto, quantita, prezzo_unitario)
+SELECT @ord4, p.id_prodotto, 1, p.prezzo FROM prodotto p WHERE p.modello = 'Z790 Apex';
+INSERT INTO dettagliOrdine (fk_ordine, fk_prodotto, quantita, prezzo_unitario)
+SELECT @ord4, p.id_prodotto, 1, p.prezzo FROM prodotto p WHERE p.modello = 'Kraken X53';
+
+-- Dettagli ordine 5 (admin@a.b): Alimentatore 850W RM850x
+INSERT INTO dettagliOrdine (fk_ordine, fk_prodotto, quantita, prezzo_unitario)
+SELECT @ord5, p.id_prodotto, 1, p.prezzo FROM prodotto p WHERE p.modello = 'RM850x';
+
+-- Dettagli ordine 6 (admin@a.b): RAM 64GB DDR5 + SSD NVMe 2TB
+INSERT INTO dettagliOrdine (fk_ordine, fk_prodotto, quantita, prezzo_unitario)
+SELECT @ord6, p.id_prodotto, 1, p.prezzo FROM prodotto p WHERE p.modello = 'Fury Beast';
+INSERT INTO dettagliOrdine (fk_ordine, fk_prodotto, quantita, prezzo_unitario)
+SELECT @ord6, p.id_prodotto, 1, p.prezzo FROM prodotto p WHERE p.modello = 'WD Black SN850X';
+
+-- Aggiorno il totale dei 3 ordini calcolandolo dai dettagli
+UPDATE ordine o
+JOIN (
+    SELECT fk_ordine, SUM(quantita * prezzo_unitario) AS tot
+    FROM dettagliOrdine
+    WHERE fk_ordine IN (@ord4, @ord5, @ord6)
+    GROUP BY fk_ordine
+) d ON d.fk_ordine = o.id_ordine
+SET o.totale = d.tot;
+
+SET SQL_SAFE_UPDATES = 1;

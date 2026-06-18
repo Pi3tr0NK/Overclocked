@@ -30,10 +30,11 @@ CREATE TABLE ordine(
     data date NOT NULL,
     stato enum('IN_PREPARAZIONE','SPEDITO','CONSEGNATO','RIMBORSATO') DEFAULT 'IN_PREPARAZIONE',
     totale decimal (10,2) NOT NULL,
-    fattura_path varchar (255),
+    pagamento varchar(4) NOT NULL,
 	fk_utente int NOT NULL,
 	fk_indirizzo int NOT NULL,
     
+	
     FOREIGN KEY(fk_utente) REFERENCES utente(id_utente) ON UPDATE cascade ON DELETE cascade,
     FOREIGN KEY(fk_indirizzo) REFERENCES indirizzo(id_indirizzo) ON UPDATE cascade ON DELETE restrict
 );
