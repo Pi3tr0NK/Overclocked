@@ -143,19 +143,19 @@ VALUES (
 -- ORDINI: 3 ordini per user@a.b
 -- =========================================================
 INSERT INTO ordine (data, stato, totale, pagamento, fk_utente, fk_indirizzo)
-SELECT '2026-05-02', 'CONSEGNATO', 0, 'VISA', u.id_utente, u.fk_indirizzo
+SELECT '2026-05-02', 'CONSEGNATO', 0, '1234', u.id_utente, u.fk_indirizzo
 FROM utente u WHERE u.email = 'user@a.b';
 
 SET @ord1 = LAST_INSERT_ID();
 
 INSERT INTO ordine (data, stato, totale, pagamento, fk_utente, fk_indirizzo)
-SELECT '2026-05-20', 'SPEDITO', 0, 'MAST', u.id_utente, u.fk_indirizzo
+SELECT '2026-05-20', 'SPEDITO', 0, '5647', u.id_utente, u.fk_indirizzo
 FROM utente u WHERE u.email = 'user@a.b';
 
 SET @ord2 = LAST_INSERT_ID();
 
 INSERT INTO ordine (data, stato, totale, pagamento, fk_utente, fk_indirizzo)
-SELECT '2026-06-10', 'IN_PREPARAZIONE', 0, 'PAYP', u.id_utente, u.fk_indirizzo
+SELECT '2026-06-10', 'IN_PREPARAZIONE', 0, '9012', u.id_utente, u.fk_indirizzo
 FROM utente u WHERE u.email = 'user@a.b';
 
 SET @ord3 = LAST_INSERT_ID();
@@ -192,19 +192,19 @@ SET o.totale = d.tot;
 -- ORDINI: 3 ordini per admin@a.b
 -- =========================================================
 INSERT INTO ordine (data, stato, totale, pagamento, fk_utente, fk_indirizzo)
-SELECT '2026-04-15', 'CONSEGNATO', 0, 'VISA', u.id_utente, u.fk_indirizzo
+SELECT '2026-04-15', 'CONSEGNATO', 0, '3456', u.id_utente, u.fk_indirizzo
 FROM utente u WHERE u.email = 'admin@a.b';
 
 SET @ord4 = LAST_INSERT_ID();
 
 INSERT INTO ordine (data, stato, totale, pagamento, fk_utente, fk_indirizzo)
-SELECT '2026-05-28', 'RIMBORSATO', 0, 'MAST', u.id_utente, u.fk_indirizzo
+SELECT '2026-05-28', 'RIMBORSATO', 0, '7890', u.id_utente, u.fk_indirizzo
 FROM utente u WHERE u.email = 'admin@a.b';
 
 SET @ord5 = LAST_INSERT_ID();
 
 INSERT INTO ordine (data, stato, totale, pagamento, fk_utente, fk_indirizzo)
-SELECT '2026-06-15', 'IN_PREPARAZIONE', 0, 'PAYP', u.id_utente, u.fk_indirizzo
+SELECT '2026-06-15', 'IN_PREPARAZIONE', 0, '2345', u.id_utente, u.fk_indirizzo
 FROM utente u WHERE u.email = 'admin@a.b';
 
 SET @ord6 = LAST_INSERT_ID();
