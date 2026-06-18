@@ -38,7 +38,8 @@
         action="${pageContext.request.contextPath}/admin/aggiungiProdotto?action=aggiungi"
         method="post"
         enctype="multipart/form-data"
-        id="formProdotto">
+        id="formProdotto"
+        novalidate>
 
         <%-- CATEGORIA --%>
         <div class="section">
@@ -108,11 +109,11 @@
             <div class="row2">
                 <div class="form-group">
                     <label>Dimensioni</label>
-                    <input type="text" name="dimensioni" placeholder="es. 357x149x70 mm"/>
+                    <input type="text" name="dimensioni" placeholder="es. 357x149x70 mm" required/>
                 </div>
                 <div class="form-group">
                     <label>Peso</label>
-                    <input type="text" name="peso" placeholder="es. 1.4 kg"/>
+                    <input type="text" name="peso" placeholder="es. 1.4 kg" required/>
                 </div>
             </div>
         </div>
@@ -123,34 +124,34 @@
             <div class="row3">
                 <div class="form-group">
                     <label>Core</label>
-                    <input type="number" name="core" min="1" placeholder="es. 24"/>
+                    <input type="number" name="core" min="1" placeholder="es. 24" required/>
                 </div>
                 <div class="form-group">
                     <label>Thread</label>
-                    <input type="number" name="thread" min="1" placeholder="es. 32"/>
+                    <input type="number" name="thread" min="1" placeholder="es. 32" required/>
                 </div>
                 <div class="form-group">
                     <label>TDP (W)</label>
-                    <input type="number" name="tdp" min="0" placeholder="es. 125"/>
+                    <input type="number" name="tdp" min="0" placeholder="es. 125" required/>
                 </div>
             </div>
             <div class="row3">
                 <div class="form-group">
                     <label>Frequenza</label>
-                    <input type="text" name="frequenza" placeholder="es. 3.2 GHz"/>
+                    <input type="text" name="frequenza" placeholder="es. 3.2 GHz" required/>
                 </div>
                 <div class="form-group">
                     <label>Socket</label>
-                    <input type="text" name="socket" placeholder="es. LGA1700"/>
+                    <input type="text" name="socket" placeholder="es. LGA1700" required/>
                 </div>
                 <div class="form-group">
                     <label>Tipo RAM</label>
-                    <input type="text" name="tiporam" placeholder="es. DDR5"/>
+                    <input type="text" name="tiporam" placeholder="es. DDR5" required/>
                 </div>
             </div>
             <div class="form-group">
                 <label>Frequenza RAM supportata</label>
-                <input type="text" name="frequenzaram" placeholder="es. 5600 MHz"/>
+                <input type="text" name="frequenzaram" placeholder="es. 5600 MHz" required/>
             </div>
         </div>
 
@@ -160,34 +161,34 @@
             <div class="row3">
                 <div class="form-group">
                     <label>VRAM</label>
-                    <input type="text" name="vram" placeholder="es. 24 GB"/>
+                    <input type="text" name="vram" placeholder="es. 24 GB" required/>
                 </div>
                 <div class="form-group">
                     <label>Tipo VRAM</label>
-                    <input type="text" name="tipovram" placeholder="es. GDDR6X"/>
+                    <input type="text" name="tipovram" placeholder="es. GDDR6X" required/>
                 </div>
                 <div class="form-group">
                     <label>TDP (W)</label>
-                    <input type="number" name="tdp" min="0" placeholder="es. 600"/>
+                    <input type="number" name="tdp" min="0" placeholder="es. 600" required/>
                 </div>
             </div>
             <div class="row3">
-                <div class="form-group">
+                <div class="form-group">\
                     <label>Frequenza boost</label>
-                    <input type="text" name="frequenza" placeholder="es. 2640 MHz"/>
+                    <input type="text" name="frequenza" placeholder="es. 2640 MHz" required/>
                 </div>
                 <div class="form-group">
                     <label>PCIe</label>
-                    <input type="text" name="pcie" placeholder="es. PCIe 4.0 x16"/>
+                    <input type="text" name="pcie" placeholder="es. PCIe 4.0 x16" required/>
                 </div>
                 <div class="form-group">
                     <label>Uscite video</label>
-                    <input type="text" name="video" placeholder="es. 3x DP, 1x HDMI"/>
+                    <input type="text" name="video" placeholder="es. 3x DP, 1x HDMI" required/>
                 </div>
             </div>
             <div class="form-group">
                 <label>Risoluzione massima</label>
-                <input type="text" name="maxres" placeholder="es. 7680x4320"/>
+                <input type="text" name="maxres" placeholder="es. 7680x4320" required/>
             </div>
         </div>
 
@@ -197,15 +198,15 @@
             <div class="row3">
                 <div class="form-group">
                     <label>Capacit&agrave;</label>
-                    <input type="text" name="capacita" placeholder="es. 32 GB"/>
+                    <input type="text" name="capacita" placeholder="es. 32 GB" required/>
                 </div>
                 <div class="form-group">
                     <label>Frequenza</label>
-                    <input type="text" name="frequenza" placeholder="es. 6000 MHz"/>
+                    <input type="text" name="frequenza" placeholder="es. 6000 MHz" required/>
                 </div>
                 <div class="form-group">
                     <label>Tipo</label>
-                    <input type="text" name="tipo" placeholder="es. DDR5"/>
+                    <input type="text" name="tipo" placeholder="es. DDR5" required/>
                 </div>
             </div>
         </div>
@@ -216,21 +217,21 @@
             <div class="row3">
                 <div class="form-group">
                     <label>Capacit&agrave;</label>
-                    <input type="text" name="capacita" placeholder="es. 2 TB"/>
+                    <input type="text" name="capacita" placeholder="es. 2 TB" required/>
                 </div>
                 <div class="form-group">
                     <label>Formato</label>
-                    <input type="text" name="formato" placeholder="es. M.2 2280"/>
+                    <input type="text" name="formato" placeholder="es. M.2 2280" required/>
                 </div>
                 <div class="form-group">
                     <label>Vel. lettura (MB/s)</label>
-                    <input type="number" name="lettura" min="0" placeholder="es. 7400"/>
+                    <input type="number" name="lettura" min="0" placeholder="es. 7400" required/>
                 </div>
             </div>
             <div class="row3">
                 <div class="form-group">
                     <label>Vel. scrittura (MB/s)</label>
-                    <input type="number" name="scrittura" min="0" placeholder="es. 6900"/>
+                    <input type="number" name="scrittura" min="0" placeholder="es. 6900" required/>
                 </div>
                 <div class="form-group">
                     <label>Tipo</label>
@@ -255,43 +256,43 @@
             <div class="row3">
                 <div class="form-group">
                     <label>Chipset</label>
-                    <input type="text" name="chipset" placeholder="es. Z790"/>
+                    <input type="text" name="chipset" placeholder="es. Z790" required/>
                 </div>
                 <div class="form-group">
                     <label>Socket</label>
-                    <input type="text" name="socket" placeholder="es. LGA1700"/>
+                    <input type="text" name="socket" placeholder="es. LGA1700" required/>
                 </div>
                 <div class="form-group">
                     <label>Formato</label>
-                    <input type="text" name="formato" placeholder="es. ATX"/>
+                    <input type="text" name="formato" placeholder="es. ATX" required/>
                 </div>
             </div>
             <div class="row3">
                 <div class="form-group">
                     <label>Tipo RAM</label>
-                    <input type="text" name="tipoRam" placeholder="es. DDR5"/>
+                    <input type="text" name="tipoRam" placeholder="es. DDR5" required/>
                 </div>
                 <div class="form-group">
                     <label>Freq. max RAM</label>
-                    <input type="text" name="maxFreq" placeholder="es. 7200 MHz"/>
+                    <input type="text" name="maxFreq" placeholder="es. 7200 MHz" required/>
                 </div>
                 <div class="form-group">
                     <label>PCIe</label>
-                    <input type="text" name="pcie" placeholder="es. PCIe 5.0"/>
+                    <input type="text" name="pcie" placeholder="es. PCIe 5.0" required/>
                 </div>
             </div>
             <div class="row3">
                 <div class="form-group">
                     <label>Slot RAM</label>
-                    <input type="number" name="slotRam" min="1" placeholder="es. 4"/>
+                    <input type="number" name="slotRam" min="1" placeholder="es. 4" required/>
                 </div>
                 <div class="form-group">
                     <label>Porte SATA</label>
-                    <input type="number" name="porteSata" min="0" placeholder="es. 6"/>
+                    <input type="number" name="porteSata" min="0" placeholder="es. 6" required/>
                 </div>
                 <div class="form-group">
                     <label>Porte USB</label>
-                    <input type="number" name="porteUsb" min="0" placeholder="es. 10"/>
+                    <input type="number" name="porteUsb" min="0" placeholder="es. 10" required/>
                 </div>
             </div>
             <div class="form-group">
@@ -309,11 +310,11 @@
             <div class="row2">
                 <div class="form-group">
                     <label>Potenza (W)</label>
-                    <input type="number" name="potenza" min="0" placeholder="es. 1000"/>
+                    <input type="number" name="potenza" min="0" placeholder="es. 1000" required/>
                 </div>
                 <div class="form-group">
                     <label>Certificazione</label>
-                    <input type="text" name="certificazione" placeholder="es. 80+ Gold"/>
+                    <input type="text" name="certificazione" placeholder="es. 80+ Gold" required/>
                 </div>
             </div>
             <div class="row2">
@@ -341,15 +342,15 @@
             <div class="row3">
                 <div class="form-group">
                     <label>Formato</label>
-                    <input type="text" name="formato" placeholder="es. Full Tower"/>
+                    <input type="text" name="formato" placeholder="es. Full Tower" required/>
                 </div>
                 <div class="form-group">
                     <label>Colore</label>
-                    <input type="text" name="colore" placeholder="es. Nero"/>
+                    <input type="text" name="colore" placeholder="es. Nero" required/>
                 </div>
                 <div class="form-group">
                     <label>Materiale</label>
-                    <input type="text" name="materiale" placeholder="es. Acciaio + Vetro"/>
+                    <input type="text" name="materiale" placeholder="es. Acciaio + Vetro" required/>
                 </div>
             </div>
         </div>
@@ -367,21 +368,21 @@
                 </div>
                 <div class="form-group">
                     <label>TDP supportato (W)</label>
-                    <input type="number" name="tdp" min="0" placeholder="es. 250"/>
+                    <input type="number" name="tdp" min="0" placeholder="es. 250" required/>
                 </div>
                 <div class="form-group">
                     <label>Socket supportati</label>
-                    <input type="text" name="socket" placeholder="es. LGA1700, AM5"/>
+                    <input type="text" name="socket" placeholder="es. LGA1700, AM5" required/>
                 </div>
             </div>
             <div class="row2">
                 <div class="form-group">
                     <label>RPM max</label>
-                    <input type="number" name="rpm" min="0" placeholder="es. 1500"/>
+                    <input type="number" name="rpm" min="0" placeholder="es. 1500" required/>
                 </div>
                 <div class="form-group">
                     <label>Rumore (dBA)</label>
-                    <input type="number" name="rumore" min="0" placeholder="es. 25"/>
+                    <input type="number" name="rumore" min="0" placeholder="es. 25" required/>
                 </div>
             </div>
         </div>

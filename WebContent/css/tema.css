@@ -185,6 +185,23 @@ a {
     z-index: 2;
 }
 
+/* =========================
+  	ERRORI
+========================= */
+
+
+.field-error {
+    display: block;
+    color: #ff4d4d;
+    font-size: 0.85rem;
+    margin-top: 4px;
+    min-height: 1em;
+}
+
+.input-invalid {
+    border: 1px solid #ff4d4d;
+}
+
 
 /* =========================
    RESPONSIVE

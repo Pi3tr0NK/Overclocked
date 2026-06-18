@@ -296,6 +296,10 @@
     transition: opacity .15s;
 }
 
+.profilo-field input.input-invalid {
+    border: 1px solid #ff4d4d;
+}
+
 .btn-salva:hover { opacity: .85; }
 
  #rimborso {

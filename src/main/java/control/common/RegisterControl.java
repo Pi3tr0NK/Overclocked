@@ -47,7 +47,14 @@ public class RegisterControl extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+	    if (request.getSession(false) != null &&
+	            request.getSession(false).getAttribute("utente") != null) {
 
+	            response.sendRedirect(request.getContextPath() + "/home");
+	            return;
+	        }
+	    
 		RequestDispatcher dispatcher =request.getRequestDispatcher("/WEB-INF/views/common/RegisterView.jsp");
 		dispatcher.forward(request, response);
 	}
@@ -55,14 +62,20 @@ public class RegisterControl extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+	    if (request.getSession(false) != null &&
+	            request.getSession(false).getAttribute("utente") != null) {
 
-		List<String> errors = new ArrayList<>();
+	            response.sendRedirect(request.getContextPath() + "/home");
+	            return;
+	        }
+	    
+		String errors = null;
 
 		String nome = request.getParameter("nome");
 		String cognome = request.getParameter("cognome");
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		String confermaPassword =request.getParameter("confermaPassword");
 		String cellulare = request.getParameter("cellulare");
 
 		String via = request.getParameter("via");
@@ -72,17 +85,14 @@ public class RegisterControl extends HttpServlet {
 		String cap = request.getParameter("cap");
 		String paese = request.getParameter("paese");
 
-		nome = validateField(nome, "nome", errors);
-		cognome = validateField(cognome, "cognome", errors);
-		email = validateField(email, "email", errors);
-		password = validateField(password, "password", errors);
-
-		if(!password.equals(confermaPassword)) {
-
-			errors.add("Le password non coincidono");
+		try {
+			if(utenteDAO.checkEmail(email))
+				errors = "L'email esiste già";
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 
-		if(!errors.isEmpty()) {
+		if(errors != null) {
 
 			request.setAttribute("errors", errors);
 
@@ -133,22 +143,6 @@ public class RegisterControl extends HttpServlet {
 
 			throw new ServletException(e);
 		}
-	}
-
-	private String validateField(
-			String value,
-			String fieldName,
-			List<String> errors) {
-
-		if(value == null ||
-		   value.trim().isEmpty()) {
-
-			errors.add("Il campo "+ fieldName+ " non può essere vuoto");
-
-			return "";
-		}
-
-		return value.trim();
 	}
 	
 	public static String toDigest(String password) {

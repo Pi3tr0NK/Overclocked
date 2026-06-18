@@ -49,8 +49,7 @@
                 <div class="profilo-alert error">${errore}</div>
             </c:if>
 
-            <form action="${pageContext.request.contextPath}/common/profilo"
-                  method="post">
+            <form action="${pageContext.request.contextPath}/common/profilo" method="post" novalidate>
                 <input type="hidden" name="action" value="aggiornaDati"/>
 
                 <%-- Dati personali --%>
@@ -131,5 +130,6 @@
 </div>
 
 <jsp:include page="/WEB-INF/views/components/footer.jsp" />
+<script src="${pageContext.request.contextPath}/script/profilo.js"></script>
 </body>
 </html>
