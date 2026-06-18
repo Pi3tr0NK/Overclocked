@@ -172,7 +172,7 @@ public class OrdineDAOImpl implements OrdineDAO {
 		String sql = "SELECT o.* " + "FROM " + TABLE_NAME + " o " + "JOIN utente u ON o.fk_utente = u.id_utente "
 				+ "WHERE (? IS NULL OR o.stato = ?) " + "AND (? IS NULL OR u.nome LIKE ?) "
 				+ "AND (? IS NULL OR u.cognome LIKE ?) " + "AND (? IS NULL OR u.email LIKE ?) "
-				+ "AND (? IS NULL OR o.data >= ?) " + "AND (? IS NULL OR o.data <= ?) " + "ORDER BY o.data DESC "
+				+ "AND (? IS NULL OR o.data >= ?) " + "AND (? IS NULL OR o.data <= ?) " + "ORDER BY o.data DESC, o.id_ordine DESC "
 				+ "LIMIT ? OFFSET ?";
 
 		try (Connection con = ds.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {

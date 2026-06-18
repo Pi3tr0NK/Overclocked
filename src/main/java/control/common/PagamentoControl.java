@@ -104,6 +104,7 @@ public class PagamentoControl extends HttpServlet {
         String citta = request.getParameter("citta");
         String provincia = request.getParameter("provincia");
         String cap = request.getParameter("cap");
+        String paese = request.getParameter("paese");
 
         if (via != null && !via.isEmpty()) {
         		try
@@ -113,6 +114,7 @@ public class PagamentoControl extends HttpServlet {
                     indirizzo.setCitta(citta);
                     indirizzo.setProvincia(provincia);
                     indirizzo.setCodicePostale(cap);
+                    indirizzo.setPaese(paese);
                     
                     idIndirizzo = indirizzoDAO.doSave(indirizzo);
         		}catch (SQLException e) {

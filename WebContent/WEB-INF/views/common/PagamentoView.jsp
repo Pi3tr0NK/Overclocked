@@ -120,6 +120,16 @@
                                        placeholder="86100"
                                        required>
                             </div>
+                            
+                            <div class="co-field">
+                                <label>Paese</label>
+                                <input type="text"
+                                       name="paese"
+                                       value="${utente.indirizzo.paese}"
+                                       maxlength="5"
+                                       placeholder="Italia"
+                                       required>
+                            </div>
                         </div>
                     </div>
 
