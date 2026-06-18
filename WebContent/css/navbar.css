@@ -1,3 +1,7 @@
+/* ==================================================
+   NAVBAR COMPONENTE BASE (DESKTOP FIRST)
+================================================== */
+
 .navbar {
     width: 100%;
     background: #111;
@@ -12,7 +16,6 @@
 }
 
 /* ── Logo ── */
-
 .nav-left a {
     display: flex;
     align-items: center;
@@ -30,15 +33,16 @@
     margin: 0;
     color: #ff6a00;
     line-height: 1;
+    font-size: 22px;
 }
 
 /* ── Barra ricerca ── */
-
 .nav-center {
     display: flex;
     justify-content: center;
     align-items: center;
     flex: 1;
+    margin: 0 20px;
 }
 
 .nav-center form {
@@ -47,8 +51,13 @@
     max-width: 100%;
 }
 
-.nav-center input {
+#search-wrapper {
+    position: relative;
     flex: 1;
+}
+
+#search-wrapper input {
+    width: 100%;
     padding: 12px;
     background: #222;
     border: none;
@@ -57,7 +66,7 @@
     font-size: 15px;
 }
 
-.nav-center input:focus {
+#search-wrapper input:focus {
     outline: none;
 }
 
@@ -76,13 +85,49 @@
     background: #e66e00;
 }
 
-/* ── Bottoni destra ── */
+/* ── Suggerimenti Live Ricerca ── */
+#suggerimenti {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #0f0f0f;
+    border: 1px solid #1a1a1a;
+    border-radius: 0 0 9px 9px;
+    z-index: 1001;
+    overflow: hidden;
+}
 
+#suggerimenti a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 13px;
+    font-size: 13px;
+    color: #ccc;
+    text-decoration: none;
+    border-bottom: 1px solid #141414;
+    transition: background .15s;
+}
+
+#suggerimenti a:last-child { border-bottom: none; }
+#suggerimenti a:hover { background: #1a1a1a; color: #ff7300; }
+
+#suggerimenti a img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    background: #111;
+    border-radius: 5px;
+    flex-shrink: 0;
+}
+
+/* ── Bottoni destra standard ── */
 .nav-right {
     display: flex;
     gap: 10px;
+    align-items: center;
 }
-
 
 .nav-btn {
     display: flex;
@@ -107,73 +152,146 @@
 }
 
 .nav-btn img {
-    width: 31px;
-    height: 31px;
+    width: 24px;
+    height: 24px;
     object-fit: contain;
     display: block;
 }
 
-.nav-btn:hover img {
-    opacity: 2;
+/* Badge Carrello */
+.cart-icon-wrapper {
+    position: relative;
+    display: inline-block;
 }
 
 .cart-badge {
     background: #ff7300;
     color: #0d0d0d;
-    font-size: 11px;
-    font-weight: 500;
-    border-radius: 99px;
-    min-width: 18px;
-    height: 18px;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 50%;
+    min-width: 16px;
+    height: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0 4px;
-    line-height: 1;
-}
-
-#suggerimenti {
     position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: #0f0f0f;
-    border: 1px solid #1a1a1a;
-    border-radius: 0 0 9px 9px;
-    z-index: 1000;
-    overflow: hidden;
+    top: -6px;
+    right: -6px;
+    padding: 0 2px;
 }
 
-#suggerimenti a {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 9px 13px;
-    font-size: 13px;
-    color: #ccc;
-    text-decoration: none;
-    border-bottom: 1px solid #141414;
-    transition: background .15s;
+/* ── Elementi di controllo Hamburger nascosti su Desktop ── */
+.menu-toggle-checkbox {
+    display: none;
 }
 
-#suggerimenti a:last-child { border-bottom: none; }
-
-#suggerimenti a:hover { background: #1a1a1a; color: #ff7300; }
-
-#suggerimenti a img {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
-    background: #111;
-    border-radius: 5px;
-    flex-shrink: 0;
+.hamburger-label {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    cursor: pointer;
+    z-index: 1010;
 }
 
-#search-wrapper {
-    position: relative;
-    flex: 1;
-}
-
-#search-wrapper input {
+.hamburger-label span {
+    display: block;
+    height: 2px;
     width: 100%;
+    background-color: #fff;
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+
+/* ==================================================
+   RESPONSIVE DESIGN & HAMBURGER TENDINA (CSS ONLY)
+================================================== */
+
+@media (max-width: 950px) {
+    .navbar {
+        padding: 15px 20px;
+    }
+
+    /* Mostra l'icona ad hamburger */
+    .hamburger-label {
+        display: flex;
+    }
+
+    /* Trasforma il blocco di destra in un menu Drawer Laterale a Scomparsa */
+    .nav-right {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Totalmente nascosto fuori schermo a destra di default */
+        width: 280px;
+        height: 100vh;
+        background: #111;
+        border-left: 2px solid #ff7a00;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: stretch;
+        padding: 80px 20px 20px 20px;
+        gap: 15px;
+        transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1005;
+        box-shadow: -5px 0 25px rgba(0, 0, 0, 0.7);
+    }
+
+    .nav-btn {
+        height: 48px; /* Pulsanti più grandi e cliccabili facilmente da telefono */
+        justify-content: flex-start;
+        padding: 0 20px;
+        font-size: 14px;
+    }
+
+    /* INTERRUTTORE DI STATO (QUANDO L'HAMBURGER È ATTIVO) */
+    /* 1. Fai scorrere il menu all'interno dello schermo */
+    .menu-toggle-checkbox:checked ~ .nav-right {
+        right: 0;
+    }
+
+    /* 2. Effetto rotazione grafica dell'hamburger che si trasforma in una "X" */
+    .menu-toggle-checkbox:checked ~ .hamburger-label span:nth-child(1) {
+        transform: translateY(8px) rotate(45deg);
+        background-color: #ff7a00;
+    }
+
+    .menu-toggle-checkbox:checked ~ .hamburger-label span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle-checkbox:checked ~ .hamburger-label span:nth-child(3) {
+        transform: translateY(-8px) rotate(-45deg);
+        background-color: #ff7a00;
+    }
+}
+
+/* --- ADATTAMENTO STRUTTURA SMARTPHONE --- */
+@media (max-width: 600px) {
+    .navbar {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .nav-left {
+        order: 1;
+    }
+
+    .hamburger-label {
+        order: 2;
+    }
+
+    /* Sposta la ricerca sotto a tutto su schermi molto compatti per fluidità */
+    .nav-center {
+        order: 3;
+        width: 100%;
+        margin: 5px 0 0 0;
+        flex: none;
+    }
+    
+    .nav-left h2 {
+        font-size: 18px;
+    }
 }

@@ -1,75 +1,239 @@
-    .configuratore {
-        background-color: #1a1a1a;
-        border-left: 4px solid #ff7a00;
-        padding: 40px 48px;
-        margin-bottom: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 40px;
-    }
+.configuratore {
+    background-color: #1a1a1a;
+    border-left: 4px solid #ff7a00;
+    padding: 40px 48px;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
 
-    .configuratore-testo {
-        flex: 1;
-        max-width: 600px;
-    }
+.configuratore-testo {
+    flex: 1;
+    max-width: 600px;
+}
 
-    .configuratore-label {
-        color: #ff7a00;
-        font-size: 11px;
-        font-weight: bold;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-        margin-bottom: 14px;
-    }
+.configuratore-label {
+    color: #ff7a00;
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+}
 
-    .configuratore-titolo {
-        font-size: 28px;
-        font-weight: bold;
-        color: #ffffff;
-        margin-bottom: 12px;
-        line-height: 1.3;
-    }
+.configuratore-titolo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 12px;
+    line-height: 1.3;
+}
 
-    .configuratore-desc {
-        font-size: 13px;
-        color: #aaaaaa;
-        margin-bottom: 24px;
-        line-height: 1.6;
-    }
+.configuratore-desc {
+    font-size: 13px;
+    color: #aaaaaa;
+    margin-bottom: 24px;
+    line-height: 1.6;
+}
 
-    .configuratore-btn {
-        display: inline-block;
-        background-color: #ff7a00;
-        color: #000000;
-        font-weight: bold;
-        font-size: 14px;
-        padding: 12px 28px;
-        border-radius: 8px;
-        text-decoration: none;
-        letter-spacing: 0.5px;
-        transition: background-color 0.2s ease;
-    }
+.configuratore-btn {
+    display: inline-block;
+    background-color: #ff7a00;
+    color: #000000;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 12px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: background-color 0.2s ease;
+}
 
-    .configuratore-btn:hover {
-        background-color: #e06900;
-    }
+.configuratore-btn:hover {
+    background-color: #e06900;
+}
 
-    .configuratore-slot {
+.configuratore-slot {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
     min-width: 340px;
-	}
+}
+
+.slot-item {
+    background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
+    border: 1.5px solid #ff7a00;
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
 	
-	.slot-item {
-	    background: linear-gradient(135deg, #1e1e1e, #2a2a2a);
-	    border: 1.5px solid #ff7a00;
-	    border-radius: 12px;
-	    padding: 14px 18px;
-	    font-size: 15px;
-	    font-weight: bold;
-	    color: #ffffff;
-	    text-align: center;
-	    letter-spacing: 0.5px;
-	}
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 1024px) {
+
+    .configuratore {
+        flex-direction: column;
+        align-items: flex-start; 
+        text-align: left; 
+        padding: 30px;
+    }
+
+    .configuratore-testo {
+        max-width: 100%;
+    }
+
+    .configuratore-slot {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+
+    .container {
+        width: 95%;
+        padding: 15px 0;
+    }
+
+    h1 {
+        font-size: 26px;
+        text-align: left; 
+    }
+
+    h2 {
+        font-size: 20px;
+        text-align: left; 
+    }
+
+    /* =========================
+       GRID PRODOTTI (2 COLONNE)
+    ========================= */
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* =========================
+       CATEGORIE (CENTRATE)
+    ========================= */
+
+    .category-card img {
+        display: none;
+    }
+
+    .category-card {
+        padding: 14px 10px;
+        display: flex;
+        justify-content: center; /* Centra il testo orizzontalmente */
+        align-items: center;     /* Centra il testo verticalmente */
+        text-align: center;      /* Forza la centratura del testo interno */
+        min-height: 55px;
+    }
+
+    .category-card h3 {
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .category-card p {
+        display: none;
+    }
+
+    /* =========================
+       CONFIGURATORE (ALLINEATO A SINISTRA)
+    ========================= */
+
+    .configuratore {
+        padding: 22px;
+        gap: 20px;
+        justify-content: flex-start; 
+    }
+
+    .configuratore-testo {
+        max-width: 100%;
+    }
+
+    .configuratore-titolo {
+        font-size: 22px;
+    }
+
+    .configuratore-desc {
+        font-size: 14px;
+    }
+
+    .configuratore-slot {
+        display: none;
+    }
+
+    .configuratore-btn {
+        width: 100%;
+        text-align: center; 
+        max-width: 300px;
+    }
+
+    /* =========================
+       CARDS PRODOTTI
+    ========================= */
+
+    .card img {
+        height: 180px;
+    }
+
+    .product-name {
+        font-size: 13px;
+    }
+
+    .product-price {
+        font-size: 18px;
+    }
+}
+
+/* =========================
+   SMARTPHONE PICCOLI
+========================= */
+
+@media (max-width: 480px) {
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .configuratore {
+        padding: 18px;
+    }
+
+    .configuratore-titolo {
+        font-size: 20px;
+    }
+
+    .configuratore-desc {
+        font-size: 13px;
+    }
+
+    .card img {
+        height: 140px;
+    }
+
+    .product-name {
+        font-size: 12px;
+    }
+
+    .product-price {
+        font-size: 16px;
+    }
+}
