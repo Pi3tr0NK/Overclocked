@@ -97,7 +97,7 @@ public class BuildControl extends HttpServlet {
 			switch (action) {
 
 			case "getCpus": {
-				Collection<CPUBean> cpus = cpuDAO.doRetrieveAll(null, null, null, null, null, null, 0);
+				Collection<CPUBean> cpus = cpuDAO.doRetrieveAll(null, null, null, null, null, null, null, 0);
 				json.put("functionName", "aggiornaCpus");
 				json.put("result", new JSONArray(cpus));
 				break;
@@ -132,7 +132,7 @@ public class BuildControl extends HttpServlet {
 			}
 
 			case "getGpus": {
-				Collection<GPUBean> gpus = gpuDAO.doRetrieveAll(null, null, null, null, null, null, 0);
+				Collection<GPUBean> gpus = gpuDAO.doRetrieveAll(null, null, null, null, null, null, null, 0);
 				json.put("functionName", "aggiornaGpus");
 				json.put("result", new JSONArray(gpus));
 				break;

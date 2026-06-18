@@ -10,7 +10,7 @@ public interface DissipatoreDAO {
 	
 	public DissipatoreBean doRetrieveByKey(int idDissipatore) throws SQLException;
 	
-	public Collection<DissipatoreBean> doRetrieveAll(String cerca, String categoria,String prezzo,String marca,String tipo, int pagina) throws SQLException;
+	public Collection<DissipatoreBean> doRetrieveAll(String cerca, String categoria,String prezzo,String marca,String tipo, String ordine, int pagina) throws SQLException;
 	
 	public boolean doUpdate(DissipatoreBean d) throws SQLException;
 	

@@ -81,7 +81,7 @@ public class RAMDAOImpl implements RAMDAO {
 
 	@Override
 	public synchronized Collection<RAMBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca,
-			String capacita, String frequenza, String tipo, int pagina) throws SQLException {
+			String capacita, String frequenza, String tipo, String ordine, int pagina) throws SQLException {
 
 		List<RAMBean> lista = new LinkedList<>();
 
@@ -90,7 +90,8 @@ public class RAMDAOImpl implements RAMDAO {
 		capacita = (capacita == null || capacita.trim().isEmpty()) ? null : capacita;
 		frequenza = (frequenza == null || frequenza.trim().isEmpty()) ? null : frequenza;
 		tipo = (tipo == null || tipo.trim().isEmpty()) ? null : tipo;
-
+		ordine = (ordine == null || ordine.trim().isEmpty()) ? null : ordine;
+		
 		Double prezzoMax = null;
 		if (prezzo != null && !prezzo.trim().isEmpty()) {
 			prezzoMax = Double.parseDouble(prezzo);
@@ -98,13 +99,29 @@ public class RAMDAOImpl implements RAMDAO {
 
 		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
 
-		String sql = "SELECT * " + "FROM " + TABLE_NAME + " r " + "JOIN prodotto p ON r.fk_prodotto = p.id_prodotto "
-				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
-				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
-				+ "AND (? IS NULL OR r.capacita = ?) " + "AND (? IS NULL OR r.frequenza = ?) " + "AND attivo = true "
-				+ "AND (? IS NULL OR r.tipo = ?) "
-				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))" + "LIMIT ? OFFSET ?";
-		;
+		String sql = "SELECT * " +
+	             "FROM " + TABLE_NAME + " r " +
+	             "JOIN prodotto p ON r.fk_prodotto = p.id_prodotto " +
+	             "WHERE (? IS NULL OR p.categoria = ?) " +
+	             "AND (? IS NULL OR p.marca = ?) " +
+	             "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
+	             "AND (? IS NULL OR r.capacita = ?) " +
+	             "AND (? IS NULL OR r.frequenza = ?) " +
+	             "AND attivo = true " +
+	             "AND (? IS NULL OR r.tipo = ?) " +
+	             "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?)) ";
+
+		if ("prezzoASC".equals(ordine)) {
+		    sql += "ORDER BY (p.prezzo * (100 - p.sconto) / 100.0) ASC ";
+		} else if ("prezzoDESC".equals(ordine)) {
+		    sql += "ORDER BY (p.prezzo * (100 - p.sconto) / 100.0) DESC ";
+		} else if ("nomeASC".equals(ordine)) {
+		    sql += "ORDER BY p.nome ASC ";
+		} else if ("nomeDESC".equals(ordine)) {
+		    sql += "ORDER BY p.nome DESC ";
+		}
+	
+		sql += "LIMIT ? OFFSET ?";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 

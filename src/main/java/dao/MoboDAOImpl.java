@@ -100,7 +100,7 @@ public class MoboDAOImpl implements MoboDAO {
 
 	@Override
 	public synchronized Collection<MoboBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca,
-			String formato, String nvme, String slotram, int pagina) throws SQLException {
+			String formato, String nvme, String slotram, String ordine, int pagina) throws SQLException {
 
 		List<MoboBean> lista = new LinkedList<>();
 		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
@@ -110,7 +110,8 @@ public class MoboDAOImpl implements MoboDAO {
 		formato = (formato == null || formato.trim().isEmpty()) ? null : formato;
 		nvme = (nvme == null || nvme.trim().isEmpty()) ? null : nvme;
 		slotram = (slotram == null || slotram.trim().isEmpty()) ? null : slotram;
-
+		ordine = (ordine == null || ordine.trim().isEmpty()) ? null : ordine;
+		
 		Double prezzoMax = null;
 		if (prezzo != null && !prezzo.trim().isEmpty()) {
 			prezzoMax = Double.parseDouble(prezzo);
@@ -121,12 +122,29 @@ public class MoboDAOImpl implements MoboDAO {
 			slotRamInt = Integer.parseInt(slotram);
 		}
 
-		String sql = "SELECT * " + "FROM " + TABLE_NAME + " m " + "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto "
-				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
-				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " + "AND (? IS NULL OR m.formato = ?) "
-				+ "AND (? IS NULL OR m.nvme = ?) " + "AND (? IS NULL OR m.slotram = ?) " + "AND attivo = true "
-				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))" + "LIMIT ? OFFSET ?";
-		;
+		String sql = "SELECT * " +
+	             "FROM " + TABLE_NAME + " m " +
+	             "JOIN prodotto p ON m.fk_prodotto = p.id_prodotto " +
+	             "WHERE (? IS NULL OR p.categoria = ?) " +
+	             "AND (? IS NULL OR p.marca = ?) " +
+	             "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
+	             "AND (? IS NULL OR m.formato = ?) " +
+	             "AND (? IS NULL OR m.nvme = ?) " +
+	             "AND (? IS NULL OR m.slotram = ?) " +
+	             "AND attivo = true " +
+	             "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?)) ";
+
+		if ("prezzoASC".equals(ordine)) {
+		    sql += "ORDER BY (p.prezzo * (100 - p.sconto) / 100.0) ASC ";
+		} else if ("prezzoDESC".equals(ordine)) {
+		    sql += "ORDER BY (p.prezzo * (100 - p.sconto) / 100.0) DESC ";
+		} else if ("nomeASC".equals(ordine)) {
+		    sql += "ORDER BY p.nome ASC ";
+		} else if ("nomeDESC".equals(ordine)) {
+		    sql += "ORDER BY p.nome DESC ";
+		}
+	
+		sql += "LIMIT ? OFFSET ?";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 

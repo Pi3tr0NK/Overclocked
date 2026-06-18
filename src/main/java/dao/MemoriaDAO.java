@@ -10,7 +10,7 @@ public void doSave(MemoriaBean cpu) throws SQLException;
 	
 	public MemoriaBean doRetrieveByKey(int idCPU) throws SQLException;
 	
-	public Collection<MemoriaBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String capacita, String tipo, String tecnologia, int pagina) throws SQLException;
+	public Collection<MemoriaBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String capacita, String tipo, String tecnologia, String ordine, int pagina) throws SQLException;
 	
 	public boolean doUpdate(MemoriaBean p) throws SQLException;
 	

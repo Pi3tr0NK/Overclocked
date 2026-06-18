@@ -12,7 +12,7 @@ public interface ProdottoDAO {
 
 	public ProdottoBean doRetrieveByKey(int code) throws SQLException;
 	
-	public Collection<ProdottoBean> doRetrieveAll(String cerca, String prezzo, String marca, String categoria, String attivo, int pagina) throws SQLException;
+	public Collection<ProdottoBean> doRetrieveAll(String cerca, String prezzo, String marca, String categoria, String attivo, String ordine, int pagina) throws SQLException;
 	
 	public boolean doUpdate(ProdottoBean p) throws SQLException;
 	

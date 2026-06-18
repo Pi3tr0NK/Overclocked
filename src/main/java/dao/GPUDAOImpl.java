@@ -85,7 +85,7 @@ public class GPUDAOImpl implements GPUDAO {
 
 	@Override
 	public synchronized List<GPUBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca,
-			String vram, String pcie, int pagina) throws SQLException {
+			String vram, String pcie, String ordine, int pagina) throws SQLException {
 
 		List<GPUBean> lista = new LinkedList<>();
 		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
@@ -94,20 +94,36 @@ public class GPUDAOImpl implements GPUDAO {
 		marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
 		vram = (vram == null || vram.trim().isEmpty()) ? null : vram;
 		pcie = (pcie == null || pcie.trim().isEmpty()) ? null : pcie;
-
+		ordine = (ordine == null || ordine.trim().isEmpty()) ? null : ordine;
+		
 		Double prezzoMax = null;
 		if (prezzo != null && !prezzo.trim().isEmpty()) {
 			prezzoMax = Double.parseDouble(prezzo);
 		}
 
-		String sql = "SELECT * " + "FROM " + TABLE_NAME + " g " + "JOIN prodotto p ON g.fk_prodotto = p.id_prodotto "
-				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
-				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " + "AND (? IS NULL OR g.vram = ?) "
-				+ "AND (? IS NULL OR g.pcie = ?) " + "AND attivo = true "
-				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
+		String sql = "SELECT * " +
+	             "FROM " + TABLE_NAME + " g " +
+	             "JOIN prodotto p ON g.fk_prodotto = p.id_prodotto " +
+	             "WHERE (? IS NULL OR p.categoria = ?) " +
+	             "AND (? IS NULL OR p.marca = ?) " +
+	             "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
+	             "AND (? IS NULL OR g.vram = ?) " +
+	             "AND (? IS NULL OR g.pcie = ?) " +
+	             "AND attivo = true " +
+	             "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?)) ";
 
+		if ("prezzoASC".equals(ordine)) {
+		    sql += "ORDER BY (p.prezzo * (100 - p.sconto) / 100.0) ASC ";
+		} else if ("prezzoDESC".equals(ordine)) {
+		    sql += "ORDER BY (p.prezzo * (100 - p.sconto) / 100.0) DESC ";
+		} else if ("nomeASC".equals(ordine)) {
+		    sql += "ORDER BY p.nome ASC ";
+		} else if ("nomeDESC".equals(ordine)) {
+		    sql += "ORDER BY p.nome DESC ";
+		}
+	
 		if (pagina > 0) {
-			sql += " LIMIT ? OFFSET ?";
+		    sql += "LIMIT ? OFFSET ?";
 		}
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {

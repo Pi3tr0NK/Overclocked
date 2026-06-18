@@ -89,7 +89,7 @@ public class CPUDAOImpl implements CPUDAO {
 
 	@Override
 	public synchronized Collection<CPUBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca,
-			String core, String frequenza, int pagina) throws SQLException {
+			String core, String frequenza, String ordine, int pagina) throws SQLException {
 
 		List<CPUBean> lista = new LinkedList<>();
 		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
@@ -97,7 +97,8 @@ public class CPUDAOImpl implements CPUDAO {
 		categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
 		marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
 		frequenza = (frequenza == null || frequenza.trim().isEmpty()) ? null : frequenza;
-
+		ordine = (ordine == null || ordine.trim().isEmpty()) ? null : ordine;
+		
 		Double prezzoMax = null;
 		if (prezzo != null && !prezzo.trim().isEmpty()) {
 			prezzoMax = Double.parseDouble(prezzo);
@@ -112,10 +113,20 @@ public class CPUDAOImpl implements CPUDAO {
 				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
 				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " + "AND (? IS NULL OR c.core = ?) "
 				+ "AND (? IS NULL OR c.frequenza = ?) " + "AND attivo = true "
-				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
+				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?)) ";
+
+		if ("prezzoASC".equals(ordine)) {
+			sql += "ORDER BY (p.prezzo * (100 - p.sconto) / 100.0) ASC ";
+		} else if ("prezzoDESC".equals(ordine)) {
+			sql += "ORDER BY (p.prezzo * (100 - p.sconto) / 100.0) DESC ";
+		} else if ("nomeASC".equals(ordine)) {
+			sql += "ORDER BY p.nome ASC ";
+		} else if ("nomeDESC".equals(ordine)) {
+			sql += "ORDER BY p.nome DESC ";
+		}
 
 		if (pagina > 0) {
-			sql += " LIMIT ? OFFSET ?";
+			sql += "LIMIT ? OFFSET ?";
 		}
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -200,7 +211,8 @@ public class CPUDAOImpl implements CPUDAO {
 		ProdottoDAOImpl prodottoDAO = new ProdottoDAOImpl(ds);
 		prodottoDAO.doUpdate(cpu);
 
-		String sql = "UPDATE " + TABLE_NAME + " SET core = ?, thread = ?, frequenza = ?, frequenza_ram = ?, tiporam = ?, socket = ?, tdp = ? WHERE id_cpu = ?";
+		String sql = "UPDATE " + TABLE_NAME
+				+ " SET core = ?, thread = ?, frequenza = ?, frequenza_ram = ?, tiporam = ?, socket = ?, tdp = ? WHERE id_cpu = ?";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -241,10 +253,10 @@ public class CPUDAOImpl implements CPUDAO {
 			coreInt = Integer.parseInt(core);
 		}
 
-		String sql = "SELECT COUNT(*) " + "FROM " + TABLE_NAME + " c " + "JOIN prodotto p ON c.fk_prodotto = p.id_prodotto "
-				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
-				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " + "AND (? IS NULL OR c.core = ?) "
-				+ "AND (? IS NULL OR c.frequenza = ?) " + "AND attivo = true "
+		String sql = "SELECT COUNT(*) " + "FROM " + TABLE_NAME + " c "
+				+ "JOIN prodotto p ON c.fk_prodotto = p.id_prodotto " + "WHERE (? IS NULL OR p.categoria = ?) "
+				+ "AND (? IS NULL OR p.marca = ?) " + "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
+				+ "AND (? IS NULL OR c.core = ?) " + "AND (? IS NULL OR c.frequenza = ?) " + "AND attivo = true "
 				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
@@ -284,9 +296,9 @@ public class CPUDAOImpl implements CPUDAO {
 					return rs.getInt(1);
 				}
 			}
-			
+
 		}
 		return 0;
 	}
-	
+
 }

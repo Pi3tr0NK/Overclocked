@@ -96,7 +96,7 @@ public class ProdottoDAOImpl implements ProdottoDAO {
 
 	@Override
 	public synchronized Collection<ProdottoBean> doRetrieveAll(String cerca, String prezzo, String marca,
-			String categoria, String attivo, int pagina) throws SQLException {
+			String categoria, String attivo, String ordine, int pagina) throws SQLException {
 
 		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
 
@@ -105,7 +105,8 @@ public class ProdottoDAOImpl implements ProdottoDAO {
 		marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
 		categoria = (categoria == null || categoria.trim().isEmpty()) ? null : categoria;
 		attivo = (attivo == null || attivo.trim().isEmpty()) ? null : attivo;
-
+		ordine = (ordine == null || ordine.trim().isEmpty()) ? null : ordine;
+		
 		Double prezzoMax = null;
 		if (prezzo != null && !prezzo.trim().isEmpty()) {
 			prezzoMax = Double.parseDouble(prezzo);
@@ -116,11 +117,25 @@ public class ProdottoDAOImpl implements ProdottoDAO {
 			attivoBool = Boolean.parseBoolean(attivo);
 		}
 
-		String sql = "SELECT * " + "FROM " + TABLE_NAME + " p " + "WHERE (? IS NULL OR p.marca = ?) "
-				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
-				+ "AND (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.attivo = ?) "
-				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?)) "
-				+ "LIMIT ? OFFSET ?";
+		String sql = "SELECT * " +
+	             "FROM " + TABLE_NAME + " p " +
+	             "WHERE (? IS NULL OR p.marca = ?) " +
+	             "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
+	             "AND (? IS NULL OR p.categoria = ?) " +
+	             "AND (? IS NULL OR p.attivo = ?) " +
+	             "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?)) ";
+
+		if ("prezzoASC".equals(ordine)) {
+		    sql += "ORDER BY (p.prezzo * (100 - p.sconto) / 100.0) ASC ";
+		} else if ("prezzoDESC".equals(ordine)) {
+		    sql += "ORDER BY (p.prezzo * (100 - p.sconto) / 100.0) DESC ";
+		} else if ("nomeASC".equals(ordine)) {
+		    sql += "ORDER BY p.nome ASC ";
+		} else if ("nomeDESC".equals(ordine)) {
+		    sql += "ORDER BY p.nome DESC ";
+		}
+	
+		sql += "LIMIT ? OFFSET ?";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 

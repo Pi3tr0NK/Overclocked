@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/dashboard.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/pagination.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css">
 
 </head>
 
@@ -164,6 +165,7 @@
 
 </div>
 
+<jsp:include page="/WEB-INF/views/components/footer.jsp" />
 
 </body>
 </html>

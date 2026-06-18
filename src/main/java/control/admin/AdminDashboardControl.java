@@ -101,7 +101,7 @@ public class AdminDashboardControl extends HttpServlet {
     	
     	try {
     		 request.setAttribute("paginaCorrente", pagina);
-			 request.setAttribute("prodotto", productDAO.doRetrieveAll(null,null,null, categoria, stato, pagina));
+			 request.setAttribute("prodotto", productDAO.doRetrieveAll(null,null,null, categoria, stato, null, pagina));
 		} catch(SQLException e){
 			System.err.println("Error:" + e.getMessage());
 		}

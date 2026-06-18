@@ -10,8 +10,8 @@ public void doSave(RAMBean ram) throws SQLException;
 	
 	public RAMBean doRetrieveByKey(int idRAM) throws SQLException;
 	
-	public Collection<RAMBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String capacita, String frequenza, String tipo, int pagina) throws SQLException;
-	
+	public Collection<RAMBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String capacita, String frequenza, String tipo, String ordine, int pagina) throws SQLException;
+	 
 	public boolean doUpdate(RAMBean p) throws SQLException;
 	
 	public boolean setProductStatus(RAMBean ram, boolean attivo) throws SQLException;

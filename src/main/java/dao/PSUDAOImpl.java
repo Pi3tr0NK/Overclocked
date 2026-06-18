@@ -90,7 +90,7 @@ public class PSUDAOImpl implements PSUDAO {
 
 	@Override
 	public synchronized Collection<PSUBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca,
-			String potenza, String certificazione, String modulare, int pagina) throws SQLException {
+			String potenza, String certificazione, String modulare, String ordine, int pagina) throws SQLException {
 
 		List<PSUBean> lista = new LinkedList<>();
 		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
@@ -99,7 +99,8 @@ public class PSUDAOImpl implements PSUDAO {
 		marca = (marca == null || marca.trim().isEmpty()) ? null : marca;
 		certificazione = (certificazione == null || certificazione.trim().isEmpty()) ? null : certificazione;
 		modulare = (modulare == null || modulare.trim().isEmpty()) ? null : modulare;
-
+		ordine = (ordine == null || ordine.trim().isEmpty()) ? null : ordine;
+		
 		Double prezzoMax = null;
 		if (prezzo != null && !prezzo.trim().isEmpty()) {
 			prezzoMax = Double.parseDouble(prezzo);
@@ -110,12 +111,29 @@ public class PSUDAOImpl implements PSUDAO {
 			potenzaInt = Integer.parseInt(potenza);
 		}
 
-		String sql = "SELECT * " + "FROM " + TABLE_NAME + " ps " + "JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto "
-				+ "WHERE (? IS NULL OR p.categoria = ?) " + "AND (? IS NULL OR p.marca = ?) "
-				+ "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) "
-				+ "AND (? IS NULL OR ps.potenza = ?) " + "AND (? IS NULL OR ps.certificazione = ?) " + "AND attivo = true "
-				+ "AND (? IS NULL OR ps.modulare = ?) "
-				+ "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?))" + "LIMIT ? OFFSET ?";
+		String sql = "SELECT * " +
+	             "FROM " + TABLE_NAME + " ps " +
+	             "JOIN prodotto p ON ps.fk_prodotto = p.id_prodotto " +
+	             "WHERE (? IS NULL OR p.categoria = ?) " +
+	             "AND (? IS NULL OR p.marca = ?) " +
+	             "AND (? IS NULL OR (p.prezzo * (100 - p.sconto) / 100.0) <= ?) " +
+	             "AND (? IS NULL OR ps.potenza = ?) " +
+	             "AND (? IS NULL OR ps.certificazione = ?) " +
+	             "AND attivo = true " +
+	             "AND (? IS NULL OR ps.modulare = ?) " +
+	             "AND (? IS NULL OR (p.nome LIKE ? OR p.descrizione LIKE ? OR p.modello LIKE ?)) ";
+
+		if ("prezzoASC".equals(ordine)) {
+		    sql += "ORDER BY (p.prezzo * (100 - p.sconto) / 100.0) ASC ";
+		} else if ("prezzoDESC".equals(ordine)) {
+		    sql += "ORDER BY (p.prezzo * (100 - p.sconto) / 100.0) DESC ";
+		} else if ("nomeASC".equals(ordine)) {
+		    sql += "ORDER BY p.nome ASC ";
+		} else if ("nomeDESC".equals(ordine)) {
+		    sql += "ORDER BY p.nome DESC ";
+		}
+	
+		sql += "LIMIT ? OFFSET ?";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 

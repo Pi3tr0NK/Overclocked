@@ -11,7 +11,7 @@ public interface GPUDAO {
 
 	public GPUBean doRetrieveByKey(int code) throws SQLException;
 	
-	public Collection<GPUBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String vram, String pcie, int pagina) throws SQLException;
+	public Collection<GPUBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String vram, String pcie, String ordine, int pagina) throws SQLException;
 	
 	public boolean doUpdate(GPUBean p) throws SQLException;
 	

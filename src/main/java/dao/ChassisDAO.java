@@ -10,7 +10,7 @@ public void doSave(ChassisBean cpu) throws SQLException;
 	
 	public ChassisBean doRetrieveByKey(int idCPU) throws SQLException;
 	
-	public Collection<ChassisBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String formato, String colore, int pagina) throws SQLException;
+	public Collection<ChassisBean> doRetrieveAll(String cerca, String categoria, String prezzo, String marca, String formato, String colore, String ordine, int pagina) throws SQLException;
 	
 	public boolean doUpdate(ChassisBean p) throws SQLException;
 	
