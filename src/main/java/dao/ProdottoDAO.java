@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import model.ProdottoBean;
@@ -31,4 +32,6 @@ public interface ProdottoDAO {
 	public int doCountExpiredProducts() throws SQLException;
 	
 	public int doCountFilteredProducts(String cerca, String prezzo, String marca, String categoria, String attivo) throws SQLException;
+	
+	public List<String> getSuggerimenti(String query, int limit) throws SQLException;
 }

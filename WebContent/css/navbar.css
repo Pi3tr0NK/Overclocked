@@ -131,3 +131,49 @@
     padding: 0 4px;
     line-height: 1;
 }
+
+#suggerimenti {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #0f0f0f;
+    border: 1px solid #1a1a1a;
+    border-radius: 0 0 9px 9px;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+#suggerimenti a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 13px;
+    font-size: 13px;
+    color: #ccc;
+    text-decoration: none;
+    border-bottom: 1px solid #141414;
+    transition: background .15s;
+}
+
+#suggerimenti a:last-child { border-bottom: none; }
+
+#suggerimenti a:hover { background: #1a1a1a; color: #ff7300; }
+
+#suggerimenti a img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    background: #111;
+    border-radius: 5px;
+    flex-shrink: 0;
+}
+
+#search-wrapper {
+    position: relative;
+    flex: 1;
+}
+
+#search-wrapper input {
+    width: 100%;
+}
