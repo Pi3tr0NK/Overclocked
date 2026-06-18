@@ -462,5 +462,47 @@ public class ProdottoDAOImpl implements ProdottoDAO {
 
 		return 0;
 	}
+	
+	
+	public List<String> getSuggerimenti(String query, int limit) throws SQLException {
+	    String sql =
+	        "SELECT DISTINCT valore FROM (" +
+	        "SELECT nome AS valore FROM prodotto WHERE attivo=1 AND nome LIKE ? " +
+	        "UNION " +
+	        "SELECT modello AS valore FROM prodotto WHERE attivo=1 AND modello LIKE ? " +
+	        "UNION " +
+	        "SELECT descrizione AS valore FROM prodotto WHERE attivo=1 AND descrizione LIKE ? " +
+	        "UNION " +
+	        "SELECT marca AS valore FROM prodotto WHERE attivo=1 AND marca LIKE ? " +
+	        ") t ORDER BY valore";
 
+	    try (Connection con = ds.getConnection();
+	         PreparedStatement ps = con.prepareStatement(sql)) {
+	        String like    = query + "%";
+	        String anyWord = "%" + query + "%";
+
+	        ps.setString(1, anyWord);
+	        ps.setString(2, like);
+	        ps.setString(3, anyWord);
+	        ps.setString(4, like);
+
+	        try (ResultSet rs = ps.executeQuery()) {
+	            Set<String> parole = new LinkedHashSet<>();
+	            while (rs.next()) {
+	                String valore = rs.getString("valore");
+	                System.out.println("DB valore: [" + valore + "]");
+	                for (String parola : valore.split("\\s+")) {
+	                    System.out.println("  parola: [" + parola + "] startsWith(" + query + "): " + parola.toLowerCase().startsWith(query.toLowerCase()));
+	                    if (parola.toLowerCase().startsWith(query.toLowerCase())) {
+	                        parole.add(parola.toLowerCase());
+	                        break;
+	                    }
+	                }
+	                if (parole.size() >= limit) break;
+	            }
+	            System.out.println("Risultato finale: " + parole);
+	            return new ArrayList<>(parole);
+	        }
+	    }
+	}
 }

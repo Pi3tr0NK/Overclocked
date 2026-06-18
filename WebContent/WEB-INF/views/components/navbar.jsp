@@ -3,6 +3,8 @@
 <head>
     <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/assets/images/favicon.png">
     <script src="${pageContext.request.contextPath}/script/numeroCarrello.js"></script>
+    <script>const contextPath = "${pageContext.request.contextPath}";</script>
+	<script src="${pageContext.request.contextPath}/script/ricercaLive.js"></script>
 </head>
 
 <nav class="navbar">
@@ -13,11 +15,18 @@
 	
 
     <div class="nav-center">
-        <form action="${pageContext.request.contextPath}/Catalogo" method="get">
-            <input type="text" name="cerca" placeholder="Cerca componenti..." value="${param.cerca}">
-            <button>Cerca</button>
-        </form>
-    </div>
+	    <form action="${pageContext.request.contextPath}/Catalogo" method="get">
+	        <div id="search-wrapper">
+			    <input type="text" id="searchInput" name="cerca"
+			           placeholder="Cerca componenti..."
+			           value="${param.cerca}"
+			           autocomplete="off"
+			           oninput="cercaSuggerimenti(this.value)">
+			    <div id="suggerimenti"></div>
+			</div>
+	        <button>Cerca</button>
+	    </form>
+	</div>
 
     <div class="nav-right">
     

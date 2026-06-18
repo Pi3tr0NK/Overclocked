@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.sql.DataSource;
 
@@ -68,9 +69,39 @@ public class CatalogoControl extends HttpServlet {
     }
  
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		 if ("suggest".equals(request.getParameter("action"))) {
+		        gestisciSuggerimenti(request, response);
+		        return;
+		    }
+		
 		loadProducList(request);
 		request.getRequestDispatcher("/WEB-INF/views/common/CatalogoView.jsp").forward(request, response);
+	}
+	
+	private void gestisciSuggerimenti(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	    String query = request.getParameter("cerca");
+	    if (query == null || query.trim().isEmpty()) {
+	        response.setContentType("application/json;charset=UTF-8");
+	        response.getWriter().write("[]");
+	        return;
+	    }
+
+	    try {
+	        List<String> suggerimenti = prodottoDAO.getSuggerimenti(query.trim(), 5);
+	        response.setContentType("application/json;charset=UTF-8");
+	        StringBuilder json = new StringBuilder("[");
+	        for (int i = 0; i < suggerimenti.size(); i++) {
+	            json.append("\"")
+	                .append(suggerimenti.get(i).replace("\\", "\\\\").replace("\"", "\\\""))
+	                .append("\"");
+	            if (i < suggerimenti.size() - 1) json.append(",");
+	        }
+	        json.append("]");
+	        response.getWriter().write(json.toString());
+	    } catch (SQLException e) {
+	        response.setContentType("application/json;charset=UTF-8");
+	        response.getWriter().write("[]");
+	    }
 	}
 	
 	
