@@ -32,10 +32,24 @@
 
 <div class="product">
 
-    <div class="left">
+    <!-- BLOCCO: marca + titolo -->
+    <div class="area-brand-title">
+
+        <div class="brand">
+            ${prodotto.marca}
+        </div>
+
+        <div class="title">
+             <c:out value="${prodotto.nome}"/>
+        </div>
+
+    </div>
+
+    <!-- BLOCCO: immagine + thumbs -->
+    <div class="area-media">
 
         <div class="main-image">
-		
+
             <img id ="mainImg" src="${pageContext.request.contextPath}/${prodotto.immagini[0].path}">
 
         </div>
@@ -54,17 +68,8 @@
 
     </div>
 
-    <div class="right">
-
-        <div class="brand">
-		
-            ${prodotto.marca}
-
-        </div>
-
-        <div class="title">
-             <c:out value="${prodotto.nome}"/>
-        </div>
+    <!-- BLOCCO: disponibilità -->
+    <div class="area-stock">
 
 		<div class="stock">
 		
@@ -92,6 +97,11 @@
 		
 		</div>
 
+    </div>
+
+    <!-- BLOCCO: prezzo -->
+    <div class="area-price">
+
 		<c:choose>
 		
 		    <c:when test="${prodotto.sconto > 0}">
@@ -99,13 +109,11 @@
 		    	<c:set var="scontato" value="${prodotto.prezzo - (prodotto.prezzo * prodotto.sconto / 100.0)}" />
 		
 		        <div class="old-price">
-		            <c:out value="€ ${prodotto.prezzo}"/>
+		            <c:out value="${prodotto.prezzo} €"/>
 		        </div>
-				
-				
-				
+
 		        <div class="price">
-					<c:out value="€ ${String.format('%.2f', scontato)}"/>
+					<c:out value="${String.format('%.2f', scontato)} €"/>
 		        </div>
 		
 		    </c:when>
@@ -113,13 +121,18 @@
 		    <c:otherwise>
 		
 		        <div class="price">
-		            <c:out value="€ ${prodotto.prezzo}"/> 
+		            <c:out value="${prodotto.prezzo} €"/> 
 		        </div>
 		
 		    </c:otherwise>
 		
 		</c:choose>
-		
+
+    </div>
+
+    <!-- BLOCCO: quantità, bottone, features, specifiche -->
+    <div class="area-rest">
+
 		<div class="qty">
 
 		    Quantità

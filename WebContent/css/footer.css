@@ -180,15 +180,7 @@
     font-weight: bold;
 }
 
-/* =========================
-   TABLET
-========================= */
-
 @media (max-width: 1024px) {
-
-    .footer {
-        padding: 40px 25px 0;
-    }
 
     .footer-top {
         grid-template-columns: 1fr;
@@ -196,78 +188,93 @@
     }
 }
 
-/* =========================
-   MOBILE
-========================= */
-
 @media (max-width: 768px) {
-
-    .footer {
-        padding: 30px 20px 0;
-    }
 
     .footer-top {
         text-align: center;
+    }
+
+    .footer-desc {
+        max-width: 320px;
+        margin: 0 auto;
     }
 
     .footer-links {
         align-items: center;
     }
 
+    .newsletter-desc {
+        max-width: 320px;
+        margin: 0 auto 12px;
+    }
+
     .newsletter-row {
-        flex-direction: column;
-        gap: 10px;
+        max-width: 320px;
+        margin: 0 auto;
+        /* niente flex-direction: column qui */
     }
 
     .newsletter-input {
-        border-radius: 8px;
+        height: 46px;
+        font-size: 14px;
+        padding: 0 16px;
+        /* niente border-radius: 8px qui, resta 8px 0 0 8px come da default */
     }
 
     .newsletter-btn {
-        border-radius: 8px;
-        width: 100%;
+        height: 46px;
+        font-size: 14px;
+        /* niente width:100% / border-radius:8px qui, resta 0 8px 8px 0 come da default */
     }
 
     .footer-mid {
         justify-content: center;
+        gap: 18px 24px;
     }
 
     .footer-bottom {
         flex-direction: column;
+        align-items: center;
         text-align: center;
-    }
-
-    .footer-legal {
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-
-    .footer-payments {
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-}
-
-/* =========================
-   SMARTPHONE PICCOLI
-========================= */
-
-@media (max-width: 480px) {
-
-    .footer-col-title {
-        font-size: 11px;
-    }
-
-    .footer-link {
-        font-size: 12px;
+        gap: 16px;
     }
 
     .footer-copy {
-        font-size: 11px;
+        width: 100%;
+    }
+
+    .footer-legal {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+
+    .footer-payments {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 6px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .footer-mid {
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        text-align: center;
+    }
+
+    .footer-payments {
+        gap: 5px;
     }
 
     .payment-badge {
         font-size: 10px;
         padding: 3px 6px;
+        white-space: nowrap;
     }
 }

@@ -27,18 +27,20 @@
 	<jsp:include page="/WEB-INF/views/components/navbar.jsp" />
 
 	<div class="catalog-layout">
-
+	
+		<input type="checkbox" id="filter-toggle" class="filter-toggle-checkbox">
+		
 		<!-- SIDEBAR -->
 		<div class="sidebar">
-
+			<label for="filter-toggle" class="filter-close">✕</label>
+			
 			<form id="filterForm" action="Catalogo" method="get">
 				<input type="hidden" name="cerca" value="${param.cerca}">
 
 				<!-- ===== CATEGORIA ===== -->
 				<label>Categoria</label> 
 				
-				<select name="categoria"
-					onchange="this.form.submit()">
+				<select name="categoria" onchange="this.form.submit()">
 					<option value=""
 						${empty param.categoria            ? 'selected' : ''}>Tutte</option>
 					<option value="CPU"
@@ -216,24 +218,30 @@
 
 				</c:choose>
 		</div>
-
+		<label for="filter-toggle" class="filter-overlay"></label>
 
 		<!-- CONTENT -->
 		<div class="content">
 			<div class="content-header">
 
-				<h2>Prodotti</h2>
-				<div class="content-order">
-			        <label>Ordina per:</label>
-			        <select name="ordinamento" onchange="this.form.submit()">
-			            <option value=""            ${empty param.ordinamento            ? 'selected' : ''}>Rilevanza</option>
-			            <option value="prezzoASC"   ${param.ordinamento == 'prezzoASC'  ? 'selected' : ''}>Prezzo: dal più basso</option>
-			            <option value="prezzoDESC"  ${param.ordinamento == 'prezzoDESC' ? 'selected' : ''}>Prezzo: dal più alto</option>
-			            <option value="nomeASC"     ${param.ordinamento == 'nomeASC'    ? 'selected' : ''}>Nome: A-Z</option>
-			            <option value="nomeDESC"    ${param.ordinamento == 'nomeDESC'   ? 'selected' : ''}>Nome: Z-A</option>
-			        </select>
+			    <label for="filter-toggle" class="filter-btn">
+			        <span>☰</span> Filtri
+			    </label>
+			
+			    <div class="content-header-top">
+			        <h2>Prodotti</h2>
+			        <div class="content-order">
+			            <label>Ordina per:</label>
+			            <select name="ordinamento" onchange="this.form.submit()">
+			                <option value=""            ${empty param.ordinamento            ? 'selected' : ''}>Rilevanza</option>
+			                <option value="prezzoASC"   ${param.ordinamento == 'prezzoASC'  ? 'selected' : ''}>Prezzo: dal più basso</option>
+			                <option value="prezzoDESC"  ${param.ordinamento == 'prezzoDESC' ? 'selected' : ''}>Prezzo: dal più alto</option>
+			                <option value="nomeASC"     ${param.ordinamento == 'nomeASC'    ? 'selected' : ''}>Nome: A-Z</option>
+			                <option value="nomeDESC"    ${param.ordinamento == 'nomeDESC'   ? 'selected' : ''}>Nome: Z-A</option>
+			            </select>
+			        </div>
 			    </div>
-
+			
 			</div>
 
 			</form>

@@ -108,11 +108,11 @@
             &mdash; Tutti i diritti riservati
         </span>
 
-        <div class="footer-link">
-            <p class="footer-link">Privacy Policy</p>
-            <p class="footer-link">Termini e condizioni</p>
-            <p class="footer-link">Cookie Policy</p>
-        </div>
+        <div class="footer-legal">
+		    <p class="footer-link">Privacy Policy</p>
+		    <p class="footer-link">Termini e condizioni</p>
+		    <p class="footer-link">Cookie Policy</p>
+		</div>
 
         <div class="footer-payments">
             <span class="footer-payments-label">Accettiamo</span>

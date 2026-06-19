@@ -47,8 +47,9 @@
 
 .nav-center form {
     display: flex;
-    width: 600px; 
-    max-width: 100%;
+    width: 80%;        /* invece di 600px fisso */
+    max-width: 600px;  /* non supera mai i 600px su schermi grandi */
+    min-width: 0;       /* evita overflow quando lo spazio è poco */
 }
 
 #search-wrapper {
@@ -209,6 +210,11 @@
 /* ==================================================
    RESPONSIVE DESIGN & HAMBURGER TENDINA (CSS ONLY)
 ================================================== */
+@media (max-width: 1100px) {
+    .nav-left h2 {
+        display: none;
+    }
+}
 
 @media (max-width: 950px) {
     .navbar {
@@ -271,26 +277,23 @@
 /* --- ADATTAMENTO STRUTTURA SMARTPHONE --- */
 @media (max-width: 600px) {
     .navbar {
-        flex-wrap: wrap;
-        gap: 12px;
+        gap: 8px;
+        padding: 12px 15px;
     }
 
-    .nav-left {
-        order: 1;
+    .nav-left img {
+        width: 36px;
+        height: 36px;
     }
 
-    .hamburger-label {
-        order: 2;
-    }
-
-    /* Sposta la ricerca sotto a tutto su schermi molto compatti per fluidità */
     .nav-center {
-        order: 3;
-        width: 100%;
-        margin: 5px 0 0 0;
-        flex: none;
+        margin: 0 8px;
     }
-    
+
+    .nav-center form {
+        width: 100%;
+    }
+
     .nav-left h2 {
         font-size: 18px;
     }

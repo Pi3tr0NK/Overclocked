@@ -97,6 +97,16 @@
     }
 }
 
+@media (max-width: 1000px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 /* =========================
    MOBILE
 ========================= */
@@ -151,6 +161,11 @@
 
     .category-card p {
         display: none;
+    }
+    
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
     /* =========================
@@ -235,5 +250,10 @@
 
     .product-price {
         font-size: 16px;
+    }
+    
+    .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
     }
 }

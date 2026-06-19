@@ -1,12 +1,24 @@
 /* ── Layout pagina prodotto ── */
 
 .product {
-    display: flex;
-    gap: 50px;
+    display: grid;
+    column-gap: 50px;
+    row-gap: 0;
+    grid-template-columns: 45% 1fr;
+    grid-template-areas:
+        "media brand-title"
+        "media stock"
+        "media price"
+        "media rest";
 }
 
-.left  { width: 45%; }
-.right { width: 35%; }
+.area-media   { grid-area: media; position: sticky; top: 90px; align-self: start; }
+.area-brand-title { grid-area: brand-title; }
+.area-stock   { grid-area: stock; }
+.area-price   { grid-area: price; }
+.area-rest    { grid-area: rest; }
+.area-stock { margin-top: 10px; }
+.area-price { margin: 15px 0; }
 
 /* ── Immagine principale ── */
 
@@ -59,6 +71,7 @@
 .brand {
     color: #ff7300;
     font-weight: bold;
+    font-size: 18px;
     margin-bottom: 15px;
 }
 
@@ -152,13 +165,116 @@
     font-size: 25px;
 }
 
-.left {
-    position: sticky;
-    top: 90px;
-    align-self: start;
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1000px) {
+
+    .product {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "brand-title"
+            "media"
+            "price"
+            "stock"
+            "rest";
+        row-gap: 8px;
+    }
+
+    .area-media {
+        position: static;
+    }
+
+    .area-price {
+        margin: 5px 0;
+    }
+
+    .area-stock {
+        margin-top: 0;
+        margin-bottom: 5px;
+    }
+
+    .qty {
+        margin-top: 5px;
+    }
+    
+    .qty input {
+    width: 70px;
+    padding: 10px;
+    text-align: center;
+    background-color: #1e1e1e;
+    color: #fff;
+    border: 1px solid #333;
+    border-radius: 6px;
 }
 
+    .main-image {
+        height: 380px;
+    }
 
+    .title {
+        font-size: 28px;
+    }
+
+    .price {
+        font-size: 44px;
+    }
+
+    .right .old-price {
+        font-size: 20px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 700px) {
+
+    .main-image {
+        height: 300px;
+    }
+
+    .thumb {
+        width: 60px;
+        height: 60px;
+    }
+
+    .features {
+        gap: 8px;
+    }
+
+    .feature {
+        font-size: 13px;
+        padding: 8px;
+    }
+
+    .specs td {
+        padding: 10px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 500px) {
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .qty input {
+        width: 60px;
+        padding: 8px;
+    }
+
+    .cart-btn {
+        font-size: 16px;
+        padding: 13px;
+    }
+}
 
 
 

@@ -30,7 +30,7 @@
 
         <div class="menu-title">PANORAMICA</div>
         <a href="${pageContext.request.contextPath}/admin/dashboard" class="menu-item">
-            Dashboard Prodotti
+            Prodotti
         </a>
 
         <div class="menu-title">VENDITE</div>

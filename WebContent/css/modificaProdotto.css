@@ -192,3 +192,95 @@ button:hover {
 #img {
 	display:block;
 }
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1050px) {
+
+    .container {
+        width: 95%;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .container {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 22px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .row2,
+    .row3 {
+        grid-template-columns: 1fr;
+    }
+
+    .section {
+        padding: 16px;
+    }
+
+    .cat-tabs {
+        gap: 6px;
+    }
+
+    .cat-tab {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .image-container {
+        gap: 10px;
+    }
+
+    .image-slot {
+        width: calc(50% - 5px);
+        height: 130px;
+    }
+
+    .btn-row {
+        flex-direction: column;
+    }
+
+    .btn-row button,
+    .btn-row .btn-cancel {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+
+    h1 {
+        font-size: 19px;
+    }
+
+    .cat-badge {
+        margin-left: 0;
+        margin-top: 6px;
+    }
+
+    .image-slot {
+        width: calc(50% - 5px);
+        height: 110px;
+    }
+
+    .image-slot span {
+        font-size: 36px;
+    }
+
+    button,
+    .btn-cancel {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+}

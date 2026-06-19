@@ -310,8 +310,92 @@
    RESPONSIVE
 ========================= */
 
-@media (max-width: 700px) {
-    .profilo-layout { grid-template-columns: 1fr; }
-    .profilo-nav { position: static; }
-    .profilo-grid2 { grid-template-columns: 1fr; }
+@media (max-width: 740px) {
+
+    .profilo-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .profilo-nav {
+        position: static;
+        display: flex;
+        overflow-x: auto;
+        padding: 8px;
+        gap: 4px;
+    }
+
+    .profilo-nav-link {
+        flex-shrink: 0;
+        padding: 10px 14px;
+        white-space: nowrap;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        border-radius: 6px;
+    }
+
+    .profilo-nav-link.active {
+        border-left-color: transparent;
+        border-bottom-color: #ff7300;
+    }
+
+    .profilo-nav-link.logout {
+        margin-top: 0;
+        margin-left: auto;
+        border-top: none;
+        padding-top: 10px;
+    }
+
+    .profilo-grid2 {
+        grid-template-columns: 1fr;
+    }
+
+    .profilo-content {
+        padding: 18px;
+    }
+
+    .ordine-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .ordine-body {
+        gap: 18px;
+    }
+
+    #rimborso {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .btn-fattura,
+    .btn-rimborsa {
+        text-align: center;
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .profilo-wrapper {
+        padding: 24px 0 40px;
+    }
+
+    .profilo-titolo {
+        font-size: 19px;
+        margin-bottom: 20px;
+    }
+
+    .ordine-body {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .ordine-label {
+        font-size: 13px;
+    }
+
+    .ordine-field-value {
+        font-size: 13px;
+    }
 }
