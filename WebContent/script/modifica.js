@@ -156,11 +156,13 @@ document.addEventListener("DOMContentLoaded", function () {
             validaCampo(input);
         });
         
-        if (input.tagName === "INPUT" || input.tagName === "TEXTAREA") {
-            input.addEventListener("keyup", function () {
-                validaCampo(input);
-            });
-        }
+		if (input.type === "number") {
+		    input.addEventListener("keydown", function (e) {
+		        if (["e", "E", "+", "-"].includes(e.key)) {
+		            e.preventDefault();
+		        }
+		    });
+		}
     });
 
     // Validazione al Submit

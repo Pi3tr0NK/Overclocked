@@ -210,17 +210,18 @@ document.addEventListener("DOMContentLoaded", function () {
     campi.forEach(function (input) {
         // Evitiamo di agganciare eventi standard di testo sui file input
         if (input.type === "file") return;
-
+		
+		if (input.type === "number") {
+		    input.addEventListener("keydown", function (e) {
+		        if (["e", "E", "+", "-"].includes(e.key)) {
+		            e.preventDefault();
+		        }
+		    });
+		}
+		
         input.addEventListener("change", function () {
             validaCampo(input);
         });
-        
-        // Per gli input testuali/numerici, validiamo anche al rilascio del tasto per un feedback immediato
-        if (input.tagName === "INPUT" || input.tagName === "TEXTAREA") {
-            input.addEventListener("keyup", function () {
-                validaCampo(input);
-            });
-        }
     });
 
     // Controllo sul submit finale del form
