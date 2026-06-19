@@ -103,8 +103,7 @@
 											method="post">
 											<input type="hidden" name="action" value="rimborsa" /> <input
 												type="hidden" name="idOrdine" value="${ordine.idOrdine}" />
-											<button type="submit" class="btn-rimborsa"
-												onclick="return confirm('Sei sicuro di voler richiedere il rimborso?')">
+											<button type="submit" class="btn-rimborsa">
 												Richiedi rimborso</button>
 										</form>
 									</c:if>
