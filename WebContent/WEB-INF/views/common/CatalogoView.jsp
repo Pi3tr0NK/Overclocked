@@ -229,6 +229,7 @@
 			            <label>Ordina per:</label>
 			            <select name="ordinamento" onchange="this.form.submit()">
 			                <option value=""            ${empty param.ordinamento            ? 'selected' : ''}>Rilevanza</option>
+			                <option value="novita"    ${param.ordinamento == 'novita'   ? 'selected' : ''}>Novità</option>
 			                <option value="prezzoASC"   ${param.ordinamento == 'prezzoASC'  ? 'selected' : ''}>Prezzo: dal più basso</option>
 			                <option value="prezzoDESC"  ${param.ordinamento == 'prezzoDESC' ? 'selected' : ''}>Prezzo: dal più alto</option>
 			                <option value="nomeASC"     ${param.ordinamento == 'nomeASC'    ? 'selected' : ''}>Nome: A-Z</option>

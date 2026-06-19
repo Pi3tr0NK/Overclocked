@@ -82,13 +82,9 @@
 				<form method="get"
 					action="${pageContext.request.contextPath}/admin/ordini">
 
-					<input type="text" name="cercaNome" placeholder="Nome..."
-						value="${param.cercaNome}" /> <input type="text"
-						name="cercaCognome" placeholder="Cognome..."
-						value="${param.cercaCognome}" /> <input type="text"
-						name="cercaEmail" placeholder="Email..."
-						value="${param.cercaEmail}" /> 
-						
+						<input type="text" name="cercaNome" placeholder="Nome..." value="${param.cercaNome}" /> 
+						<input type="text" name="cercaCognome" placeholder="Cognome..." value="${param.cercaCognome}" /> 
+						<input type="text" name="cercaEmail" placeholder="Email..." value="${param.cercaEmail}" /> 
 						
 						<input type="date" name="dataInizio" value="${param.dataInizio}"/> 
 						<input type="date" name="dataFine" value="${param.dataFine}" /> 

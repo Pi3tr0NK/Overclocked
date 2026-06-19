@@ -99,6 +99,34 @@
 				<c:param name="tecnologia" value="${param.tecnologia}" />
 			</c:if>
 			
+			<c:if test="${not empty param.ordinamento}">
+				<c:param name="ordinamento" value="${param.ordinamento}" />
+			</c:if>
+
+			<c:if test="${not empty param.cercaNome}">
+				<c:param name="cercaNome" value="${param.cercaNome}" />
+			</c:if>
+			
+			<c:if test="${not empty param.cercaCognome}">
+				<c:param name="cercaCognome" value="${param.cercaCognome}" />
+			</c:if>
+			
+			<c:if test="${not empty param.cercaEmail}">
+				<c:param name="cercaEmail" value="${param.cercaEmail}" />
+			</c:if>
+
+			<c:if test="${not empty param.dataInizio}">
+				<c:param name="dataInizio" value="${param.dataInizio}" />
+			</c:if>
+
+			<c:if test="${not empty param.dataFine}">
+				<c:param name="dataFine" value="${param.dataFine}" />
+			</c:if>
+			
+			<c:if test="${not empty param.stato}">
+				<c:param name="stato" value="${param.stato}" />
+			</c:if>
+						
 		</c:url>
 
 		<a href="${pageUrl}" class="${p == paginaCorrente ? 'active' : ''}">

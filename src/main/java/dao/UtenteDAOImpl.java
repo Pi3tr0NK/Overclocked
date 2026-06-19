@@ -154,22 +154,38 @@ public class UtenteDAOImpl implements UtenteDAO {
 		return u;
 	}
 
-	public synchronized List<UtenteBean> doRetrieveAll(String ruolo, int pagina) throws SQLException {
+	public synchronized List<UtenteBean> doRetrieveAll(String nome, String cognome, String email, String ruolo, int pagina) throws SQLException {
 
 		List<UtenteBean> list = new LinkedList<>();
 		
 		ruolo = (ruolo == null || ruolo.trim().isEmpty()) ? null : ruolo.trim();
-
-		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE (? IS NULL OR ruolo = ?) LIMIT ? OFFSET ?";
+		
+		nome = (nome == null || nome.trim().isEmpty()) ? null : "%" + nome.trim() + "%";
+		cognome = (cognome == null || cognome.trim().isEmpty()) ? null : "%" + cognome.trim() + "%";
+		email = (email == null || email.trim().isEmpty()) ? null : "%" + email.trim() + "%";
+		
+		String sql = "SELECT * FROM " + TABLE_NAME + " WHERE (? IS NULL OR ruolo = ?) "
+				+ "AND (? IS NULL OR nome LIKE ?)"
+				+ "AND (? IS NULL OR cognome LIKE ?)"
+				+ "AND (? IS NULL OR email LIKE ?) "
+				+ "LIMIT ? OFFSET ?";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, ruolo);
 			ps.setString(2, ruolo);
-
+			
+			ps.setString(3, nome);
+			ps.setString(4, nome);
+			
+			ps.setString(5, cognome);
+			ps.setString(6, cognome);
+			
+			ps.setString(7, email);
+			ps.setString(8, email);
 			int offset = (pagina - 1) * 10;
 
-			ps.setInt(3, 10);
-			ps.setInt(4, offset);
+			ps.setInt(9, 10);
+			ps.setInt(10, offset);
 
 			try (ResultSet rs = ps.executeQuery()) {
 
@@ -195,16 +211,31 @@ public class UtenteDAOImpl implements UtenteDAO {
 		return list;
 	}
 
-	public synchronized int doCountFilteredUtenti(String ruolo) throws SQLException {
+	public synchronized int doCountFilteredUtenti(String nome, String cognome, String email, String ruolo) throws SQLException {
 		
 		ruolo = (ruolo == null || ruolo.trim().isEmpty()) ? null : ruolo.trim();
 		
-		String sql = "SELECT COUNT(*) FROM " + TABLE_NAME + " WHERE (? IS NULL OR ruolo = ?)";
+		nome = (nome == null || nome.trim().isEmpty()) ? null : "%" + nome.trim() + "%";
+		cognome = (cognome == null || cognome.trim().isEmpty()) ? null : "%" + cognome.trim() + "%";
+		email = (email == null || email.trim().isEmpty()) ? null : "%" + email.trim() + "%";
+		
+		String sql = "SELECT COUNT(*) FROM " + TABLE_NAME + " WHERE (? IS NULL OR ruolo = ?) "
+				+ "AND (? IS NULL OR nome LIKE ?)"
+				+ "AND (? IS NULL OR cognome LIKE ?)"
+				+ "AND (? IS NULL OR email LIKE ?) ";
 		
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, ruolo);
 			ps.setString(2, ruolo);
-
+			
+			ps.setString(3, nome);
+			ps.setString(4, nome);
+			
+			ps.setString(5, cognome);
+			ps.setString(6, cognome);
+			
+			ps.setString(7, email);
+			ps.setString(8, email);
 
 			try (ResultSet rs = ps.executeQuery()) {
 				if (rs.next()) {

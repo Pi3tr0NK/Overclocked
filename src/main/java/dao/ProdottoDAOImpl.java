@@ -134,6 +134,9 @@ public class ProdottoDAOImpl implements ProdottoDAO {
 		} else if ("nomeDESC".equals(ordine)) {
 		    sql += "ORDER BY p.nome DESC ";
 		}
+		else if ("novita".equals(ordine)) {
+		    sql += "ORDER BY id_prodotto DESC ";
+		}
 	
 		sql += "LIMIT ? OFFSET ?";
 

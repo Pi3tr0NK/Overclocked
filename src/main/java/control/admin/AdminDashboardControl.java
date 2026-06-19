@@ -48,6 +48,7 @@ public class AdminDashboardControl extends HttpServlet {
         
     	String categoria = request.getParameter("categoria");
     	String attivoStr = request.getParameter("attivo");
+    	String ordinamento = request.getParameter("ordinamento");
     	
     	int pagina = 1;
 
@@ -72,7 +73,7 @@ public class AdminDashboardControl extends HttpServlet {
         }
         
         
-        ottieniProdotti(request,categoria,attivoStr,pagina);
+        ottieniProdotti(request,categoria,attivoStr,ordinamento,pagina);
         
 
         
@@ -107,13 +108,13 @@ public class AdminDashboardControl extends HttpServlet {
 		}
     }
     
-    private void ottieniProdotti(HttpServletRequest request,String categoria, String stato, int pagina)
+    private void ottieniProdotti(HttpServletRequest request,String categoria, String stato, String ordinamento, int pagina)
     {
 
     	
     	try {
     		 request.setAttribute("paginaCorrente", pagina);
-			 request.setAttribute("prodotto", productDAO.doRetrieveAll(null,null,null, categoria, stato, null, pagina));
+			 request.setAttribute("prodotto", productDAO.doRetrieveAll(null,null,null, categoria, stato, ordinamento, pagina));
 		} catch(SQLException e){
 			System.err.println("Error:" + e.getMessage());
 		}

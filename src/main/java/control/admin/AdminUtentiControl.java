@@ -71,9 +71,13 @@ public class AdminUtentiControl extends HttpServlet {
     private void ottieniUtenti(HttpServletRequest request)
     {
     	String p = request.getParameter("pagina");
-    	String ruolo = request.getParameter("filtroRuolo");
-
-        int totalePagine = settaPagineAndUtenti(request,ruolo);
+    	String ruolo = request.getParameter("stato");
+    	
+        String cercaNome = request.getParameter("cercaNome");
+        String cercaCognome = request.getParameter("cercaCognome");
+        String cercaEmail = request.getParameter("cercaEmail");
+        
+        int totalePagine = settaPagineAndUtenti(request,cercaNome,cercaCognome,cercaEmail,ruolo);
         
     	int pagina = 1;
     	
@@ -92,7 +96,7 @@ public class AdminUtentiControl extends HttpServlet {
     	
     	try {
              request.setAttribute("paginaCorrente", pagina);	
-			 request.setAttribute("utenti", utenteDAO.doRetrieveAll(ruolo,pagina));
+			 request.setAttribute("utenti", utenteDAO.doRetrieveAll(cercaNome,cercaCognome,cercaEmail,ruolo,pagina));
 		} catch(SQLException e){
 			System.err.println("Error:" + e.getMessage());
 		}
@@ -110,12 +114,12 @@ public class AdminUtentiControl extends HttpServlet {
 		}
     }
     
-    private int settaPagineAndUtenti(HttpServletRequest request,String ruolo)
+    private int settaPagineAndUtenti(HttpServletRequest request,String cercaNome, String cercaCognome, String cercaEmail, String ruolo)
     {
 		int numUtenti = 0;
 		
 		try {
-			numUtenti = utenteDAO.doCountFilteredUtenti(ruolo);
+			numUtenti = utenteDAO.doCountFilteredUtenti(cercaNome,cercaCognome,cercaEmail,ruolo);
 			int totalePagine = (int)Math.ceil((double)numUtenti / 10);
 			
 			request.setAttribute("numUtenti", numUtenti);

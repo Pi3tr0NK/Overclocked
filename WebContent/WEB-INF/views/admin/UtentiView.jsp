@@ -82,10 +82,14 @@
         
         <form method="get" action="${pageContext.request.contextPath}/admin/utenti">
         
-            <select name ="filtroRuolo">
+        	<input type="text" name="cercaNome" placeholder="Nome..." value="${param.cercaNome}" /> 
+			<input type="text" name="cercaCognome" placeholder="Cognome..." value="${param.cercaCognome}" /> 
+			<input type="text" name="cercaEmail" placeholder="Email..." value="${param.cercaEmail}" /> 
+			
+            <select name ="stato">
                 <option value="">Tutti i ruoli</option>
-                <option value="ADMIN" ${param.filtroRuolo == 'ADMIN' ? 'selected' : ''}>Admin</option>
-                <option value="USER" ${param.filtroRuolo == 'USER' ? 'selected' : ''}>User</option>
+                <option value="ADMIN" ${param.stato == 'ADMIN' ? 'selected' : ''}>Admin</option>
+                <option value="USER" ${param.stato == 'USER' ? 'selected' : ''}>User</option>
             </select>
             
             <button type="submit">Cerca</button>
