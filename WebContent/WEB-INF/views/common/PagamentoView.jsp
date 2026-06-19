@@ -7,10 +7,10 @@
     <meta charset="UTF-8">
     <title>Overclocked</title>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/pagamento.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
 </head>
 
 <jsp:include page="/WEB-INF/views/components/icon.jsp" />
@@ -49,7 +49,7 @@
             <div class="alert-error">⚠ ${errore}</div>
         </c:if>
 
-        <form action="${pageContext.request.contextPath}/common/pagamento" method="post">
+        <form action="${pageContext.request.contextPath}/common/pagamento" method="post" novalidate>
 
             <div class="checkout-layout">
 
@@ -146,7 +146,7 @@
                                    name="numeroCarta"
                                    maxlength="16"
                                    pattern="[0-9]{16}"
-                                   placeholder="0000 0000 0000 0000"
+                                   placeholder="4023456712246699"
                                    required>
                         </div>
 
@@ -315,7 +315,11 @@
 
 </div>
 
+
 <jsp:include page="/WEB-INF/views/components/footer.jsp" />
+
+
+<script src="${pageContext.request.contextPath}/script/pagamentoCheck.js"></script>
 
 </body>
 </html>

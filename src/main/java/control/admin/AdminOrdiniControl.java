@@ -128,19 +128,6 @@ public class AdminOrdiniControl extends HttpServlet {
                .forward(request, response);
     }
     
-    
-    /*
-    private void ordineByUtenti(HttpServletRequest request,String idUtenteStr, int pagina)
-            throws Exception, IOException, ServletException {
-
-        int idUtente = Integer.parseInt(idUtenteStr);
-        request.setAttribute("ordini", ordineDAO.doRetrieveAllByUser(idUtente,pagina));
-        request.setAttribute("idUtente", idUtenteStr);
-    }
-    
-    */
-    
-    
     private void settaPagineAndTotale(HttpServletRequest request, String cercaNome, String cercaCognome, String cercaEmail, String stato, String dataStart, String dataEnd)
     {
 		int numOrdini = 0;
@@ -191,7 +178,6 @@ public class AdminOrdiniControl extends HttpServlet {
     
     private void getOrdiniAndPagina(HttpServletRequest request) throws IOException, ServletException, Exception
     {
-        String idUtenteStr = request.getParameter("idUtente");
     	String p = request.getParameter("pagina");
         String stato = request.getParameter("stato");
         String cercaNome = request.getParameter("cercaNome");

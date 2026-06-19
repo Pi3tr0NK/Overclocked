@@ -122,9 +122,9 @@ function loadAjaxDoc(url, method, params, cFuction) {
                     cFuction(this);
                 } else {
                     if (this.status == 0) {
-                        alert("Problemi nell'esecuzione della richiesta: nessuna risposta ricevuta nel tempo limite");
+                        console.log("Problemi nell'esecuzione della richiesta: nessuna risposta ricevuta nel tempo limite");
                     } else {
-                        alert("Problemi nell'esecuzione della richiesta:\n" + this.statusText);
+                        console.log("Problemi nell'esecuzione della richiesta:\n" + this.statusText);
                     }
                     return null;
                 }
@@ -144,17 +144,19 @@ function loadAjaxDoc(url, method, params, cFuction) {
                 request.open("GET", url, true);
             }
             request.setRequestHeader("Connection", "close");
+            request.setRequestHeader("X-Requested-With", "XMLHttpRequest"); // <-- aggiunta
             request.send(null);
         } else {
             if (params) {
                 request.open("POST", url, true);
                 request.setRequestHeader("Connection", "close");
                 request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                request.setRequestHeader("X-Requested-With", "XMLHttpRequest"); // <-- aggiunta
                 request.send(params);
             } else {
                 console.log("Usa GET se non ci sono parametri!");
                 return null;
             }
         }
-    }
-}
+ 	}
+ }

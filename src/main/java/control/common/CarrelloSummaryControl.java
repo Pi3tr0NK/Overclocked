@@ -46,7 +46,13 @@ public class CarrelloSummaryControl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+    	
+        String ajaxHeader = request.getHeader("X-Requested-With");
+        if (!"XMLHttpRequest".equals(ajaxHeader)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Accesso diretto non consentito.");
+            return;
+        }
+        
         CarrelloBean cart = (CarrelloBean) request.getSession().getAttribute("cart");
         if (cart == null) {
             cart = new CarrelloBean();

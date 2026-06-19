@@ -43,7 +43,11 @@ public class AuthFilter extends HttpFilter {
 	    if (autorizzato) {
 	        chain.doFilter(request, response);
 	    } else {
-	        response.sendRedirect(request.getContextPath() + "/indexlogin");
+	        if (path.startsWith("/admin/")) {
+	            response.sendError(403);
+	        } else {
+	            response.sendRedirect(request.getContextPath() + "/indexlogin");
+	        }
 	    }
 	}
 }
