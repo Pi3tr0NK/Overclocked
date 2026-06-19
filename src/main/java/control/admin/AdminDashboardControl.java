@@ -54,15 +54,27 @@ public class AdminDashboardControl extends HttpServlet {
     	String p = request.getParameter("pagina");
 
     	if (p != null && !p.isBlank()) {
-    	    pagina = Integer.parseInt(p);
+    	    try {
+    	        pagina = Integer.parseInt(p);
+    	    } catch (NumberFormatException e) {
+    	        pagina = 1;
+    	    }
     	}
+    	
     	
         contaOrdini(request);
         contaUtenti(request);
         contaProdottiEsauriti(request);
-        contaPagine(request,categoria, attivoStr);
+        int totalePagine = contaPagine(request,categoria, attivoStr);
+        
+        if (pagina < 1 || pagina > totalePagine) {
+            pagina = 1;
+        }
+        
+        
         ottieniProdotti(request,categoria,attivoStr,pagina);
         
+
         
         request.getRequestDispatcher("/WEB-INF/views/admin/DashboardView.jsp").forward(request, response);
         
@@ -107,7 +119,7 @@ public class AdminDashboardControl extends HttpServlet {
 		}
     }
     
-    private void contaPagine(HttpServletRequest request,String categoria, String stato)
+    private int contaPagine(HttpServletRequest request,String categoria, String stato)
     {
     	try {
 			 int numFiltrato =  productDAO.doCountFilteredProducts(null,null,null, categoria, stato);
@@ -116,9 +128,12 @@ public class AdminDashboardControl extends HttpServlet {
 			 request.setAttribute("numProdotti", numFiltrato);
 			 request.setAttribute("totalePagine", totalePagine);
 			 
+			 return totalePagine;
+			 
 		} catch(SQLException e){
 			System.err.println("Error:" + e.getMessage());
 		}
+    	return 0;
     }
     
     

@@ -73,9 +73,6 @@ public class AdminOrdiniControl extends HttpServlet {
             
 
         } catch (Exception e) {
-        	
-
-            System.out.println("ho fatto le varie cose");
             e.printStackTrace();
             request.setAttribute("errore", e.getMessage());
             request.getRequestDispatcher("/WEB-INF/views/admin/OrdiniView.jsp").forward(request, response);
@@ -128,7 +125,7 @@ public class AdminOrdiniControl extends HttpServlet {
                .forward(request, response);
     }
     
-    private void settaPagineAndTotale(HttpServletRequest request, String cercaNome, String cercaCognome, String cercaEmail, String stato, String dataStart, String dataEnd)
+    private int settaPagineAndTotale(HttpServletRequest request, String cercaNome, String cercaCognome, String cercaEmail, String stato, String dataStart, String dataEnd)
     {
 		int numOrdini = 0;
 		
@@ -138,10 +135,12 @@ public class AdminOrdiniControl extends HttpServlet {
 			
 			request.setAttribute("numOrdini", numOrdini);
 			request.setAttribute("totalePagine", totalePagine);
+			return totalePagine;
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return 0;
     }
 
     private void settaOrdiniPrep(HttpServletRequest request)
@@ -191,12 +190,20 @@ public class AdminOrdiniControl extends HttpServlet {
     	int pagina = 1;
 
 
-        settaPagineAndTotale(request,cercaNome,cercaCognome,cercaEmail,stato,dataStart,dataEnd);
+        int totalePagine = settaPagineAndTotale(request,cercaNome,cercaCognome,cercaEmail,stato,dataStart,dataEnd);
         
         
-    	if (p != null && !p.isBlank()) {
-    	    pagina = Integer.parseInt(p);
+     	if (p != null && !p.isBlank()) {
+    	    try {
+    	        pagina = Integer.parseInt(p);
+    	    } catch (NumberFormatException e) {
+    	        pagina = 1;
+    	    }
     	}
+    	
+        if (pagina < 1 || pagina > totalePagine) {
+            pagina = 1;
+        }
     	
         request.setAttribute("paginaCorrente", pagina);	
         

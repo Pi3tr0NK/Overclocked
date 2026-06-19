@@ -73,12 +73,22 @@ public class AdminUtentiControl extends HttpServlet {
     	String p = request.getParameter("pagina");
     	String ruolo = request.getParameter("filtroRuolo");
 
-        settaPagineAndUtenti(request,ruolo);
+        int totalePagine = settaPagineAndUtenti(request,ruolo);
         
     	int pagina = 1;
+    	
     	if (p != null && !p.isBlank()) {
-    	    pagina = Integer.parseInt(p);
+    	    try {
+    	        pagina = Integer.parseInt(p);
+    	    } catch (NumberFormatException e) {
+    	        pagina = 1;
+    	    }
     	}
+    	
+        if (pagina < 1 || pagina > totalePagine) {
+            pagina = 1;
+        }
+
     	
     	try {
              request.setAttribute("paginaCorrente", pagina);	
@@ -100,7 +110,7 @@ public class AdminUtentiControl extends HttpServlet {
 		}
     }
     
-    private void settaPagineAndUtenti(HttpServletRequest request,String ruolo)
+    private int settaPagineAndUtenti(HttpServletRequest request,String ruolo)
     {
 		int numUtenti = 0;
 		
@@ -110,10 +120,12 @@ public class AdminUtentiControl extends HttpServlet {
 			
 			request.setAttribute("numUtenti", numUtenti);
 			request.setAttribute("totalePagine", totalePagine);
+			return totalePagine;
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return 0;
     }
     
     private void contaAdmin(HttpServletRequest request)
