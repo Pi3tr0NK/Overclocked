@@ -428,7 +428,7 @@ public class AdminProdottoControl extends HttpServlet {
     
     private List<ImmagineBean> salvaImmagini(String action, HttpServletRequest request, int idProdotto) throws Exception {
 
-        String uploadDir = getServletContext().getRealPath("/img/prodotti");
+        String uploadDir = getServletContext().getRealPath(File.separator + "img" + File.separator + "prodotti");
         File folder = new File(uploadDir);
         if (!folder.exists()) folder.mkdirs();
 
@@ -437,15 +437,24 @@ public class AdminProdottoControl extends HttpServlet {
         for (int i = 1; i <= MAX_IMMAGINI; i++) {
 
             Part part = request.getPart("immagine" + i);
+            String rimuoviStr = request.getParameter("rimuoviImmagine" + i);
+            boolean daRimuovere = "true".equals(rimuoviStr);
 
             if (part != null && part.getSize() > 0
                     && part.getSubmittedFileName() != null
                     && !part.getSubmittedFileName().isBlank()) {
 
-                // arrivato un file nuovo per questo slot
+                // arrivato un file nuovo per questo slot (sostituzione o aggiunta)
                 String nomeOriginale = Paths.get(part.getSubmittedFileName())
                                             .getFileName().toString();
-                String nomeFile = System.currentTimeMillis() + "_" + nomeOriginale;
+
+                String estensione = "";
+                int dotIndex = nomeOriginale.lastIndexOf('.');
+                if (dotIndex > 0) {
+                    estensione = nomeOriginale.substring(dotIndex);
+                }
+
+                String nomeFile = "immagine" + System.currentTimeMillis() + "_" + idProdotto + estensione;
 
                 part.write(uploadDir + File.separator + nomeFile);
 
@@ -461,21 +470,38 @@ public class AdminProdottoControl extends HttpServlet {
                     String idImmagineStr = request.getParameter("idImmagine" + i);
 
                     if (idImmagineStr != null && !idImmagineStr.isBlank()) {
-                        // sostituisce immagine esistente tramite id
                         int idImmagine = Integer.parseInt(idImmagineStr);
                         img.setIdImmagine(idImmagine);
                         immaginiDAO.updateImage(idImmagine, img.getPath(), idProdotto);
                     } else {
-                        // slot prima vuoto, ora ha un'immagine nuova
                         immaginiDAO.doSave(img, idProdotto);
                     }
                 }
 
                 listaImmagini.add(img);
 
+            } else if (action.equals("modifica") && daRimuovere) {
+
+                // l'utente ha marcato questo slot per la rimozione e non ha caricato un file sostitutivo
+                String idImmagineStr = request.getParameter("idImmagine" + i);
+                String pathEsistente = request.getParameter("pathEsistente" + i);
+
+                if (idImmagineStr != null && !idImmagineStr.isBlank()) {
+                    int idImmagine = Integer.parseInt(idImmagineStr);
+
+                    immaginiDAO.doDelete(idImmagine);
+
+                    if (pathEsistente != null && !pathEsistente.isBlank()) {
+                        String nomeFileEsistente = Paths.get(pathEsistente).getFileName().toString();
+                        File vecchioFile = new File(uploadDir, nomeFileEsistente);
+                        if (vecchioFile.exists()) vecchioFile.delete();
+                    }
+                }
+                // non aggiungo nulla a listaImmagini: lo slot è semplicemente vuoto ora
+
             } else if (action.equals("modifica")) {
 
-                // nessun file nuovo: mantieni immagine esistente
+                // nessun file nuovo, nessuna rimozione: mantieni immagine esistente
                 String idImmagineStr  = request.getParameter("idImmagine" + i);
                 String pathEsistente  = request.getParameter("pathEsistente" + i);
 
@@ -492,7 +518,6 @@ public class AdminProdottoControl extends HttpServlet {
 
         return listaImmagini;
     }
-    
     
     
     // DISABILITA - ATTIVA PRODOTTO

@@ -409,17 +409,18 @@
 
             <div class="image-container">
 
-                <c:forEach var="img" items="${prodotto.immagini}" varStatus="s">
-                
-                <div class="image-slot" onclick="apriSlot(this)">
-                
-                    <input type="file"   name="immagine${s.count}" accept="image/*" hidden onchange="gestisciSlot(this)"/>
-                    <input type="hidden" name="pathEsistente${s.count}" value="${img.path}"/>
-                    <input type="hidden" name="idImmagine${s.count}" value="${img.idImmagine}"/>
-                    <span id="trasparenza">&#43;</span>
-                    <img id ="img" src="${pageContext.request.contextPath}/${img.path}" alt="">
-                </div>
-                </c:forEach>
+			<c:forEach var="img" items="${prodotto.immagini}" varStatus="s">
+			
+			<div class="image-slot filled existing" onclick="apriSlot(this)">
+			
+			    <input type="file"   name="immagine${s.count}" accept="image/*" hidden onchange="gestisciSlot(this)"/>
+			    <input type="hidden" name="pathEsistente${s.count}" value="${img.path}"/>
+			    <input type="hidden" name="idImmagine${s.count}" value="${img.idImmagine}"/>
+			    <input type="hidden" name="rimuoviImmagine${s.count}" value="false" class="rimuovi-flag"/>
+			    <span id="trasparenza">&#43;</span>
+			    <img id="img" src="${pageContext.request.contextPath}/${img.path}" alt="">
+			</div>
+			</c:forEach>
 
                 <%-- slot vuoti per nuove immagini aggiuntive --%>
                 <c:forEach begin="1" end="${5 - prodotto.immagini.size()}" varStatus="s">
