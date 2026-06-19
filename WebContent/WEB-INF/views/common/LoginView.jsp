@@ -6,8 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Overclocked</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/tema.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/login.css">
 </head>
 
 
@@ -20,7 +20,7 @@
 <div class="login-container">
 
     <div class="logo">
-        <img src="${pageContext.request.contextPath}/img/lock.png" alt="">
+        <img src="${pageContext.request.contextPath}/images/lock.png" alt="">
     </div>
 
     <h1>Bentornato</h1>
@@ -61,7 +61,7 @@
     </div>
 
 
-<script src="${pageContext.request.contextPath}/script/loginCheck.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/loginCheck.js"></script>
 
 </div>
 

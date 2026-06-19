@@ -1,17 +1,16 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
 <head>
-    <link rel="icon" type="image/png" href="${pageContext.request.contextPath}/assets/images/favicon.png">
-    <script src="${pageContext.request.contextPath}/script/numeroCarrello.js"></script>
+    <script src="${pageContext.request.contextPath}/scripts/numeroCarrello.js"></script>
     <script>const contextPath = "${pageContext.request.contextPath}";</script>
-	<script src="${pageContext.request.contextPath}/script/ricercaLive.js"></script>
+	<script src="${pageContext.request.contextPath}/scripts/ricercaLive.js"></script>
 </head>
 
 <nav class="navbar">
 	
     <div class="nav-left">
         <a href="${pageContext.request.contextPath}/home">
-            <img src="${pageContext.request.contextPath}/img/logo.png" alt="Overclocked Logo">
+            <img src="${pageContext.request.contextPath}/images/logo.png" alt="Overclocked Logo">
             <h2>OVERCLOCKED</h2>
         </a>
 	</div>
@@ -41,7 +40,7 @@
     
 		<c:if test="${not empty sessionScope.utente and sessionScope.utente.ruolo == 'ADMIN'}">
             <a class="nav-btn" href="${pageContext.request.contextPath}/admin/dashboard">
-                <img src="${pageContext.request.contextPath}/img/admin.png" alt="">
+                <img src="${pageContext.request.contextPath}/images/admin.png" alt="">
                 ADMIN
             </a>
         </c:if>
@@ -49,23 +48,23 @@
         <c:choose>
             <c:when test="${not empty sessionScope.utente}">
                 <a class="nav-btn" href="${pageContext.request.contextPath}/common/profilo">
-                    <img src="${pageContext.request.contextPath}/img/utente.png" alt=""> 
+                    <img src="${pageContext.request.contextPath}/images/utente.png" alt=""> 
                     <c:out value="${sessionScope.utente.nome}"/>
                 </a>
                 <a class="nav-btn" href="${pageContext.request.contextPath}/logout">
-                    <img src="${pageContext.request.contextPath}/img/logout.png" alt="">ESCI
+                    <img src="${pageContext.request.contextPath}/images/logout.png" alt="">ESCI
                 </a>
             </c:when>
             <c:otherwise>
                 <a class="nav-btn" href="${pageContext.request.contextPath}/indexlogin">
-                    <img src="${pageContext.request.contextPath}/img/utente.png" alt="">ACCEDI
+                    <img src="${pageContext.request.contextPath}/images/utente.png" alt="">ACCEDI
                 </a>
             </c:otherwise>
         </c:choose>
 		
         <a class="nav-btn nav-cart" href="${pageContext.request.contextPath}/Carrello">
            <div class="cart-icon-wrapper">
-               <img src="${pageContext.request.contextPath}/img/carrello.png" alt=""> 
+               <img src="${pageContext.request.contextPath}/images/carrello.png" alt=""> 
                <c:if test="${sessionScope.cart != null and sessionScope.cart.totalQuantity != 0}">
                    <span class="cart-badge">${sessionScope.cart.totalQuantity}</span>
                </c:if>

@@ -6,10 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>Overclocked</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/home.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/tema.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/home.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/footer.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/navbar.css">
 
 </head>
 
@@ -29,49 +29,49 @@
     <div class="category-grid">
 
         <a class="category-card" href="${pageContext.request.contextPath}/Catalogo?categoria=CPU">
-            <img src="${pageContext.request.contextPath}/img/cpu.png" alt="CPU">
+            <img src="${pageContext.request.contextPath}/images/cpu.png" alt="CPU">
             <h3>CPU</h3>
             <p>${countByCategory["CPU"] != null ? countByCategory["CPU"] : 0} prodotti</p>
         </a>
 
         <a class="category-card" href="${pageContext.request.contextPath}/Catalogo?categoria=GPU">
-            <img src="${pageContext.request.contextPath}/img/gpu.png" alt="GPU">
+            <img src="${pageContext.request.contextPath}/images/gpu.png" alt="GPU">
             <h3>GPU</h3>
             <p>${countByCategory["GPU"] != null ? countByCategory["GPU"] : 0} prodotti</p>
         </a>
 
         <a class="category-card" href="${pageContext.request.contextPath}/Catalogo?categoria=RAM">
-            <img src="${pageContext.request.contextPath}/img/ram.png" alt="RAM">
+            <img src="${pageContext.request.contextPath}/images/ram.png" alt="RAM">
             <h3>RAM</h3>
             <p>${countByCategory["RAM"] != null ? countByCategory["RAM"] : 0} prodotti</p>
         </a>
 
         <a class="category-card" href="${pageContext.request.contextPath}/Catalogo?categoria=PSU">
-            <img src="${pageContext.request.contextPath}/img/psu.png" alt="PSU">
+            <img src="${pageContext.request.contextPath}/images/psu.png" alt="PSU">
             <h3>PSU</h3>
             <p>${countByCategory["PSU"] != null ? countByCategory["PSU"] : 0} prodotti</p>
         </a>
 
         <a class="category-card" href="${pageContext.request.contextPath}/Catalogo?categoria=CASE">
-            <img src="${pageContext.request.contextPath}/img/case.png" alt="CASE">
+            <img src="${pageContext.request.contextPath}/images/case.png" alt="CASE">
             <h3>CASE</h3>
             <p>${countByCategory["CASE"] != null ? countByCategory["CASE"] : 0} prodotti</p>
         </a>
 
         <a class="category-card" href="${pageContext.request.contextPath}/Catalogo?categoria=STORAGE">
-            <img src="${pageContext.request.contextPath}/img/memoria.png" alt="STORAGE">
+            <img src="${pageContext.request.contextPath}/images/memoria.png" alt="STORAGE">
             <h3>STORAGE</h3>
             <p>${countByCategory["STORAGE"] != null ? countByCategory["STORAGE"] : 0} prodotti</p>
         </a>
 
         <a class="category-card" href="${pageContext.request.contextPath}/Catalogo?categoria=MOBO">
-            <img src="${pageContext.request.contextPath}/img/mobo.png" alt="MOBO">
+            <img src="${pageContext.request.contextPath}/images/mobo.png" alt="MOBO">
             <h3>MOBO</h3>
             <p>${countByCategory["MOBO"] != null ? countByCategory["MOBO"] : 0} prodotti</p>
         </a>
 
         <a class="category-card" href="${pageContext.request.contextPath}/Catalogo?categoria=DISSIPATORE">
-            <img src="${pageContext.request.contextPath}/img/dissipatore.png" alt="DISSIPATORE">
+            <img src="${pageContext.request.contextPath}/images/dissipatore.png" alt="DISSIPATORE">
             <h3>DISSIPATORE</h3>
             <p>${countByCategory["DISSIPATORE"] != null ? countByCategory["DISSIPATORE"] : 0} prodotti</p>
         </a>

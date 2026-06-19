@@ -7,13 +7,13 @@
 <meta charset="UTF-8">
 <title>Overclocked</title>
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/tema.css">
+	href="${pageContext.request.contextPath}/styles/tema.css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/navbar.css">
+	href="${pageContext.request.contextPath}/styles/navbar.css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/footer.css">
+	href="${pageContext.request.contextPath}/styles/footer.css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/profilo.css">
+	href="${pageContext.request.contextPath}/styles/profilo.css">
 </head>
 
 <!-- LOGO SCHEDA -->

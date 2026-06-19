@@ -8,11 +8,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Overclocked</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/prodotto.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/cart-sidebar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/tema.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/prodotto.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/navbar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/footer.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/cart-sidebar.css">
 
 <!-- Definisci contextPath per il JS -->
 <script>const contextPath = "${pageContext.request.contextPath}";</script>
@@ -277,7 +277,7 @@
 
 
 <jsp:include page="/WEB-INF/views/components/footer.jsp" />
-<script src="${pageContext.request.contextPath}/script/prodotto.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/prodotto.js"></script>
 </body>
 
 

@@ -10,9 +10,9 @@
 <title>Overclocked</title>
 
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/tema.css">
+	href="${pageContext.request.contextPath}/styles/tema.css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/register.css">
+	href="${pageContext.request.contextPath}/styles/register.css">
 
 </head>
 
@@ -27,7 +27,7 @@
 	<div class="register-container">
 
 		<div class="logo">
-			<img src="${pageContext.request.contextPath}/img/register.png" alt="">
+			<img src="${pageContext.request.contextPath}/images/register.png" alt="">
 		</div>
 
 		<h1>Crea il tuo account</h1>
@@ -158,7 +158,7 @@
 
 	</div>
 
-<script src="${pageContext.request.contextPath}/script/registerCheck.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/registerCheck.js"></script>
 
 </body>
 

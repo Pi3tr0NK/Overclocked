@@ -6,10 +6,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Overclocked</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/carrello.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/tema.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/navbar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/footer.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/carrello.css">
     
 </head>
 
@@ -172,7 +172,7 @@
 
 <jsp:include page="/WEB-INF/views/components/footer.jsp" />
 <script>const contextPath = "${pageContext.request.contextPath}";</script>
-<script src="${pageContext.request.contextPath}/script/carrello.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/carrello.js"></script>
 
 </body>
 </html>

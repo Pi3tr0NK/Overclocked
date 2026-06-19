@@ -7,10 +7,10 @@
     <meta charset="UTF-8">
     <title>Overclocked</title>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/pagamento.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/navbar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/footer.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/pagamento.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/tema.css">
 </head>
 
 <jsp:include page="/WEB-INF/views/components/icon.jsp" />
@@ -319,7 +319,7 @@
 <jsp:include page="/WEB-INF/views/components/footer.jsp" />
 
 
-<script src="${pageContext.request.contextPath}/script/pagamentoCheck.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/pagamentoCheck.js"></script>
 
 </body>
 </html>

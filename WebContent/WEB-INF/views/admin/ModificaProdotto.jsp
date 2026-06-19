@@ -8,9 +8,9 @@
 <title>Overclocked - Admin</title>
 
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/modificaProdotto.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/style/tema.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/style/modificaProdotto.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/style/navbar.css">
 
 </head>
 
@@ -443,7 +443,7 @@
     </form>
 </div>
 
-<script src="${pageContext.request.contextPath}/script/modifica.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/modifica.js"></script>
 
 </body>
 </html>

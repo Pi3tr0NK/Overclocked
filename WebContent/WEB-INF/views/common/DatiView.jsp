@@ -5,10 +5,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Overclocked</title>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/profilo.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/tema.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/navbar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/footer.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/profilo.css">
 </head>
 
 <!-- LOGO SCHEDA -->
@@ -130,6 +130,6 @@
 </div>
 
 <jsp:include page="/WEB-INF/views/components/footer.jsp" />
-<script src="${pageContext.request.contextPath}/script/profilo.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/profilo.js"></script>
 </body>
 </html>

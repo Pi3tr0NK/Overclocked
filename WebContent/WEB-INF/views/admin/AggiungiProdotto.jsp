@@ -7,9 +7,9 @@
 <meta charset="UTF-8">
 <title>Overclocked - Admin</title>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/tema.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/modificaProdotto.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/navbar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/tema.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/modificaProdotto.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/navbar.css">
 </head>
 
 <!-- LOGO SCHEDA -->
@@ -428,7 +428,7 @@
 </div>
  
  
-<script src="${pageContext.request.contextPath}/script/aggiungiProdotto.js"></script>
+<script src="${pageContext.request.contextPath}/scripts/aggiungiProdotto.js"></script>
  
 </body>
 </html>
