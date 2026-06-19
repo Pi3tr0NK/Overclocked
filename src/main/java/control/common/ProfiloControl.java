@@ -3,6 +3,9 @@ package control.common;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
 
@@ -175,39 +178,98 @@ public class ProfiloControl extends HttpServlet {
     // ─────────────────────────────────────────────
 
     private void gestisciAggiornaDati(HttpServletRequest request, HttpServletResponse response,
-                                       UtenteBean utente) throws ServletException, IOException {
-        try {
-            // Aggiorna campi utente (no email)
-            utente.setNome(request.getParameter("nome"));
-            utente.setCognome(request.getParameter("cognome"));
-            utente.setCellulare(request.getParameter("cellulare"));
+            UtenteBean utente) throws ServletException, IOException {
 
-            // Aggiorna indirizzo
-            IndirizzoBean indirizzo = utente.getIndirizzo();
-            indirizzo.setViaNumciv(request.getParameter("viaNumciv"));
-            indirizzo.setCitta(request.getParameter("citta"));
-            indirizzo.setProvincia(request.getParameter("provincia"));
-            indirizzo.setCodicePostale(request.getParameter("codicePostale"));
-            indirizzo.setPaese(request.getParameter("paese"));
-            indirizzo.setDatiPlus(request.getParameter("datiPlus"));
-
-            indirizzoDAO.doUpdate(indirizzo);
-            utenteDAO.doUpdate(utente);
-
-            // Aggiorna l'utente in sessione
-            request.getSession().setAttribute("utente", utente);
-
-            request.setAttribute("successo", "Dati aggiornati con successo.");
-
-        } catch (SQLException e) {
-            request.setAttribute("errore", "Errore durante l'aggiornamento: " + e.getMessage());
-        }
-
-        request.setAttribute("utente", utente);
-        request.setAttribute("view", "dati");
-        request.getRequestDispatcher("/WEB-INF/views/common/DatiView.jsp")
-               .forward(request, response);
-    }
+		String errore = validaAggiornaDati(request);
+		
+		if (errore != null) {
+		request.setAttribute("errore", errore);
+		request.setAttribute("utente", utente);
+		request.setAttribute("view", "dati");
+		request.getRequestDispatcher("/WEB-INF/views/common/DatiView.jsp")
+		.forward(request, response);
+		return;
+		}
+		
+		try {
+		utente.setNome(request.getParameter("nome"));
+		utente.setCognome(request.getParameter("cognome"));
+		utente.setCellulare(request.getParameter("cellulare"));
+		
+		IndirizzoBean indirizzo = utente.getIndirizzo();
+		indirizzo.setViaNumciv(request.getParameter("viaNumciv"));
+		indirizzo.setCitta(request.getParameter("citta"));
+		indirizzo.setProvincia(request.getParameter("provincia"));
+		indirizzo.setCodicePostale(request.getParameter("codicePostale"));
+		indirizzo.setPaese(request.getParameter("paese"));
+		indirizzo.setDatiPlus(request.getParameter("datiPlus"));
+		
+		indirizzoDAO.doUpdate(indirizzo);
+		utenteDAO.doUpdate(utente);
+		
+		request.getSession().setAttribute("utente", utente);
+		
+		request.setAttribute("successo", "Dati aggiornati con successo.");
+		
+		} catch (SQLException e) {
+		request.setAttribute("errore", "Errore durante l'aggiornamento: " + e.getMessage());
+		}
+		
+		request.setAttribute("utente", utente);
+		request.setAttribute("view", "dati");
+		request.getRequestDispatcher("/WEB-INF/views/common/DatiView.jsp")
+		.forward(request, response);
+		}
+		
+		private String validaAggiornaDati(HttpServletRequest request) {
+		
+		Map<String, String> regole   = new LinkedHashMap<>();
+		Map<String, String> messaggi = new LinkedHashMap<>();
+		Map<String, String> valori   = new LinkedHashMap<>();
+		
+		regole.put("nome",          "^[A-Za-zÀ-ÿ\\s']{2,50}$");
+		regole.put("cognome",       "^[A-Za-zÀ-ÿ\\s']{2,50}$");
+		regole.put("viaNumciv",     "^[A-Za-zÀ-ÿ\\s']+\\s+\\d+$");
+		regole.put("citta",         "^[A-Za-zÀ-ÿ\\s']{1,80}$");
+		regole.put("provincia",     "^[A-Za-zÀ-ÿ\\s']{1,80}$");
+		regole.put("codicePostale", "^[A-Za-z0-9\\s\\-]{2,12}$");
+		regole.put("paese",         "^[A-Za-zÀ-ÿ\\s']{1,80}$");
+		regole.put("cellulare",     "^\\+?[0-9][0-9\\s\\-]{6,15}$");
+		
+		messaggi.put("nome",          "Il nome deve contenere solo lettere.");
+		messaggi.put("cognome",       "Il cognome deve contenere solo lettere.");
+		messaggi.put("viaNumciv",     "Inserisci la via seguita dal numero civico (es. Via Roma 12).");
+		messaggi.put("citta",         "Inserisci una città valida.");
+		messaggi.put("provincia",     "Inserisci una provincia/stato/regione valida.");
+		messaggi.put("codicePostale", "Inserisci un codice postale valido.");
+		messaggi.put("paese",         "Inserisci un paese valido.");
+		messaggi.put("cellulare",     "Inserisci un numero di telefono valido (es. +39 333 1234567).");
+		
+		valori.put("nome",          request.getParameter("nome"));
+		valori.put("cognome",       request.getParameter("cognome"));
+		valori.put("viaNumciv",     request.getParameter("viaNumciv"));
+		valori.put("citta",         request.getParameter("citta"));
+		valori.put("provincia",     request.getParameter("provincia"));
+		valori.put("codicePostale", request.getParameter("codicePostale"));
+		valori.put("paese",         request.getParameter("paese"));
+		valori.put("cellulare",     request.getParameter("cellulare"));
+		// datiPlus è opzionale: escluso come nel JS con :not([name='datiPlus'])
+		
+		for (Map.Entry<String, String> campo : valori.entrySet()) {
+		String chiave = campo.getKey();
+		String valore = campo.getValue();
+		
+		if (valore == null || valore.trim().isEmpty()) {
+		return "Il campo " + chiave + " è obbligatorio.";
+		}
+		
+		if (!Pattern.matches(regole.get(chiave), valore.trim())) {
+		return messaggi.get(chiave);
+		}
+		}
+		
+		return null;
+	}
     
     private void gestisciFattura(HttpServletRequest request, HttpServletResponse response,
             UtenteBean utente) throws ServletException, IOException {

@@ -10,9 +10,10 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css">
 </head>
 
-<jsp:include page="/WEB-INF/views/components/icon.jsp" />
+
 
 <body>
+<jsp:include page="/WEB-INF/views/components/icon.jsp" />
 
     <a href="${pageContext.request.contextPath}/" class="brand-header"><h2>OVERCLOCKED</h2></a>
 
@@ -36,18 +37,19 @@
         </div>
     </c:if>
 
-    <form action="login" method="post" novalidate>
-
-        <label>Email</label>
-        <input  class ="login-field" type="email" name="email" required>
-
-        <label>Password</label>
-        <input type="password" name="password" required>
-
-
-        <button class="login-btn" type="submit">Accedi</button>
-
-    </form>
+	    <form action="login" method="post" novalidate>
+	
+		    <label>Email</label>
+		    <input class="login-field" type="email" name="email" required>
+		    <span id="err-email" class="field-error"></span>
+		
+		    <label>Password</label>
+		    <input type="password" name="password" required>
+		    <span id="err-password" class="field-error"></span>
+		
+		    <button class="login-btn" type="submit">Accedi</button>
+	
+		</form>
 
     <div class="separator">
         <span>oppure</span>

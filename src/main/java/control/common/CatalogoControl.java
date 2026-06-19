@@ -9,6 +9,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
 
@@ -68,14 +71,29 @@ public class CatalogoControl extends HttpServlet {
     		ramDAO =new RAMDAOImpl(ds);
     }
  
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		 if ("suggest".equals(request.getParameter("action"))) {
-		        gestisciSuggerimenti(request, response);
-		        return;
-		    }
-		
-		loadProducList(request);
-		request.getRequestDispatcher("/WEB-INF/views/common/CatalogoView.jsp").forward(request, response);
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	        throws ServletException, IOException {
+
+	    if ("suggest".equals(request.getParameter("action"))) {
+	        gestisciSuggerimenti(request, response);
+	        return;
+	    }
+
+	    String cat = request.getParameter("categoria");
+	    cat = (cat == null || cat.trim().isEmpty()) ? null : cat;
+
+	    String errore = validaFiltri(request, cat);
+	    if (errore != null) {
+	        request.setAttribute("errore", errore);
+	        // Rimanda al catalogo senza caricare prodotti
+	        request.getRequestDispatcher("/WEB-INF/views/common/CatalogoView.jsp")
+	               .forward(request, response);
+	        return;
+	    }
+
+	    loadProducList(request);
+	    request.getRequestDispatcher("/WEB-INF/views/common/CatalogoView.jsp")
+	           .forward(request, response);
 	}
 	
 	private void gestisciSuggerimenti(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -252,6 +270,108 @@ public class CatalogoControl extends HttpServlet {
 		}
 		
         request.setAttribute("paginaCorrente", pagina);
+	}
+	
+	private String validaFiltri(HttpServletRequest request, String cat) {
+	    Map<String, String> regole = new LinkedHashMap<>();
+	    Map<String, String> messaggi = new LinkedHashMap<>();
+	    Map<String, String> valori = new LinkedHashMap<>();
+
+	    // Campi comuni a tutte le categorie
+	    regole.put("prezzo",  "^\\d+(\\.\\d{1,2})?$");
+	    regole.put("marca",   "^[A-Za-z0-9\\s'\\-]{1,50}$");
+	    messaggi.put("prezzo", "Inserisci un prezzo valido (es. 199.99).");
+	    messaggi.put("marca",  "Inserisci una marca valida.");
+	    valori.put("prezzo",  request.getParameter("prezzo"));
+	    valori.put("marca",   request.getParameter("marca"));
+
+	    if (cat != null) {
+	        switch (cat) {
+	            case "CPU":
+	                regole.put("core",      "^[1-9][0-9]{0,2}$");
+	                regole.put("frequenza", "^(?i)\\d+(\\.\\d+)?\\s?(GHz|MHz|KHz|Hz)$");
+	                messaggi.put("core",      "Inserisci un numero di core valido (es. 6).");
+	                messaggi.put("frequenza", "Inserisci la frequenza con l'unità di misura (es. 3.6GHz).");
+	                valori.put("core",      request.getParameter("core"));
+	                valori.put("frequenza", request.getParameter("frequenza"));
+	                break;
+
+	            case "GPU":
+	                regole.put("vram", "^(?i)\\d+\\s?(GB|MB|TB)$");
+	                regole.put("pcie", "^[1-5](\\.\\d)?$");
+	                messaggi.put("vram", "Inserisci la VRAM con l'unità di misura (es. 8GB).");
+	                messaggi.put("pcie", "Inserisci una versione PCIe valida (es. 4.0).");
+	                valori.put("vram", request.getParameter("vram"));
+	                valori.put("pcie", request.getParameter("pcie"));
+	                break;
+
+	            case "RAM":
+	                regole.put("capacita",  "^(?i)\\d+\\s?(GB|MB|TB)$");
+	                regole.put("frequenza", "^(?i)\\d+(\\.\\d+)?\\s?(GHz|MHz|KHz|Hz)$");
+	                regole.put("tipo",      "^DDR[1-5]$");
+	                messaggi.put("capacita",  "Inserisci la capacità con l'unità di misura (es. 16GB).");
+	                messaggi.put("frequenza", "Inserisci la frequenza con l'unità di misura (es. 3.6GHz).");
+	                messaggi.put("tipo",      "Il tipo deve essere DDR seguito da un numero da 1 a 5, es. DDR4.");
+	                valori.put("capacita",  request.getParameter("capacita"));
+	                valori.put("frequenza", request.getParameter("frequenza"));
+	                valori.put("tipo",      request.getParameter("tipo"));
+	                break;
+
+	            case "STORAGE":
+	                regole.put("capacita", "^(?i)\\d+\\s?(GB|MB|TB)$");
+	                messaggi.put("capacita", "Inserisci la capacità con l'unità di misura (es. 512GB).");
+	                valori.put("capacita", request.getParameter("capacita"));
+	                // "tipo" e "tecnologia" sono select, valori vincolati, nessun controllo necessario
+	                break;
+
+	            case "MOBO":
+	                regole.put("formato",  "^[A-Za-z0-9\\s'\\-]{1,30}$");
+	                regole.put("slotram",  "^[1-9][0-9]?$");
+	                messaggi.put("formato",  "Inserisci un formato valido (es. ATX).");
+	                messaggi.put("slotram",  "Inserisci un numero di slot RAM valido.");
+	                valori.put("formato",  request.getParameter("formato"));
+	                valori.put("slotram",  request.getParameter("slotram"));
+	                // "nvme" è una select, nessun controllo necessario
+	                break;
+
+	            case "CASE":
+	                regole.put("formato", "^[A-Za-z0-9\\s'\\-]{1,30}$");
+	                regole.put("colore",  "^[A-Za-z\\s'\\-]{1,30}$");
+	                messaggi.put("formato", "Inserisci un formato valido (es. Mid Tower).");
+	                messaggi.put("colore",  "Inserisci un colore valido (es. Nero).");
+	                valori.put("formato", request.getParameter("formato"));
+	                valori.put("colore",  request.getParameter("colore"));
+	                break;
+
+	            case "PSU":
+	                regole.put("potenza",        "^\\d{1,5}$");
+	                regole.put("certificazione", "^[A-Za-z0-9\\s+]{1,30}$");
+	                messaggi.put("potenza",        "Inserisci una potenza valida in Watt (es. 650).");
+	                messaggi.put("certificazione", "Inserisci una certificazione valida (es. 80+ Gold).");
+	                valori.put("potenza",        request.getParameter("potenza"));
+	                valori.put("certificazione", request.getParameter("certificazione"));
+	                // "modulare" è una select, nessun controllo necessario
+	                break;
+
+	            case "DISSIPATORE":
+	                // "tipo" è una select, nessun controllo necessario
+	                break;
+	        }
+	    }
+
+	    for (Map.Entry<String, String> campo : valori.entrySet()) {
+	        String chiave = campo.getKey();
+	        String valore = campo.getValue();
+
+	        // Tutti i filtri sono opzionali: campo vuoto o null = nessun filtro, nessun errore
+	        if (valore == null || valore.trim().isEmpty()) continue;
+
+	        if (!Pattern.matches(regole.get(chiave), valore.trim())) {
+	            return messaggi.get(chiave);
+	        }
+	    }
+
+	    return null; // nessun errore
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

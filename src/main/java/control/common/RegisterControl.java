@@ -5,8 +5,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.regex.Pattern;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -61,89 +62,145 @@ public class RegisterControl extends HttpServlet {
 
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		
+	        throws ServletException, IOException {
+
 	    if (request.getSession(false) != null &&
 	            request.getSession(false).getAttribute("utente") != null) {
 
 	            response.sendRedirect(request.getContextPath() + "/home");
 	            return;
 	        }
-	    
-		String errors = null;
 
-		String nome = request.getParameter("nome");
-		String cognome = request.getParameter("cognome");
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-		String cellulare = request.getParameter("cellulare");
+	    String nome = request.getParameter("nome");
+	    String cognome = request.getParameter("cognome");
+	    String email = request.getParameter("email");
+	    String password = request.getParameter("password");
+	    String cellulare = request.getParameter("cellulare");
 
-		String via = request.getParameter("via");
-		String datiPlus =request.getParameter("datiPlus");
-		String citta = request.getParameter("citta");
-		String provincia = request.getParameter("provincia");
-		String cap = request.getParameter("cap");
-		String paese = request.getParameter("paese");
+	    String via = request.getParameter("via");
+	    String datiPlus = request.getParameter("datiPlus");
+	    String citta = request.getParameter("citta");
+	    String provincia = request.getParameter("provincia");
+	    String cap = request.getParameter("cap");
+	    String paese = request.getParameter("paese");
 
-		try {
-			if(utenteDAO.checkEmail(email))
-				errors = "L'email esiste già";
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	    // ===== VALIDAZIONE LATO SERVER =====
 
-		if(errors != null) {
+	    Map<String, String> regole = new LinkedHashMap<>();
+	    regole.put("nome",      "^[A-Za-zÀ-ÿ\\s']{2,50}$");
+	    regole.put("cognome",   "^[A-Za-zÀ-ÿ\\s']{2,50}$");
+	    regole.put("email",     "^[^\\s@]+@[^\\s@]+\\.[^\\s@]{1,}$");
+	    regole.put("password",  "^(?=.*[A-Z])(?=.*\\d).{8,}$");
+	    regole.put("via",       "^[A-Za-zÀ-ÿ\\s']+\\s+\\d+$");
+	    regole.put("citta",     "^[A-Za-zÀ-ÿ\\s']{1,80}$");
+	    regole.put("provincia", "^[A-Za-zÀ-ÿ\\s']{1,80}$");
+	    regole.put("cap",       "^[A-Za-z0-9\\s-]{2,12}$");
+	    regole.put("paese",     "^[A-Za-zÀ-ÿ\\s']{1,80}$");
+	    regole.put("cellulare", "^\\+?[0-9][0-9\\s-]{6,15}$");
 
-			request.setAttribute("errors", errors);
+	    Map<String, String> messaggi = new LinkedHashMap<>();
+	    messaggi.put("nome", "Il nome deve contenere solo lettere.");
+	    messaggi.put("cognome", "Il cognome deve contenere solo lettere.");
+	    messaggi.put("email", "Inserisci un indirizzo email valido.");
+	    messaggi.put("password", "La password deve contenere almeno 8 caratteri, una maiuscola e un numero.");
+	    messaggi.put("via", "Inserisci la via seguita dal numero civico (es. Via Roma 12).");
+	    messaggi.put("citta", "Inserisci una città valida.");
+	    messaggi.put("provincia", "Inserisci una provincia/stato/regione valida.");
+	    messaggi.put("cap", "Inserisci un codice postale valido.");
+	    messaggi.put("paese", "Inserisci un paese valido.");
+	    messaggi.put("cellulare", "Inserisci un numero di telefono valido (es. +39 333 1234567).");
 
-			RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/common/RegisterView.jsp");
+	    Map<String, String> valori = new LinkedHashMap<>();
+	    valori.put("nome", nome);
+	    valori.put("cognome", cognome);
+	    valori.put("email", email);
+	    valori.put("password", password);
+	    valori.put("via", via);
+	    valori.put("citta", citta);
+	    valori.put("provincia", provincia);
+	    valori.put("cap", cap);
+	    valori.put("paese", paese);
+	    valori.put("cellulare", cellulare);
 
-			dispatcher.forward(request, response);
+	    String errors = null;
 
-			return;
-		}
+	    for (Map.Entry<String, String> campo : valori.entrySet()) {
 
-		try {
-			
-			IndirizzoBean indirizzo = new IndirizzoBean();
+	        String chiave = campo.getKey();
+	        String valore = campo.getValue();
 
-			indirizzo.setViaNumciv(via);
-			indirizzo.setDatiPlus(datiPlus);
-			indirizzo.setCitta(citta);
-			indirizzo.setProvincia(provincia);
-			indirizzo.setCodicePostale(cap);
-			indirizzo.setPaese(paese);
+	        if (valore == null || !Pattern.matches(regole.get(chiave), valore)) {
+	            errors = messaggi.get(chiave);
+	            break;
+	        }
+	    }
 
-			indirizzoDAO.doSave(indirizzo);
+	    // ===== CONTROLLO EMAIL DUPLICATA (solo se la validazione base è passata) =====
 
-			UtenteBean utente = new UtenteBean();
-			
-			utente.setNome(nome);
-			utente.setCognome(cognome);
-			utente.setEmail(email);
-			String passwordDigest= toDigest(password);
-			utente.setPassword(passwordDigest);
-			utente.setCellulare(cellulare);
+	    if (errors == null) {
+	        try {
+	            if (utenteDAO.checkEmail(email)) {
+	                errors = "L'email esiste già";
+	            }
+	        } catch (SQLException e) {
+	            throw new ServletException(e);
+	        }
+	    }
 
-			utente.setRuolo(
-				UtenteBean.Ruolo.USER
-			);
+	    if (errors != null) {
 
-			utente.setIndirizzo(indirizzo);
+	        request.setAttribute("errors", errors);
 
-			utenteDAO.doSave(utente);
+	        RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/common/RegisterView.jsp");
 
-			request.getSession().setAttribute("utente", utente);
+	        dispatcher.forward(request, response);
 
-			request.getSession().setAttribute("role", "USER");
+	        return;
+	    }
 
-			response.sendRedirect(request.getContextPath()+ "/home");
+	    try {
 
-		} catch(SQLException e) {
+	        IndirizzoBean indirizzo = new IndirizzoBean();
 
-			throw new ServletException(e);
-		}
+	        indirizzo.setViaNumciv(via);
+	        indirizzo.setDatiPlus(datiPlus);
+	        indirizzo.setCitta(citta);
+	        indirizzo.setProvincia(provincia);
+	        indirizzo.setCodicePostale(cap);
+	        indirizzo.setPaese(paese);
+
+	        indirizzoDAO.doSave(indirizzo);
+
+	        UtenteBean utente = new UtenteBean();
+
+	        utente.setNome(nome);
+	        utente.setCognome(cognome);
+	        utente.setEmail(email);
+	        String passwordDigest = toDigest(password);
+	        utente.setPassword(passwordDigest);
+	        utente.setCellulare(cellulare);
+
+	        utente.setRuolo(
+	            UtenteBean.Ruolo.USER
+	        );
+
+	        utente.setIndirizzo(indirizzo);
+
+	        utenteDAO.doSave(utente);
+
+	        request.getSession().setAttribute("utente", utente);
+
+	        request.getSession().setAttribute("role", "USER");
+
+	        response.sendRedirect(request.getContextPath() + "/home");
+
+	    } catch (SQLException e) {
+
+	        throw new ServletException(e);
+	    }
 	}
+	
+	
 	
 	public static String toDigest(String password) {
         try {

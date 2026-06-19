@@ -28,9 +28,9 @@
         <span class="cat-badge">${prodotto.categoria}</span>
     </h1>
 
-    <c:if test="${not empty errore}">
-        <div class="alert alert-error">${errore}</div>
-    </c:if>
+    <c:if test="${not empty param.errore}">
+    	<div class="alert alert-error">${param.errore}</div>
+	</c:if>
     <c:if test="${not empty param.success}">
         <div class="alert alert-success">Prodotto modificato con successo!</div>
     </c:if>

@@ -509,17 +509,18 @@ body {
     }
 
     .stat-card {
-        padding: 16px;
-    }
-
-    .stat-card h2 {
-	    font-size: 32px;
-	    margin-bottom: 6px;
+    		padding: 10px 16px;
 	}
-
-    .stat-card span {
-        font-size: 13px;
-    }
+	
+	.stat-card h2 {
+	    font-size: 38px;
+	    margin: 0 0 4px;
+	    line-height: 1;
+	}
+	
+	.stat-card span {
+	    font-size: 13px;
+	}
     
     .sidebar {
         width: 100%;

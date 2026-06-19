@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var regole = {
         nome:      { regex: /^[A-Za-zÀ-ÿ\s']{2,50}$/, msg: "Il nome deve contenere solo lettere." },
         cognome:   { regex: /^[A-Za-zÀ-ÿ\s']{2,50}$/, msg: "Il cognome deve contenere solo lettere." },
-        email:     { regex: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/, msg: "Inserisci un indirizzo email valido." },
+        email:     { regex: /^[^\s@]+@[^\s@]+\.[^\s@]{1,}$/, msg: "Inserisci un indirizzo email valido." },
         password:  { regex: /^(?=.*[A-Z])(?=.*\d).{8,}$/, msg: "La password deve contenere almeno 8 caratteri, una maiuscola e un numero." },
 		via: 	   {  regex: /^[A-Za-zÀ-ÿ\s']+\s+\d+$/, msg: "Inserisci la via seguita dal numero civico (es. Via Roma 12)." },
         citta:     { regex: /^[A-Za-zÀ-ÿ\s']{1,80}$/, msg: "Inserisci una città valida." },

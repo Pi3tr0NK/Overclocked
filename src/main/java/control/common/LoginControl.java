@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import javax.sql.DataSource;
 
@@ -25,114 +26,120 @@ import model.UtenteBean;
 public class LoginControl extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	
+
+	// Stesso pattern usato lato client in loginCheck.js, tenuto allineato
+	private static final Pattern EMAIL_PATTERN =
+			Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]{1,}$");
+
 	private UtenteDAO utenteDao;
-	
+
 	public void init(ServletConfig servletConfig) throws ServletException {
-        super.init(servletConfig);
+		super.init(servletConfig);
+		DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+		if (ds == null) {
+			throw new ServletException("DataSource non disponibile nel contesto");
+		}
+		utenteDao = new UtenteDAOImpl(ds);
+	}
 
-        DataSource ds = (DataSource) getServletContext().getAttribute("DataSource");
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/views/common/LoginView.jsp")
+				.forward(request, response);
+	}
 
-        if (ds == null) {
-            throw new ServletException("DataSource non disponibile nel contesto");
-        }
-
-        utenteDao =new UtenteDAOImpl(ds);
-    }
-
-	protected void doPost(HttpServletRequest request,
-						  HttpServletResponse response)
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		List<String> errors = new ArrayList<>();
 
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		email = validateField(email, "email", errors);
+
+		email = validateEmail(email, errors);
 		password = validateField(password, "password", errors);
 
-		RequestDispatcher dispatcher =request.getRequestDispatcher("/WEB-INF/views/common/LoginView.jsp");
+		RequestDispatcher dispatcher =
+				request.getRequestDispatcher("/WEB-INF/views/common/LoginView.jsp");
 
-		if(!errors.isEmpty()) {
-
+		if (!errors.isEmpty()) {
 			request.setAttribute("errors", errors);
-
+			// ripopola l'email per comodità utente, MAI la password
+			request.setAttribute("emailInserita", email);
 			dispatcher.forward(request, response);
-
 			return;
 		}
 
 		try {
-			
 			String digest = toDigest(password);
-			UtenteBean utente = utenteDao.checkLogin(email,digest);
+			UtenteBean utente = utenteDao.checkLogin(email, digest);
 
-			if(utente != null) {
-
+			if (utente != null) {
 				request.getSession().setAttribute("utente", utente);
-				request.getSession().setAttribute("role",utente.getRuolo().name());
+				request.getSession().setAttribute("role", utente.getRuolo().name());
 
-				/*
-				 * ADMIN
-				 */
-				if(utente.getRuolo()== UtenteBean.Ruolo.ADMIN) {
-					
-				response.sendRedirect(request.getContextPath()+ "/admin/dashboard");
-
-				/*
-				 * UTENTE NORMALE
-				 */
+				if (utente.getRuolo() == UtenteBean.Ruolo.ADMIN) {
+					response.sendRedirect(request.getContextPath() + "/admin/dashboard");
 				} else {
-				response.sendRedirect(request.getContextPath()+ "/home");
+					response.sendRedirect(request.getContextPath() + "/home");
 				}
-
 			} else {
-
+				// messaggio volutamente generico: non rivela se è l'email
+				// a non esistere o la password ad essere sbagliata
 				errors.add("Email o password non validi");
-
-				request.setAttribute("errors",errors);
-
-				dispatcher.forward(request,response);
+				request.setAttribute("errors", errors);
+				request.setAttribute("emailInserita", email);
+				dispatcher.forward(request, response);
 			}
-
-		} catch(SQLException e) {
-
-			throw new ServletException(e);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			errors.add("Si è verificato un errore interno. Riprova più tardi.");
+			request.setAttribute("errors", errors);
+			request.setAttribute("emailInserita", email);
+			dispatcher.forward(request, response);
 		}
 	}
 
-	private String validateField(
-			String value,
-			String fieldName,
-			List<String> errors) {
+	/**
+	 * Valida che il campo non sia vuoto. Ritorna il valore "trimmato"
+	 * (stringa vuota se non valido) e aggiunge un errore alla lista se manca.
+	 */
+	private String validateField(String value, String fieldName, List<String> errors) {
+		if (value == null || value.trim().isEmpty()) {
+			errors.add("Il campo " + fieldName + " non può essere vuoto");
+			return "";
+		}
+		return value.trim();
+	}
 
-		if(value == null ||
-		   value.trim().isEmpty()) {
+	/**
+	 * Valida il campo email: prima controlla che non sia vuoto,
+	 * poi (solo se non vuoto) ne controlla il formato.
+	 */
+	private String validateEmail(String value, List<String> errors) {
+		String trimmed = validateField(value, "email", errors);
 
-			errors.add(
-				"Il campo " + fieldName + " non può essere vuoto"
-			);
-
+		if (!trimmed.isEmpty() && !EMAIL_PATTERN.matcher(trimmed).matches()) {
+			errors.add("Inserisci un indirizzo email valido.");
 			return "";
 		}
 
-		return value.trim();
+		return trimmed;
 	}
-	
+
 	public static String toDigest(String password) {
-        try {
-        		// Definisco la funzione di hash SHA-512
-            MessageDigest md = MessageDigest.getInstance("SHA-512");
-            // Calcolo il digest della password
-            byte[] digestBytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
-            // Converto il digest in stringa esadecimale
-            StringBuilder sb = new StringBuilder();
-            for (byte b : digestBytes) {
-                sb.append(String.format("%02x", b));
-            }
-            return sb.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Algoritmo SHA-512 non disponibile", e);
-        }
-    }
+		try {
+			MessageDigest md = MessageDigest.getInstance("SHA-512");
+			byte[] digestBytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+			StringBuilder sb = new StringBuilder();
+			for (byte b : digestBytes) {
+				sb.append(String.format("%02x", b));
+			}
+			return sb.toString();
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException("Algoritmo SHA-512 non disponibile", e);
+		}
+	}
 }
