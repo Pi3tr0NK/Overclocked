@@ -110,6 +110,107 @@ VALUES
 (@first_id + 1, '2TB',   6600, 7300, 'SSD', 'NVME', 'M.2'),
 (@first_id + 2, '500GB',  530,  560, 'SSD', 'SATA', '2.5"');
 
+-- =========================================================
+-- IMMAGINI PRODOTTI
+-- =========================================================
+
+-- PSU
+INSERT INTO immagini (path, fk_prodotto)
+SELECT 'img/prodotti/immagine_psu_1_1.jpg', id_prodotto FROM prodotto WHERE modello = 'RM750e'
+UNION ALL SELECT 'img/prodotti/immagine_psu_1_2.jpg', id_prodotto FROM prodotto WHERE modello = 'RM750e'
+UNION ALL SELECT 'img/prodotti/immagine_psu_1_3.jpg', id_prodotto FROM prodotto WHERE modello = 'RM750e'
+UNION ALL SELECT 'img/prodotti/immagine_psu_2_1.jpg', id_prodotto FROM prodotto WHERE modello = 'RM850x'
+UNION ALL SELECT 'img/prodotti/immagine_psu_2_2.jpg', id_prodotto FROM prodotto WHERE modello = 'RM850x'
+UNION ALL SELECT 'img/prodotti/immagine_psu_2_3.jpg', id_prodotto FROM prodotto WHERE modello = 'RM850x'
+UNION ALL SELECT 'img/prodotti/immagine_psu_3_1.jpg', id_prodotto FROM prodotto WHERE modello = 'SuperNOVA 650 G6'
+UNION ALL SELECT 'img/prodotti/immagine_psu_3_2.jpg', id_prodotto FROM prodotto WHERE modello = 'SuperNOVA 650 G6'
+UNION ALL SELECT 'img/prodotti/immagine_psu_3_3.jpg', id_prodotto FROM prodotto WHERE modello = 'SuperNOVA 650 G6';
+
+-- DISSIPATORE
+INSERT INTO immagini (path, fk_prodotto)
+SELECT 'img/prodotti/immagine_dissipatore_1_1.jpg', id_prodotto FROM prodotto WHERE modello = 'AK400'
+UNION ALL SELECT 'img/prodotti/immagine_dissipatore_1_2.jpg', id_prodotto FROM prodotto WHERE modello = 'AK400'
+UNION ALL SELECT 'img/prodotti/immagine_dissipatore_1_3.jpg', id_prodotto FROM prodotto WHERE modello = 'AK400'
+UNION ALL SELECT 'img/prodotti/immagine_dissipatore_2_1.jpg', id_prodotto FROM prodotto WHERE modello = 'Kraken X53'
+UNION ALL SELECT 'img/prodotti/immagine_dissipatore_2_2.jpg', id_prodotto FROM prodotto WHERE modello = 'Kraken X53'
+UNION ALL SELECT 'img/prodotti/immagine_dissipatore_2_3.jpg', id_prodotto FROM prodotto WHERE modello = 'Kraken X53'
+UNION ALL SELECT 'img/prodotti/immagine_dissipatore_3_1.jpg', id_prodotto FROM prodotto WHERE modello = 'NH-D15'
+UNION ALL SELECT 'img/prodotti/immagine_dissipatore_3_2.jpg', id_prodotto FROM prodotto WHERE modello = 'NH-D15'
+UNION ALL SELECT 'img/prodotti/immagine_dissipatore_3_3.jpg', id_prodotto FROM prodotto WHERE modello = 'NH-D15';
+
+-- CPU
+INSERT INTO immagini (path, fk_prodotto)
+SELECT 'img/prodotti/immagine_cpu_1_1.jpg', id_prodotto FROM prodotto WHERE modello = '7800X3D'
+UNION ALL SELECT 'img/prodotti/immagine_cpu_1_2.jpg', id_prodotto FROM prodotto WHERE modello = '7800X3D'
+UNION ALL SELECT 'img/prodotti/immagine_cpu_1_3.jpg', id_prodotto FROM prodotto WHERE modello = '7800X3D'
+UNION ALL SELECT 'img/prodotti/immagine_cpu_2_1.jpg', id_prodotto FROM prodotto WHERE modello = '14600K'
+UNION ALL SELECT 'img/prodotti/immagine_cpu_2_2.jpg', id_prodotto FROM prodotto WHERE modello = '14600K'
+UNION ALL SELECT 'img/prodotti/immagine_cpu_2_3.jpg', id_prodotto FROM prodotto WHERE modello = '14600K'
+UNION ALL SELECT 'img/prodotti/immagine_cpu_3_1.jpg', id_prodotto FROM prodotto WHERE modello = '7600X'
+UNION ALL SELECT 'img/prodotti/immagine_cpu_3_2.jpg', id_prodotto FROM prodotto WHERE modello = '7600X'
+UNION ALL SELECT 'img/prodotti/immagine_cpu_3_3.jpg', id_prodotto FROM prodotto WHERE modello = '7600X';
+
+-- RAM
+INSERT INTO immagini (path, fk_prodotto)
+SELECT 'img/prodotti/immagine_ram_1_1.jpg', id_prodotto FROM prodotto WHERE modello = 'Vengeance'
+UNION ALL SELECT 'img/prodotti/immagine_ram_1_2.jpg', id_prodotto FROM prodotto WHERE modello = 'Vengeance'
+UNION ALL SELECT 'img/prodotti/immagine_ram_1_3.jpg', id_prodotto FROM prodotto WHERE modello = 'Vengeance'
+UNION ALL SELECT 'img/prodotti/immagine_ram_2_1.jpg', id_prodotto FROM prodotto WHERE modello = 'Trident Z5'
+UNION ALL SELECT 'img/prodotti/immagine_ram_2_2.jpg', id_prodotto FROM prodotto WHERE modello = 'Trident Z5'
+UNION ALL SELECT 'img/prodotti/immagine_ram_2_3.jpg', id_prodotto FROM prodotto WHERE modello = 'Trident Z5'
+UNION ALL SELECT 'img/prodotti/immagine_ram_3_1.jpg', id_prodotto FROM prodotto WHERE modello = 'Fury Beast'
+UNION ALL SELECT 'img/prodotti/immagine_ram_3_2.jpg', id_prodotto FROM prodotto WHERE modello = 'Fury Beast'
+UNION ALL SELECT 'img/prodotti/immagine_ram_3_3.jpg', id_prodotto FROM prodotto WHERE modello = 'Fury Beast';
+
+-- CASE
+INSERT INTO immagini (path, fk_prodotto)
+SELECT 'img/prodotti/immagine_case_1_1.jpg', id_prodotto FROM prodotto WHERE modello = 'H5 Flow'
+UNION ALL SELECT 'img/prodotti/immagine_case_1_2.jpg', id_prodotto FROM prodotto WHERE modello = 'H5 Flow'
+UNION ALL SELECT 'img/prodotti/immagine_case_1_3.jpg', id_prodotto FROM prodotto WHERE modello = 'H5 Flow'
+UNION ALL SELECT 'img/prodotti/immagine_case_2_1.jpg', id_prodotto FROM prodotto WHERE modello = 'Meshify 2 XL'
+UNION ALL SELECT 'img/prodotti/immagine_case_2_2.jpg', id_prodotto FROM prodotto WHERE modello = 'Meshify 2 XL'
+UNION ALL SELECT 'img/prodotti/immagine_case_2_3.jpg', id_prodotto FROM prodotto WHERE modello = 'Meshify 2 XL'
+UNION ALL SELECT 'img/prodotti/immagine_case_3_1.jpg', id_prodotto FROM prodotto WHERE modello = 'A4-H2O'
+UNION ALL SELECT 'img/prodotti/immagine_case_3_2.jpg', id_prodotto FROM prodotto WHERE modello = 'A4-H2O'
+UNION ALL SELECT 'img/prodotti/immagine_case_3_3.jpg', id_prodotto FROM prodotto WHERE modello = 'A4-H2O';
+
+-- GPU
+INSERT INTO immagini (path, fk_prodotto)
+SELECT 'img/prodotti/immagine_gpu_1_1.jpg', id_prodotto FROM prodotto WHERE modello = 'RTX 4070 Dual'
+UNION ALL SELECT 'img/prodotti/immagine_gpu_1_2.jpg', id_prodotto FROM prodotto WHERE modello = 'RTX 4070 Dual'
+UNION ALL SELECT 'img/prodotti/immagine_gpu_1_3.jpg', id_prodotto FROM prodotto WHERE modello = 'RTX 4070 Dual'
+UNION ALL SELECT 'img/prodotti/immagine_gpu_2_1.jpg', id_prodotto FROM prodotto WHERE modello = 'Pulse RX 7800 XT'
+UNION ALL SELECT 'img/prodotti/immagine_gpu_2_2.jpg', id_prodotto FROM prodotto WHERE modello = 'Pulse RX 7800 XT'
+UNION ALL SELECT 'img/prodotti/immagine_gpu_2_3.jpg', id_prodotto FROM prodotto WHERE modello = 'Pulse RX 7800 XT'
+UNION ALL SELECT 'img/prodotti/immagine_gpu_3_1.jpg', id_prodotto FROM prodotto WHERE modello = 'RTX 4060 Ti Gaming X'
+UNION ALL SELECT 'img/prodotti/immagine_gpu_3_2.jpg', id_prodotto FROM prodotto WHERE modello = 'RTX 4060 Ti Gaming X'
+UNION ALL SELECT 'img/prodotti/immagine_gpu_3_3.jpg', id_prodotto FROM prodotto WHERE modello = 'RTX 4060 Ti Gaming X';
+
+-- MOBO
+INSERT INTO immagini (path, fk_prodotto)
+SELECT 'img/prodotti/immagine_mobo_1_1.jpg', id_prodotto FROM prodotto WHERE modello = 'B650 Gaming X AX'
+UNION ALL SELECT 'img/prodotti/immagine_mobo_1_2.jpg', id_prodotto FROM prodotto WHERE modello = 'B650 Gaming X AX'
+UNION ALL SELECT 'img/prodotti/immagine_mobo_1_3.jpg', id_prodotto FROM prodotto WHERE modello = 'B650 Gaming X AX'
+UNION ALL SELECT 'img/prodotti/immagine_mobo_2_1.jpg', id_prodotto FROM prodotto WHERE modello = 'Z790 Apex'
+UNION ALL SELECT 'img/prodotti/immagine_mobo_2_2.jpg', id_prodotto FROM prodotto WHERE modello = 'Z790 Apex'
+UNION ALL SELECT 'img/prodotti/immagine_mobo_2_3.jpg', id_prodotto FROM prodotto WHERE modello = 'Z790 Apex'
+UNION ALL SELECT 'img/prodotti/immagine_mobo_3_1.jpg', id_prodotto FROM prodotto WHERE modello = 'B760M Pro'
+UNION ALL SELECT 'img/prodotti/immagine_mobo_3_2.jpg', id_prodotto FROM prodotto WHERE modello = 'B760M Pro'
+UNION ALL SELECT 'img/prodotti/immagine_mobo_3_3.jpg', id_prodotto FROM prodotto WHERE modello = 'B760M Pro';
+
+-- STORAGE
+INSERT INTO immagini (path, fk_prodotto)
+SELECT 'img/prodotti/immagine_storage_1_1.jpg', id_prodotto FROM prodotto WHERE modello = '980 Pro'
+UNION ALL SELECT 'img/prodotti/immagine_storage_1_2.jpg', id_prodotto FROM prodotto WHERE modello = '980 Pro'
+UNION ALL SELECT 'img/prodotti/immagine_storage_1_3.jpg', id_prodotto FROM prodotto WHERE modello = '980 Pro'
+UNION ALL SELECT 'img/prodotti/immagine_storage_2_1.jpg', id_prodotto FROM prodotto WHERE modello = 'WD Black SN850X'
+UNION ALL SELECT 'img/prodotti/immagine_storage_2_2.jpg', id_prodotto FROM prodotto WHERE modello = 'WD Black SN850X'
+UNION ALL SELECT 'img/prodotti/immagine_storage_2_3.jpg', id_prodotto FROM prodotto WHERE modello = 'WD Black SN850X'
+UNION ALL SELECT 'img/prodotti/immagine_storage_3_1.jpg', id_prodotto FROM prodotto WHERE modello = '870 EVO'
+UNION ALL SELECT 'img/prodotti/immagine_storage_3_2.jpg', id_prodotto FROM prodotto WHERE modello = '870 EVO'
+UNION ALL SELECT 'img/prodotti/immagine_storage_3_3.jpg', id_prodotto FROM prodotto WHERE modello = '870 EVO';
+
+
 -- UTENTE: user@a.b
 INSERT INTO indirizzo (via_numciv, paese, citta, provincia, dati_plus, codice_postale)
 VALUES ('Via Roma 10', 'Italia', 'Pescara', 'PE', NULL, '65100');
