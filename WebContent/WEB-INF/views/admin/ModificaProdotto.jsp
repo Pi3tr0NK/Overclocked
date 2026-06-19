@@ -8,9 +8,9 @@
 <title>Overclocked - Admin</title>
 
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/style/tema.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/style/modificaProdotto.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/style/navbar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/tema.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/modificaProdotto.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/navbar.css">
 
 </head>
 

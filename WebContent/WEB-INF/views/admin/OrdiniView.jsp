@@ -8,11 +8,11 @@
 <meta charset="UTF-8">
 <title>Overclocked - Admin</title>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/style/tema.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/style/dashboard.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/style/navbar.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/style/pagination.css">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/style/footer.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/tema.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/dashboard.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/navbar.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/pagination.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/styles/footer.css">
 </head>
 
 <!-- LOGO SCHEDA -->
