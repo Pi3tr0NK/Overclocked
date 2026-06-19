@@ -36,10 +36,10 @@
         </div>
     </c:if>
 
-    <form action="login" method="post">
+    <form action="login" method="post" novalidate>
 
         <label>Email</label>
-        <input type="email" name="email" required>
+        <input  class ="login-field" type="email" name="email" required>
 
         <label>Password</label>
         <input type="password" name="password" required>
@@ -57,6 +57,9 @@
         Non hai un account?
         <a class="link" href="register">Registrati</a>
     </div>
+
+
+<script src="${pageContext.request.contextPath}/script/loginCheck.js"></script>
 
 </div>
 

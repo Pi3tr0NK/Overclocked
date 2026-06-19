@@ -80,7 +80,7 @@ input[type="password"] {
     border-radius: 12px;
     color: white;
     font-size: 15px;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
 }
 
 input:focus {
@@ -210,3 +210,8 @@ input:focus {
         margin: 25px 0;
     }
 }
+
+.login-field.input-invalid {
+    border: 1px solid #ff4d4d;
+}
+
