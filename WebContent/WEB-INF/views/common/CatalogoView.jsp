@@ -66,7 +66,7 @@
 				<!-- ===== FILTRI SPECIFICI PER CATEGORIA ===== -->
 				<c:choose>
 
-					<%-- CPU: core (int), frequenza (varchar) --%>
+					<%-- CPU --%>
 					<c:when test="${param.categoria == 'CPU'}">
 
 						<label>Core (min)</label>
@@ -79,7 +79,7 @@
 
 					</c:when>
 
-					<%-- GPU: vram (varchar), pcie (varchar) --%>
+					<%-- GPU --%>
 					<c:when test="${param.categoria == 'GPU'}">
 
 						<label>VRAM</label>
@@ -92,7 +92,7 @@
 
 					</c:when>
 
-					<%-- RAM: capacita (varchar), frequenza (varchar), tipo (varchar) --%>
+					<%-- RAM --%>
 					<c:when test="${param.categoria == 'RAM'}">
 
 						<label>Capacità</label>
@@ -109,7 +109,7 @@
 
 					</c:when>
 
-					<%-- MOBO: formato (varchar), nvme (boolean), slotram (int) --%>
+					<%-- MOBO --%>
 					<c:when test="${param.categoria == 'MOBO'}">
 
 						<label>Formato</label>
@@ -130,7 +130,7 @@
 						</select>
 					</c:when>
 
-					<%-- PSU: potenza (int), certificazione (varchar), modulare (enum) --%>
+					<%-- PSU --%>
 					<c:when test="${param.categoria == 'PSU'}">
 
 						<label>Potenza min (W)</label>
@@ -157,7 +157,7 @@
 
 					</c:when>
 
-					<%-- CASE: formato (varchar), colore (varchar) --%>
+					<%-- CASE --%>
 					<c:when test="${param.categoria == 'CASE'}">
 
 						<label>Formato</label>
@@ -170,7 +170,7 @@
 
 					</c:when>
 
-					<%-- DISSIPATORE: tipo (enum ARIA/LIQUIDO) --%>
+					<%-- DISSIPATORE --%>
 					<c:when test="${param.categoria == 'DISSIPATORE'}">
 
 						<label>Tipo</label>
@@ -185,7 +185,7 @@
 
 					</c:when>
 
-					<%-- STORAGE: capacita (varchar), tipo (enum SSD/HDD), tecnologia (enum SATA/NVME) --%>
+					<%-- STORAGE --%>
 					<c:when test="${param.categoria == 'STORAGE'}">
 
 						<label>Capacità</label>

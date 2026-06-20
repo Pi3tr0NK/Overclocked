@@ -24,7 +24,7 @@
 
     <div class="profilo-layout">
 
-        <%-- ── SIDEBAR SINISTRA ── --%>
+        <!-- NAVBAR SINISTRA -->
         <nav class="profilo-nav">
             <a href="${pageContext.request.contextPath}/common/profilo?view=ordini"
                class="profilo-nav-link">Ordini e fatture</a>
@@ -36,7 +36,7 @@
                class="profilo-nav-link logout">Logout &#x2192;</a>
         </nav>
 
-        <%-- ── CONTENUTO DESTRA ── --%>
+        <!-- DATI DI DESTRA -->
         <div class="profilo-content">
 
             <div class="profilo-card-title">Resi</div>
@@ -75,9 +75,9 @@
                 </c:otherwise>
             </c:choose>
 
-        </div><%-- fine profilo-content --%>
+        </div>
 
-    </div><%-- fine profilo-layout --%>
+    </div>
 
 </div>
 

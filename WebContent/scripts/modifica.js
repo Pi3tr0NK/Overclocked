@@ -4,7 +4,7 @@ function apriSlot(slot) {
 }
 
 function creaBottoneRimozione(slot) {
-    if (slot.querySelector('.rm-btn')) return; // già presente
+    if (slot.querySelector('.rm-btn')) return;
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'rm-btn';
@@ -28,8 +28,6 @@ function gestisciSlot(input) {
         if (span) span.style.display = 'none';
         slot.classList.add('filled');
 
-        // se sto sostituendo un'immagine esistente con un file nuovo,
-        // non deve restare marcata per la rimozione
         var flag = slot.querySelector('.rimuovi-flag');
         if (flag) flag.value = 'false';
 
@@ -49,14 +47,14 @@ function svuotaSlot(slot) {
     slot.classList.remove('filled');
     if (btn) btn.remove();
 
-    // se lo slot conteneva un'immagine già salvata sul server, marcala per la rimozione
+
     if (slot.classList.contains('existing')) {
         var flag = slot.querySelector('.rimuovi-flag');
         if (flag) flag.value = 'true';
     }
 }
 
-// al caricamento della pagina, aggiungi il pulsante "✕" anche alle immagini già esistenti
+
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.image-slot.existing').forEach(function(slot) {
         creaBottoneRimozione(slot);
@@ -64,12 +62,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-    // Seleziona il form di modifica tramite ID
+   
     var form = document.getElementById("formModifica");
     if (!form) return;
 	
     var regole = {
-        // --- DATI GENERALI (Tabella: prodotto) ---
+        // DATI GENERALI
         nome:          { regex: /^.{2,255}$/, msg: "Il nome deve essere compreso tra 2 e 255 caratteri." }, 
         modello:       { regex: /^.{1,255}$/, msg: "Il modello deve essere compreso tra 1 e 255 caratteri." }, 
         marca:         { regex: /^[A-Za-z0-9À-ÿ\s'.&-]{1,255}$/, msg: "La marca non può superare i 255 caratteri." }, 
@@ -81,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
         dimensioni:    { regex: /^.{0,50}$/, msg: "Le dimensioni non possono superare i 50 caratteri." }, 
         peso:          { regex: /^(?=.{1,50}$)\d+(\.\d+)?\s?(Kg|g)$/i, msg: "Inserisci il peso seguito dall'unità di misura (max 50 caratteri, es. 1.4 Kg o 500g)." },
 
-        // --- SPECIFICHE CPU (Tabella: cpu) ---
+        // CPU
         core:          { regex: /^[1-9]\d*$/, msg: "Il numero di core deve essere maggiore di 0." }, 
         thread:        { regex: /^[1-9]\d*$/, msg: "Il numero di thread deve essere maggiore di 0." }, 
         tdp:           { regex: /^(0|[1-9]\d*)$/, msg: "Il TDP deve essere un numero intero valido." }, 
@@ -90,14 +88,14 @@ document.addEventListener("DOMContentLoaded", function () {
         tiporam:       { regex: /^[A-Za-z0-9\s-]{2,10}$/, msg: "Specificare un tipo di RAM valido (max 10 caratteri, es. DDR5)." }, 
         frequenzaram:  { regex: /^\d+(\.\d+)?\s?(GHz|MHz|KHz|Hz)$/i, msg: "Inserisci una frequenza RAM valida (max 20 caratteri, es. 5600 MHz)." },
 
-        // --- SPECIFICHE GPU (Tabella: gpu) ---
+        // GPU
         vram:          { regex: /^(?=.{2,10}$)\d+(\.\d+)?\s?(GB|TB|MB|KB)$/i, msg: "Inserisci la VRAM seguita dall'unità di misura corretta (max 10 caratteri, es. 24 GB o 512 MB)." },
         tipovram:      { regex: /^[A-Za-z0-9\s-]{2,20}$/, msg: "Specificare un tipo di VRAM valido (max 20 caratteri, es. GDDR6X)." }, 
         pcie:          { regex: /^.{2,10}$/, msg: "Specificare l'interfaccia PCIe (max 10 caratteri, es. PCIe 4.0)." }, 
         video:         { regex: /^.{2,50}$/, msg: "Inserisci le uscite video (max 50 caratteri, es. 3x DP, 1x HDMI)." }, 
         maxres:        { regex: /^\d+x\d+$/, msg: "Inserisci la Copy-Risoluzione nel formato corretto (max 20 caratteri, es. 7680x4320)." },
 
-        // --- SPECIFICHE RAM & STORAGE (Tabelle: ram, memoria) ---
+        // RAM & STORAGE
         capacita:      { regex: /^(?=.{2,10}$)\d+(\.\d+)?\s?(GB|TB|MB|KB)$/i, msg: "Inserisci la capacità seguita dall'unità di misura (max 10 caratteri, es. 32 GB)." },
         formato:       { regex: /^.{2,20}$/, msg: "Specificare un formato valido (max 20 caratteri, es. M.2 2280 o ATX)." }, 
         lettura:       { regex: /^(0|[1-9]\d*)$/, msg: "La velocità di lettura deve essere un numero intero." }, 
@@ -105,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
         tipo:          { regex: /^.{2,10}$/, msg: "Seleziona o inserisci un tipo valido." }, 
         tecnologia:    { regex: /^(NVME|SATA)$/, msg: "Seleziona una tecnologia valida." },
 
-        // --- SPECIFICHE MOBO (Tabella: mobo) ---
+        // MOBO 
         chipset:       { regex: /^[A-Za-z0-9\s-]{2,20}$/, msg: "Inserisci un chipset valido (max 20 caratteri, es. Z790)." }, 
         tipoRam:       { regex: /^[A-Za-z0-9\s-]{2,10}$/, msg: "Specificare un tipo di RAM valido (max 10 caratteri, es. DDR5)." }, 
         maxFreq:       { regex: /^.{2,20}$/, msg: "La frequenza massima non può superare i 20 caratteri." }, 
@@ -114,16 +112,16 @@ document.addEventListener("DOMContentLoaded", function () {
         porteUsb:      { regex: /^(0|[1-9]\d*)$/, msg: "Inserisci un numero di porte USB valido." }, 
         nvme:          { regex: /^(true|false)$/, msg: "Seleziona un'opzione valida." },
 
-        // --- SPECIFICHE PSU (Tabella: psu) ---
+        // PSU 
         potenza:       { regex: /^[1-9]\d*$/, msg: "La potenza deve essere un numero intero maggiore di 0." }, 
         certificazione:{ regex: /^[A-Za-z0-9\s+]{1,255}$/, msg: "Inserisci una certificazione valida (max 255 caratteri, es. 80+ Gold)." },
         modulare:      { regex: /^(MODULARE|SEMIMODULARE|NON_MODULARE)$/, msg: "Seleziona un'opzione di modularità valida dal menu." }, 
 
-        // --- SPECIFICHE CASE (Tabella: chassis) ---
+        // CASE
         colore:        { regex: /^[A-Za-zÀ-ÿ\s']{2,20}$/, msg: "Il colore non può superare i 20 caratteri." }, 
         materiale:     { regex: /^.{2,255}$/, msg: "Il materiale non può superare i 255 caratteri." }, 
 
-        // --- SPECIFICHE DISSIPATORE (Tabella: dissipatore) ---
+        // DISSIPATORE 
         rpm:           { regex: /^(0|[1-9]\d*)$/, msg: "I giri al minuto (RPM) devono essere un numero intero." }, 
         rumore:        { regex: /^(0|[1-9]\d*)$/, msg: "Il livello di rumore (dBA) deve essere un numero intero." } 
     };
@@ -183,13 +181,11 @@ document.addEventListener("DOMContentLoaded", function () {
         return true;
     }
 
-    // Seleziona gli input validabili presenti nel form (escludendo file e hidden strutturali)
     var campi = form.querySelectorAll("input[name], select[name], textarea[name]");
     
     campi.forEach(function (input) {
         if (input.type === "file" || input.type === "hidden") return;
 
-        // Blocca preventivamente la digitazione di caratteri esponenziali o segni nei campi esclusivamente interi
         var campiInteri = ['core', 'thread', 'stock', 'slotRam', 'porteSata', 'porteUsb', 'rpm', 'rumore', 'tdp', 'lettura', 'scrittura', 'potenza', 'sconto'];
         if (campiInteri.includes(input.name)) {
             input.addEventListener("keydown", function(e) {
@@ -219,7 +215,6 @@ document.addEventListener("DOMContentLoaded", function () {
         campi.forEach(function (input) {
             if (input.type === "file" || input.type === "hidden") return;
 
-            // Valida direttamente tutti i campi visibili stampati nel DOM da JSTL
             if (!validaCampo(input)) {
                 valido = false;
             }

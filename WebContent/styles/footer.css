@@ -4,8 +4,6 @@
     padding: 50px 60px 0;
 }
 
-/* ── Top: 3 colonne ── */
-
 .footer-top {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
@@ -19,8 +17,6 @@
     line-height: 1.8;
 }
 
-/* ── Titoli colonne ── */
-
 .footer-col-title {
     font-size: 12px;
     color: #ff7300;
@@ -29,8 +25,6 @@
     font-weight: bold;
     margin-bottom: 16px;
 }
-
-/* ── Link ── */
 
 .footer-links {
     display: flex;
@@ -53,8 +47,6 @@
     font-size: 12px;
     color: #ff7300;
 }
-
-/* ── Mid: garanzie ── */
 
 .footer-mid {
     border-top: 1px solid #1a1a1a;
@@ -83,8 +75,6 @@
     font-size: 11px;
     color: #444;
 }
-
-/* ── Bottom: copyright, legale, pagamenti ── */
 
 .footer-bottom {
     border-top: 1px solid #1a1a1a;
@@ -116,8 +106,6 @@
 
 .footer-legal a:hover { color: #888; }
 
-/* ── Pagamenti ── */
-
 .footer-payments {
     display: flex;
     align-items: center;
@@ -139,6 +127,8 @@
     color: #555;
     font-weight: bold;
 }
+
+/* RESPONSIVE */
 
 @media (max-width: 1024px) {
 
@@ -178,13 +168,11 @@
         height: 46px;
         font-size: 14px;
         padding: 0 16px;
-        /* niente border-radius: 8px qui, resta 8px 0 0 8px come da default */
     }
 
     .newsletter-btn {
         height: 46px;
         font-size: 14px;
-        /* niente width:100% / border-radius:8px qui, resta 0 8px 8px 0 come da default */
     }
 
     .footer-mid {

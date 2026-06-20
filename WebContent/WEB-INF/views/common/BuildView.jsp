@@ -29,12 +29,10 @@
 
     <div class="builder-layout">
 
-        <%-- ══════════════════════════════════════
-             COLONNA SINISTRA — selezione componenti
-             ══════════════════════════════════════ --%>
+        <!-- selezione componenti -->
         <div class="builder-col-left">
 
-            <%-- Step 1: CPU --%>
+            <!-- CPU -->
             <div class="builder-card">
                 <div class="step-label">
                     <div class="step-num" id="num-cpu">1</div>
@@ -46,7 +44,7 @@
                 <div id="errCpu" class="builder-error"></div>
             </div>
 
-            <%-- Step 2: Scheda Madre --%>
+            <!-- MOBO -->
             <div class="builder-card">
                 <div class="step-label">
                     <div class="step-num disabled" id="num-mobo">2</div>
@@ -58,7 +56,7 @@
                 <div id="errMobo" class="builder-error"></div>
             </div>
 
-            <%-- Step 3: RAM --%>
+            <!-- RAM -->
             <div class="builder-card">
                 <div class="step-label">
                     <div class="step-num disabled" id="num-ram">3</div>
@@ -70,7 +68,7 @@
                 <div id="errRam" class="builder-error"></div>
             </div>
 
-            <%-- Step 4: GPU --%>
+            <!-- GPU -->
             <div class="builder-card">
                 <div class="step-label">
                     <div class="step-num disabled" id="num-gpu">4</div>
@@ -82,7 +80,7 @@
                 <div id="errGpu" class="builder-error"></div>
             </div>
 
-            <%-- Step 5: Storage --%>
+            <!-- STORAGE -->
             <div class="builder-card">
                 <div class="step-label">
                     <div class="step-num disabled" id="num-storage">5</div>
@@ -94,7 +92,7 @@
                 <div id="errStorage" class="builder-error"></div>
             </div>
 
-            <%-- Step 6: PSU --%>
+            <!-- PSU -->
             <div class="builder-card">
                 <div class="step-label">
                     <div class="step-num disabled" id="num-psu">6</div>
@@ -106,7 +104,7 @@
                 <div id="errPsu" class="builder-error"></div>
             </div>
 
-            <%-- Step 7: Case --%>
+            <!-- CASE -->
             <div class="builder-card">
                 <div class="step-label">
                     <div class="step-num disabled" id="num-case">7</div>
@@ -118,7 +116,7 @@
                 <div id="errCase" class="builder-error"></div>
             </div>
 
-            <%-- Step 8: Dissipatore --%>
+            <!-- DISSIPATORE -->
             <div class="builder-card">
                 <div class="step-label">
                     <div class="step-num disabled" id="num-diss">8</div>
@@ -130,11 +128,9 @@
                 <div id="errDissipatore" class="builder-error"></div>
             </div>
 
-        </div><%-- fine builder-col-left --%>
+        </div>
 
-        <%-- ══════════════════════════════════════
-             COLONNA DESTRA — riepilogo fisso
-             ══════════════════════════════════════ --%>
+        <!-- RIEPILOGO -->
         <div class="builder-col-right">
 
             <div id="riepilogo">
@@ -152,11 +148,11 @@
                 </div>
             </div>
 
-        </div><%-- fine builder-col-right --%>
+        </div>
 
-    </div><%-- fine builder-layout --%>
+    </div>
 
-</div><%-- fine builder-wrapper --%>
+</div>
 
 
 

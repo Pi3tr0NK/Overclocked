@@ -21,9 +21,7 @@
 
 <div class="checkout-wrapper">
 
-    <!-- ========================= -->
-    <!-- CONFERMA ORDINE -->
-    <!-- ========================= -->
+    
     <c:if test="${param.conferma eq 'ok'}">
         <div class="conferma-box">
             <div class="icona">✔</div>
@@ -35,9 +33,6 @@
         </div>
     </c:if>
 
-    <!-- ========================= -->
-    <!-- CHECKOUT -->
-    <!-- ========================= -->
     <c:if test="${empty param.conferma}">
 
         <div class="checkout-header">
@@ -53,12 +48,10 @@
 
             <div class="checkout-layout">
 
-                <!-- ========================= -->
-                <!-- SINISTRA -->
-                <!-- ========================= -->
+                
                 <div>
 
-                    <!-- ===== UTENTE ===== -->
+                    <!-- UTENTE -->
                     <div class="co-card">
                         <div class="co-title">👤 Dati acquirente</div>
 
@@ -78,7 +71,7 @@
                         </div>
                     </div>
 
-                    <!-- ===== INDIRIZZO EDITABILE ===== -->
+                    <!-- INDIRIZZO EDITABILE -->
                     <div class="co-card">
                         <div class="co-title">📍 Indirizzo di spedizione</div>
 
@@ -133,7 +126,7 @@
                         </div>
                     </div>
 
-                    <!-- ===== PAGAMENTO ===== -->
+                    <!-- PAGAMENTO -->
                     <div class="co-card co-card-pagamento">
                         <div class="co-title">
                             <span>💳 Pagamento</span>
@@ -194,7 +187,7 @@
                         </div>
                     </div>
 
-                    <!-- ===== PRODOTTI ===== -->
+                    <!-- PRODOTTI -->
                     <div class="co-card">
                         <div class="co-title">📦 Prodotti</div>
 
@@ -255,9 +248,7 @@
 
                 </div>
 
-                <!-- ========================= -->
-                <!-- DESTRA RIEPILOGO -->
-                <!-- ========================= -->
+                <!-- RIEPILOGO -->
                 <div class="co-riepilogo">
 
                     <div class="co-card">

@@ -1,4 +1,3 @@
-// ── Thumbnail switcher ───────────────────────────────────────────
 const mainImage = document.querySelector(".main-image img");
 const thumbs = document.querySelectorAll(".thumb img");
 
@@ -13,7 +12,7 @@ thumbs.forEach(img => {
 });
 
 
-// ── Add to cart ──────────────────────────────────────────────────
+// Aggiunta al carrello
 function addToCart(idProdotto) {
     var qty = document.getElementById("quantita").value;
     var params = "aggiungi=" + idProdotto + "&quantita=" + qty;
@@ -26,12 +25,12 @@ function handleAddCart(request) {
 		aggiornaBadgeCarrello(response.numProdotti);
         loadAjaxDoc(contextPath + "/carrello/summary", "GET", null, handleCartSummary);
     } else {
-        alert("Errore durante l'aggiunta al carrello.");
+        console.error("Errore durante l'aggiunta al carrello.");
     }
 }
 
 
-// ── Cart sidebar ─────────────────────────────────────────────────
+// barra laterale del carrello
 function handleCartSummary(request) {
     var data = JSON.parse(request.responseText);
     renderCartSidebar(data);
@@ -90,21 +89,19 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-// ── AJAX utilities (tue, invariate) ─────────────────────────────
+// AJAX
 function createXMLHttpRequest() {
     var request;
     try {
-        // Firefox 1+, Chrome 1+, Opera 8+, Safari 1.2+, Edge 12+, Internet Explorer 7+
         request = new XMLHttpRequest();
     } catch (e) {
-        // past versions of Internet Explorer
         try {
             request = new ActiveXObject("Msxml2.XMLHTTP");
         } catch (e) {
             try {
                 request = new ActiveXObject("Microsoft.XMLHTTP");
             } catch (e) {
-                alert("Il browser non supporta AJAX");
+                console.log("Il browser non supporta AJAX");
                 return null;
             }
         }
@@ -131,7 +128,7 @@ function loadAjaxDoc(url, method, params, cFuction) {
             }
         };
 
-        setTimeout(function() {     // to abort after 15 sec
+        setTimeout(function() {    
             if (request.readyState < 4) {
                 request.abort();
             }
@@ -144,14 +141,14 @@ function loadAjaxDoc(url, method, params, cFuction) {
                 request.open("GET", url, true);
             }
             request.setRequestHeader("Connection", "close");
-            request.setRequestHeader("X-Requested-With", "XMLHttpRequest"); // <-- aggiunta
+            request.setRequestHeader("X-Requested-With", "XMLHttpRequest"); 
             request.send(null);
         } else {
             if (params) {
                 request.open("POST", url, true);
                 request.setRequestHeader("Connection", "close");
                 request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                request.setRequestHeader("X-Requested-With", "XMLHttpRequest"); // <-- aggiunta
+                request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
                 request.send(params);
             } else {
                 console.log("Usa GET se non ci sono parametri!");

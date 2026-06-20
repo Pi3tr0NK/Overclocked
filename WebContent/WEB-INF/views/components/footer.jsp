@@ -3,7 +3,7 @@
 
 <footer class="footer">
 
-    <!-- TOP: descrizione, supporto, newsletter -->
+   
     <div class="footer-top">
 
         <div class="footer-brand">
@@ -39,7 +39,7 @@
         </div>
     </div>
 
-    <!-- MID: garanzie -->
+
     <div class="footer-mid">
 
         <div class="footer-mid-item">
@@ -84,7 +84,6 @@
 
     </div>
 
-    <!-- BOTTOM: copyright, link legali, metodi di pagamento -->
     <div class="footer-bottom">
 
         <span class="footer-copy">

@@ -111,7 +111,6 @@ public class PagamentoControl extends HttpServlet {
             }
         }
 
-        // Da qui in poi le variabili sono dichiarate una volta sola
         String via       = request.getParameter("via");
         String citta     = request.getParameter("citta");
         String provincia = request.getParameter("provincia");
@@ -166,7 +165,6 @@ public class PagamentoControl extends HttpServlet {
         Map<String, String> messaggi = new LinkedHashMap<>();
         Map<String, String> valori   = new LinkedHashMap<>();
 
-        // Campi carta — sempre obbligatori
         regole.put("numeroCarta",  "^[0-9]{16}$");
         regole.put("intestatario", "^[A-Za-zÀ-ÿ\\s']{2,50}$");
         regole.put("mese",         "^(0?[1-9]|1[0-2])$");
@@ -185,7 +183,6 @@ public class PagamentoControl extends HttpServlet {
         valori.put("anno",         anno);
         valori.put("cvv",          cvv);
 
-        // Campi indirizzo — obbligatori solo se via è valorizzata
         if (via != null && !via.trim().isEmpty()) {
             regole.put("via",       "^[A-Za-zÀ-ÿ\\s']+\\s+\\d+$");
             regole.put("citta",     "^[A-Za-zÀ-ÿ\\s']{1,80}$");

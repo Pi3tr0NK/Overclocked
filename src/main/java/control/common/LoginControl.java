@@ -27,7 +27,6 @@ public class LoginControl extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	// Stesso pattern usato lato client in loginCheck.js, tenuto allineato
 	private static final Pattern EMAIL_PATTERN =
 			Pattern.compile("^[^\\s@]+@[^\\s@]+\\.[^\\s@]{1,}$");
 
@@ -66,7 +65,6 @@ public class LoginControl extends HttpServlet {
 
 		if (!errors.isEmpty()) {
 			request.setAttribute("errors", errors);
-			// ripopola l'email per comodità utente, MAI la password
 			request.setAttribute("emailInserita", email);
 			dispatcher.forward(request, response);
 			return;
@@ -86,8 +84,6 @@ public class LoginControl extends HttpServlet {
 					response.sendRedirect(request.getContextPath() + "/home");
 				}
 			} else {
-				// messaggio volutamente generico: non rivela se è l'email
-				// a non esistere o la password ad essere sbagliata
 				errors.add("Email o password non validi");
 				request.setAttribute("errors", errors);
 				request.setAttribute("emailInserita", email);
@@ -102,10 +98,6 @@ public class LoginControl extends HttpServlet {
 		}
 	}
 
-	/**
-	 * Valida che il campo non sia vuoto. Ritorna il valore "trimmato"
-	 * (stringa vuota se non valido) e aggiunge un errore alla lista se manca.
-	 */
 	private String validateField(String value, String fieldName, List<String> errors) {
 		if (value == null || value.trim().isEmpty()) {
 			errors.add("Il campo " + fieldName + " non può essere vuoto");
@@ -114,10 +106,7 @@ public class LoginControl extends HttpServlet {
 		return value.trim();
 	}
 
-	/**
-	 * Valida il campo email: prima controlla che non sia vuoto,
-	 * poi (solo se non vuoto) ne controlla il formato.
-	 */
+
 	private String validateEmail(String value, List<String> errors) {
 		String trimmed = validateField(value, "email", errors);
 

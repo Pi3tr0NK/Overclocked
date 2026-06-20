@@ -20,18 +20,18 @@ public class AuthFilter extends HttpFilter {
 	protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 	        throws IOException, ServletException {
 	    String path = request.getServletPath();
-	    // Se l'URL non è protetto, lascia passare
+	    
 	    if (!path.startsWith("/admin/") && !path.startsWith("/common/")) {
 	    		chain.doFilter(request, response);
-	        return; // Per evitare che il codice che segue venga eseguito
+	        return; 
 	    }
 	    
-	    // Controllo che il token sia in sessione
+	   
 	    HttpSession session = request.getSession(false);
 	    UtenteBean utente = (session != null) ? (UtenteBean) session.getAttribute("utente") : null;
 	    String role = (utente != null) ? utente.getRuolo().name() : null;
 	    
-	    // Controllo autenticazione e autorizzazione
+	    
 	    boolean autorizzato = false;
 	    if (role != null) {
 	    		if (path.startsWith("/admin/")) {

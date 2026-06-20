@@ -14,7 +14,6 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/footer.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/cart-sidebar.css">
 
-<!-- Definisci contextPath per il JS -->
 <script>const contextPath = "${pageContext.request.contextPath}";</script>
 
 <jsp:include page="/WEB-INF/views/components/cart-sidebar.jsp" />
@@ -32,7 +31,6 @@
 
 <div class="product">
 
-    <!-- BLOCCO: marca + titolo -->
     <div class="area-brand-title">
 
         <div class="brand">
@@ -45,7 +43,6 @@
 
     </div>
 
-    <!-- BLOCCO: immagine + thumbs -->
     <div class="area-media">
 
         <div class="main-image">
@@ -68,7 +65,6 @@
 
     </div>
 
-    <!-- BLOCCO: disponibilità -->
     <div class="area-stock">
 
 		<div class="stock">
@@ -99,7 +95,6 @@
 
     </div>
 
-    <!-- BLOCCO: prezzo -->
     <div class="area-price">
 
 		<c:choose>
@@ -130,7 +125,6 @@
 
     </div>
 
-    <!-- BLOCCO: quantità, bottone, features, specifiche -->
     <div class="area-rest">
 
 		<div class="qty">

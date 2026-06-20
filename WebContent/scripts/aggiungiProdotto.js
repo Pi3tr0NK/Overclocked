@@ -1,5 +1,3 @@
-// ─── FUNZIONI GLOBALI (chiamate da onclick nel JSP) ───────────────────────────
-
 function selezionaCategoria(cat) {
     document.querySelectorAll('.cat-tab').forEach(function(t) {
         t.classList.toggle('active', t.dataset.cat === cat);
@@ -64,8 +62,6 @@ function disabilitaSezionInattive() {
 }
 
 
-// ─── INIZIALIZZAZIONE + VALIDAZIONE (unico DOMContentLoaded) ─────────────────
-
 document.addEventListener("DOMContentLoaded", function () {
 
     // Seleziona CPU come categoria di default
@@ -75,7 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!form) return;
 
     var regole = {
-        // --- DATI GENERALI ---
+        // DATI GENERALI
         categoria:      { regex: /^(CPU|GPU|RAM|STORAGE|MOBO|PSU|CASE|DISSIPATORE)$/, msg: "Seleziona una categoria valida tra quelle proposte." },
         nome:           { regex: /^.{2,255}$/, msg: "Il nome deve essere compreso tra 2 e 255 caratteri." },
         modello:        { regex: /^.{1,255}$/, msg: "Il modello deve essere compreso tra 1 e 255 caratteri." },
@@ -88,7 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
         dimensioni:     { regex: /^.{0,50}$/, msg: "Le dimensioni non possono superare i 50 caratteri." },
         peso:           { regex: /^(?=.{1,50}$)\d+(\.\d+)?\s?(Kg|g)$/i, msg: "Inserisci il peso seguito dall'unità di misura (es. 1.4 Kg o 500g)." },
 
-        // --- CPU ---
+        // CPU 
         core:           { regex: /^[1-9]\d*$/, msg: "Il numero di core deve essere maggiore di 0." },
         thread:         { regex: /^[1-9]\d*$/, msg: "Il numero di thread deve essere maggiore di 0." },
         tdp:            { regex: /^(0|[1-9]\d*)$/, msg: "Il TDP deve essere un numero intero valido." },
@@ -97,14 +93,14 @@ document.addEventListener("DOMContentLoaded", function () {
         tiporam:        { regex: /^[A-Za-z0-9\s-]{2,10}$/, msg: "Specificare un tipo di RAM valido (es. DDR5)." },
         frequenzaram:   { regex: /^\d+(\.\d+)?\s?(GHz|MHz|KHz|Hz)$/i, msg: "Inserisci una frequenza RAM valida (es. 5600 MHz)." },
 
-        // --- GPU ---
+        // GPU 
         vram:           { regex: /^(?=.{2,10}$)\d+(\.\d+)?\s?(GB|TB|MB|KB)$/i, msg: "Inserisci la VRAM con l'unità di misura (es. 24 GB)." },
         tipovram:       { regex: /^[A-Za-z0-9\s-]{2,20}$/, msg: "Specificare un tipo di VRAM valido (es. GDDR6X)." },
         pcie:           { regex: /^.{2,10}$/, msg: "Specificare l'interfaccia PCIe (es. PCIe 4.0)." },
         video:          { regex: /^.{2,50}$/, msg: "Inserisci le uscite video (es. 3x DP, 1x HDMI)." },
         maxres:         { regex: /^\d+x\d+$/, msg: "Inserisci la risoluzione nel formato corretto (es. 7680x4320)." },
 
-        // --- RAM & STORAGE ---
+        // RAM & STORAGE
         capacita:       { regex: /^(?=.{2,10}$)\d+(\.\d+)?\s?(GB|TB|MB|KB)$/i, msg: "Inserisci la capacità con l'unità di misura (es. 16 GB)." },
         formato:        { regex: /^.{2,20}$/, msg: "Specificare un formato valido (es. M.2 2280 o ATX)." },
         lettura:        { regex: /^(0|[1-9]\d*)$/, msg: "La velocità di lettura deve essere un numero intero." },
@@ -112,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
         tipo:           { regex: /^.{2,10}$/, msg: "Seleziona un tipo valido." },
         tecnologia:     { regex: /^(NVME|SATA)$/, msg: "Seleziona una tecnologia valida." },
 
-        // --- MOBO ---
+        // MOBO
         chipset:        { regex: /^[A-Za-z0-9\s-]{2,20}$/, msg: "Inserisci un chipset valido (es. Z790)." },
         tipoRam:        { regex: /^[A-Za-z0-9\s-]{2,10}$/, msg: "Specificare un tipo di RAM valido (es. DDR5)." },
         maxFreq:        { regex: /^.{2,20}$/, msg: "La frequenza massima non può superare i 20 caratteri." },
@@ -121,22 +117,21 @@ document.addEventListener("DOMContentLoaded", function () {
         porteUsb:       { regex: /^(0|[1-9]\d*)$/, msg: "Inserisci un numero di porte USB valido." },
         nvme:           { regex: /^(true|false)$/, msg: "Seleziona un'opzione valida." },
 
-        // --- PSU ---
+        // PSU
         potenza:        { regex: /^[1-9]\d*$/, msg: "La potenza deve essere un numero intero maggiore di 0." },
         certificazione: { regex: /^[A-Za-z0-9\s+]{1,255}$/, msg: "Inserisci una certificazione valida (es. 80+ Gold)." },
         modulare:       { regex: /^(MODULARE|SEMIMODULARE|NON_MODULARE)$/, msg: "Seleziona un'opzione di modularità valida." },
 
-        // --- CASE ---
+        // CASE
         colore:         { regex: /^[A-Za-zÀ-ÿ\s']{2,20}$/, msg: "Il colore non può superare i 20 caratteri." },
         materiale:      { regex: /^.{2,255}$/, msg: "Il materiale non può superare i 255 caratteri." },
 
-        // --- DISSIPATORE ---
+        // DISSIPATORE
         rpm:            { regex: /^(0|[1-9]\d*)$/, msg: "I giri al minuto (RPM) devono essere un numero intero." },
         rumore:         { regex: /^(0|[1-9]\d*)$/, msg: "Il livello di rumore (dBA) deve essere un numero intero." }
     };
 
-    // ── Helpers errore ────────────────────────────────────────────────────────
-
+  
     function getErrorEl(input) {
         var id = "err-" + input.name;
         var el = document.getElementById(id);
@@ -162,8 +157,6 @@ document.addEventListener("DOMContentLoaded", function () {
         getErrorEl(input).textContent = "";
         input.classList.remove("input-invalid");
     }
-
-    // ── Validazione singolo campo ─────────────────────────────────────────────
 
     function validaCampo(input) {
         var nome   = input.name;
@@ -194,8 +187,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return true;
     }
 
-    // ── Aggancio eventi sui campi ─────────────────────────────────────────────
-
     var campi = form.querySelectorAll("input[name], select[name], textarea[name]");
 
     campi.forEach(function(input) {
@@ -214,18 +205,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // ── Submit: unico listener ────────────────────────────────────────────────
-
+   
     form.addEventListener("submit", function(e) {
 
-        // 1. Categoria selezionata?
         if (!document.getElementById('inputCategoria').value) {
             e.preventDefault();
-            alert('Seleziona una categoria prima di salvare.');
             return;
         }
 
-        // 2. Valida tutti i campi visibili
+        // Valida tutti i campi visibili
         var valido = true;
         campi.forEach(function(input) {
             if (input.type === "file") return;
@@ -241,7 +229,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // 3. Solo se tutto è valido, disabilita le sezioni inattive prima dell'invio
         disabilitaSezionInattive();
     });
 

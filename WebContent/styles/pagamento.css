@@ -68,7 +68,6 @@
             color: #ddd;
         }
 
-        /* ===== INPUT EDITABILI (indirizzo + pagamento) ===== */
         .co-field input {
             width: 100%;
             background: #080808;
@@ -93,7 +92,6 @@
             border-color: #5a1a1a;
         }
 
-        /* riga con due input affiancati (es. scadenza mese/anno) */
         .co-field-row {
             display: flex;
             gap: 10px;
@@ -104,7 +102,6 @@
             margin-bottom: 0;
         }
 
-        /* ===== PAGAMENTO: dettagli specifici ===== */
         .co-card-pagamento .co-title {
             display: flex;
             align-items: center;
@@ -181,7 +178,6 @@
             vertical-align: middle;
         }
 
-        /* prezzi — stesso stile del catalogo */
         .old-price {
             font-size: 12px;
             color: #777;
@@ -194,10 +190,9 @@
             color: #ff7300;
         }
 
-        /* riepilogo destra */
         .co-riepilogo {
             position: sticky;
-            top: 90px; /* altezza navbar + margine, aggiusta in base alla tua navbar */
+            top: 90px; 
         }
 
         .riepilogo-riga {
@@ -312,6 +307,8 @@
 		    margin-top: 4px;
 		    min-height: 1em;
 		}
+		
+		/* RESPONSIVE */
 
         @media (max-width: 800px) {
             .checkout-layout { grid-template-columns: 1fr; }

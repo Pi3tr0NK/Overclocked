@@ -15,9 +15,6 @@ import javax.sql.DataSource;
 import dao.DettaglioOrdineDAOImpl;
 import dao.OrdineDAOImpl;
 
-/**
- * Servlet implementation class AdminDettaglioOrdiniControl
- */
 @WebServlet("/admin/dettaglioOrdini")
 public class AdminDettaglioOrdiniControl extends HttpServlet {
 	

@@ -444,7 +444,6 @@ public class AdminProdottoControl extends HttpServlet {
                     && part.getSubmittedFileName() != null
                     && !part.getSubmittedFileName().isBlank()) {
 
-                // arrivato un file nuovo per questo slot (sostituzione o aggiunta)
                 String nomeOriginale = Paths.get(part.getSubmittedFileName())
                                             .getFileName().toString();
 
@@ -482,7 +481,6 @@ public class AdminProdottoControl extends HttpServlet {
 
             } else if (action.equals("modifica") && daRimuovere) {
 
-                // l'utente ha marcato questo slot per la rimozione e non ha caricato un file sostitutivo
                 String idImmagineStr = request.getParameter("idImmagine" + i);
                 String pathEsistente = request.getParameter("pathEsistente" + i);
 
@@ -497,11 +495,9 @@ public class AdminProdottoControl extends HttpServlet {
                         if (vecchioFile.exists()) vecchioFile.delete();
                     }
                 }
-                // non aggiungo nulla a listaImmagini: lo slot è semplicemente vuoto ora
 
             } else if (action.equals("modifica")) {
 
-                // nessun file nuovo, nessuna rimozione: mantieni immagine esistente
                 String idImmagineStr  = request.getParameter("idImmagine" + i);
                 String pathEsistente  = request.getParameter("pathEsistente" + i);
 
@@ -628,7 +624,7 @@ public class AdminProdottoControl extends HttpServlet {
         Map<String, String> messaggi = new LinkedHashMap<>();
         Map<String, String> valori   = new LinkedHashMap<>();
 
-        // ── CAMPI GENERALI (comuni a tutte le categorie) ──────────────────
+        // campi comuni
         regole.put("nome",        "^.{2,255}$");
         regole.put("modello",     "^.{1,255}$");
         regole.put("marca",       "^[A-Za-z0-9À-ÿ\\s'.&\\-]{1,255}$");
@@ -659,7 +655,7 @@ public class AdminProdottoControl extends HttpServlet {
         valori.put("dimensioni",  request.getParameter("dimensioni"));
         valori.put("peso",        request.getParameter("peso"));
 
-        // ── CAMPI SPECIFICI PER CATEGORIA ────────────────────────────────
+        // campi per categoria
         String categoria = request.getParameter("categoria");
         if (categoria == null) return "Seleziona una categoria valida.";
 
@@ -844,12 +840,10 @@ public class AdminProdottoControl extends HttpServlet {
                 return "Categoria non supportata: " + categoria;
         }
 
-        // ── LOOP DI VALIDAZIONE ───────────────────────────────────────────
         for (Map.Entry<String, String> campo : valori.entrySet()) {
             String chiave = campo.getKey();
             String valore = campo.getValue();
 
-            // descrizione e dimensioni sono opzionali
             boolean opzionale = chiave.equals("descrizione") || chiave.equals("dimensioni");
 
             if (valore == null || valore.trim().isEmpty()) {

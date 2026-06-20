@@ -149,15 +149,13 @@
 										<c:out value="${o.stato}"/> </span></td>
 
 								<td>
-									<%-- Dettaglio ordine --%>
 									<form class="act-button"
 										action="${pageContext.request.contextPath}/admin/dettaglioOrdini"
 										method="get">
 										<input type="hidden" name="action" value="dettaglio" /> <input
 											type="hidden" name="idOrdine" value="${o.idOrdine}" />
 										<button type="submit">Dettaglio</button>
-									</form> <%-- Cambio stato: mostra solo le transizioni valide --%> <c:if
-										test="${o.stato == 'IN_PREPARAZIONE'}">
+									</form> <c:if test="${o.stato == 'IN_PREPARAZIONE'}">
 
 										<form class="act-button"action="${pageContext.request.contextPath}/admin/ordini"
 											method="get">

@@ -7,14 +7,11 @@ document.addEventListener("DOMContentLoaded", function () {
             regex: /^[^\s@]+@[^\s@]+\.[^\s@]{1,}$/,
             msg: "Inserisci un indirizzo email valido."
         }
-        // "password" non ha una regex di formato in fase di login:
-        // basta il controllo "required", già gestito da validaCampo.
     };
 
 	function getErrorEl(input) {
 	    var id = "err-" + input.name;
 	    return document.getElementById(id); 
-	    // Se non lo trova (es. un domani cambi nomi), restituisce null, ma ora i tag ci sono!
 	}
 
     function mostraErrore(input, messaggio) {

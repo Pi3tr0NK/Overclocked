@@ -29,7 +29,7 @@
 
 		<div class="profilo-layout">
 
-			<%-- ── SIDEBAR SINISTRA ── --%>
+			<!-- NAVBAR SINITRA -->
 			<nav class="profilo-nav">
 				<a
 					href="${pageContext.request.contextPath}/common/profilo?view=ordini"
@@ -42,7 +42,7 @@
 					class="profilo-nav-link logout">Logout &#x2192;</a>
 			</nav>
 
-			<%-- ── CONTENUTO DESTRA ── --%>
+			<!-- DATI A DESTRA -->
 			<div class="profilo-content">
 
 				<div class="profilo-card-title">Ordini e fatture</div>
@@ -91,12 +91,9 @@
 								<div id="rimborso" class="ordine-footer">
 
 
-									<%-- Bottone scarica fattura --%>
-									<a
-										href="${pageContext.request.contextPath}/common/profilo?action=fattura&idOrdine=${ordine.idOrdine}"
+									<a href="${pageContext.request.contextPath}/common/profilo?action=fattura&idOrdine=${ordine.idOrdine}"
 										class="btn-fattura"> &#x1F4C4; Scarica fattura </a>
 
-									<%-- Bottone rimborso --%>
 									<c:if test="${ordine.stato != 'RIMBORSATO'}">
 										<form
 											action="${pageContext.request.contextPath}/common/profilo"
@@ -116,10 +113,8 @@
 				</c:choose>
 
 			</div>
-			<%-- fine profilo-content --%>
 
 		</div>
-		<%-- fine profilo-layout --%>
 
 	</div>
 

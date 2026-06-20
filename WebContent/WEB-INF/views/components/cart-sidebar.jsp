@@ -15,7 +15,6 @@
   <div class="sidebar-footer">
     <div class="sidebar-total-row">
       <span class="sidebar-total-label">Totale</span>
-      <%-- Riusa .product-price del tema per il colore arancione --%>
       <span class="product-price" id="sidebarTotal">€ 0,00</span>
     </div>
     <a href="${pageContext.request.contextPath}/common/pagamento" class="sidebar-btn-checkout">

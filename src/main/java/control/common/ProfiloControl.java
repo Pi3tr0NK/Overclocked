@@ -76,10 +76,9 @@ public class ProfiloControl extends HttpServlet {
         String view   = request.getParameter("view");
         String action = request.getParameter("action");
 
-        // ── default: ordini ──
-        if (view == null || view.isEmpty()) view = "ordini";
+        if (view == null || view.isEmpty()) 
+        		view = "ordini";
 
-        // ── azioni POST ──────────────────────────────────────────────
         if (action != null) {
             switch (action) {
 
@@ -97,7 +96,6 @@ public class ProfiloControl extends HttpServlet {
             }
         }
 
-        // ── carica dati in base alla view ────────────────────────────
         try {
             switch (view) {
 
@@ -137,10 +135,6 @@ public class ProfiloControl extends HttpServlet {
         }
     }
 
-    // ─────────────────────────────────────────────
-    //  Rimborso ordine
-    // ─────────────────────────────────────────────
-
     private void gestisciRimborso(HttpServletRequest request, HttpServletResponse response,
                                    UtenteBean utente) throws ServletException, IOException {
         String idOrdineStr = request.getParameter("idOrdine");
@@ -152,7 +146,6 @@ public class ProfiloControl extends HttpServlet {
         try {
             int idOrdine = Integer.parseInt(idOrdineStr);
 
-            // Il DAO verifica i 30 giorni, ripristina lo stock e mette RIMBORSATO
             boolean ok = ordineDAO.doRimborsa(idOrdine, utente.getIdUtente());
 
             if (ok) {
@@ -172,10 +165,6 @@ public class ProfiloControl extends HttpServlet {
             throw new ServletException(e);
         }
     }
-
-    // ─────────────────────────────────────────────
-    //  Aggiorna dati utente
-    // ─────────────────────────────────────────────
 
     private void gestisciAggiornaDati(HttpServletRequest request, HttpServletResponse response,
             UtenteBean utente) throws ServletException, IOException {
@@ -253,7 +242,6 @@ public class ProfiloControl extends HttpServlet {
 		valori.put("codicePostale", request.getParameter("codicePostale"));
 		valori.put("paese",         request.getParameter("paese"));
 		valori.put("cellulare",     request.getParameter("cellulare"));
-		// datiPlus è opzionale: escluso come nel JS con :not([name='datiPlus'])
 		
 		for (Map.Entry<String, String> campo : valori.entrySet()) {
 		String chiave = campo.getKey();
@@ -282,7 +270,6 @@ public class ProfiloControl extends HttpServlet {
 		try {
 		int idOrdine = Integer.parseInt(idOrdineStr);
 		
-		// Recupera ordine e dettagli
 		OrdineBean ordine = ordineDAO.doRetrieveByKey(idOrdine);
 		if (ordine == null) {
 		response.sendRedirect(request.getContextPath() + "/common/profilo?view=ordini");
@@ -291,7 +278,6 @@ public class ProfiloControl extends HttpServlet {
 		
 		List<DettaglioOrdineBean> dettagli = dettaglioDAO.doRetrieveByOrdine(idOrdine);
 		
-		// Genera PDF
 		response.setContentType("application/pdf");
 		response.setHeader("Content-Disposition",
 		"attachment; filename=\"fattura_ordine_" + idOrdine + ".pdf\"");
@@ -300,7 +286,6 @@ public class ProfiloControl extends HttpServlet {
 		PdfWriter.getInstance(document, response.getOutputStream());
 		document.open();
 		
-		// Intestazione
 		Font titoloFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
 		Font normalFont  = new Font(Font.FontFamily.HELVETICA, 11, Font.NORMAL);
 		Font boldFont    = new Font(Font.FontFamily.HELVETICA, 11, Font.BOLD);

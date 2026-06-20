@@ -25,7 +25,7 @@
 
     <div class="profilo-layout">
 
-        <%-- ── SIDEBAR SINISTRA ── --%>
+        <!-- NAVBAR SINISTRA -->
         <nav class="profilo-nav">
             <a href="${pageContext.request.contextPath}/common/profilo?view=ordini"
                class="profilo-nav-link">Ordini e fatture</a>
@@ -37,7 +37,7 @@
                class="profilo-nav-link logout">Logout &#x2192;</a>
         </nav>
 
-        <%-- ── CONTENUTO DESTRA ── --%>
+        <!-- CONTENUTO A DESTRA -->
         <div class="profilo-content">
 
             <div class="profilo-card-title">I miei dati</div>
@@ -52,7 +52,7 @@
             <form action="${pageContext.request.contextPath}/common/profilo" method="post" novalidate>
                 <input type="hidden" name="action" value="aggiornaDati"/>
 
-                <%-- Dati personali --%>
+                <!-- DATO PERSONALI -->
                 <div class="profilo-section-title">Dati personali</div>
 
                 <div class="profilo-grid2">
@@ -77,7 +77,7 @@
                     </div>
                 </div>
 
-                <%-- Indirizzo --%>
+                
                 <div class="profilo-section-title">Indirizzo</div>
 
                 <div class="profilo-field">
@@ -123,9 +123,9 @@
 
             </form>
 
-        </div><%-- fine profilo-content --%>
+        </div>
 
-    </div><%-- fine profilo-layout --%>
+    </div>
 
 </div>
 

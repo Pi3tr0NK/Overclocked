@@ -135,8 +135,6 @@ public class RegisterControl extends HttpServlet {
 	        }
 	    }
 
-	    // ===== CONTROLLO EMAIL DUPLICATA (solo se la validazione base è passata) =====
-
 	    if (errors == null) {
 	        try {
 	            if (utenteDAO.checkEmail(email)) {

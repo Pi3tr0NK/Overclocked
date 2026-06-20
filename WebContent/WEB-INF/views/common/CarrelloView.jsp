@@ -26,7 +26,6 @@
 
     <c:choose>
 
-        <%-- ── CARRELLO VUOTO ── --%>
         <c:when test="${empty prodotti}">
             <div class="cart-empty">
                 <h2>Il carrello è vuoto</h2>
@@ -37,14 +36,11 @@
             </div>
         </c:when>
 
-        <%-- ── CARRELLO CON PRODOTTI ── --%>
         <c:otherwise>
             <div class="cart-page">
 
-                <%-- Lista prodotti --%>
                 <div class="cart-items">
 
-			    <%-- Bottone svuota carrello --%>
 			    <div class="cart-header">
 			        <span>${numProdotti} articoli</span>
 			        <button class="clear-btn" data-action="svuota">
@@ -92,7 +88,6 @@
 
                             </div>
 
-                            <%-- Controlli quantità e rimozione --%>
                             <div class="cart-item-controls">
 
                                 <button class="qty-btn"
@@ -126,7 +121,6 @@
 
                 </div>
 
-                <%-- Riepilogo ordine --%>
                 <div class="cart-summary">
 
                     <h2>Riepilogo</h2>

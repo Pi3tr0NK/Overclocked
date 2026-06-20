@@ -79,8 +79,6 @@ public class AdminOrdiniControl extends HttpServlet {
         }
     }
     
-    // ── Azioni ───────────────────────────────────────────────────────────
-
     private void cambiaStato(HttpServletRequest request) throws Exception {
 
         String idOrdineStr  = request.getParameter("idOrdine");

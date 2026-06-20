@@ -45,7 +45,7 @@
         <input type="hidden" name="idProdotto" value="${prodotto.idProdotto}"/>
         <input type="hidden" name="categoria"  value="${prodotto.categoria}"/>
 
-        <%-- ===== DATI GENERALI ===== --%>
+        <!-- DATI GENERALI -->
         <div class="section">
             <h2>Dati Generali</h2>
 
@@ -106,7 +106,7 @@
             </div>
         </div>
 
-        <%-- ===== CPU ===== --%>
+        <!-- CPU -->
         <c:if test="${prodotto.categoria == 'CPU'}">
         <div class="section">
             <h2>Specifiche CPU</h2>
@@ -146,7 +146,7 @@
         </div>
         </c:if>
 
-        <%-- ===== GPU ===== --%>
+        <!-- GPU -->
         <c:if test="${prodotto.categoria == 'GPU'}">
         <div class="section">
             <h2>Specifiche GPU</h2>
@@ -186,7 +186,7 @@
         </div>
         </c:if>
 
-        <%-- ===== RAM ===== --%>
+        <!-- RAM -->
         <c:if test="${prodotto.categoria == 'RAM'}">
         <div class="section">
             <h2>Specifiche RAM</h2>
@@ -208,7 +208,7 @@
         </div>
         </c:if>
 
-        <%-- ===== STORAGE ===== --%>
+        <!-- STORAGE -->
         <c:if test="${prodotto.categoria == 'STORAGE'}">
         <div class="section">
             <h2>Specifiche Storage</h2>
@@ -250,7 +250,7 @@
         </div>
         </c:if>
 
-        <%-- ===== MOBO ===== --%>
+        <!-- MOBO -->
         <c:if test="${prodotto.categoria == 'MOBO'}">
         <div class="section">
             <h2>Specifiche Scheda Madre</h2>
@@ -307,7 +307,7 @@
         </div>
         </c:if>
 
-        <%-- ===== PSU ===== --%>
+        <!-- PSU -->
         <c:if test="${prodotto.categoria == 'PSU'}">
         <div class="section">
             <h2>Specifiche Alimentatore</h2>
@@ -342,7 +342,7 @@
         </div>
         </c:if>
 
-        <%-- ===== CASE ===== --%>
+        <!-- CASE -->
         <c:if test="${prodotto.categoria == 'CASE'}">
         <div class="section">
             <h2>Specifiche Case</h2>
@@ -364,7 +364,7 @@
         </div>
         </c:if>
 
-        <%-- ===== DISSIPATORE ===== --%>
+        <!-- DISSIPATORE -->
         <c:if test="${prodotto.categoria == 'DISSIPATORE'}">
         <div class="section">
             <h2>Specifiche Dissipatore</h2>
@@ -400,7 +400,7 @@
         </div>
         </c:if>
 
-        <%-- ===== IMMAGINI ===== --%>
+        <!-- IMMAGINI -->
         <div class="section">
             <h2>Immagini</h2>
             <p id="immagine">
@@ -422,7 +422,6 @@
 			</div>
 			</c:forEach>
 
-                <%-- slot vuoti per nuove immagini aggiuntive --%>
                 <c:forEach begin="1" end="${5 - prodotto.immagini.size()}" varStatus="s">
                 <div class="image-slot" onclick="apriSlot(this)">
                     <input type="file" name="immagine${prodotto.immagini.size() + s.count}" accept="image/*" hidden onchange="gestisciSlot(this)"/>
@@ -434,7 +433,7 @@
             </div>
         </div>
 
-        <%-- ===== BOTTONI ===== --%>
+        <!-- BOTTONI -->
         <div class="btn-row">
             <button type="submit">Salva modifiche</button>
             <a class="btn-cancel" href="${pageContext.request.contextPath}/admin/dashboard">Annulla</a>

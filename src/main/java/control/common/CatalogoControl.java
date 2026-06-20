@@ -85,7 +85,6 @@ public class CatalogoControl extends HttpServlet {
 	    String errore = validaFiltri(request, cat);
 	    if (errore != null) {
 	        request.setAttribute("errore", errore);
-	        // Rimanda al catalogo senza caricare prodotti
 	        request.getRequestDispatcher("/WEB-INF/views/common/CatalogoView.jsp")
 	               .forward(request, response);
 	        return;
@@ -352,7 +351,6 @@ public class CatalogoControl extends HttpServlet {
 	                regole.put("capacita", "^(?i)\\d+\\s?(GB|MB|TB)$");
 	                messaggi.put("capacita", "Inserisci la capacità con l'unità di misura (es. 512GB).");
 	                valori.put("capacita", request.getParameter("capacita"));
-	                // "tipo" e "tecnologia" sono select, valori vincolati, nessun controllo necessario
 	                break;
 
 	            case "MOBO":
@@ -362,7 +360,6 @@ public class CatalogoControl extends HttpServlet {
 	                messaggi.put("slotram",  "Inserisci un numero di slot RAM valido.");
 	                valori.put("formato",  request.getParameter("formato"));
 	                valori.put("slotram",  request.getParameter("slotram"));
-	                // "nvme" è una select, nessun controllo necessario
 	                break;
 
 	            case "CASE":
@@ -381,11 +378,6 @@ public class CatalogoControl extends HttpServlet {
 	                messaggi.put("certificazione", "Inserisci una certificazione valida (es. 80+ Gold).");
 	                valori.put("potenza",        request.getParameter("potenza"));
 	                valori.put("certificazione", request.getParameter("certificazione"));
-	                // "modulare" è una select, nessun controllo necessario
-	                break;
-
-	            case "DISSIPATORE":
-	                // "tipo" è una select, nessun controllo necessario
 	                break;
 	        }
 	    }
@@ -394,7 +386,6 @@ public class CatalogoControl extends HttpServlet {
 	        String chiave = campo.getKey();
 	        String valore = campo.getValue();
 
-	        // Tutti i filtri sono opzionali: campo vuoto o null = nessun filtro, nessun errore
 	        if (valore == null || valore.trim().isEmpty()) continue;
 
 	        if (!Pattern.matches(regole.get(chiave), valore.trim())) {
@@ -402,7 +393,7 @@ public class CatalogoControl extends HttpServlet {
 	        }
 	    }
 
-	    return null; // nessun errore
+	    return null;
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

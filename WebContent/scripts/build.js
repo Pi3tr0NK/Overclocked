@@ -1,7 +1,5 @@
-// ─────────────────────────────────────────────
-//  AJAX
-// ─────────────────────────────────────────────
 
+//  AJAX
 function ajax(url, params, callback) {
     var req = new XMLHttpRequest();
     req.onreadystatechange = function () {
@@ -9,7 +7,7 @@ function ajax(url, params, callback) {
         if (req.status === 200) {
             callback(req);
         } else {
-            alert(req.status === 0
+            console.log(req.status === 0
                 ? "Nessuna risposta ricevuta nel tempo limite"
                 : "Errore nella richiesta:\n" + req.statusText);
         }
@@ -24,10 +22,7 @@ function pcAjax(params, callback) {
     ajax("pcBuilder", params, callback);
 }
 
-// ─────────────────────────────────────────────
 //  Prezzi
-// ─────────────────────────────────────────────
-
 function prezzoScontato(item) {
     var p = parseFloat(item.prezzo) || 0;
     var s = parseFloat(item.sconto) || 0;
@@ -40,10 +35,8 @@ function formattaPrezzoOption(item) {
     return "€" + parseFloat(item.prezzo).toFixed(2);
 }
 
-// ─────────────────────────────────────────────
-//  Caricamento componenti
-// ─────────────────────────────────────────────
 
+//  Caricamento componenti
 function caricaCpus()            { pcAjax("action=getCpus",                              aggiornaCpus); }
 function caricaMobos(cpuId)      { pcAjax("action=getMobos&cpuId=" + cpuId,              aggiornaMobos); }
 function caricaRams(moboId)      { pcAjax("action=getRams&moboId=" + moboId,             aggiornaRams); }
@@ -53,10 +46,8 @@ function caricaPsus(cpuId, gpuId){ pcAjax("action=getPsus&cpuId=" + cpuId + "&gp
 function caricaCases(moboId)     { pcAjax("action=getCases&moboId=" + moboId,            aggiornaCases); }
 function caricaDissipatori(cpuId){ pcAjax("action=getDissipatori&cpuId=" + cpuId,        aggiornaDissipatori); }
 
-// ─────────────────────────────────────────────
-//  Callback (una funzione generica + wrapper)
-// ─────────────────────────────────────────────
 
+//  Callback
 function gestisciRisposta(request, errId, fn) {
     var response = JSON.parse(request.responseText);
     if (response.functionName === "errore") {
@@ -145,10 +136,8 @@ function aggiornaDissipatori(req) {
     abilitaSelect("selDissipatore", "num-diss", "lbl-diss");
 }
 
-// ─────────────────────────────────────────────
-//  Cascata onchange
-// ─────────────────────────────────────────────
 
+//  Cascata onchange
 function onCpuChange() {
     var cpuId = document.getElementById("selCpu").value;
     resetSelect("selMobo",        "-- Prima seleziona una CPU --",          "num-mobo",    "lbl-mobo");
@@ -187,10 +176,6 @@ function onGpuChange() {
     caricaPsus(cpuId, gpuId);
 }
 
-// ─────────────────────────────────────────────
-//  Utilità DOM
-// ─────────────────────────────────────────────
-
 function popolaSelect(selectId, items, placeholder, fnId, fnLabel) {
     var sel = document.getElementById(selectId);
     if (!items || items.length === 0) {
@@ -199,7 +184,7 @@ function popolaSelect(selectId, items, placeholder, fnId, fnLabel) {
     }
     sel.innerHTML = "<option value=''>" + placeholder + "</option>";
     items.forEach(function (item) {
-        var scontato = prezzoScontato(item);   // ← FIX: sempre calcolato con parseFloat
+        var scontato = prezzoScontato(item); 
         var opt = document.createElement("option");
         opt.value = fnId(item);
         opt.text  = fnLabel(item);
@@ -224,10 +209,7 @@ function abilitaSelect(selectId, numId, lblId) {
     document.getElementById(lblId).classList.remove("disabled");
 }
 
-// ─────────────────────────────────────────────
 //  Riepilogo build
-// ─────────────────────────────────────────────
-
 var componenti = [
     { id: "selCpu",         label: "CPU" },
     { id: "selMobo",        label: "Scheda Madre" },
@@ -272,10 +254,7 @@ function aggiornaRiepilogo() {
     aggiornaBottoneCarrello();
 }
 
-// ─────────────────────────────────────────────
-//  Carrello
-// ─────────────────────────────────────────────
-
+// Aggiunta al carrello
 function aggiornaBottoneCarrello() {
     var tuttiSelezionati = componenti.every(function (c) {
         return document.getElementById(c.id).value !== "";
@@ -317,8 +296,12 @@ function aggiungiTuttiAlCarrello() {
     aggiungiUno(0);
 }
 
-// ─────────────────────────────────────────────
-//  Avvio
-// ─────────────────────────────────────────────
+//  All'avvio
 
 window.onload = caricaCpus;
+
+
+
+
+
+

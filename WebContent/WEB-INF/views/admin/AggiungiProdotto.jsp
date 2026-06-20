@@ -41,7 +41,7 @@
         id="formProdotto"
         novalidate>
 
-        <%-- CATEGORIA --%>
+        <!-- CATEGORIA -->
         <div class="section">
             <h2>Categoria</h2>
             <div class="cat-tabs">
@@ -57,7 +57,7 @@
             <input type="hidden" name="categoria" id="inputCategoria" value=""/>
         </div>
 
-        <%-- DATI GENERALI --%>
+        <!-- DATI GENERALI -->
         <div class="section">
             <h2>Dati Generali</h2>
 
@@ -155,7 +155,7 @@
             </div>
         </div>
 
-        <%-- ===== GPU ===== --%>
+        <!--GPU -->
         <div class="section cat-section" id="section-GPU">
             <h2>Specifiche GPU</h2>
             <div class="row3">
@@ -250,7 +250,7 @@
             </div>
         </div>
 
-        <%-- ===== MOBO ===== --%>
+        <!-- MOBO -->
         <div class="section cat-section" id="section-MOBO">
             <h2>Specifiche Scheda Madre</h2>
             <div class="row3">
@@ -304,7 +304,7 @@
             </div>
         </div>
 
-        <%-- ===== PSU ===== --%>
+        <!-- PSU -->
         <div class="section cat-section" id="section-PSU">
             <h2>Specifiche Alimentatore</h2>
             <div class="row2">
@@ -336,7 +336,7 @@
             </div>
         </div>
 
-        <%-- ===== CASE ===== --%>
+        <!-- CASE -->
         <div class="section cat-section" id="section-CASE">
             <h2>Specifiche Case</h2>
             <div class="row3">
@@ -355,7 +355,7 @@
             </div>
         </div>
 
-        <%-- ===== DISSIPATORE ===== --%>
+        <!-- DISSIPATORE -->
         <div class="section cat-section" id="section-DISSIPATORE">
             <h2>Specifiche Dissipatore</h2>
             <div class="row3">
@@ -387,7 +387,7 @@
             </div>
         </div>
 
-        <%-- IMMAGINI --%>
+        <!-- IMMAGINI -->
         <div class="section">
             <h2>Immagini</h2>
             <p style="font-size:12px;color:#666;margin-bottom:10px">
@@ -417,7 +417,7 @@
             </div>
         </div>
 
-        <%-- BOTTONI --%>
+        <!-- BOTTONI -->
         <div class="btn-row">
             <button type="submit">Salva prodotto</button>
             <a class="btn-cancel" href="${pageContext.request.contextPath}/admin/dashboard">Annulla</a>

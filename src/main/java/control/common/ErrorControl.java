@@ -19,7 +19,6 @@ public class ErrorControl extends HttpServlet {
         // Recupera il codice di stato dell'errore (es. 404, 500) se inviato dal server
         Integer statusCode = (Integer) request.getAttribute("jakarta.servlet.error.status_code");
         
-        // Se non c'è un codice di default, possiamo ipotizzare un errore generico o un accesso diretto
         if (statusCode == null) {
             statusCode = 500;
         }

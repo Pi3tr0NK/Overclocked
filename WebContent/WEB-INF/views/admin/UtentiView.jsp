@@ -137,7 +137,6 @@
 
                         <td>
 
-							<%-- Visualizza gli ordini --%>
                             <form class="act-button" action="${pageContext.request.contextPath}/admin/ordini" method="post">
                                 <input type="hidden" name="cercaNome"  value="${u.nome}"/>
                                 <input type="hidden" name="cercaCognome"  value="${u.cognome}"/>
@@ -145,7 +144,6 @@
                                 <button type="submit" class="action-btn">Visualizza Ordini</button>
                             </form>
                             
-                           <%-- Promuovi admin (solo per clienti) --%>
                             <c:if test="${u.ruolo == 'USER'}">
                                 <form class="act-button" action="${pageContext.request.contextPath}/admin/utenti" method="post">
                                     <input type="hidden" name="action"   value="promuovi"/>

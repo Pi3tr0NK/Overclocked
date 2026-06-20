@@ -19,7 +19,6 @@ public class CarrelloBean implements Serializable {
         return items;
     }
 
-    // AGGIUNGI PRODOTTO
     public void addProduct(ProdottoBean prodotto, int quantita) {
 
         for (CarrelloItemBean item : items) {
@@ -32,7 +31,6 @@ public class CarrelloBean implements Serializable {
         items.add(new CarrelloItemBean(prodotto, quantita));
     }
 
-    // RIMUOVI PRODOTTO COMPLETAMENTE
     public void removeProduct(int idProdotto) {
 
         Iterator<CarrelloItemBean> it = items.iterator();
@@ -61,7 +59,6 @@ public class CarrelloBean implements Serializable {
         return null;
     }
 
-    // QUANTITÀ TOTALE (utile per badge carrello)
     public int getTotalQuantity() {
 
         int total = 0;
@@ -73,7 +70,6 @@ public class CarrelloBean implements Serializable {
         return total;
     }
 
-    // SVUOTA CARRELLO
     public void clear() {
         items.clear();
     }

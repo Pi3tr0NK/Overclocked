@@ -1,12 +1,9 @@
-/* ── Layout pagina ── */
 
 .cart-page {
     display: flex;
     gap: 30px;
     align-items: flex-start;
 }
-
-/* ── Lista prodotti (sinistra) ── */
 
 .cart-items {
     flex: 1;
@@ -62,8 +59,6 @@
     margin-right: 8px;
 }
 
-/* ── Controlli quantità ── */
-
 .cart-item-controls {
     display: flex;
     align-items: center;
@@ -109,8 +104,6 @@
 }
 
 .remove-btn:hover { color: red; }
-
-/* ── Riepilogo (destra) ── */
 
 .cart-summary {
     width: 320px;
@@ -177,8 +170,6 @@
 
 .continue-link:hover { color: #ff7300; }
 
-/* ── Carrello vuoto ── */
-
 .cart-empty {
     text-align: center;
     padding: 80px 0;
@@ -204,8 +195,6 @@
 #color-green {
 	color:#28d14a;
 }
-
-/* ── Header lista prodotti ── */
 
 .cart-header {
     display: flex;
@@ -233,9 +222,7 @@
     color: red;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
+/* RESPONSIVE */
 
 @media (max-width: 1100px) {
 
@@ -246,7 +233,7 @@
     .cart-summary {
         width: 100%;
         position: static;
-        order: -1; /* riepilogo sempre in cima */
+        order: -1;
     }
 
     .cart-items {

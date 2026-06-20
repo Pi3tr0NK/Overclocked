@@ -8,9 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-/**
- * Servlet implementation class logout
- */
 @WebServlet("/logout")
 public class logout extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -27,10 +24,7 @@ public class logout extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// elimina sessione completa
         request.getSession().invalidate();
-
-        // redirect login/home
         response.sendRedirect(request.getContextPath() + "/home");
 	}
 

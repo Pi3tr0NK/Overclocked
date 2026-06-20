@@ -20,7 +20,6 @@ if (cartItemsEl) {
             })
             .catch(function(err) {
                 console.error("Errore svuota carrello:", err);
-                alert("Si e' verificato un errore. Riprova.");
             });
             return;
         }
@@ -69,7 +68,6 @@ if (cartItemsEl) {
             if (cartItem) {
                 cartItem.querySelectorAll("button").forEach(function(b) { b.disabled = false; });
             }
-            alert("Si e' verificato un errore. Riprova.");
         });
     });
 }

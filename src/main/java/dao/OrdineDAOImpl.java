@@ -23,10 +23,6 @@ public class OrdineDAOImpl implements OrdineDAO {
 		this.ds = ds;
 	}
 
-	// ─────────────────────────────────────────────
-	// SAVE ordine semplice (usato dall'admin ecc.)
-	// ─────────────────────────────────────────────
-
 	public synchronized void doSave(OrdineBean ordine) throws SQLException {
 
 		String sql = "INSERT INTO " + TABLE_NAME + " (data, stato, totale, pagamento, fk_utente, fk_indirizzo) "
@@ -62,12 +58,6 @@ public class OrdineDAOImpl implements OrdineDAO {
 		return null;
 	}
 
-	// ─────────────────────────────────────────────
-	// SAVE ordine completo da carrello
-	// (inserisce ordine + dettagli + scala stock
-	// in un'unica transazione)
-	// ─────────────────────────────────────────────
-
 	public synchronized int doSaveOrdineCompleto(CarrelloBean cart, UtenteBean utente, int idIndirizzo, String pagamento)
 			throws SQLException {
 
@@ -82,7 +72,6 @@ public class OrdineDAOImpl implements OrdineDAO {
 			con = ds.getConnection();
 			con.setAutoCommit(false);
 
-			// 1. Inserisci ordine
 			int idOrdine;
 			String sqlOrdine = "INSERT INTO " + TABLE_NAME
 					+ " (data, stato, totale, pagamento, fk_utente, fk_indirizzo) " + "VALUES (?, ?, ?, ?, ?, ?)";
@@ -103,7 +92,6 @@ public class OrdineDAOImpl implements OrdineDAO {
 				}
 			}
 
-			// 2. Inserisci dettagli e scala stock per ogni prodotto
 			String sqlDettaglio = "INSERT INTO dettagliOrdine (fk_ordine, fk_prodotto, quantita, prezzo_unitario) "
 					+ "VALUES (?, ?, ?, ?)";
 			String sqlStock = "UPDATE prodotto SET stock = stock - ? WHERE id_prodotto = ? AND stock >= ?";
@@ -151,10 +139,6 @@ public class OrdineDAOImpl implements OrdineDAO {
 				}
 		}
 	}
-
-	// ─────────────────────────────────────────────
-	// RETRIEVE tutti gli ordini (admin)
-	// ─────────────────────────────────────────────
 
 	public synchronized Collection<OrdineBean> doRetrieveAll(String nome, String cognome, String email, String stato,
 			String dataStart, String dataEnd, int pagina) throws SQLException {
@@ -222,10 +206,6 @@ public class OrdineDAOImpl implements OrdineDAO {
 
 		return lista;
 	}
-
-	// ─────────────────────────────────────────────
-	// RETRIEVE ordini per utente
-	// ─────────────────────────────────────────────
 
 	public synchronized Collection<OrdineBean> doRetrieveAllByUser(int idUser, int pagina) throws SQLException {
 
@@ -315,10 +295,6 @@ public class OrdineDAOImpl implements OrdineDAO {
 		}
 	}
 
-	// ─────────────────────────────────────────────
-	// RETRIEVE ordini RIMBORSATI per utente (resi)
-	// ─────────────────────────────────────────────
-
 	public synchronized Collection<OrdineBean> doRetrieveResiByUser(int idUser) throws SQLException {
 
 		List<OrdineBean> lista = new LinkedList<>();
@@ -339,13 +315,6 @@ public class OrdineDAOImpl implements OrdineDAO {
 		}
 		return lista;
 	}
-
-	// ─────────────────────────────────────────────
-	// RIMBORSA ordine
-	// Verifica 30 giorni, ripristina stock,
-	// imposta stato RIMBORSATO — tutto in una
-	// unica transazione
-	// ─────────────────────────────────────────────
 
 	public synchronized boolean doRimborsa(int idOrdine, int idUtente) throws SQLException {
 
@@ -416,10 +385,6 @@ public class OrdineDAOImpl implements OrdineDAO {
 		}
 	}
 
-	// ─────────────────────────────────────────────
-	// UPDATE ordine
-	// ─────────────────────────────────────────────
-
 	public synchronized boolean doUpdate(OrdineBean o) throws SQLException {
 
 		String sql = "UPDATE " + TABLE_NAME
@@ -439,10 +404,6 @@ public class OrdineDAOImpl implements OrdineDAO {
 		}
 	}
 
-	// ─────────────────────────────────────────────
-	// SET stato ordine
-	// ─────────────────────────────────────────────
-
 	public synchronized boolean setOrdineStatus(int idOrdine, Stato stato) throws SQLException {
 
 		String sql = "UPDATE " + TABLE_NAME + " SET stato=? WHERE id_ordine=?";
@@ -455,10 +416,6 @@ public class OrdineDAOImpl implements OrdineDAO {
 			return ps.executeUpdate() > 0;
 		}
 	}
-
-	// ─────────────────────────────────────────────
-	// COUNT ordini ultimo mese
-	// ─────────────────────────────────────────────
 
 	public synchronized int doCountByLastMonth() throws SQLException {
 
@@ -473,11 +430,7 @@ public class OrdineDAOImpl implements OrdineDAO {
 		}
 		return 0;
 	}
-
-	// ─────────────────────────────────────────────
-	// COUNT ordini per stato
-	// ─────────────────────────────────────────────
-
+	
 	public synchronized int doCount(String stato) throws SQLException {
 
 		boolean filtra = stato != null && !stato.isBlank();
@@ -498,10 +451,6 @@ public class OrdineDAOImpl implements OrdineDAO {
 
 		return 0;
 	}
-
-	// ─────────────────────────────────────────────
-	// Utility: mappa una riga ResultSet in OrdineBean
-	// ─────────────────────────────────────────────
 
 	private OrdineBean mapRow(ResultSet rs, IndirizzoDAOImpl indirizzoDAO, UtenteDAOImpl utenteDAO)
 			throws SQLException {

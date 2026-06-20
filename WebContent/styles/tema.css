@@ -54,8 +54,9 @@ a {
 .product-link,
 .product-link:visited,
 .product-link:hover,
-.product-link:active {
-    color: #ff7a00 !important;
+.product-link:active 
+{
+	color: #ff7a00 !important;
 }
 
 /* =========================

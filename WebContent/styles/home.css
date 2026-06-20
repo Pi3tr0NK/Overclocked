@@ -73,10 +73,8 @@
     text-align: center;
     letter-spacing: 0.5px;
 }
-	
-/* =========================
-   TABLET
-========================= */
+
+/* RESPONSIVE */
 
 @media (max-width: 1024px) {
 
@@ -107,9 +105,6 @@
     }
 }
 
-/* =========================
-   MOBILE
-========================= */
 
 @media (max-width: 768px) {
 
@@ -128,18 +123,10 @@
         text-align: left; 
     }
 
-    /* =========================
-       GRID PRODOTTI (2 COLONNE)
-    ========================= */
-
     .grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
     }
-
-    /* =========================
-       CATEGORIE (CENTRATE)
-    ========================= */
 
     .category-card img {
         display: none;
@@ -148,9 +135,9 @@
     .category-card {
         padding: 14px 10px;
         display: flex;
-        justify-content: center; /* Centra il testo orizzontalmente */
-        align-items: center;     /* Centra il testo verticalmente */
-        text-align: center;      /* Forza la centratura del testo interno */
+        justify-content: center; 
+        align-items: center;     
+        text-align: center;     
         min-height: 55px;
     }
 
@@ -167,11 +154,7 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
     }
-
-    /* =========================
-       CONFIGURATORE (ALLINEATO A SINISTRA)
-    ========================= */
-
+    
     .configuratore {
         padding: 22px;
         gap: 20px;
@@ -200,10 +183,6 @@
         max-width: 300px;
     }
 
-    /* =========================
-       CARDS PRODOTTI
-    ========================= */
-
     .card img {
         height: 180px;
     }
@@ -216,10 +195,6 @@
         font-size: 18px;
     }
 }
-
-/* =========================
-   SMARTPHONE PICCOLI
-========================= */
 
 @media (max-width: 480px) {
 

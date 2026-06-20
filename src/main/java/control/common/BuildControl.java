@@ -80,13 +80,13 @@ public class BuildControl extends HttpServlet {
 
 		String action = request.getParameter("action");
 
-		// Nessuna action → mostra la pagina JSP
+		
 		if (action == null || action.isEmpty()) {
 			request.getRequestDispatcher("/WEB-INF/views/common/BuildView.jsp").forward(request, response);
 			return;
 		}
 
-		// Tutte le richieste AJAX rispondono in JSON
+		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		PrintWriter out = response.getWriter();

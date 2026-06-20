@@ -8,15 +8,13 @@
 body {
     background: #000;
     display: flex;
-    flex-direction: column; /* Allinea gli elementi in verticale (Titolo sopra, Container sotto) */
-    justify-content: center; /* Centra verticalmente la card nello schermo */
-    align-items: center; /* Centra orizzontalmente sia il titolo che la card */
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
     min-height: 100vh;
-    padding: 120px 0 40px; /* Aumentato il padding superiore per fare spazio al brand in alto */
+    padding: 120px 0 40px; 
     position: relative;
 }
-
-/* ── Card ── */
 
 .register-container {
     width: 500px;
@@ -28,11 +26,10 @@ body {
     box-shadow: 0 0 20px rgba(255,140,0,0.1);
 }
 
-/* ── Header ── */
 
 .brand-header {
     position: absolute;
-    top: 40px; /* Distanza fissa dal bordo superiore dello schermo */
+    top: 40px; 
     font-size: 2rem; 
     font-weight: 800;
     letter-spacing: 2px;
@@ -82,7 +79,6 @@ h1 { text-align: center; margin-bottom: 10px; }
     margin-bottom: 40px;
 }
 
-/* ── Sezioni ── */
 
 .section-title {
     display: flex;
@@ -100,8 +96,6 @@ h1 { text-align: center; margin-bottom: 10px; }
     height: 1px;
     background: #222;
 }
-
-/* ── Campi ── */
 
 .row {
     display: flex;
@@ -144,8 +138,6 @@ input:focus {
     margin-bottom: 20px;
 }
 
-/* ── Bottone ── */
-
 .register-btn {
     width: 100%;
     padding: 16px;
@@ -164,8 +156,6 @@ input:focus {
     color: #ff7300;
 }
 
-/* ── Link login ── */
-
 .login-link {
     text-align: center;
     margin-top: 25px;
@@ -177,8 +167,6 @@ input:focus {
     text-decoration: none;
     font-weight: bold;
 }
-
-/* ── Errori ── */
 
 .error {
     background: #2b0000;
@@ -194,15 +182,15 @@ input:focus {
 }
 
 
-/* ── Responsive ── */
+/* RESPONSIVE */
 
 @media (max-width: 600px) {
     body {
-        padding-top: 100px; /* Riduce lo spazio in alto sui telefoni */
+        padding-top: 100px; 
     }
 
     .brand-header {
-        font-size: 1.6rem; /* Rimpicciolisce leggermente il brand sui telefoni */
+        font-size: 1.6rem; 	
         top: 30px;
     }
 

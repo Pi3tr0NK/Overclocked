@@ -55,7 +55,6 @@ public class CarrelloAddControl extends HttpServlet {
 		        throw new ServletException(e);
 		    }
 
-		    // RISPOSTA AJAX (JSON)
 		    response.setContentType("application/json");
 		    response.setCharacterEncoding("UTF-8");
 
