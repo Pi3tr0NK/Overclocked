@@ -26,7 +26,7 @@ body {
     height: 65px;
     border-radius: 15px;
     background: #000000;
-    border: 1px solid #ff7300;
+    border: 1px solid #ff7a00;
     margin: 0 auto 20px;
 
     display: flex;
@@ -50,7 +50,7 @@ h1 {
 .orange-line {
     width: 70px;
     height: 3px;
-    background: #ff7300;
+    background: #ff7a00;
     border-radius: 10px;
     margin: 10px auto 30px;
 }
@@ -82,7 +82,7 @@ input[type="password"] {
 
 input:focus {
     outline: none;
-    border-color: #ff7300;
+    border-color: #ff7a00;
 }
 
 .row {
@@ -95,7 +95,7 @@ input:focus {
 .login-btn {
     width: 100%;
     padding: 16px;
-    background: #ff7300;
+    background: #ff7a00;
     border: none;
     border-radius: 12px;
     color: black;
@@ -108,7 +108,7 @@ input:focus {
 
 
 .link {
-    color: #ff7300;
+    color: #ff7a00;
 }
 
 
@@ -138,7 +138,7 @@ input:focus {
 
 
 .error {
-    color: red;
+    color: #ff4d4d;
     text-align: center;
     margin-bottom: 20px;
 }
@@ -150,7 +150,7 @@ input:focus {
     font-size: 2rem;
     font-weight: 800;
     letter-spacing: 2px;
-    color: #ff7300;
+    color: #ff7a00;
 }
 
 .brand-header:hover {

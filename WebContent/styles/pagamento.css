@@ -13,7 +13,7 @@
 
         .checkout-header h1 {
             font-size: 25px;
-            color: #ff7300;
+            color: #ff7a00;
             margin-bottom: 4px;
         }
 
@@ -41,7 +41,7 @@
 
         .co-title {
             font-size: 15px;
-            color: #ff7300;
+            color: #ff7a00;
             letter-spacing: 2px;
             text-transform: uppercase;
             font-weight: bold;
@@ -85,7 +85,7 @@
         }
 
         .co-field input:focus {
-            border-color: #ff7300;
+            border-color: #ff7a00;
         }
 
         .co-field input:invalid:not(:placeholder-shown) {
@@ -168,7 +168,7 @@
 
         .badge-sconto {
             display: inline-block;
-            background: linear-gradient(135deg, #ff3b3b, #ff7300);
+            background: linear-gradient(135deg, #ff3b3b, #ff7a00);
             color: #fff;
             font-size: 10px;
             font-weight: bold;
@@ -187,7 +187,7 @@
         .product-price {
             font-size: 15px;
             font-weight: bold;
-            color: #ff7300;
+            color: #ff7a00;
         }
 
         .co-riepilogo {
@@ -224,13 +224,13 @@
             border-top: 1px solid #1a1a1a;
             font-size: 20px;
             font-weight: bold;
-            color: #ff7300;
+            color: #ff7a00;
         }
 
         .btn-conferma {
             width: 100%;
             height: 46px;
-            background: #ff7300;
+            background: #ff7a00;
             color: #000;
             border: none;
             border-radius: 9px;
@@ -276,7 +276,7 @@
 
         .conferma-box h2 {
             font-size: 24px;
-            color: #ff7300;
+            color: #ff7a00;
             margin-bottom: 10px;
         }
 
@@ -289,7 +289,7 @@
         .btn-home {
             display: inline-block;
             padding: 12px 32px;
-            background: #ff7300;
+            background: #ff7a00;
             color: #000;
             border-radius: 9px;
             font-size: 14px;

@@ -65,7 +65,7 @@
 
 
 .brand {
-    color: #ff7300;
+    color: #ff7a00;
     font-weight: bold;
     font-size: 18px;
     margin-bottom: 15px;
@@ -82,7 +82,7 @@
 
 .price {
     font-size: 48px;
-    color: #ff7300;
+    color: #ff7a00;
     font-weight: bold;
 }
 
@@ -101,7 +101,7 @@
 .cart-btn {
     margin-top: 20px;
     width: 100%;
-    background: #ff7300;
+    background: #ff7a00;
     color: black;
     border: none;
     padding: 15px;

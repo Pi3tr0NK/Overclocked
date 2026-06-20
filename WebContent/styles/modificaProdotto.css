@@ -155,14 +155,14 @@ button:hover {
     transition: 0.2s;
 }
 .cat-tab:hover { 
-	border-color: #ff7300; 
-	color: #ff7300; 
+	border-color: #ff7a00; 
+	color: #ff7a00; 
 }
 
 .cat-tab.active { 
-	background: #ff7300; 
+	background: #ff7a00; 
 	color: #000; 
-	border-color: #ff7300; 
+	border-color: #ff7a00; 
 }
 
 .alert-error   { 

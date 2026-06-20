@@ -249,7 +249,7 @@
 }
 
 	.sidebar .filter-close:hover {
-	    color: #e06900;
+	    color: #ff7a00;
 	}
 
     .filter-toggle-checkbox:checked ~ .sidebar {

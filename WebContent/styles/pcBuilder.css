@@ -11,7 +11,7 @@
 
 .builder-header h1 {
     font-size: 24px;
-    color: #ff7300;
+    color: #ff7a00;
     margin-bottom: 6px;
 }
 
@@ -47,7 +47,7 @@
 
 .builder-card-title {
     font-size: 11px;
-    color: #ff7300;
+    color: #ff7a00;
     letter-spacing: 2px;
     text-transform: uppercase;
     font-weight: bold;
@@ -75,7 +75,7 @@
 }
 
 .builder-card select:focus {
-    border-color: #ff7300;
+    border-color: #ff7a00;
 }
 
 .builder-card select:disabled {
@@ -108,7 +108,7 @@
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    background: #ff7300;
+    background: #ff7a00;
     color: #000;
     font-size: 12px;
     font-weight: bold;
@@ -125,7 +125,7 @@
 
 .step-name {
     font-size: 11px;
-    color: #ff7300;
+    color: #ff7a00;
     letter-spacing: 2px;
     text-transform: uppercase;
     font-weight: bold;
@@ -144,7 +144,7 @@
 
 #riepilogo .builder-card-title {
     font-size: 11px;
-    color: #ff7300;
+    color: #ff7a00;
     letter-spacing: 2px;
     text-transform: uppercase;
     font-weight: bold;
@@ -174,7 +174,7 @@
 #listaRiepilogo li strong {
     display: block;
     font-size: 10px;
-    color: #ff7300;
+    color: #ff7a00;
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-bottom: 2px;
@@ -191,7 +191,7 @@
     border-top: 1px solid #1a1a1a;
     font-size: 20px;
     font-weight: bold;
-    color: #ff7300;
+    color: #ff7a00;
     text-align: right;
 }
 
@@ -203,7 +203,7 @@
 .btn-aggiungi-carrello {
     width: 100%;
     height: 46px;
-    background: #ff7300;
+    background: #ff7a00;
     color: #000;
     border: none;
     border-radius: 9px;
@@ -230,7 +230,7 @@
 }
 
 .builder-cart-msg.error {
-    color: #f44336;
+    color: #ff4d4d;
 }
 
 /* RESPONSIVE */

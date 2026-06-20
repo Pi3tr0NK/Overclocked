@@ -279,13 +279,13 @@ body {
 
 .filters input[type="text"]:focus {
     outline: none;
-    border-color: #ff7300;
+    border-color: #ff7a00;
     box-shadow: 0 0 0 3px rgba(255,115,0,.15);
 }
 
 .filters button {
     padding: 10px 18px;
-    background: #ff7300;
+    background: #ff7a00;
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -295,7 +295,7 @@ body {
 }
 
 .filters button:hover {
-    background: #e66700;
+    background: #ff7a00;
 }
 
 .table-container {
