@@ -210,13 +210,11 @@
 /* ==================================================
    RESPONSIVE DESIGN & HAMBURGER TENDINA (CSS ONLY)
 ================================================== */
-@media (max-width: 1100px) {
-    .nav-left h2 {
+@media (max-width: 1300px) {
+	.nav-left h2 {
         display: none;
     }
-}
-
-@media (max-width: 950px) {
+    
     .navbar {
         padding: 15px 20px;
     }
@@ -275,7 +273,7 @@
 }
 
 /* --- ADATTAMENTO STRUTTURA SMARTPHONE --- */
-@media (max-width: 600px) {
+@media (max-width: 800px) {
     .navbar {
         gap: 8px;
         padding: 12px 15px;

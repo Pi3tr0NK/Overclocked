@@ -18,7 +18,7 @@
       <%-- Riusa .product-price del tema per il colore arancione --%>
       <span class="product-price" id="sidebarTotal">€ 0,00</span>
     </div>
-    <a href="${pageContext.request.contextPath}/Carrello" class="sidebar-btn-checkout">
+    <a href="${pageContext.request.contextPath}/common/pagamento" class="sidebar-btn-checkout">
       Vai al checkout →
     </a>
     <a href="${pageContext.request.contextPath}/Carrello" class="sidebar-btn-view">

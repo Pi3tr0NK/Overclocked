@@ -37,22 +37,6 @@
                 </p>
             </div>
         </div>
-
-        <div class="footer-col">
-            <div class="footer-col-title">Newsletter</div>
-            <p class="newsletter-desc">
-                Iscriviti e ricevi offerte esclusive, novità
-                e guide per la tua build.
-            </p>
-            <div class="newsletter-row">
-                <input
-                    class="newsletter-input"
-                    type="email"
-                    placeholder="La tua email..."/>
-                <button class="newsletter-btn">Iscriviti</button>
-            </div>
-        </div>
-
     </div>
 
     <!-- MID: garanzie -->
