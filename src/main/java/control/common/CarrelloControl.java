@@ -43,11 +43,17 @@ public class CarrelloControl extends HttpServlet {
 
             if (item != null) {
                 switch (action) {
-                    case "incrementa": item.aumentaQuantita(1);       
-                    		  break;
+	                case "incrementa":
+	                    if (item.getQuantita() < item.getProdotto().getStock()) {
+	                        item.aumentaQuantita(1);
+	                    }
+	                    break;
                     		  
                     case "decrementa": item.diminuisciQuantita(1);
-                    	      break;
+					                    if (item.getQuantita() <= 0) {
+					                        cart.removeProduct(idProdotto);
+					                    }
+					     break;
                     	      
                     case "rimuovi": cart.removeProduct(idProdotto); 
                           break;

@@ -24,9 +24,20 @@ if (cartItemsEl) {
             return;
         }
 
-        // Incrementa / Decrementa / Rimuovi
         var cartItem = document.getElementById("cart-item-" + idProdotto);
-        var url      = contextPath + "/Carrello?action=" + action + "&idProdotto=" + idProdotto;
+        var qtyEl    = document.getElementById("qty-" + idProdotto);
+
+        // Blocco preventivo: non superare lo stock disponibile
+        if (action === "incrementa" && qtyEl) {
+            var stock      = parseInt(qtyEl.dataset.stock, 10);
+            var currentQty = parseInt(qtyEl.textContent, 10);
+
+            if (!isNaN(stock) && currentQty >= stock) {
+                return; 
+            }
+        }
+
+        var url = contextPath + "/Carrello?action=" + action + "&idProdotto=" + idProdotto;
 
         if (cartItem) {
             cartItem.querySelectorAll("button").forEach(function(b) { b.disabled = true; });
@@ -48,17 +59,23 @@ if (cartItemsEl) {
                     return;
                 }
             } else {
-                var qtyEl = document.getElementById("qty-" + data.idProdotto);
-                if (qtyEl) qtyEl.textContent = data.quantita;
+                var qtyEl2 = document.getElementById("qty-" + data.idProdotto);
+                if (qtyEl2) qtyEl2.textContent = data.quantita;
 
                 if (cartItem) {
                     cartItem.querySelectorAll("button").forEach(function(b) { b.disabled = false; });
+
+                    var stockVal = qtyEl2 ? parseInt(qtyEl2.dataset.stock, 10) : NaN;
+                    if (!isNaN(stockVal) && data.quantita >= stockVal) {
+                        var incBtn = cartItem.querySelector('[data-action="incrementa"]');
+                        if (incBtn) incBtn.disabled = true;
+                    }
                 }
             }
 
             var numEl    = document.getElementById("summary-num-prodotti");
             var totaleEl = document.getElementById("summary-totale");
-			aggiornaBadgeCarrello(data.numProdotti);
+            aggiornaBadgeCarrello(data.numProdotti);
 
             if (numEl)    numEl.textContent    = data.numProdotti;
             if (totaleEl) totaleEl.textContent = "\u20AC " + data.totale.toFixed(2).replace(".", ",");

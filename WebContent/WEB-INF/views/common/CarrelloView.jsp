@@ -96,9 +96,11 @@
                                     −
                                 </button>
 
-                                <span class="qty-value" id="qty-${item.prodotto.idProdotto}">
-                                    ${item.quantita}
-                                </span>
+                                <span class="qty-value"
+								      id="qty-${item.prodotto.idProdotto}"
+								      data-stock="${item.prodotto.stock}">
+								    ${item.quantita}
+								</span>
 
                                 <button class="qty-btn"
                                         data-action="incrementa"

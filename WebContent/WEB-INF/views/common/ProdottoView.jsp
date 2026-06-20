@@ -132,9 +132,11 @@
 		    Quantità
 		
 		    <input type="number"
-		           id="quantita"
-		           value="1"
-		           min="1">
+       			id="quantita"
+       			value="1"
+       			min="1"
+       			max="${prodotto.stock}"
+       			onblur="validaQuantita(this)">
 		</div>
 		
 		<button type="button" class="cart-btn" onclick="addToCart(${prodotto.idProdotto})" <c:if test="${prodotto.stock == 0}">disabled</c:if>>

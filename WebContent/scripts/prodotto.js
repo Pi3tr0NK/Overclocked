@@ -12,9 +12,26 @@ thumbs.forEach(img => {
 });
 
 
+function validaQuantita(input) {
+    var max = parseInt(input.max, 10);
+    var min = parseInt(input.min, 10) || 1;
+    var val = parseInt(input.value, 10);
+
+    if (isNaN(val) || val < min) {
+        val = min;
+    }
+    if (!isNaN(max) && max > 0 && val > max) {
+        val = max;
+    }
+
+    input.value = val;
+}
+
 // Aggiunta al carrello
 function addToCart(idProdotto) {
-    var qty = document.getElementById("quantita").value;
+    var input = document.getElementById("quantita");
+    validaQuantita(input);
+    var qty = input.value;
     var params = "aggiungi=" + idProdotto + "&quantita=" + qty;
     loadAjaxDoc(contextPath + "/carrello/add", "GET", params, handleAddCart);
 }
