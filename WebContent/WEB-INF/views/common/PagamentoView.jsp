@@ -11,9 +11,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/footer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/pagamento.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/tema.css">
+    
+    <jsp:include page="/WEB-INF/views/components/icon.jsp" />
 </head>
 
-<jsp:include page="/WEB-INF/views/components/icon.jsp" />
+
 
 <body>
 

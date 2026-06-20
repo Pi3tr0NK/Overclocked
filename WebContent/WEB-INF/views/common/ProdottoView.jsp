@@ -7,21 +7,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<jsp:include page="/WEB-INF/views/components/icon.jsp" />
 <title>Overclocked</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/tema.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/prodotto.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/navbar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/footer.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/cart-sidebar.css">
-
 <script>const contextPath = "${pageContext.request.contextPath}";</script>
-
 <jsp:include page="/WEB-INF/views/components/cart-sidebar.jsp" />
+
 
 </head>
 
+
+
 <!-- LOGO SCHEDA -->
-<jsp:include page="/WEB-INF/views/components/icon.jsp" />
+
 
 <body>
 

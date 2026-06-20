@@ -13,10 +13,13 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/navbar.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/pagination.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/footer.css">
-</head>
 
 <!-- LOGO SCHEDA -->
 <jsp:include page="/WEB-INF/views/components/icon.jsp" />
+
+</head>
+
+
 
 <body>
 

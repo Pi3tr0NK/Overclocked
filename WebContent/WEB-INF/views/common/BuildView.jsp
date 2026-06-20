@@ -10,11 +10,12 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/footer.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/pcBuilder.css">
     
+    <!-- LOGO SCHEDA -->
+	<jsp:include page="/WEB-INF/views/components/icon.jsp" />
+    
     
 </head>
 
-<!-- LOGO SCHEDA -->
-<jsp:include page="/WEB-INF/views/components/icon.jsp" />
 
 <body>
 
