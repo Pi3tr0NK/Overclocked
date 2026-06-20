@@ -92,6 +92,10 @@
     width: 70px;
     padding: 10px;
     text-align: center;
+    background-color: #1e1e1e;
+    color: #fff;
+    border: 1px solid #333;
+    border-radius: 6px;
 }
 
 .cart-btn {
@@ -188,16 +192,6 @@
     .qty {
         margin-top: 5px;
     }
-    
-    .qty input {
-    width: 70px;
-    padding: 10px;
-    text-align: center;
-    background-color: #1e1e1e;
-    color: #fff;
-    border: 1px solid #333;
-    border-radius: 6px;
-}
 
     .main-image {
         height: 380px;
