@@ -1,9 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/footer.css">
+
 <footer class="footer">
 
-   
+    <!-- TOP: descrizione, supporto, newsletter -->
     <div class="footer-top">
 
         <div class="footer-brand">
@@ -17,33 +19,33 @@
         <div class="footer-col">
             <div class="footer-col-title">Supporto</div>
             <div class="footer-links">
-                <p class="footer-link">
+                <a class="footer-link" href="${pageContext.request.contextPath}/faq#faq-come-ordinare-1">
                     <span class="footer-link-arrow">›</span> Come ordinare
-                </p>
-                <p class="footer-link">
+                </a>
+                <a class="footer-link" href="${pageContext.request.contextPath}/faq#faq-spedizioni-1">
                     <span class="footer-link-arrow">›</span> Spedizioni e consegne
-                </p>
-                <p class="footer-link">
+                </a>
+                <a class="footer-link" href="${pageContext.request.contextPath}/faq#faq-resi-1">
                     <span class="footer-link-arrow">›</span> Resi e rimborsi
-                </p>
-                <p class="footer-link">
+                </a>
+                <a class="footer-link" href="${pageContext.request.contextPath}/faq#faq-garanzia-1">
                     <span class="footer-link-arrow">›</span> Garanzia prodotti
-                </p>
-                <p class="footer-link">
+                </a>
+                <a class="footer-link" href="${pageContext.request.contextPath}/faq">
                     <span class="footer-link-arrow">›</span> FAQ
-                </p>
-                <p class="footer-link"">
+                </a>
+                <a class="footer-link" href="${pageContext.request.contextPath}/faq#faq-contatti-1">
                     <span class="footer-link-arrow">›</span> Contattaci
-                </p>
+                </a>
             </div>
         </div>
     </div>
 
-
+    <!-- MID: garanzie -->
     <div class="footer-mid">
 
         <div class="footer-mid-item">
-            <span class="footer-mid-icon">🚚</span>
+            <span class="footer-mid-icon">&#128666;</span>
             <div class="footer-mid-text">
                 <strong>Spedizione gratuita</strong>
                 <span>Su ordini superiori a € 99</span>
@@ -51,7 +53,7 @@
         </div>
 
         <div class="footer-mid-item">
-            <span class="footer-mid-icon">⚡</span>
+            <span class="footer-mid-icon">&#9889;</span>
             <div class="footer-mid-text">
                 <strong>Consegna 24h</strong>
                 <span>Ordini entro le 14:00</span>
@@ -59,7 +61,7 @@
         </div>
 
         <div class="footer-mid-item">
-            <span class="footer-mid-icon">🛡</span>
+            <span class="footer-mid-icon">&#128737;</span>
             <div class="footer-mid-text">
                 <strong>Garanzia ufficiale</strong>
                 <span>Fino a 3 anni sui prodotti</span>
@@ -67,7 +69,7 @@
         </div>
 
         <div class="footer-mid-item">
-            <span class="footer-mid-icon">↩</span>
+            <span class="footer-mid-icon">&#8617;</span>
             <div class="footer-mid-text">
                 <strong>Reso gratuito</strong>
                 <span>Entro 30 giorni dall'acquisto</span>
@@ -75,7 +77,7 @@
         </div>
 
         <div class="footer-mid-item">
-            <span class="footer-mid-icon">🔒</span>
+            <span class="footer-mid-icon">&#128274;</span>
             <div class="footer-mid-text">
                 <strong>Pagamento sicuro</strong>
                 <span>Transazioni crittografate SSL</span>
@@ -84,18 +86,20 @@
 
     </div>
 
+    <!-- BOTTOM: copyright, link legali, metodi di pagamento -->
     <div class="footer-bottom">
 
         <span class="footer-copy">
             © 2026 <span>Overclocked</span> S.r.l.
+            &mdash; P.IVA 12345678901
             &mdash; Tutti i diritti riservati
         </span>
 
         <div class="footer-legal">
-		    <p class="footer-link">Privacy Policy</p>
-		    <p class="footer-link">Termini e condizioni</p>
-		    <p class="footer-link">Cookie Policy</p>
-		</div>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Termini e condizioni</a>
+            <a href="#">Cookie Policy</a>
+        </div>
 
         <div class="footer-payments">
             <span class="footer-payments-label">Accettiamo</span>
