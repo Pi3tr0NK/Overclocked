@@ -31,7 +31,7 @@
 
 		<div class="profilo-layout">
 
-			<!-- NAVBAR SINITRA -->
+			<!-- NAVBAR SINISTRA -->
 			<nav class="profilo-nav">
 				<a
 					href="${pageContext.request.contextPath}/common/profilo?view=ordini"
@@ -81,8 +81,8 @@
 									<div class="ordine-field">
 										<span class="ordine-field-label">Indirizzo</span> <span
 											class="ordine-field-value">
-											${ordine.indirizzo.viaNumciv}, ${ordine.indirizzo.citta}
-											(${ordine.indirizzo.provincia}) </span>
+											 <c:out value="${ordine.indirizzo.viaNumciv}, ${ordine.indirizzo.citta} (${ordine.indirizzo.provincia})"/>
+										 </span>
 									</div>
 									<div class="ordine-field">
 									    <span class="ordine-field-label">Carta</span>
