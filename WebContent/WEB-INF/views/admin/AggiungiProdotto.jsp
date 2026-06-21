@@ -10,10 +10,13 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/tema.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/modificaProdotto.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/navbar.css">
-</head>
 
 <!-- LOGO SCHEDA -->
 <jsp:include page="/WEB-INF/views/components/icon.jsp" />
+
+</head>
+
+
 
 <body>
 

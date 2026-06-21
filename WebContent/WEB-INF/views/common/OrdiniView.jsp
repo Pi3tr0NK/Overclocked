@@ -14,10 +14,12 @@
 	href="${pageContext.request.contextPath}/styles/footer.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/styles/profilo.css">
-</head>
-
+	
 <!-- LOGO SCHEDA -->
 <jsp:include page="/WEB-INF/views/components/icon.jsp" />
+</head>
+
+
 
 <body>
 

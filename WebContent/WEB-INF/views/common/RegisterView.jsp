@@ -13,11 +13,12 @@
 	href="${pageContext.request.contextPath}/styles/tema.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/styles/register.css">
-
+	
+	<!-- LOGO SCHEDA -->
+<jsp:include page="/WEB-INF/views/components/icon.jsp" />
 </head>
 
-<!-- LOGO SCHEDA -->
-<jsp:include page="/WEB-INF/views/components/icon.jsp" />
+
 
 
 <body>

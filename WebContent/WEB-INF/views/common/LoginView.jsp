@@ -8,12 +8,15 @@
 <title>Overclocked</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/tema.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/styles/login.css">
+
+<jsp:include page="/WEB-INF/views/components/icon.jsp" />
+
 </head>
 
 
 
+
 <body>
-<jsp:include page="/WEB-INF/views/components/icon.jsp" />
 
     <a href="${pageContext.request.contextPath}/" class="brand-header"><h2>OVERCLOCKED</h2></a>
 
