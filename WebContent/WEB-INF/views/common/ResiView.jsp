@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,7 +34,7 @@
                class="profilo-nav-link active">Resi</a>
             <a href="${pageContext.request.contextPath}/common/profilo?view=dati"
                class="profilo-nav-link">I miei dati</a>
-            <a href="${pageContext.request.contextPath}/logout"
+            <a href="${pageContext.request.contextPath}/common/logout"
                class="profilo-nav-link logout">Logout &#x2192;</a>
         </nav>
 

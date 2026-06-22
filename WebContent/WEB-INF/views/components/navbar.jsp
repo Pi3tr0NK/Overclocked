@@ -51,7 +51,7 @@
                     <img src="${pageContext.request.contextPath}/images/utente.png" alt=""> 
                     <c:out value="${sessionScope.utente.nome}"/>
                 </a>
-                <a class="nav-btn" href="${pageContext.request.contextPath}/logout">
+                <a class="nav-btn" href="${pageContext.request.contextPath}/common/logout">
                     <img src="${pageContext.request.contextPath}/images/logout.png" alt="">ESCI
                 </a>
             </c:when>

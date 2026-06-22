@@ -215,7 +215,7 @@ public class RAMDAOImpl implements RAMDAO {
 		return prodottoDAO.setProductStatus(ram.getIdProdotto(), attivo);
 	}
 
-	public Collection<RAMBean> ramCompatibili(int moboId) throws SQLException {
+	public synchronized Collection<RAMBean> ramCompatibili(int moboId) throws SQLException {
 		List<RAMBean> lista = new LinkedList<>();
 		ImmaginiDAOImpl immaginiDAO = new ImmaginiDAOImpl(ds);
 
