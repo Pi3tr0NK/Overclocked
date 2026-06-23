@@ -216,12 +216,12 @@ public class MemoriaDAOImpl implements MemoriaDAO {
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
 			ps.setString(1, mem.getCapacita());
-			ps.setInt(2, mem.getVelLettura());
-			ps.setInt(3, mem.getVelScrittura());
+			ps.setInt(2, mem.getVelScrittura());
+			ps.setInt(3, mem.getVelLettura());
 			ps.setString(4, mem.getTipo().name());
 			ps.setString(5, mem.getTecnologia().name());
 			ps.setString(6, mem.getFormato());
-			ps.setInt(7, mem.getIdProdotto());
+			ps.setInt(7, mem.getIdMemoria());
 
 			return ps.executeUpdate() > 0;
 		}

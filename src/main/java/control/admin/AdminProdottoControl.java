@@ -160,8 +160,7 @@ public class AdminProdottoControl extends HttpServlet {
 					String idProdotto = request.getParameter("idProdotto");
 					String categoria  = request.getParameter("categoria");
 					
-					response.sendRedirect(
-					  request.getContextPath()
+					response.sendRedirect(request.getContextPath()
 					  + "/admin/aggiungiProdotto?action=modificaView"
 					  + "&id=" + idProdotto
 					  + "&categoria=" + categoria

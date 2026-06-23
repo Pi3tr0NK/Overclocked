@@ -40,10 +40,17 @@ public class ProdottoControl extends HttpServlet {
 	
     protected void doGet(HttpServletRequest request,HttpServletResponse response)throws ServletException, IOException {
     
+    	String idStr = request.getParameter("id");
         try {
-            int id =Integer.parseInt(request.getParameter("id"));
+        	
+            if (idStr==null || idStr.trim().isEmpty())
+            {
+                response.sendRedirect(request.getContextPath()+ "/home");
+                return;
+            }
             
-
+            int id =Integer.parseInt(idStr);
+            
             ProdottoBean prodotto = productDao.doRetrieveByKey(id);
             
             if(prodotto == null) {

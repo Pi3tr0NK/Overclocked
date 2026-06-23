@@ -210,7 +210,7 @@ public class ProdottoDAOImpl implements ProdottoDAO {
 	public synchronized boolean doUpdate(ProdottoBean p) throws SQLException {
 
 		String sql = "UPDATE " + TABLE_NAME
-				+ " SET nome=?, modello=?, descrizione=?, marca=?, prezzo=?, stock=?, attivo=?, sconto=?, categoria=? WHERE id_prodotto=?";
+				+ " SET nome=?, modello=?, descrizione=?, marca=?, prezzo=?, stock=?, attivo=?, sconto=?, categoria=?, dimensioni=?, peso=? WHERE id_prodotto=?";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -223,7 +223,9 @@ public class ProdottoDAOImpl implements ProdottoDAO {
 			ps.setBoolean(7, p.isAttivo());
 			ps.setInt(8, p.getSconto());
 			ps.setString(9, p.getCategoria());
-			ps.setInt(10, p.getIdProdotto());
+			ps.setString(10, p.getDimensioni());
+			ps.setString(11, p.getPeso());
+			ps.setInt(12, p.getIdProdotto());
 			return ps.executeUpdate() > 0;
 		}
 	}

@@ -184,6 +184,28 @@ public class AdminOrdiniControl extends HttpServlet {
         String dataStart = request.getParameter("dataInizio");
         String dataEnd = request.getParameter("dataFine");
        
+        if (dataStart != null && !dataStart.isEmpty()) {
+            String annoString = dataStart.split("-")[0]; 
+                
+            int anno = Integer.parseInt(annoString);
+                
+            if (anno > 9999) {
+                dataStart = "9999-12-31";
+            }
+        }
+        
+        if (dataEnd != null && !dataEnd.isEmpty()) {
+            String annoString = dataEnd.split("-")[0]; 
+                
+            int anno = Integer.parseInt(annoString);
+                
+            if (anno > 9999) {
+            	dataEnd = "9999-12-31";
+            }
+        }
+                
+        
+   
         
     	int pagina = 1;
 
