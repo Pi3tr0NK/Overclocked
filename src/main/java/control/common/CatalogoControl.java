@@ -288,12 +288,12 @@ public class CatalogoControl extends HttpServlet {
 		{
 			try 
 			{
-				int totalePagine = (int)Math.ceil((double)prodottoDAO.doCountFilteredProducts(cerca, prezzo, marca, null, null) / 10);
+				int totalePagine = (int)Math.ceil((double)prodottoDAO.doCountFilteredProducts(cerca, prezzo, marca, null, "true") / 10);
 				request.setAttribute("totalePagine",totalePagine);
 		        if (pagina < 1 || pagina > totalePagine) {
 		            pagina = 1;
 		        }
-				request.setAttribute("products", prodottoDAO.doRetrieveAll(cerca, prezzo, marca, null, null,ordine,pagina));
+				request.setAttribute("products", prodottoDAO.doRetrieveAll(cerca, prezzo, marca, null, "true" ,ordine,pagina));
 			} catch (SQLException e) {
 				System.err.println("Error:" + e.getMessage());
 			}
