@@ -72,7 +72,7 @@
 		
 		    <c:choose>
 		
-		        <c:when test="${prodotto.stock == 0}">
+		        <c:when test="${prodotto.stock == 0 || !prodotto.attivo}">
 		            <span class="stock-unavailable">
 		                Non disponibile
 		            </span>
@@ -140,7 +140,7 @@
        			onblur="validaQuantita(this)">
 		</div>
 		
-		<button type="button" class="cart-btn" onclick="addToCart(${prodotto.idProdotto})" <c:if test="${prodotto.stock == 0}">disabled</c:if>>
+		<button type="button" class="cart-btn" onclick="addToCart(${prodotto.idProdotto})" <c:if test="${prodotto.stock == 0 || !prodotto.attivo}">disabled</c:if>>
 		    Aggiungi al carrello
 		</button>
 

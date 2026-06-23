@@ -268,7 +268,7 @@ public class AdminProdottoControl extends HttpServlet {
         p.setStock(Integer.parseInt(request.getParameter("stock")));
         p.setDimensioni(request.getParameter("dimensioni"));
         p.setPeso(request.getParameter("peso"));
-        p.setAttivo(request.getParameter("attivo") != null);
+        p.setAttivo(request.getParameter("attivo").equals("true"));
         p.setSconto(Integer.parseInt(request.getParameter("sconto")));
         p.setCategoria(request.getParameter("categoria"));
     }

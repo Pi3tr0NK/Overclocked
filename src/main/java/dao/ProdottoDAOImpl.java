@@ -234,7 +234,6 @@ public class ProdottoDAOImpl implements ProdottoDAO {
 		String sql = "UPDATE " + TABLE_NAME + " SET attivo = ? WHERE id_prodotto = ?";
 
 		try (Connection con = ds.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
-
 			ps.setBoolean(1, attivo);
 			ps.setInt(2, idProdotto);
 
