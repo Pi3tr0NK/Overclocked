@@ -308,6 +308,10 @@
 		    min-height: 1em;
 		}
 		
+		.co-field .input-invalid {
+		    border: 1px solid #ff4d4d;
+		}
+		
 		/* RESPONSIVE */
 
         @media (max-width: 800px) {
