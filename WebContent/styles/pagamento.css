@@ -88,10 +88,6 @@
             border-color: #ff7a00;
         }
 
-        .co-field input:invalid:not(:placeholder-shown) {
-            border-color: #5a1a1a;
-        }
-
         .co-field-row {
             display: flex;
             gap: 10px;
