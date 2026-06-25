@@ -53,8 +53,7 @@ public class LoginControl extends HttpServlet {
 		email = validateEmail(email, errors);
 		password = validateField(password, "password", errors);
 
-		RequestDispatcher dispatcher =
-				request.getRequestDispatcher("/WEB-INF/views/common/LoginView.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/common/LoginView.jsp");
 
 		if (!errors.isEmpty()) {
 			request.setAttribute("errors", errors);

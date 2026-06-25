@@ -464,13 +464,30 @@ public class AdminProdottoControl extends HttpServlet {
                     immaginiDAO.doSave(img, idProdotto);
 
                 } else {
-
+                	
+                	
                     String idImmagineStr = request.getParameter("idImmagine" + i);
-
+                    String pathEsistente = request.getParameter("pathEsistente" + i);
+                    
+                    
                     if (idImmagineStr != null && !idImmagineStr.isBlank()) {
                         int idImmagine = Integer.parseInt(idImmagineStr);
                         img.setIdImmagine(idImmagine);
+
+                        if (pathEsistente != null && !pathEsistente.isBlank()) {
+                            String nomeVecchioFile = Paths.get(pathEsistente)
+                                                          .getFileName()
+                                                          .toString();
+
+                            File vecchioFile = new File(uploadDir, nomeVecchioFile);
+
+                            if (vecchioFile.exists()) {
+                                vecchioFile.delete();
+                            }
+                        }
+
                         immaginiDAO.updateImage(idImmagine, img.getPath(), idProdotto);
+
                     } else {
                         immaginiDAO.doSave(img, idProdotto);
                     }
