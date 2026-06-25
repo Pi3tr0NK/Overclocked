@@ -233,11 +233,6 @@
         font-size: 13px;
         padding: 8px;
     }
-
-    .specs td {
-        padding: 10px;
-        font-size: 13px;
-    }
 }
 
 @media (max-width: 500px) {
