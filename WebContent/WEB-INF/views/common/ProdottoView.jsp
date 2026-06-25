@@ -37,7 +37,7 @@
     <div class="area-brand-title">
 
         <div class="brand">
-            ${prodotto.marca}
+            <c:out value="${prodotto.marca}"/>
         </div>
 
         <div class="title">
