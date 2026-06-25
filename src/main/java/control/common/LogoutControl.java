@@ -9,13 +9,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/common/logout")
-public class logout extends HttpServlet {
+public class LogoutControl extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public logout() {
+    public LogoutControl() {
         super();
         // TODO Auto-generated constructor stub
     }
